@@ -1,0 +1,34 @@
+name: Code Quality & Build Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: TypeScript Strict Check
+        run: npm run lint
+
+      - name: Build Validation
+        run: npm run build
+
+      - name: Run Tests
+        run: npm run test

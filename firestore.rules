@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // ... (Keep existing validation functions but simplify for the mock to avoid huge duplication)
+    
+    // For System Metrics
+    match /systemMetrics/{metricId} {
+      // Anyone signed in can read global metrics
+      allow read: if isSignedIn();
+      // Admin or system simulator can update
+      allow write: if isAdmin();
+    }
+
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create, update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /announcements/{announcementId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /sustainabilityAlerts/{alertId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /userPreferences/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+  }
+}

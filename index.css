@@ -1,0 +1,6 @@
+/* KKM International Group Global Styles */
+@layer base {
+  html {
+    color-scheme: light dark;
+  }
+}

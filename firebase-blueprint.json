@@ -1,0 +1,181 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "An internal portal user representing an employee or administrator.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "admin",
+            "employee"
+          ],
+          "description": "RBAC role of the user"
+        },
+        "department": {
+          "type": "string",
+          "description": "Department the user belongs to"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "email",
+        "role"
+      ]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Internal news and announcements",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "content": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "authorId": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "title",
+        "content",
+        "authorId",
+        "createdAt"
+      ]
+    },
+    "SustainabilityAlert": {
+      "title": "Sustainability Alert",
+      "description": "Live sustainability efficiency alerts.",
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warning",
+            "critical"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "message",
+        "severity",
+        "source",
+        "createdAt"
+      ]
+    },
+    "UserPreference": {
+      "title": "User Preference",
+      "description": "User dashboard preferences for DigitalTwinHub.",
+      "type": "object",
+      "properties": {
+        "theme": {
+          "type": "string",
+          "enum": [
+            "light",
+            "dark",
+            "system"
+          ]
+        },
+        "defaultTwin": {
+          "type": "string",
+          "enum": [
+            "gmel",
+            "ree",
+            "none"
+          ]
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "theme",
+        "updatedAt"
+      ]
+    },
+    "SystemMetric": {
+      "title": "System Metric",
+      "description": "Live performance metrics for Digital Twins.",
+      "type": "object",
+      "properties": {
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "time": {
+                "type": "string"
+              },
+              "gmelCO2": {
+                "type": "number"
+              },
+              "reeCO2": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "history",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Stores user profiles and RBAC roles."
+    },
+    "/announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "Internal portal announcements."
+    },
+    "/sustainabilityAlerts/{alertId}": {
+      "schema": "SustainabilityAlert",
+      "description": "Live sustainability efficiency alerts."
+    },
+    "/userPreferences/{userId}": {
+      "schema": "UserPreference",
+      "description": "Stores user preferences for the Digital Twin Hub."
+    },
+    "/systemMetrics/{metricId}": {
+      "schema": "SystemMetric",
+      "description": "Stores live metrics history."
+    }
+  }
+}
