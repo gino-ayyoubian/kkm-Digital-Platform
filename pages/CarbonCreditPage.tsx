@@ -39,24 +39,24 @@ const CarbonCreditPage: React.FC = () => {
     
     // Calculator States
     const [milesFlown, setMilesFlown] = React.useState<number>(() => {
-        const saved = localStorage.getItem('kkm-calc-miles');
+        let saved = null; try { saved = window.localStorage.getItem('kkm-calc-miles'); } catch (e) {}
         return saved ? Number(saved) : 1000;
     });
     const [energyUsage, setEnergyUsage] = React.useState<number>(() => {
-        const saved = localStorage.getItem('kkm-calc-energy');
+        let saved = null; try { saved = window.localStorage.getItem('kkm-calc-energy'); } catch (e) {}
         return saved ? Number(saved) : 500;
     });
     const [diet, setDiet] = React.useState<'vegan' | 'vegetarian' | 'omnivore'>(() => {
-        const saved = localStorage.getItem('kkm-calc-diet');
+        let saved = null; try { saved = window.localStorage.getItem('kkm-calc-diet'); } catch (e) {}
         return (saved as any) || 'omnivore';
     });
     const [totalOffset, setTotalOffset] = React.useState<number>(452810);
     const [showOffsetSuccess, setShowOffsetSuccess] = React.useState(false);
 
     React.useEffect(() => {
-        localStorage.setItem('kkm-calc-miles', milesFlown.toString());
-        localStorage.setItem('kkm-calc-energy', energyUsage.toString());
-        localStorage.setItem('kkm-calc-diet', diet);
+        try { window.localStorage.setItem('kkm-calc-miles', milesFlown.toString()); } catch (e) {}
+        try { window.localStorage.setItem('kkm-calc-energy', energyUsage.toString()); } catch (e) {}
+        try { window.localStorage.setItem('kkm-calc-diet', diet); } catch (e) {}
     }, [milesFlown, energyUsage, diet]);
     
     const LIFECYCLE_STEPS = [

@@ -11,7 +11,9 @@ import type { TranslationKey } from '../translations';
 import D3ImpactChart from '../components/D3ImpactChart';
 import GmelInteractiveDiagram from '../components/GmelInteractiveDiagram';
 import InteractiveTechMap from '../components/InteractiveTechMap';
+import IPBadge, { IPStatus } from '../components/IPBadge';
 
+import GlobalCTA from '../components/GlobalCTA';
 // Icon Definitions
 const ClgIcon = () => (
     <motion.svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" variants={{ rest: { scale: 1 }, hover: { scale: 1.1, transition: { duration: 0.8, repeat: Infinity, repeatType: "reverse" } } }}>
@@ -155,7 +157,7 @@ const processTextWithTooltips = (text: string): React.ReactNode => {
     });
 };
 
-const CoreTechnologiesPage: React.FC = () => {
+const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
     const { t } = useLanguage();
 
     const handleScrollToApps = () => {
@@ -182,7 +184,7 @@ const CoreTechnologiesPage: React.FC = () => {
                             title={t(tech.name as TranslationKey)}
                             description={() => processTextWithTooltips(t(tech.description as TranslationKey))}
                             icon={getTechIcon(tech.name)}
-                            actionText={t('LearnMore')}
+                            actionText={t('CTA_ExploreTechnology')}
                             onActionClick={handleScrollToApps}
                         />
                     ))}
@@ -202,7 +204,7 @@ const CoreTechnologiesPage: React.FC = () => {
                                 key={area.name}
                                 title={t(area.name as TranslationKey)}
                                 description={t(area.description as TranslationKey)}
-                                actionText={t('LearnMore')}
+                                actionText={t('CTA_ExploreTechnology')}
                                 onActionClick={handleScrollToApps}
                            />
                         ))}
@@ -271,7 +273,9 @@ const CoreTechnologiesPage: React.FC = () => {
                     </div>
                 </section>
             </div>
-        </div>
+        
+      <GlobalCTA setPage={setPage} />
+    </div>
     );
 };
 

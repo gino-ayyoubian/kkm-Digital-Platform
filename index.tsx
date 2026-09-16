@@ -4,20 +4,12 @@ import App from './App';
 import { LanguageProvider } from './LanguageContext';
 import { ThemeProvider } from './ThemeContext';
 import { AuthProvider } from './AuthContext';
+import { HelmetProvider } from 'react-helmet-async';
 import * as Sentry from '@sentry/react';
 
 if (import.meta.env.VITE_SENTRY_DSN && import.meta.env.VITE_SENTRY_DSN.startsWith('http')) {
   try {
-    Sentry.init({
-      dsn: import.meta.env.VITE_SENTRY_DSN,
-      integrations: [
-        Sentry.browserTracingIntegration(),
-        Sentry.replayIntegration(),
-      ],
-      tracesSampleRate: 1.0,
-      replaysSessionSampleRate: 0.1,
-      replaysOnErrorSampleRate: 1.0,
-    });
+    /* Sentry Init Disabled to prevent iframe security errors */
   } catch (e) {
     console.warn("Failed to initialize Sentry:", e);
   }
@@ -31,6 +23,7 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
+    <HelmetProvider>
     <ThemeProvider>
       <LanguageProvider>
         <AuthProvider>
@@ -38,5 +31,20 @@ root.render(
         </AuthProvider>
       </LanguageProvider>
     </ThemeProvider>
-  </React.StrictMode>
+      </HelmetProvider>
+</React.StrictMode>
 );
+
+try {
+  if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      try {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(e => console.warn('SW register failed', e));
+      } catch (err) {
+        console.warn('SW register sync fail', err);
+      }
+    });
+  }
+} catch (e) {
+  console.warn('Service Worker access restricted', e);
+}

@@ -1,0 +1,52 @@
+const fs = require('fs');
+let content = fs.readFileSync('translations.ts', 'utf8');
+
+const faSubmenus = `
+    // Submenus
+    'Who We Are': 'ما چه کسی هستیم',
+    'Vision & Mission': 'چشم‌انداز و ماموریت',
+    'Leadership': 'رهبری',
+    'Organization': 'سازمان',
+    'Capabilities': 'توانمندی‌ها',
+    'Corporate Information': 'اطلاعات شرکتی',
+    'Energy': 'انرژی',
+    'Water': 'آب',
+    'Infrastructure': 'زیرساخت',
+    'Industrial Technology': 'فناوری صنعتی',
+    'AI & Digital': 'هوش مصنوعی و دیجیتال',
+    'Agriculture & Food': 'کشاورزی و غذا',
+    'Materials': 'مواد',
+    'GMEL': 'GMEL',
+    'KKM-IEH': 'KKM-IEH',
+    'GILT': 'GILT',
+    'GNOVA': 'GNOVA',
+    'KKM Digitalization': 'دیجیتالی‌سازی KKM',
+    'Flagship Projects': 'پروژه‌های پرچمدار',
+    'Pilots': 'پایلوت‌ها',
+    'Project Pipeline': 'پروژه‌های در دست اقدام',
+    'Case Studies': 'مطالعات موردی',
+    'Integrated Rural Model': 'مدل یکپارچه روستایی',
+    'Agriculture': 'کشاورزی',
+    'Investment': 'سرمایه‌گذاری',
+    'Patents': 'ثبت اختراعات',
+    'Technology Portfolio': 'سبد فناوری',
+    'R&D': 'تحقیق و توسعه',
+    'Innovation Hub': 'مرکز نوآوری',
+    'Commercialization': 'تجاری‌سازی',
+    'Investment Opportunities': 'فرصت‌های سرمایه‌گذاری',
+    'Strategic Partnerships': 'مشارکت‌های استراتژیک',
+    'Technology Licensing': 'صدور مجوز فناوری',
+    'EPC / EPCM': 'EPC / EPCM',
+    'Become a Partner': 'همکار ما شوید',
+    'News': 'اخبار',
+    'Research': 'پژوهش',
+    'Technical Papers': 'مقالات فنی',
+    'Reports': 'گزارش‌ها',
+    'Contact KKM': 'تماس با KKM',
+    'Project Inquiry': 'درخواست پروژه',
+    'Partnership Inquiry': 'درخواست مشارکت',
+    'Investment Inquiry': 'درخواست سرمایه‌گذاری',
+`;
+
+content = content.replace(/(\[Page\.InnovationHub\]: 'مرکز نوآوری',)/, "$1" + faSubmenus);
+fs.writeFileSync('translations.ts', content);

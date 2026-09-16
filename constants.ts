@@ -31,24 +31,98 @@ export const RECENT_INNOVATIONS: Innovation[] = [
 
 export const NAV_LINKS: NavLink[] = [
   { name: Page.Home },
-  { name: Page.AboutUs },
   { 
-    name: Page.CoreTechnologies,
-  },
-  { 
-    name: Page.DigitalTwinHub,
+    name: Page.AboutUs, 
     subLinks: [
-      { name: "Digital Twin Platform Hub", id: "hub", page: Page.DigitalTwinHub },
-      { name: "GMEL Digital Twin", id: "gmel", page: Page.DigitalTwinGMEL },
-      { name: "River Energy Ecosystem Twin", id: "ree", page: Page.DigitalTwinREE }
+      { name: "Who We Are", id: "who-we-are" },
+      { name: "Vision & Mission", id: "vision-mission" },
+      { name: "Leadership", id: "leadership" },
+      { name: "Organization", id: "organization" },
+      { name: "Capabilities", id: "capabilities" },
+      { name: "Corporate Information", id: "corporate-info", page: Page.CorporateInfo }
     ]
   },
-  { name: Page.Futures },
-  { name: Page.Projects },
-  { name: Page.InnovationHub },
-  { name: Page.Careers },
-  { name: Page.News },
-  { name: Page.Contact },
+  {
+    name: Page.Technology,
+    subLinks: [
+      { name: "Energy", id: "energy" },
+      { name: "Water", id: "water" },
+      { name: "Infrastructure", id: "infrastructure" },
+      { name: "Industrial Technology", id: "industrial" },
+      { name: "AI & Digital", id: "ai-digital" },
+      { name: "Agriculture & Food", id: "agriculture" },
+      { name: "Materials", id: "materials" }
+    ]
+  },
+  {
+    name: Page.Ecosystems,
+    subLinks: [
+      { name: "GMEL", id: "gmel", page: Page.GMELHub },
+      { name: "KKM-IEH", id: "kkm-ieh" },
+      { name: "GILT", id: "gilt" },
+      { name: "GNOVA", id: "gnova" },
+      { name: "KKM Digitalization", id: "kkm-digitalization", page: Page.DigitalTwinHub }
+    ]
+  },
+  {
+    name: Page.Projects,
+    subLinks: [
+      { name: "Flagship Projects", id: "flagship" },
+      { name: "Pilots", id: "pilots" },
+      { name: "Project Pipeline", id: "pipeline" },
+      { name: "Case Studies", id: "case-studies" }
+    ]
+  },
+  {
+    name: Page.RuralStudies,
+    subLinks: [
+      { name: "Integrated Rural Model", id: "integrated-model" },
+      { name: "Energy", id: "rural-energy" },
+      { name: "Water", id: "rural-water" },
+      { name: "Agriculture", id: "rural-agriculture" },
+      { name: "Infrastructure", id: "rural-infrastructure" },
+      { name: "AI / Digital", id: "rural-ai" },
+      { name: "Investment", id: "rural-investment" }
+    ]
+  },
+  {
+    name: Page.InnovationHub,
+    subLinks: [
+      { name: "Patents", id: "patents" },
+      { name: "Technology Portfolio", id: "tech-portfolio" },
+      { name: "R&D", id: "rnd" },
+      { name: "Innovation Hub", id: "innovation-hub" },
+      { name: "Commercialization", id: "commercialization" }
+    ]
+  },
+  {
+    name: Page.Invest,
+    subLinks: [
+      { name: "Investment Opportunities", id: "invest-opps" },
+      { name: "Strategic Partnerships", id: "strategic-partnerships" },
+      { name: "Technology Licensing", id: "tech-licensing" },
+      { name: "EPC / EPCM", id: "epc-epcm" },
+      { name: "Become a Partner", id: "become-partner" }
+    ]
+  },
+  {
+    name: Page.Insights,
+    subLinks: [
+      { name: "News", id: "news", page: Page.News },
+      { name: "Research", id: "research" },
+      { name: "Technical Papers", id: "tech-papers" },
+      { name: "Reports", id: "reports" }
+    ]
+  },
+  {
+    name: Page.Contact,
+    subLinks: [
+      { name: "Contact KKM", id: "contact-kkm" },
+      { name: "Project Inquiry", id: "project-inquiry" },
+      { name: "Partnership Inquiry", id: "partnership-inquiry" },
+      { name: "Investment Inquiry", id: "investment-inquiry" }
+    ]
+  }
 ];
 
 export const GMEL_TECHNOLOGIES = [
@@ -74,6 +148,17 @@ export const OTHER_CORE_AREAS = [
 export const PROJECTS: Project[] = [
     { 
         name: "Project_Qeshm_Name",
+
+        client: 'Qeshm Free Zone Organization',
+        location: 'Qeshm Island, Iran',
+        scope: 'Integrated offshore/onshore infrastructure and pipeline development.',
+        role: 'General Contractor (EPC)',
+        technology: 'Advanced Marine Engineering, HDPE pipelines',
+        stage: 'Completed',
+        deliverables: ['Pipeline Deployment', 'Offshore Terminal', 'Control Center'],
+        results: 'Increased throughput by 120%.',
+        nextPhase: 'Expansion Phase Planning',
+
         description: "Project_Qeshm_Desc",
         image: "https://picsum.photos/seed/qeshm-oilfield/600/400",
         tags: ["Tag_OilGas", "Tag_EPCI", "Tag_Midstream", "Tag_Biotech"],
@@ -203,7 +288,7 @@ export const PROJECTS: Project[] = [
 export const NEWS_ITEMS: NewsItem[] = [
     {
         title: "News_1_Title",
-        date: "2023-10-26",
+        date: "2026-08-15",
         excerpt: "News_1_Excerpt",
         image: "https://picsum.photos/seed/news1/600/400",
         content: "News_1_Content",
@@ -211,7 +296,7 @@ export const NEWS_ITEMS: NewsItem[] = [
     },
     {
         title: "News_2_Title",
-        date: "2023-09-15",
+        date: "2026-07-22",
         excerpt: "News_2_Excerpt",
         image: "https://picsum.photos/seed/news2/600/400",
         content: "News_2_Content",
@@ -219,7 +304,7 @@ export const NEWS_ITEMS: NewsItem[] = [
     },
     {
         title: "News_3_Title",
-        date: "2023-08-01",
+        date: "2026-06-10",
         excerpt: "News_3_Excerpt",
         image: "https://picsum.photos/seed/news3/600/400",
         content: "News_3_Content",
@@ -227,7 +312,7 @@ export const NEWS_ITEMS: NewsItem[] = [
     },
     {
         title: "News_4_Title",
-        date: "2023-07-20",
+        date: "2026-05-05",
         excerpt: "News_4_Excerpt",
         image: "https://picsum.photos/seed/news4/600/400",
         content: "News_4_Content",

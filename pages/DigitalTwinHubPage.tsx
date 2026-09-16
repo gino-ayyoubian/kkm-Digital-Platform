@@ -8,6 +8,7 @@ import { useAuth } from '../AuthContext';
 import { db } from '../firebase';
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 
+import GlobalCTA from '../components/GlobalCTA';
 interface DigitalTwinHubPageProps {
   setPage: (page: Page) => void;
 }
@@ -255,6 +256,8 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
         </div>
 
       </div>
+    
+      <GlobalCTA setPage={setPage} />
     </div>
   );
 };

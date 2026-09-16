@@ -160,7 +160,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
               <KkmLogo />
             </button>
             <p className={`text-center text-[10px] sm:text-xs font-medium mt-1 hidden sm:block tracking-wide transition-colors ${isScrolled ? 'text-primary-dark dark:text-slate-300' : 'text-text-dark dark:text-slate-200'}`}>
-                Engineering a Sustainable Future, Together.
+                Technology. Engineering. Infrastructure. Innovation.
             </p>
           </div>
 
@@ -231,7 +231,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
                                         className="block px-4 py-3 text-sm text-text-dark dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-700 w-full text-start transition-colors duration-150 border-s-4 border-transparent hover:border-primary-dark focus:outline-none focus:bg-gray-100 dark:focus:bg-slate-700"
                                         role="menuitem"
                                     >
-                                        {subLink.name}
+                                        {t(subLink.name)}
                                     </button>
                                     ))}
                                 </div>
@@ -307,22 +307,30 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
               </svg>
             </button>
             
-            <div className={`flex items-center rounded-full p-1 border ${isScrolled ? 'border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-800' : 'border-white/20 bg-white/10'}`}>
+            
+            {/* Language Selector Dropdown */}
+            <div className="relative group">
                 <button 
-                    onClick={() => setLanguage('EN')}
-                    className={`px-3 py-1 rounded-full text-xs font-bold transition-all duration-300 ${language === 'EN' ? (isScrolled ? 'bg-white shadow-sm text-primary dark:bg-slate-700 dark:text-white' : 'bg-white text-primary-dark') : (isScrolled ? 'text-text-light dark:text-slate-400 hover:text-text-dark' : 'text-white/70 hover:text-white')}`}
-                    aria-label="Switch to English"
+                    className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300 border ${isScrolled ? 'border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-800 text-primary dark:text-white' : 'border-white/20 bg-white/10 text-white hover:bg-white/20'}`}
+                    aria-label="Select Language"
+                    aria-haspopup="true"
                 >
-                    EN
+                    {language}
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                 </button>
-                <button 
-                    onClick={() => setLanguage('FA')}
-                    className={`px-3 py-1 rounded-full text-xs font-bold transition-all duration-300 ${language === 'FA' ? (isScrolled ? 'bg-white shadow-sm text-primary dark:bg-slate-700 dark:text-white' : 'bg-white text-primary-dark') : (isScrolled ? 'text-text-light dark:text-slate-400 hover:text-text-dark' : 'text-white/70 hover:text-white')}`}
-                    aria-label="Switch to Persian"
-                >
-                    FA
-                </button>
+                <div className="absolute top-full right-0 mt-2 w-24 bg-white dark:bg-slate-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden ring-1 ring-black/5">
+                    {['EN', 'FA', 'AR', 'KU', 'RU'].map(lang => (
+                        <button
+                            key={lang}
+                            onClick={() => setLanguage(lang as any)}
+                            className={`block w-full text-left px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-slate-700 ${language === lang ? 'text-primary dark:text-secondary bg-gray-50 dark:bg-slate-700/50' : 'text-slate-700 dark:text-slate-300'}`}
+                        >
+                            {lang}
+                        </button>
+                    ))}
+                </div>
             </div>
+
 
             <div className="lg:hidden">
               <motion.button 
@@ -413,7 +421,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
                                                     }}
                                                     className="block w-full text-start px-4 py-2 rounded-lg text-base md:text-lg font-medium text-text-dark dark:text-slate-300 hover:text-primary-dark dark:hover:text-secondary hover:bg-gray-50 dark:hover:bg-slate-800/50"
                                                 >
-                                                    {subLink.name}
+                                                    {t(subLink.name)}
                                                 </button>
                                             ))}
                                         </div>

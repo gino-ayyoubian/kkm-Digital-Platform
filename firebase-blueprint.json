@@ -154,6 +154,161 @@
         "history",
         "updatedAt"
       ]
+    },
+    "MeetingBooking": {
+      "title": "Meeting Booking",
+      "description": "Lead generation form for scheduling meetings at exhibitions.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "organization": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "position": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "country": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "interest": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "preferredDate": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "name",
+        "organization",
+        "country",
+        "createdAt"
+      ]
+    },
+    "Lead": {
+      "title": "CRM Lead",
+      "description": "Unified CRM lead capture and tracking.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "organization": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "country": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Government",
+            "Investor",
+            "Industrial Partner",
+            "Village / Municipality",
+            "Research",
+            "Customer",
+            "Media"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "New",
+            "Qualified",
+            "Meeting",
+            "Feasibility",
+            "Pilot",
+            "Project",
+            "Contract"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "utmData": {
+          "type": "object"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "name",
+        "organization",
+        "category",
+        "status",
+        "createdAt"
+      ]
+    },
+    "ContentArticle": {
+      "title": "Governed Content",
+      "description": "Content tracking for website publishing pipeline.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "contentBody": {
+          "type": "string"
+        },
+        "ownerId": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Draft",
+            "Technical Review",
+            "IP/Legal Review",
+            "CEO Approval",
+            "Publish"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "title",
+        "ownerId",
+        "status",
+        "createdAt"
+      ]
     }
   },
   "firestore": {
@@ -176,6 +331,18 @@
     "/systemMetrics/{metricId}": {
       "schema": "SystemMetric",
       "description": "Stores live metrics history."
+    },
+    "/meetingBookings/{bookingId}": {
+      "schema": "MeetingBooking",
+      "description": "Stores meeting bookings submitted from the Exhibition page."
+    },
+    "/leads/{leadId}": {
+      "schema": "Lead",
+      "description": "Stores unified leads for the CRM system."
+    },
+    "/contentArticles/{articleId}": {
+      "schema": "ContentArticle",
+      "description": "Stores content going through governance workflow."
     }
   }
 }

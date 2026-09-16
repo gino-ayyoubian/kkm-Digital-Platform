@@ -12,6 +12,7 @@ import Accordion from '../components/Accordion';
 import { motion, AnimatePresence } from 'motion/react';
 import type { TranslationKey } from '../translations';
 
+import GlobalCTA from '../components/GlobalCTA';
 // Lazy load modal
 const ProjectDetailModal = React.lazy(() => import('./ProjectDetailModal'));
 
@@ -482,7 +483,9 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
                     </React.Suspense>
                 )}
             </AnimatePresence>
-        </div>
+        
+      <GlobalCTA setPage={setPage} />
+    </div>
     );
 };
 

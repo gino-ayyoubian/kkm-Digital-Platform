@@ -2,7 +2,7 @@ import * as React from 'react';
 import { translations } from './translations';
 import type { TranslationKey } from './translations';
 
-export type Language = 'EN' | 'FA' | 'KU' | 'AR';
+export type Language = 'EN' | 'FA' | 'KU' | 'AR' | 'RU';
 type Direction = 'ltr' | 'rtl';
 
 interface LanguageContextType {

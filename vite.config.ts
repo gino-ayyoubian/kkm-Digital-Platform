@@ -25,12 +25,13 @@ export default defineConfig(({ mode }) => {
         react(),
         VitePWA({
           registerType: 'autoUpdate',
+          injectRegister: false,
           includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg'],
           manifest: {
             id: '/',
             name: 'KKM International Group',
             short_name: 'KKM Intl',
-            description: 'Engineering a Sustainable Future.',
+            description: 'Technology. Engineering. Infrastructure. Innovation.',
             theme_color: '#ffffff',
             background_color: '#ffffff',
             display: 'standalone',

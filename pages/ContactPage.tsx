@@ -7,10 +7,14 @@ import PageHeader from '../components/PageHeader';
 import Accordion from '../components/Accordion';
 import { motion, AnimatePresence } from 'motion/react';
 
+import { trackFormSubmission, parseUTMParams } from '../lib/analytics';
+import { db } from '../firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 // Types
 interface ContactFormData {
     name: string;
     email: string;
+    inquiryType: string;
     subject: string;
     message: string;
     _gotcha: string; // Honeypot
@@ -69,7 +73,7 @@ const ContactPage: React.FC = () => {
     const { t } = useLanguage();
     
     // State
-    const [formData, setFormData] = React.useState<ContactFormData>({ name: '', email: '', subject: '', message: '', _gotcha: '' });
+    const [formData, setFormData] = React.useState<ContactFormData>({ name: '', email: '', inquiryType: 'General Inquiry', subject: '', message: '', _gotcha: '' });
     const [captcha, setCaptcha] = React.useState({ a: 0, b: 0, operator: '+', answer: '' });
     const [errors, setErrors] = React.useState<FormErrors>({});
     const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -139,7 +143,7 @@ const ContactPage: React.FC = () => {
         }
     }, [t]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         
         if (name === 'captcha') {
@@ -222,7 +226,7 @@ const ContactPage: React.FC = () => {
     };
     
     const resetForm = () => {
-        setFormData({ name: '', email: '', subject: '', message: '', _gotcha: '' });
+        setFormData({ name: '', email: '', subject: '', message: '', _gotcha: '', inquiryType: 'General Inquiry' });
         generateCaptcha();
         setErrors({});
         setFormStatus('idle');
@@ -343,16 +347,30 @@ const ContactPage: React.FC = () => {
                                             </FormField>
                                         </div>
 
-                                        <FormField id="subject" label={t('Subject')} error={errors.subject}>
-                                            <input
-                                                type="text"
-                                                id="subject"
-                                                name="subject"
-                                                value={formData.subject}
-                                                onChange={handleChange}
-                                                className={getInputClass('subject', formData.subject)}
-                                            />
+                                        
+                                        <FormField id="inquiryType" label={t('InquiryType')} error={errors.inquiryType}>
+                                            <div className="relative">
+                                                <select
+                                                    id="inquiryType"
+                                                    name="inquiryType"
+                                                    value={formData.inquiryType}
+                                                    onChange={handleChange}
+                                                    className={`${getInputClass('inquiryType', formData.inquiryType)} appearance-none`}
+                                                >
+                                                    <option value="General Inquiry">{t('CTA_GeneralInquiry')}</option>
+                                                    <option value="Project Inquiry">{t('CTA_ProjectInquiry')}</option>
+                                                    <option value="Technology Partnership">{t('CTA_TechnologyPartnership')}</option>
+                                                    <option value="Investment">{t('CTA_Investment')}</option>
+                                                    <option value="Research Collaboration">{t('CTA_ResearchCollaboration')}</option>
+                                                    <option value="Media">{t('CTA_Media')}</option>
+                                                    <option value="Rural Pilot">{t('CTA_RuralPilot')}</option>
+                                                </select>
+                                                <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center px-4 text-gray-500">
+                                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                </div>
+                                            </div>
                                         </FormField>
+
 
                                         <FormField 
                                             id="message" 
@@ -413,8 +431,13 @@ const ContactPage: React.FC = () => {
                                             </div>
                                         </FormField>
 
+                                        
                                         <div className="pt-2">
+                                            <p className="text-xs text-text-light dark:text-slate-400 mb-4 text-center">
+                                                * Inquiries are automatically routed to the appropriate internal department based on the selected inquiry type.
+                                            </p>
                                             <button
+
                                                 type="submit"
                                                 disabled={isSubmitting}
                                                 className="w-full px-8 py-4 font-bold text-white bg-primary rounded-xl hover:bg-secondary transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-2"

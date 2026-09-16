@@ -19,7 +19,7 @@ export const CEOSignatureBanner: React.FC = () => {
         let isMounted = true;
         
         const fetchInsight = async () => {
-            const cached = sessionStorage.getItem('kkm-ceo-insight');
+            let cached = null; try { cached = window.sessionStorage.getItem('kkm-ceo-insight'); } catch(e) {}
             if (cached) {
                 setQuote(cached);
                 setIsLoading(false);
@@ -41,7 +41,7 @@ export const CEOSignatureBanner: React.FC = () => {
                         const text = data.text ? data.text.replace(/^["']|["']$/g, '').trim() : '';
                         if (text) {
                             setQuote(text);
-                            sessionStorage.setItem('kkm-ceo-insight', text);
+                            try { window.sessionStorage.setItem('kkm-ceo-insight', text); } catch(e) {}
                         } else {
                             throw new Error("Empty response");
                         }

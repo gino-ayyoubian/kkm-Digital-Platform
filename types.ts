@@ -1,6 +1,18 @@
 export enum Page {
+  Exhibition = 'Exhibition',
+  Downloads = 'Downloads',
   Home = 'Home',
   AboutUs = 'About Us',
+  Technology = 'Technology',
+  Ecosystems = 'KKM Ecosystems',
+  Projects = 'Projects',
+  RuralStudies = 'Rural & Nomadic Development',
+  InnovationHub = 'IP & Innovation',
+  Invest = 'Invest & Partner',
+  Insights = 'Insights',
+  Contact = 'Contact',
+  
+  // Existing internal pages
   CoreTechnologies = 'Core Technologies',
   DigitalTwinHub = 'Digital Twin Platform',
   DigitalTwinGMEL = 'GMEL Digital Twin',
@@ -8,22 +20,40 @@ export enum Page {
   Futures = 'Futures',
   Biomedical = 'Biomedical & Health Innovation',
   SportsManagement = 'Sports Management',
-  RuralStudies = 'Rural Studies & Development',
-  InnovationHub = 'Innovation & Ideation Hub',
   CarbonCredit = 'Carbon Credits & Offset',
   IntellectualProperty = 'Intellectual Property Office',
-  Projects = 'Projects & Pilots',
   Careers = 'Careers & Engagement',
   News = 'News & Insights',
-  Contact = 'Contact Us',
   Legal = 'Legal & Policies',
   SearchResults = 'Search Results',
   InternalPortal = 'Internal Portal',
   Offline = 'Offline Mode',
+
+
+  CorporateInfo = 'Corporate Information',
+
+
+  // Business Development Hub
+  TechnologyTemplate = 'Technology Template',
+  GMELHub = 'GMEL Hub',
+  PilotRequest = 'Pilot Request',
+  ProjectDevelopment = 'Project Development',
+  InvestmentPortal = 'Investment Portal',
+  IPCenter = 'IP Center',
+
 }
 
 export interface Project {
     name: string;
+    client?: string;
+    location?: string;
+    scope?: string;
+    role?: string;
+    technology?: string;
+    stage?: string;
+    deliverables?: string[];
+    results?: string;
+    nextPhase?: string;
     description: string;
     image: string;
     tags: string[];

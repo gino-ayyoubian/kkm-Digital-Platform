@@ -59,4 +59,37 @@ service cloud.firestore {
       allow read, write: if isOwner(userId);
     }
   }
-}
+
+    match /meetingBookings/{bookingId} {
+      function isValidMeetingBooking(data) {
+        return data.keys().hasAll(['name', 'organization', 'country', 'createdAt'])
+            && data.keys().size() <= 8
+            && data.name is string && data.name.size() <= 100
+            && data.organization is string && data.organization.size() <= 150
+            && data.country is string && data.country.size() <= 100
+            && data.createdAt == request.time
+            && (data.get('position', '') is string && data.get('position', '').size() <= 100)
+            && (data.get('interest', '') is string && data.get('interest', '').size() <= 200)
+            && (data.get('preferredDate', '') is string && data.get('preferredDate', '').size() <= 50)
+            && (data.get('message', '') is string && data.get('message', '').size() <= 1000);
+      }
+      
+      // Anyone can create a meeting booking (public form)
+      allow create: if isValidMeetingBooking(request.resource.data);
+      // Only admins can read/update/delete
+      allow read, update, delete: if isAdmin();
+    }
+
+  
+    match /leads/{leadId} {
+      allow create: if true; // Public can create leads (forms)
+      allow read, update, delete: if isAdmin();
+    }
+    
+    match /contentArticles/{articleId} {
+      allow read: if resource.data.status == 'Publish' || isAuthenticated();
+      allow create, update: if isAuthenticated(); // Internal portal logic
+      allow delete: if isAdmin();
+    }
+
+  }

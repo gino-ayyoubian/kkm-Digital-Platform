@@ -13,7 +13,7 @@ export const A11yDebugOverlay: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.has('a11y') || urlParams.has('debug_a11y') || localStorage.getItem('kkm_a11y_overlay') === 'true';
+    return urlParams.has('a11y') || urlParams.has('debug_a11y') || (() => { try { return window.localStorage.getItem('kkm_a11y_overlay') === 'true'; } catch(e) { return false; } })();
   });
 
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
@@ -41,7 +41,7 @@ export const A11yDebugOverlay: React.FC = () => {
         e.preventDefault();
         setIsOpen(prev => {
           const next = !prev;
-          localStorage.setItem('kkm_a11y_overlay', next ? 'true' : 'false');
+          try { window.localStorage.setItem('kkm_a11y_overlay', next ? 'true' : 'false'); } catch(e) {}
           if (next) {
             executeAudit(true);
           }
@@ -56,7 +56,7 @@ export const A11yDebugOverlay: React.FC = () => {
     window.__toggleA11yOverlay = () => {
       setIsOpen(prev => {
         const next = !prev;
-        localStorage.setItem('kkm_a11y_overlay', next ? 'true' : 'false');
+        try { window.localStorage.setItem('kkm_a11y_overlay', next ? 'true' : 'false'); } catch(e) {}
         if (next) executeAudit(true);
         return next;
       });
@@ -190,7 +190,7 @@ export const A11yDebugOverlay: React.FC = () => {
               type="button"
               onClick={() => {
                 setIsOpen(false);
-                localStorage.setItem('kkm_a11y_overlay', 'false');
+                try { window.localStorage.setItem('kkm_a11y_overlay', 'false'); } catch(e) {}
               }}
               aria-label="Close accessibility debug overlay"
               className="p-1 rounded hover:bg-rose-900/60 hover:text-white transition-colors"

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '../LanguageContext';
 
 interface SEOHeadProps {
@@ -8,113 +9,164 @@ interface SEOHeadProps {
   image?: string;
   type?: string;
   keywords?: string;
-  jsonLdSchema?: Record<string, any>;
+  schemaType?: 'Organization' | 'WebSite' | 'Article' | 'Breadcrumb';
+  customSchema?: Record<string, any>;
+  articleData?: {
+    publishedTime: string;
+    modifiedTime: string;
+    author: string;
+    section: string;
+  };
+  breadcrumbData?: { name: string; item: string }[];
 }
 
-/**
- * SEOHead Component
- * Manages document head elements including title, meta tags, Open Graph, Twitter Cards,
- * and dynamic JSON-LD structured data for comprehensive Search Engine Optimization.
- * Handles language and direction attributes on the HTML element.
- * 
- * @param {SEOHeadProps} props - SEO configuration properties
- * @returns {null} This component does not render DOM elements
- */
 const SEOHead: React.FC<SEOHeadProps> = ({
   title,
   description,
-  url = 'https://kkm-international.org/',
+  url = 'https://www.kkm-intl.com',
   image = 'https://storage.googleapis.com/aistudio-chat-prod-gemini-image-serving/e0cfcd0b2fb249f3906371f4b3df36c7',
   type = 'website',
-  keywords = 'KKM International, Sustainable Engineering, Geothermal Energy, Innovation, EPCI, Renewable Energy, Green Technology',
-  jsonLdSchema,
+  keywords = 'Geothermal Energy Technology, Closed Loop Geothermal, Rural Energy Systems, Rural Infrastructure, Energy Village, Water Energy Nexus, Industrial AI, EPCM Iran, Sustainable Infrastructure, Rural Development Technology, Geothermal Multi Energy, GeoMeta Energy Layer, Gmel Technology Ecosystem',
+  schemaType = 'WebSite',
+  customSchema,
+  articleData,
+  breadcrumbData
 }) => {
   const { language, direction } = useLanguage();
 
-  React.useEffect(() => {
-    // Update document title
-    document.title = title;
-
-    // Update html attributes for accessibility and SEO
-    document.documentElement.lang = language.toLowerCase();
-    document.documentElement.dir = direction;
-
-    // Helper to update or create meta tags
-    const setMeta = (name: string, content: string, isProperty = false) => {
-      const attribute = isProperty ? 'property' : 'name';
-      let element = document.querySelector(`meta[${attribute}="${name}"]`);
-      if (!element) {
-        element = document.createElement('meta');
-        element.setAttribute(attribute, name);
-        document.head.appendChild(element);
-      }
-      element.setAttribute('content', content);
+  const getLanguageCode = (lang: string) => {
+    const map: Record<string, string> = {
+      'EN': 'en',
+      'FA': 'fa',
+      'AR': 'ar',
+      'KU': 'ku',
+      'RU': 'ru'
     };
+    return map[lang] || 'en';
+  };
 
-    // Standard Meta
-    setMeta('description', description);
-    setMeta('keywords', keywords);
-    
-    // Canonical URL for deduplication
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.setAttribute('rel', 'canonical');
-      document.head.appendChild(canonical);
+  const currentLang = getLanguageCode(language);
+  const locale = currentLang === 'fa' ? 'fa_IR' : currentLang === 'ar' ? 'ar_AE' : currentLang === 'ku' ? 'ku_IQ' : currentLang === 'ru' ? 'ru_RU' : 'en_US';
+
+  // Base Organization Schema
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "KKM International Group",
+    "alternateName": "Kimia Karan Mâd Private Joint Stock Company",
+    "url": "https://www.kkm-intl.com",
+    "logo": image,
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+98-21-91030830",
+      "contactType": "customer service"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/kkm-intl-co",
+      "https://x.com/kkm_intl_co",
+      "https://www.instagram.com/kkm.intl.co"
+    ]
+  };
+
+  // Base WebSite Schema
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "KKM International Group",
+    "url": "https://www.kkm-intl.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.kkm-intl.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
     }
-    canonical.setAttribute('href', url);
+  };
 
-    // Viewport settings for mobile-first rendering
-    setMeta('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=5.0', false);
+  const articleSchema = articleData ? {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "image": [image],
+    "datePublished": articleData.publishedTime,
+    "dateModified": articleData.modifiedTime,
+    "author": [{
+        "@type": "Organization",
+        "name": articleData.author,
+        "url": "https://www.kkm-intl.com"
+      }]
+  } : null;
 
-    // Open Graph
-    setMeta('og:title', title, true);
-    setMeta('og:description', description, true);
-    setMeta('og:url', url, true);
-    setMeta('og:image', image, true);
-    setMeta('og:type', type, true);
-    setMeta('og:site_name', 'KKM International Group', true);
-    setMeta('og:locale', language === 'FA' ? 'fa_IR' : 'en_US', true);
+  const breadcrumbListSchema = breadcrumbData ? {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbData.map((crumb, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "name": crumb.name,
+      "item": crumb.item
+    }))
+  } : null;
 
-    // Twitter Card
-    setMeta('twitter:card', 'summary_large_image', false);
-    setMeta('twitter:title', title, false);
-    setMeta('twitter:description', description, false);
-    setMeta('twitter:image', image, false);
-    setMeta('twitter:url', url, false);
+  let activeSchema = customSchema;
+  if (!activeSchema) {
+    if (schemaType === 'Organization') activeSchema = organizationSchema;
+    else if (schemaType === 'Article' && articleSchema) activeSchema = articleSchema;
+    else if (schemaType === 'Breadcrumb' && breadcrumbListSchema) activeSchema = breadcrumbListSchema;
+    else activeSchema = websiteSchema;
+  }
 
-    // Default Organization Schema
-    const defaultOrganizationSchema = {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "KKM International Group",
-      "url": "https://kkm-international.org",
-      "logo": "https://storage.googleapis.com/aistudio-chat-prod-gemini-image-serving/e0cfcd0b2fb249f3906371f4b3df36c7",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+98-21-91030822",
-        "contactType": "customer service"
-      },
-      "sameAs": [
-        "https://www.linkedin.com/company/kkm-intl-co",
-        "https://x.com/i/kkm_intl_co",
-        "https://www.instagram.com/kkm.intl.co"
-      ]
-    };
+  return (
+    <Helmet>
+      <html lang={currentLang} dir={direction} />
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta name="keywords" content={keywords} />
+      <link rel="canonical" href={url} />
 
-    // Handle dynamic JSON-LD Structured Data
-    let schemaScript = document.querySelector('script[id="dynamic-json-ld"]');
-    if (!schemaScript) {
-      schemaScript = document.createElement('script');
-      schemaScript.setAttribute('type', 'application/ld+json');
-      schemaScript.setAttribute('id', 'dynamic-json-ld');
-      document.head.appendChild(schemaScript);
-    }
-    schemaScript.textContent = JSON.stringify(jsonLdSchema || defaultOrganizationSchema);
+      {/* Multilingual Hreflang Tags */}
+      <link rel="alternate" hrefLang="en" href="https://www.kkm-intl.com/" />
+      <link rel="alternate" hrefLang="fa" href="https://www.kkm-intl.com/?lang=fa" />
+      <link rel="alternate" hrefLang="ar" href="https://www.kkm-intl.com/?lang=ar" />
+      <link rel="alternate" hrefLang="ku" href="https://www.kkm-intl.com/?lang=ku" />
+      <link rel="alternate" hrefLang="ru" href="https://www.kkm-intl.com/?lang=ru" />
+      <link rel="alternate" hrefLang="x-default" href="https://www.kkm-intl.com/" />
 
-  }, [title, description, url, image, type, keywords, language, direction, jsonLdSchema]);
+      {/* Open Graph */}
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={url} />
+      <meta property="og:image" content={image} />
+      <meta property="og:type" content={type} />
+      <meta property="og:site_name" content="KKM International Group" />
+      <meta property="og:locale" content={locale} />
+      {articleData && (
+          <meta property="article:published_time" content={articleData.publishedTime} />
+      )}
+      {articleData && (
+          <meta property="article:modified_time" content={articleData.modifiedTime} />
+      )}
+      {articleData && (
+          <meta property="article:section" content={articleData.section} />
+      )}
 
-  return null;
+      {/* Twitter Cards */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@kkm_intl_co" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={image} />
+      
+      {/* Schema.org JSON-LD */}
+      <script type="application/ld+json">
+        {JSON.stringify(activeSchema)}
+      </script>
+      {/* Always include Organization schema as a base */}
+      {schemaType !== 'Organization' && !customSchema && (
+          <script type="application/ld+json">
+            {JSON.stringify(organizationSchema)}
+          </script>
+      )}
+    </Helmet>
+  );
 };
 
 export default SEOHead;

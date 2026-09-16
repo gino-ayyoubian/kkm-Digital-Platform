@@ -30,12 +30,12 @@ export function usePWAInstall() {
       setDeferredPrompt(null);
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
+    try { window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt); } catch(e) {}
+    try { window.addEventListener('appinstalled', handleAppInstalled); } catch(e) {}
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      window.removeEventListener('appinstalled', handleAppInstalled);
+      try { window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt); } catch(e) {}
+      try { window.removeEventListener('appinstalled', handleAppInstalled); } catch(e) {}
     };
   }, []);
 

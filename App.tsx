@@ -15,7 +15,10 @@ import type { TranslationKey } from './translations';
 import { performDeepSearch } from './searchEngine';
 import SkipToContent from './components/SkipToContent';
 import { trackLazyLoad } from './trackLazyLoad';
+import { trackPageView, parseUTMParams } from './lib/analytics';
 
+import ExhibitionPage from './pages/ExhibitionPage';
+import DownloadsPage from './pages/DownloadsPage';
 // Lazy load page components wrapped with Firebase Perf tracing
 const HomePage = React.lazy(trackLazyLoad('HomePage', () => import('./pages/HomePage')));
 const AboutUsPage = React.lazy(trackLazyLoad('AboutUsPage', () => import('./pages/AboutUsPage')));
@@ -95,7 +98,7 @@ const CookieConsent: React.FC = () => {
   const { t } = useLanguage();
 
   React.useEffect(() => {
-    const hasConsented = localStorage.getItem('kkm-cookie-consent');
+    let hasConsented = null; try { hasConsented = window.localStorage.getItem('kkm-cookie-consent'); } catch (e) {}
     if (!hasConsented) {
       setIsVisible(true);
     }
@@ -111,7 +114,7 @@ const CookieConsent: React.FC = () => {
       <div className="flex gap-2">
         <button 
           onClick={() => {
-            localStorage.setItem('kkm-cookie-consent', 'accepted');
+            try { window.localStorage.setItem('kkm-cookie-consent', 'accepted'); } catch (e) {}
             setIsVisible(false);
           }}
           className="px-4 py-2 bg-primary text-white text-sm font-bold rounded hover:bg-secondary transition-colors whitespace-nowrap"
@@ -142,6 +145,15 @@ const PageSkeleton = () => (
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState<Page>(Page.Home);
+
+  React.useEffect(() => {
+    trackPageView(currentPage, window.location.href);
+  }, [currentPage]);
+
+  React.useEffect(() => {
+    parseUTMParams(); // Parse and store UTMs on load
+  }, []);
+
   const [selectedArticle, setSelectedArticle] = React.useState<NewsItem | null>(null);
   const [searchResults, setSearchResults] = React.useState<GeminiSearchResult | null>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -165,13 +177,19 @@ const App: React.FC = () => {
   // --- VIRTUAL ROUTING LOGIC ---
   
   // 1. On Mount: Check URL query param to set initial page
+  
   React.useEffect(() => {
     try {
+        const path = window.location.pathname;
         const params = new URLSearchParams(window.location.search);
         const pageParam = params.get('page');
         
+        if (path === '/rural' || path === '/rural-development') {
+             setCurrentPage(Page.Exhibition);
+             return;
+        }
+
         if (pageParam) {
-          // Find the enum value that matches the string
           const pageEnum = Object.values(Page).find(p => p.replace(/\s/g, '') === pageParam);
           if (pageEnum) {
             setCurrentPage(pageEnum);
@@ -181,6 +199,7 @@ const App: React.FC = () => {
         console.warn("Failed to parse URL parameters:", e);
     }
   }, []);
+
 
   // 2. On Page Change: Update URL without reloading (Deep Linking)
   React.useEffect(() => {
@@ -230,7 +249,7 @@ const App: React.FC = () => {
 
   // Determine SEO Properties based on state
   let title = 'KKM International Group';
-  let description = 'Engineering a Sustainable Future.';
+  let description = 'Technology. Engineering. Infrastructure. Innovation.';
   let jsonLdSchema: Record<string, any> = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -267,8 +286,8 @@ const App: React.FC = () => {
      title = `${pageName} | KKM International Group`;
      
      if (currentPage === Page.Home) {
-         title = "KKM International Group | Engineering a Sustainable Future";
-         description = 'A corporate portal for KKM International Group, showcasing core technologies, projects, and innovations in engineering a sustainable future.';
+         title = "KKM International Group | Technology. Engineering. Infrastructure. Innovation.";
+         description = 'A corporate portal for KKM International Group, showcasing core technologies, projects, and innovations from evidence to scalable impact.';
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "Organization",
@@ -362,14 +381,19 @@ const App: React.FC = () => {
       );
     } else {
       switch (currentPage) {
+      case Page.Exhibition:
+        return <ExhibitionPage setPage={setCurrentPage} />;
+      case Page.Downloads:
+        return <DownloadsPage setPage={setCurrentPage} />;
       case Page.Home:
         pageComponent = <HomePage setPage={setCurrentPage} onSelectArticle={handleSelectArticle} />;
         break;
       case Page.AboutUs:
         pageComponent = <AboutUsPage setPage={setCurrentPage} />;
         break;
+      case Page.Technology:
       case Page.CoreTechnologies:
-        pageComponent = <CoreTechnologiesPage />;
+        pageComponent = <CoreTechnologiesPage setPage={setCurrentPage} />;
         break;
       case Page.DigitalTwinHub:
         pageComponent = <DigitalTwinHubPage setPage={setCurrentPage} />;
@@ -383,8 +407,7 @@ const App: React.FC = () => {
       case Page.Projects:
         pageComponent = <ProjectsPage setPage={setCurrentPage} />;
         break;
-      case Page.InnovationHub:
-        pageComponent = <InnovationHubPage />;
+              pageComponent = <InnovationHubPage />;
         break;
       case Page.CarbonCredit:
         pageComponent = <CarbonCreditPage />;
@@ -392,6 +415,7 @@ const App: React.FC = () => {
       case Page.Contact:
         pageComponent = <ContactPage />;
         break;
+      case Page.Insights:
       case Page.News:
         pageComponent = selectedArticle 
             ? <NewsArticlePage article={selectedArticle} onBack={handleBackToToNews} onSelectArticle={handleSelectArticle} /> 
@@ -456,7 +480,7 @@ const App: React.FC = () => {
 
   return (
     <div className={`min-h-screen flex flex-col font-sans text-text-dark dark:text-slate-200 transition-colors duration-300`}>
-      <SEOHead title={title} description={description} jsonLdSchema={jsonLdSchema} />
+      <SEOHead title={title} description={description} customSchema={jsonLdSchema} />
       <SkipToContent />
       <Header currentPage={currentPage} setPage={setCurrentPage} onSearch={handleSearch} />
       <main id="main-content" className="flex-grow pt-2">

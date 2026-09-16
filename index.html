@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
+    <!-- Security Headers / CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*.firebaseapp.com https://*.googleapis.com https://*.gstatic.com https://*.youtube.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com https://*.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.youtube.com https://i.ytimg.com https://*.googleusercontent.com https://images.unsplash.com https://plus.unsplash.com; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com; frame-src 'self' https://*.youtube.com https://*.firebaseapp.com;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
     <meta charset="UTF-8" />
+    <meta name="google-site-verification" content="GSC_VERIFICATION_TOKEN_HERE" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Primary Meta Tags -->
-    <title>KKM International Group | Engineering a Sustainable Future</title>
-    <meta name="title" content="KKM International Group | Engineering a Sustainable Future" />
-    <meta name="description" content="A corporate portal for KKM International Group, showcasing core technologies, projects, and innovations in engineering a sustainable future." />
-    <meta name="keywords" content="KKM International, Sustainable Engineering, Geothermal Energy, GMEL, Renewable Energy, EPCI, Infrastructure, Innovation, Green Technology" />
+    <title>KKM International Group | Technology. Engineering. Infrastructure. Innovation.</title>
+    <meta name="title" content="KKM International Group | Technology. Engineering. Infrastructure. Innovation." />
+    <meta name="description" content="From Evidence to Technology, Projects, and Scalable Impact." />
+    <meta name="keywords" content="KKM International, Technology, Engineering, Infrastructure, Innovation, Geothermal Energy, EPCI" />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
     <meta name="author" content="KKM International Group" />
@@ -16,16 +32,16 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kkm-international.org/" />
-    <meta property="og:title" content="KKM International Group | Engineering a Sustainable Future" />
-    <meta property="og:description" content="Leading the way in sustainable engineering and geothermal innovation. Explore our projects and technologies." />
+    <meta property="og:title" content="KKM International Group | Technology. Engineering. Infrastructure. Innovation." />
+    <meta property="og:description" content="From Evidence to Technology, Projects, and Scalable Impact." />
     <meta property="og:image" content="data:image/svg+xml,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><rect width='200' height='200' rx='28' fill='%23002D56'/><path d='M95 18C100 28 85 45 76 60C62 83 55 106 58 132C62 161 86 182 116 182C138 182 158 169 168 150C164 163 151 176 132 181C110 186 85 180 68 165C45 144 40 112 48 84C55 58 74 34 95 18Z' fill='white'/><path d='M102 38C108 50 96 68 89 82C79 101 76 122 83 143C88 158 100 169 116 172C134 175 152 167 163 152C169 144 172 133 172 122C172 102 162 82 147 69C152 82 153 97 149 111C144 129 130 144 112 147C96 150 83 140 80 125C76 108 83 91 92 76C98 66 104 52 102 38Z' fill='white'/><circle cx='126' cy='132' r='28' fill='white'/></svg>" />
     <meta property="og:site_name" content="KKM International Group" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://kkm-international.org/" />
-    <meta property="twitter:title" content="KKM International Group | Engineering a Sustainable Future" />
-    <meta property="twitter:description" content="Leading the way in sustainable engineering and geothermal innovation. Explore our projects and technologies." />
+    <meta property="twitter:title" content="KKM International Group | Technology. Engineering. Infrastructure. Innovation." />
+    <meta property="twitter:description" content="From Evidence to Technology, Projects, and Scalable Impact." />
     <meta property="twitter:image" content="data:image/svg+xml,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><rect width='200' height='200' rx='28' fill='%23002D56'/><path d='M95 18C100 28 85 45 76 60C62 83 55 106 58 132C62 161 86 182 116 182C138 182 158 169 168 150C164 163 151 176 132 181C110 186 85 180 68 165C45 144 40 112 48 84C55 58 74 34 95 18Z' fill='white'/><path d='M102 38C108 50 96 68 89 82C79 101 76 122 83 143C88 158 100 169 116 172C134 175 152 167 163 152C169 144 172 133 172 122C172 102 162 82 147 69C152 82 153 97 149 111C144 129 130 144 112 147C96 150 83 140 80 125C76 108 83 91 92 76C98 66 104 52 102 38Z' fill='white'/><circle cx='126' cy='132' r='28' fill='white'/></svg>" />
 
     <meta name="theme-color" content="#0A92EF" media="(prefers-color-scheme: light)">
@@ -167,31 +183,6 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
-    <!-- Dartamas Chat Widget -->
-    <script>
-      (function () {
-          function loadChatWidget() {
-              if (document.getElementById('61be6882-8824-4c31-8903-aaf074248aa5')) {
-                  return;
-              }
-              var script = document.createElement('script');
-              script.id = '61be6882-8824-4c31-8903-aaf074248aa5';
-              script.src = 'https://my.dartamas.com/chatButtonModule.js?t=' + Date.now();
-              script.setAttribute('data-url', 'sipOnline');
-              script.setAttribute('data-no-minify', '1');
-              script.setAttribute('data-nowprocket', '1');
-              script.setAttribute('data-no-defer', '1');
-              script.setAttribute('data-cfasync', 'false');
-              script.setAttribute('data-noptimize', '1');
-              script.setAttribute('data-pagespeed-no-defer', '');
-              document.body.appendChild(script);
-          }
-          if (document.readyState === 'loading') {
-              document.addEventListener('DOMContentLoaded', loadChatWidget, { once: true });
-          } else {
-              loadChatWidget();
-          }
-      })();
-    </script>
+    
   </body>
 </html>
