@@ -26,6 +26,10 @@ const InvestmentPortalPage = React.lazy(trackLazyLoad('InvestmentPortalPage', ()
 const PilotRequestPage = React.lazy(trackLazyLoad('PilotRequestPage', () => import('./pages/PilotRequestPage')));
 const ProjectDevelopmentPage = React.lazy(trackLazyLoad('ProjectDevelopmentPage', () => import('./pages/ProjectDevelopmentPage')));
 const GMELHubPage = React.lazy(trackLazyLoad('GMELHubPage', () => import('./pages/GMELHubPage')));
+const CorporateInfoPage = React.lazy(trackLazyLoad('CorporateInfoPage', () => import('./pages/CorporateInfoPage')));
+const IPCenterPage = React.lazy(trackLazyLoad('IPCenterPage', () => import('./pages/IPCenterPage')));
+const TechnologyTemplatePage = React.lazy(trackLazyLoad('TechnologyTemplatePage', () => import('./pages/TechnologyTemplatePage')));
+const ProjectTemplatePage = React.lazy(trackLazyLoad('ProjectTemplatePage', () => import('./pages/ProjectTemplatePage')));
 
 const HomePage = React.lazy(trackLazyLoad('HomePage', () => import('./pages/HomePage')));
 const AboutUsPage = React.lazy(trackLazyLoad('AboutUsPage', () => import('./pages/AboutUsPage')));
@@ -192,7 +196,35 @@ const App: React.FC = () => {
         const pageParam = params.get('page');
         
         if (path === '/rural' || path === '/rural-development') {
+             setCurrentPage(Page.RuralStudies);
+             return;
+        }
+        if (path === '/exhibition' || path === '/rural-1405') {
              setCurrentPage(Page.Exhibition);
+             return;
+        }
+        if (path === '/corporate' || path === '/corporate-info') {
+             setCurrentPage(Page.CorporateInfo);
+             return;
+        }
+        if (path === '/ip' || path === '/ip-center') {
+             setCurrentPage(Page.IPCenter);
+             return;
+        }
+        if (path === '/gmel') {
+             setCurrentPage(Page.GMELHub);
+             return;
+        }
+        if (path === '/pilot-request') {
+             setCurrentPage(Page.PilotRequest);
+             return;
+        }
+        if (path === '/project-development') {
+             setCurrentPage(Page.ProjectDevelopment);
+             return;
+        }
+        if (path === '/invest') {
+             setCurrentPage(Page.InvestmentPortal);
              return;
         }
 
@@ -433,10 +465,21 @@ const App: React.FC = () => {
       case Page.Projects:
         pageComponent = <ProjectsPage setPage={setCurrentPage} />;
         break;
-              case Page.InnovationHub:
-      case Page.IPCenter:
+      case Page.InnovationHub:
         pageComponent = <InnovationHubPage />;
         break;
+      case Page.IPCenter:
+      case Page.IntellectualProperty:
+        pageComponent = <IPCenterPage setPage={setCurrentPage} />;
+        break;
+      case Page.CorporateInfo:
+        pageComponent = <CorporateInfoPage setPage={setCurrentPage} />;
+        break;
+      case Page.TechnologyTemplate:
+        pageComponent = <TechnologyTemplatePage setPage={setCurrentPage} />;
+        break;
+      case Page.ProjectTemplate:
+        pageComponent = <ProjectTemplatePage setPage={setCurrentPage} />;
         break;
       case Page.CarbonCredit:
         pageComponent = <CarbonCreditPage />;

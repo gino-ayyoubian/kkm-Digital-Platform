@@ -29,6 +29,7 @@ export const translations: Translations = {
     [Page.SearchResults]: 'Search Results',
     [Page.InternalPortal]: 'Internal Portal',
     [Page.InnovationHub]: 'Innovation Hub',
+    [Page.IPCenter]: 'IP & Innovation Center',
     [Page.Offline]: 'Offline Mode',
 
     // Home Redesign
@@ -865,13 +866,14 @@ export const translations: Translations = {
     [Page.SearchResults]: 'نتایج جستجو',
     [Page.InternalPortal]: 'پورتال داخلی',
     [Page.InnovationHub]: 'مرکز نوآوری',
+    [Page.IPCenter]: 'مرکز مالکیت فکری و پتنت‌ها',
     // Submenus
     'Who We Are': 'ما چه کسی هستیم',
     'Vision & Mission': 'چشم‌انداز و ماموریت',
     'Leadership': 'رهبری',
     'Organization': 'سازمان',
     'Capabilities': 'توانمندی‌ها',
-    'Corporate Information': 'اطلاعات شرکتی',
+    'Corporate Information': 'اطلاعات و اسناد رسمی شرکتی',
     'Energy': 'انرژی',
     'Water': 'آب',
     'Infrastructure': 'زیرساخت',

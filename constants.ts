@@ -76,23 +76,20 @@ export const NAV_LINKS: NavLink[] = [
   {
     name: Page.RuralStudies,
     subLinks: [
-      { name: "Integrated Rural Model", id: "integrated-model" },
-      { name: "Energy", id: "rural-energy" },
-      { name: "Water", id: "rural-water" },
-      { name: "Agriculture", id: "rural-agriculture" },
-      { name: "Infrastructure", id: "rural-infrastructure" },
-      { name: "AI / Digital", id: "rural-ai" },
-      { name: "Investment", id: "rural-investment" }
+      { name: "Integrated Rural Model", id: "integrated-model", page: Page.RuralStudies },
+      { name: "Rural Energy & Water", id: "rural-energy-water", page: Page.RuralStudies },
+      { name: "Agriculture & Processing", id: "rural-agriculture", page: Page.RuralStudies },
+      { name: "Regional Pilot Request", id: "pilot-request", page: Page.PilotRequest },
+      { name: "Exhibition 1405 Dossier", id: "exhibition-1405", page: Page.Exhibition }
     ]
   },
   {
     name: Page.InnovationHub,
     subLinks: [
-      { name: "Patents", id: "patents" },
-      { name: "Technology Portfolio", id: "tech-portfolio" },
-      { name: "R&D", id: "rnd" },
-      { name: "Innovation Hub", id: "innovation-hub" },
-      { name: "Commercialization", id: "commercialization" }
+      { name: "IP & Patent Center", id: "patents", page: Page.IPCenter },
+      { name: "Technology Portfolio", id: "tech-portfolio", page: Page.CoreTechnologies },
+      { name: "R&D Programs", id: "rnd", page: Page.InnovationHub },
+      { name: "Commercialization", id: "commercialization", page: Page.InnovationHub }
     ]
   },
   {

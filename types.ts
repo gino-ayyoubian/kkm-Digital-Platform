@@ -35,6 +35,7 @@ export enum Page {
 
   // Business Development Hub
   TechnologyTemplate = 'Technology Template',
+  ProjectTemplate = 'Project Template',
   GMELHub = 'GMEL Hub',
   PilotRequest = 'Pilot Request',
   ProjectDevelopment = 'Project Development',

@@ -10,6 +10,7 @@ interface LanguageContextType {
   setLanguage: (language: Language) => void;
   t: (key: TranslationKey, options?: { [key: string]: string | number }) => string;
   direction: Direction;
+  isFa: boolean;
 }
 
 const LanguageContext = React.createContext<LanguageContextType | undefined>(undefined);
@@ -18,6 +19,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [language, setLanguage] = React.useState<Language>('EN');
 
   const direction: Direction = ['FA', 'AR', 'KU'].includes(language) ? 'rtl' : 'ltr';
+  const isFa = language === 'FA';
 
   const t = React.useCallback((key: TranslationKey, options?: { [key: string]: string | number }): string => {
     const langTranslations = translations[language];
@@ -36,7 +38,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return text;
   }, [language]);
 
-  const value = React.useMemo(() => ({ language, setLanguage, t, direction }), [language, t, direction]);
+  const value = React.useMemo(() => ({ language, setLanguage, t, direction, isFa }), [language, t, direction, isFa]);
 
   return (
     <LanguageContext.Provider value={value}>

@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import type { TranslationKey } from '../translations';
 
 import GlobalCTA from '../components/GlobalCTA';
+import { ArrowRight, Layers, Sprout } from 'lucide-react';
 // Lazy load modal
 const ProjectDetailModal = React.lazy(() => import('./ProjectDetailModal'));
 
@@ -78,7 +79,8 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
     // Tooltip State
     const [tooltipData, setTooltipData] = React.useState<{ content: React.ReactNode; position: { top: number; left?: number; right?: number }; side: 'left' | 'right' } | null>(null);
     
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const isFa = language === 'FA';
     const detailsPanelRef = React.useRef<HTMLDivElement>(null);
     const listContainerRef = React.useRef<HTMLDivElement>(null);
     const itemRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
@@ -234,12 +236,60 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
         <div>
             <PageHeader title={t(Page.Projects)} subtitle={t('ProjectsPageSubtitle')}/>
             
+            {/* Development Platform Context Block */}
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-6">
+                <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-slate-900 border border-emerald-500/40 rounded-2xl p-6 sm:p-8 shadow-xl text-white">
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                        <div className="space-y-3 max-w-3xl text-start">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-bold tracking-wider">
+                                <Layers className="w-3.5 h-3.5 text-emerald-400" />
+                                <span>{isFa ? 'چارچوب پلتفرم یکپارچه توسعه KKM' : 'INTEGRATED DEVELOPMENT PLATFORM FRAMEWORK'}</span>
+                            </div>
+
+                            <h2 className="text-xl sm:text-2xl font-bold text-white leading-snug">
+                                {isFa 
+                                    ? 'پروژه‌ها به‌عنوان مؤلفه‌های یک پلتفرم راهبردی، نه قراردادهای پراکنده' 
+                                    : 'Projects as Technical Contributors to an Integrated Development Ecosystem'}
+                            </h2>
+
+                            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                                {isFa 
+                                    ? 'در مدل توسعه KKM، پروژه‌های انرژی، نمک‌زدایی آب و زیرساخت‌های مهندسی به‌عنوان قراردادهای تک‌افتاده تعریف نمی‌شوند؛ بلکه هر پروژه یک مؤلفه فنی و بازوی عملیاتی در «پلتفرم توسعه روستایی و عشایری KKM» است. این معماری تضمین می‌کند که زیرساخت‌های فیزیکی مستقیماً به اشتغال پایدار، صنایع فرآوری محلی و بازگشت سرمایه مطمئن منتهی شوند.' 
+                                    : 'In KKM\'s engineering philosophy, energy microgrids, water desalination plants, and civil projects do not exist as isolated single-site contracts. Each project operates as a technical contributor within KKM\'s comprehensive Rural & Nomadic Development Platform, ensuring engineering assets directly translate into retained local wealth, food security, and bankable economic returns.'}
+                            </p>
+
+                            <div className="flex flex-wrap gap-2 pt-1">
+                                <span className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-slate-800/90 text-emerald-300 border border-slate-700">
+                                    ✓ {isFa ? 'معماری یکپارچه ۱۰ مرحله‌ای' : '10-Stage Integrated Model'}
+                                </span>
+                                <span className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-slate-800/90 text-emerald-300 border border-slate-700">
+                                    ✓ {isFa ? 'پیوند آب، انرژی و صنایع تبدیلی' : 'Water-Energy Nexus'}
+                                </span>
+                                <span className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-slate-800/90 text-emerald-300 border border-slate-700">
+                                    ✓ {isFa ? 'ساختار مالی بانکی و PPP' : 'Bankable PPP Structures'}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3 w-full sm:w-auto">
+                            <button
+                                onClick={() => setPage(Page.RuralStudies)}
+                                className="px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm rounded-xl shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+                            >
+                                <span>{isFa ? 'ورود به پلتفرم توسعه روستایی و عشایری' : 'Explore Rural Development Platform'}</span>
+                                <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Tooltip Portal */}
             <AnimatePresence>
                 {tooltipData && <ListTooltip content={tooltipData.content} position={tooltipData.position} side={tooltipData.side} />}
             </AnimatePresence>
 
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 my-16">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 my-12">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     {/* Left Panel: Details View */}
                     <div className="lg:col-span-5" ref={detailsPanelRef}>
