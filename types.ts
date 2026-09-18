@@ -87,7 +87,7 @@ export interface NewsItem {
     excerpt: string;
     image: string;
     content: string;
-    category: 'Technology' | 'Projects' | 'Corporate';
+    category: 'Technology' | 'Projects' | 'Corporate' | 'Archive' | 'Research' | 'Reports' | 'News' | 'Technical';
 }
 
 export interface Video {

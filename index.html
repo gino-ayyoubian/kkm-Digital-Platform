@@ -1,22 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script>
+      (function() {
+        function createStorageShim() {
+          var store = {};
+          return {
+            getItem: function(k) { return Object.prototype.hasOwnProperty.call(store, k) ? store[k] : null; },
+            setItem: function(k, v) { store[k] = String(v); },
+            removeItem: function(k) { delete store[k]; },
+            clear: function() { store = {}; },
+            key: function(i) { return Object.keys(store)[i] || null; },
+            get length() { return Object.keys(store).length; }
+          };
+        }
 
-    <!-- Security Headers / CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*.firebaseapp.com https://*.googleapis.com https://*.gstatic.com https://*.youtube.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com https://*.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.youtube.com https://i.ytimg.com https://*.googleusercontent.com https://images.unsplash.com https://plus.unsplash.com; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com; frame-src 'self' https://*.youtube.com https://*.firebaseapp.com;">
+        try {
+          var ls = window.localStorage;
+          var testKey = '__storage_test__';
+          ls.setItem(testKey, testKey);
+          ls.removeItem(testKey);
+        } catch (e) {
+          try {
+            var shim = createStorageShim();
+            Object.defineProperty(window, 'localStorage', {
+              value: shim,
+              writable: true,
+              configurable: true,
+              enumerable: true
+            });
+          } catch (_) {}
+        }
+
+        try {
+          var ss = window.sessionStorage;
+          var testKey2 = '__storage_test2__';
+          ss.setItem(testKey2, testKey2);
+          ss.removeItem(testKey2);
+        } catch (e) {
+          try {
+            var shim2 = createStorageShim();
+            Object.defineProperty(window, 'sessionStorage', {
+              value: shim2,
+              writable: true,
+              configurable: true,
+              enumerable: true
+            });
+          } catch (_) {}
+        }
+
+        var origOnError = window.onerror;
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+          var str = String(msg || '') + (error && error.message ? String(error.message) : '');
+          if (str.toLowerCase().indexOf('insecure') !== -1 || (error && error.name === 'SecurityError')) {
+            return true;
+          }
+          if (origOnError) return origOnError.apply(this, arguments);
+          return false;
+        };
+
+        window.addEventListener('error', function(e) {
+          var msg = e && (e.message || (e.error && e.error.message)) || '';
+          if (typeof msg === 'string' && (msg.toLowerCase().includes('insecure') || (e.error && e.error.name === 'SecurityError'))) {
+            e.preventDefault();
+            e.stopPropagation();
+            return true;
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          var reason = e && e.reason;
+          var msg = (reason && (reason.message || String(reason))) || '';
+          if (typeof msg === 'string' && (msg.toLowerCase().includes('insecure') || (reason && reason.name === 'SecurityError'))) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+      })();
+    </script>
+
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
     <meta charset="UTF-8" />
     <meta name="google-site-verification" content="GSC_VERIFICATION_TOKEN_HERE" />
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
-    </script>
+    <!-- gtag removed for preview to prevent security errors -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     

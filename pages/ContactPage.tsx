@@ -6,6 +6,7 @@ import { useLanguage } from '../LanguageContext';
 import PageHeader from '../components/PageHeader';
 import Accordion from '../components/Accordion';
 import { motion, AnimatePresence } from 'motion/react';
+import { MapPin } from 'lucide-react';
 
 import { trackFormSubmission, parseUTMParams } from '../lib/analytics';
 import { db } from '../firebase';
@@ -505,15 +506,7 @@ const ContactPage: React.FC = () => {
                         
                         {/* Interactive Map */}
                         <div className="relative h-80 rounded-xl overflow-hidden shadow-2xl border-4 border-white dark:border-slate-700">
-                            <iframe 
-                                title="KKM International Group Office Location"
-                                src="https://maps.google.com/maps?q=35.7646853,51.418897&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                                className="w-full h-full grayscale-[20%] contrast-[110%] hue-rotate-[10deg] dark:invert-[90%] dark:hue-rotate-[180deg]"
-                                style={{ border: 0 }}
-                                allowFullScreen={false}
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                            />
+                            <div className="w-full h-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-500 flex-col"><MapPin className="w-12 h-12 mb-2 text-primary" /><span>Interactive Map Disabled in Preview</span></div>
                         </div>
                     </div>
                 </div>

@@ -199,16 +199,12 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project, onClos
                 {project.videoUrl && videoId && (
                      <Accordion title="Project Video">
                         {playVideo ? (
-                            <div className="aspect-video rounded-lg overflow-hidden shadow-lg">
-                                <iframe
-                                    width="100%"
-                                    height="100%"
-                                    src={`${project.videoUrl}?autoplay=1`}
-                                    title={`${name} Video`}
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
+                            <div className="aspect-video rounded-lg overflow-hidden shadow-lg bg-slate-200 dark:bg-slate-700 flex flex-col items-center justify-center text-slate-500">
+                                <svg className="h-12 w-12 mb-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>Video Player Disabled in Preview</span>
                             </div>
                         ) : (
                             <div 

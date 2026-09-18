@@ -1,4 +1,6 @@
-import * as React from 'react';
+const fs = require('fs');
+
+const content = `import * as React from 'react';
 import { Page } from '../types';
 import { useLanguage } from '../LanguageContext';
 import { motion, Variants } from 'motion/react';
@@ -319,3 +321,6 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
 };
 
 export default HomePage;
+`
+
+fs.writeFileSync('pages/HomePage.tsx', content);

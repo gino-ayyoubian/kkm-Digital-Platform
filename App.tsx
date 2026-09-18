@@ -20,6 +20,13 @@ import { trackPageView, parseUTMParams } from './lib/analytics';
 import ExhibitionPage from './pages/ExhibitionPage';
 import DownloadsPage from './pages/DownloadsPage';
 // Lazy load page components wrapped with Firebase Perf tracing
+
+const RuralDevelopmentPage = React.lazy(trackLazyLoad('RuralDevelopmentPage', () => import('./pages/RuralDevelopmentPage')));
+const InvestmentPortalPage = React.lazy(trackLazyLoad('InvestmentPortalPage', () => import('./pages/InvestmentPortalPage')));
+const PilotRequestPage = React.lazy(trackLazyLoad('PilotRequestPage', () => import('./pages/PilotRequestPage')));
+const ProjectDevelopmentPage = React.lazy(trackLazyLoad('ProjectDevelopmentPage', () => import('./pages/ProjectDevelopmentPage')));
+const GMELHubPage = React.lazy(trackLazyLoad('GMELHubPage', () => import('./pages/GMELHubPage')));
+
 const HomePage = React.lazy(trackLazyLoad('HomePage', () => import('./pages/HomePage')));
 const AboutUsPage = React.lazy(trackLazyLoad('AboutUsPage', () => import('./pages/AboutUsPage')));
 const CoreTechnologiesPage = React.lazy(trackLazyLoad('CoreTechnologiesPage', () => import('./pages/CoreTechnologiesPage')));
@@ -388,6 +395,25 @@ const App: React.FC = () => {
       case Page.Home:
         pageComponent = <HomePage setPage={setCurrentPage} onSelectArticle={handleSelectArticle} />;
         break;
+      
+      case Page.RuralStudies:
+        pageComponent = <RuralDevelopmentPage setPage={setCurrentPage} />;
+        break;
+      case Page.Invest:
+      case Page.InvestmentPortal:
+        pageComponent = <InvestmentPortalPage setPage={setCurrentPage} />;
+        break;
+      case Page.PilotRequest:
+        pageComponent = <PilotRequestPage setPage={setCurrentPage} />;
+        break;
+      case Page.ProjectDevelopment:
+        pageComponent = <ProjectDevelopmentPage setPage={setCurrentPage} />;
+        break;
+      case Page.Ecosystems:
+      case Page.GMELHub:
+        pageComponent = <GMELHubPage setPage={setCurrentPage} />;
+        break;
+
       case Page.AboutUs:
         pageComponent = <AboutUsPage setPage={setCurrentPage} />;
         break;
@@ -407,7 +433,10 @@ const App: React.FC = () => {
       case Page.Projects:
         pageComponent = <ProjectsPage setPage={setCurrentPage} />;
         break;
-              pageComponent = <InnovationHubPage />;
+              case Page.InnovationHub:
+      case Page.IPCenter:
+        pageComponent = <InnovationHubPage />;
+        break;
         break;
       case Page.CarbonCredit:
         pageComponent = <CarbonCreditPage />;

@@ -53,12 +53,18 @@ const NewsPage: React.FC<NewsPageProps> = ({ onSelectArticle }) => {
     const [isLoading, setIsLoading] = React.useState(true);
     const { t } = useLanguage();
     
-    const categories = ['All', ...Array.from(new Set(NEWS_ITEMS.map(item => item.category)))];
+    
+    const categoriesSet = new Set(NEWS_ITEMS.map(item => item.category));
+    categoriesSet.delete('Archive');
+    const categories = ['All', ...Array.from(categoriesSet), 'Archive'];
+
 
     const filteredAndSortedNews = React.useMemo(() => {
         let items = [...NEWS_ITEMS];
 
-        if (filterCategory !== 'All') {
+        if (filterCategory === 'All') {
+            items = items.filter(item => item.category !== 'Archive');
+        } else {
             items = items.filter(item => item.category === filterCategory);
         }
 

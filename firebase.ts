@@ -1,13 +1,12 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, initializeAuth, inMemoryPersistence, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getPerformance } from 'firebase/performance';
+import { initializeAuth, inMemoryPersistence, GoogleAuthProvider } from 'firebase/auth';
+import { initializeFirestore, memoryLocalCache } from 'firebase/firestore';
 import firebaseConfig from './firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
 export let db: any = null;
 try {
-  db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+  db = initializeFirestore(app, { localCache: memoryLocalCache() }, firebaseConfig.firestoreDatabaseId);
 } catch (e) {
   console.warn('Firestore initialization failed:', e);
 }
@@ -19,12 +18,4 @@ try {
 }
 export const googleProvider = new GoogleAuthProvider();
 
-// Initialize Firebase Performance Monitoring
 export let perf = null;
-try {
-  if (typeof window !== 'undefined') {
-    perf = getPerformance(app);
-  }
-} catch(e) {
-  console.warn('Firebase Performance initialization failed (possibly restricted storage):', e);
-}
