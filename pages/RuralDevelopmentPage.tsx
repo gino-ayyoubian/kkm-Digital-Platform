@@ -1,95 +1,124 @@
 import * as React from 'react';
 import { Page } from '../types';
 import { useLanguage } from '../LanguageContext';
-import { motion } from 'motion/react';
-import { ArrowRight, Sprout, Droplets, Zap, Building2, Cpu, Users, LineChart, Handshake } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
+import { RuralHero } from '../components/rural/RuralHero';
+import { RuralModelDiagram } from '../components/rural/RuralModelDiagram';
+import { RuralPillars } from '../components/rural/RuralPillars';
+import { EnergyVillageSection } from '../components/rural/EnergyVillageSection';
+import { PilotIntakeForm } from '../components/rural/PilotIntakeForm';
+import { ExhibitionDossierSection } from '../components/rural/ExhibitionDossierSection';
+import { 
+  Layers, 
+  Droplets, 
+  Zap, 
+  Sprout, 
+  Calendar, 
+  Send, 
+  Compass, 
+  FileText 
+} from 'lucide-react';
 
 interface RuralDevelopmentPageProps {
   setPage: (page: Page) => void;
 }
 
 const RuralDevelopmentPage: React.FC<RuralDevelopmentPageProps> = ({ setPage }) => {
-  const { t, direction } = useLanguage();
+  const { language, direction } = useLanguage();
+  const isFa = language === 'FA';
 
-  const sections = [
-    { id: 'Energy', icon: Zap, color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-500/10' },
-    { id: 'Water', icon: Droplets, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-500/10' },
-    { id: 'Infrastructure', icon: Building2, color: 'text-slate-600 dark:text-slate-400', bg: 'bg-slate-100 dark:bg-slate-800' },
-    { id: 'Agriculture', icon: Sprout, color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-500/10' },
-    { id: 'Processing', icon: LineChart, color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-500/10' },
-    { id: 'AI & Digital', icon: Cpu, color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-500/10' },
-    { id: 'Employment', icon: Users, color: 'text-pink-500', bg: 'bg-pink-50 dark:bg-pink-500/10' },
-    { id: 'Investment', icon: Handshake, color: 'text-teal-500', bg: 'bg-teal-50 dark:bg-teal-500/10' }
-  ];
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
-    <div className="w-full bg-slate-50 dark:bg-slate-950 min-h-screen pt-20 pb-16" dir={direction}>
+    <div className="w-full bg-slate-950 text-slate-100 min-h-screen selection:bg-emerald-500 selection:text-slate-950" dir={direction}>
       
-      {/* Hero */}
-      <section className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-20 text-center">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <span className="px-4 py-1.5 rounded-full bg-primary/10 text-primary-dark dark:text-secondary text-sm font-bold uppercase tracking-wider mb-6 inline-block">
-              Integrated Model
+      {/* SEO & Meta Tags */}
+      <Helmet>
+        <title>
+          {isFa 
+            ? 'پلتفرم توسعه روستایی و عشایری KKM | راهکارهای یکپارچه فناوری، مهندسی و سرمایه‌گذاری' 
+            : 'KKM Rural & Nomadic Development Platform | Integrated Technology & Investment'}
+        </title>
+        <meta 
+          name="description" 
+          content={isFa 
+            ? 'پلتفرم راهبردی KKM برای توسعه پایدار روستایی و عشایری با یکپارچه‌سازی انرژی‌های تجدیدپذیر، امنیت آب، کشاورزی مولد، صنایع فرآوری و تأمین مالی پروژه‌محور.' 
+            : 'KKM Rural & Nomadic Development Platform: Integrated technology, engineering and investment solutions for sustainable rural and nomadic prosperity.'} 
+        />
+        <meta property="og:title" content={isFa ? 'پلتفرم توسعه روستایی و عشایری KKM' : 'KKM Rural & Nomadic Development Platform'} />
+        <meta property="og:description" content={isFa ? 'راهکارهای یکپارچه فناوری، مهندسی و سرمایه‌گذاری برای توسعه پایدار روستایی و عشایری' : 'Integrated Technology, Engineering and Investment Solutions for Sustainable Rural and Nomadic Development'} />
+      </Helmet>
+
+      {/* Sub-navigation Anchor Bar */}
+      <div className="sticky top-16 z-30 bg-slate-950/85 backdrop-blur-md border-b border-slate-800 text-xs py-2 px-4 shadow-sm overflow-x-auto">
+        <div className="container mx-auto flex items-center justify-between gap-4 max-w-6xl">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <span className="font-bold text-emerald-400 font-mono tracking-wider hidden sm:inline">
+              KKM RURAL HUB
             </span>
-            <h1 className="text-4xl md:text-6xl font-display font-black text-slate-900 dark:text-white leading-tight mb-6">
-              KKM Rural & Nomadic Development Platform
-            </h1>
-            <p className="text-xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed">
-              Empowering remote and underserved communities through self-sustaining technology, infrastructure, and economic frameworks.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <button onClick={() => setPage(Page.PilotRequest)} className="px-8 py-4 bg-primary-dark dark:bg-secondary text-white dark:text-primary-dark font-bold rounded-full shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
-                Propose a Pilot <ArrowRight className="w-5 h-5 rtl:rotate-180" />
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+          </div>
 
-      {/* Grid */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-display font-bold text-slate-900 dark:text-white">Core Pillars of Development</h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {sections.map((sec, idx) => (
-              <motion.div 
-                key={sec.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.05 }}
-                className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center hover:shadow-md transition-shadow"
-              >
-                <div className={`p-4 rounded-full ${sec.bg} ${sec.color} mb-4`}>
-                  <sec.icon className="w-8 h-8" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">{sec.id}</h3>
-              </motion.div>
-            ))}
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0 overflow-x-auto py-1">
+            <button
+              onClick={() => scrollToSection('integrated-model')}
+              className="px-2.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors whitespace-nowrap cursor-pointer"
+            >
+              {isFa ? 'مدل یکپارچه (۱۰ گام)' : '10-Stage Model'}
+            </button>
+            <button
+              onClick={() => scrollToSection('rural-pillars')}
+              className="px-2.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors whitespace-nowrap cursor-pointer"
+            >
+              {isFa ? '۶ ستون اصلی' : '6 Core Pillars'}
+            </button>
+            <button
+              onClick={() => scrollToSection('energy-village')}
+              className="px-2.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors whitespace-nowrap cursor-pointer"
+            >
+              {isFa ? 'دهکده انرژی و GMEL' : 'Energy Village & GMEL'}
+            </button>
+            <button
+              onClick={() => scrollToSection('pilot-intake-form')}
+              className="px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/25 transition-colors whitespace-nowrap cursor-pointer font-bold"
+            >
+              {isFa ? 'ثبت پایلوت' : 'Propose Pilot'}
+            </button>
+            <button
+              onClick={() => scrollToSection('exhibition-banner')}
+              className="px-3 py-1 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-300 hover:bg-amber-500/25 transition-colors whitespace-nowrap cursor-pointer font-bold"
+            >
+              {isFa ? 'نمایشگاه بین‌المللی' : '6th Exhibition'}
+            </button>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Action Area */}
-      <section className="bg-primary-dark text-white py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-3xl">
-          <h2 className="text-3xl font-display font-bold mb-6">Partner With KKM</h2>
-          <p className="text-lg text-slate-300 mb-10">
-            We are actively seeking governmental, NGO, and private sector partners to deploy pilot programs in rural areas. Let's build self-sufficient communities together.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-             <button onClick={() => setPage(Page.PilotRequest)} className="px-8 py-4 bg-white text-primary-dark font-bold rounded-full hover:bg-gray-100 transition-colors">
-                Pilot Development Request
-             </button>
-             <button onClick={() => setPage(Page.Contact)} className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-colors">
-                General Partnership
-             </button>
-          </div>
-        </div>
-      </section>
+      {/* 1. Hero Section (Sections 10.1, 10.2, 10.3) */}
+      <RuralHero setPage={setPage} onScrollTo={scrollToSection} />
+
+      {/* 2. Integrated Model & Strategic Principle (Sections 10.4, 10.5) */}
+      <RuralModelDiagram />
+
+      {/* 3. Six Core Pillars & Value Chains (Sections 10.6, 10.7, 10.8, 10.9, 10.10) */}
+      <div id="rural-pillars">
+        <RuralPillars />
+      </div>
+
+      {/* 4. Energy Village, GMEL, Water-Energy Nexus, Productive Industries & Nomadic Tech (Sections 10.11, 10.12, 10.13, 10.14, 10.15, 10.16) */}
+      <div id="energy-village">
+        <EnergyVillageSection />
+      </div>
+
+      {/* 5. Pilot Program 7 Stages & Intake Form (Sections 10.17, 10.18) */}
+      <PilotIntakeForm />
+
+      {/* 6. Exhibition Connection, Institutional Partnership, Project Explorer, Dossier Toolkit & Final CTA (Sections 10.19, 10.20, 10.21, 10.22, 10.23, 10.24-10.27) */}
+      <ExhibitionDossierSection setPage={setPage} onScrollTo={scrollToSection} />
 
     </div>
   );
