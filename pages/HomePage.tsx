@@ -8,6 +8,7 @@ import {
   Search, Users, Link as LinkIcon, CheckCircle2, Eye, Compass, Layers,
   ExternalLink, Sparkles, AlertCircle
 } from 'lucide-react';
+import ProjectHighlightsCarousel from '../components/ProjectHighlightsCarousel';
 
 interface HomePageProps {
   setPage: (page: Page) => void;
@@ -592,6 +593,11 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
             </button>
           </div>
           
+          {/* Interactive Touch-Enabled Auto-Playing Project Highlights Carousel */}
+          <div className="mb-12">
+            <ProjectHighlightsCarousel setPage={setPage} />
+          </div>
+
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Page } from './types';
 import type { NewsItem, GeminiSearchResult } from './types';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import SEOHead from './components/SEOHead';
@@ -170,6 +170,7 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [isOnline, setIsOnline] = React.useState<boolean>(() => typeof navigator !== 'undefined' ? navigator.onLine : true);
   const { direction, language, t } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
 
   // Offline / Online network detection
   React.useEffect(() => {
@@ -396,17 +397,44 @@ const App: React.FC = () => {
     }
   };
 
-  const pageVariants = {
-    initial: { opacity: 0, clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)', filter: 'blur(8px)', y: 20 },
-    in: { opacity: 1, clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', filter: 'blur(0px)', y: 0 },
-    out: { opacity: 0, clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)', filter: 'blur(8px)', y: -20 }
-  };
-
-  const pageTransition = {
-    type: 'tween',
-    ease: [0.25, 1, 0.3, 1], // Smooth custom ease curve
-    duration: 0.6
-  } as const;
+  // Subtle 'fade and slide' animation variants for professional enterprise navigation
+  const pageVariants = React.useMemo(() => {
+    if (shouldReduceMotion) {
+      return {
+        initial: { opacity: 0 },
+        in: { 
+          opacity: 1, 
+          transition: { duration: 0.2, ease: 'easeOut' as const } 
+        },
+        out: { 
+          opacity: 0, 
+          transition: { duration: 0.15, ease: 'easeIn' as const } 
+        }
+      };
+    }
+    return {
+      initial: { 
+        opacity: 0, 
+        y: 12 
+      },
+      in: { 
+        opacity: 1, 
+        y: 0, 
+        transition: { 
+          duration: 0.28, 
+          ease: [0.22, 1, 0.36, 1] as const 
+        } 
+      },
+      out: { 
+        opacity: 0, 
+        y: -8, 
+        transition: { 
+          duration: 0.2, 
+          ease: [0.32, 0, 0.67, 0] as const 
+        } 
+      }
+    };
+  }, [shouldReduceMotion]);
 
   const renderPage = () => {
     let pageComponent;
@@ -421,9 +449,11 @@ const App: React.FC = () => {
     } else {
       switch (currentPage) {
       case Page.Exhibition:
-        return <ExhibitionPage setPage={setCurrentPage} />;
+        pageComponent = <ExhibitionPage setPage={setCurrentPage} />;
+        break;
       case Page.Downloads:
-        return <DownloadsPage setPage={setCurrentPage} />;
+        pageComponent = <DownloadsPage setPage={setCurrentPage} />;
+        break;
       case Page.Home:
         pageComponent = <HomePage setPage={setCurrentPage} onSelectArticle={handleSelectArticle} />;
         break;
@@ -538,8 +568,7 @@ const App: React.FC = () => {
         animate="in"
         exit="out"
         variants={pageVariants}
-        transition={pageTransition}
-        className="min-h-[calc(100vh-80px)]"
+        className="min-h-[calc(100vh-80px)] w-full"
       >
         <PageErrorBoundary>
             <React.Suspense fallback={<PageSkeleton />}>
@@ -556,7 +585,7 @@ const App: React.FC = () => {
       <SkipToContent />
       <Header currentPage={currentPage} setPage={setCurrentPage} onSearch={handleSearch} />
       <main id="main-content" className="flex-grow pt-2">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           {renderPage()}
         </AnimatePresence>
       </main>
