@@ -86,7 +86,7 @@
     <meta name="google-site-verification" content="GSC_VERIFICATION_TOKEN_HERE" />
     <!-- gtag removed for preview to prevent security errors -->
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     
     <!-- Primary Meta Tags -->
     <title>KKM International Group | Technology. Engineering. Infrastructure. Innovation.</title>
@@ -123,7 +123,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Open+Sans:wght@400;600&family=Noto+Kufi+Arabic:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         darkMode: 'class',
@@ -141,8 +141,8 @@
               'text-light': '#5a646a',
             },
             fontFamily: {
-              sans: ['Open Sans', 'Noto Kufi Arabic', 'sans-serif'],
-              display: ['Montserrat', 'Noto Kufi Arabic', 'sans-serif'],
+              sans: ['Vazirmatn', 'Open Sans', 'Noto Kufi Arabic', 'system-ui', 'sans-serif'],
+              display: ['Montserrat', 'Vazirmatn', 'Noto Kufi Arabic', 'sans-serif'],
             },
           },
         },
@@ -168,10 +168,36 @@
         color: #cbd5e1 !important; /* slate-300 */
       }
       
+      /* Prevent accidental horizontal overflow on all screen sizes */
+      html, body {
+        max-width: 100vw;
+        overflow-x: hidden;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
       body {
         background: linear-gradient(270deg, var(--bg-grad-1), var(--bg-grad-2), var(--bg-grad-3), var(--bg-grad-1));
         background-size: 600% 600%;
         animation: gradient-animation 45s ease infinite;
+        min-height: 100vh;
+        min-height: 100dvh;
+      }
+
+      /* Touch scroll utility for mobile drawers & carousels */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* Persian typography line height & numeral legibility */
+      [dir="rtl"] {
+        letter-spacing: normal;
+        word-spacing: -0.02em;
       }
       @keyframes gradient-animation {
         0% { background-position: 0% 50%; }

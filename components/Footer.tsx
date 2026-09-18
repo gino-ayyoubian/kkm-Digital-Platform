@@ -61,7 +61,7 @@ const FooterLink: React.FC<{
     <li>
         <button 
             onClick={() => setPage(page)} 
-            className="text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 text-start text-sm block py-1"
+            className="text-gray-300 hover:text-white hover:translate-x-1 rtl:hover:-translate-x-1 transition-all duration-200 text-start text-sm block py-1"
         >
             {t(page as TranslationKey)}
         </button>
@@ -75,7 +75,7 @@ const NewsTicker: React.FC<{
     return (
         <div className="bg-primary-dark/90 text-white py-2 overflow-hidden relative border-b border-white/10">
             <div className="container mx-auto px-4 flex items-center">
-                <span className="bg-accent-yellow text-black text-xs font-bold px-2 py-0.5 rounded mr-4 shrink-0 uppercase tracking-wider">
+                <span className="bg-accent-yellow text-black text-xs font-bold px-2 py-0.5 rounded me-4 shrink-0 uppercase tracking-wider">
                     Latest News
                 </span>
                 <div className="flex-1 overflow-hidden relative h-6">
@@ -316,7 +316,7 @@ const Footer: React.FC<FooterProps> = ({ setPage, onSelectArticle, showNewsTicke
                 {/* Bottom Bar */}
                 <div className="mt-12 border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-gray-400 text-xs text-center md:text-start">&copy; {new Date().getFullYear()} KKM International Group. {t('AllRightsReserved')}</p>
-                    <div className="flex items-center space-x-6">
+                    <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
                          <button onClick={() => setPage(Page.Legal)} className="text-gray-400 hover:text-white text-xs transition-colors">{t('PrivacyPolicy')}</button>
                          <button onClick={() => setPage(Page.Legal)} className="text-gray-400 hover:text-white text-xs transition-colors">{t('TermsOfUse')}</button>
                          <button onClick={() => setPage(Page.Contact)} className="text-gray-400 hover:text-white text-xs transition-colors">{t('Contact')}</button>

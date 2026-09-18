@@ -73,7 +73,7 @@ export const CEOSignatureBanner: React.FC = () => {
             
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
-                    <div className="flex-1 text-center md:text-left order-2 md:order-1">
+                    <div className="flex-1 text-center md:text-start order-2 md:order-1">
                          <div className="mb-4">
                              <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-accent-yellow/10 dark:bg-accent-yellow/20 text-accent-dark dark:text-accent-yellow text-xs font-bold uppercase tracking-wider rounded-full shadow-sm">
                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -101,7 +101,7 @@ export const CEOSignatureBanner: React.FC = () => {
                                      key="quote"
                                      initial={{ opacity: 0, y: 10 }}
                                      animate={{ opacity: 1, y: 0 }}
-                                     className="text-lg md:text-xl lg:text-2xl font-display font-medium text-text-dark dark:text-slate-100 leading-relaxed italic border-l-4 border-primary dark:border-secondary pl-6 py-1"
+                                     className="text-lg md:text-xl lg:text-2xl font-display font-medium text-text-dark dark:text-slate-100 leading-relaxed italic border-s-4 border-primary dark:border-secondary ps-6 py-1"
                                  >
                                      "{quote}"
                                  </motion.blockquote>
@@ -109,8 +109,8 @@ export const CEOSignatureBanner: React.FC = () => {
                          </AnimatePresence>
                     </div>
                     
-                    <div className="flex items-center gap-5 border-b md:border-b-0 md:border-l border-gray-200 dark:border-slate-700 pb-6 md:pb-0 md:pl-10 order-1 md:order-2 w-full md:w-auto justify-center md:justify-end">
-                        <div className="text-right">
+                    <div className="flex items-center gap-5 border-b md:border-b-0 md:border-s border-gray-200 dark:border-slate-700 pb-6 md:pb-0 md:ps-10 order-1 md:order-2 w-full md:w-auto justify-center md:justify-end">
+                        <div className="text-center md:text-end">
                             <h4 className="font-display font-extrabold text-xl text-primary-dark dark:text-white leading-tight whitespace-nowrap">
                                 {t('GinoAyyoubian')}
                             </h4>
