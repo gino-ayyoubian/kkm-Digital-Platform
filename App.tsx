@@ -19,8 +19,11 @@ import { trackPageView, parseUTMParams } from './lib/analytics';
 
 import ExhibitionPage from './pages/ExhibitionPage';
 import DownloadsPage from './pages/DownloadsPage';
+import { PageTemplateSkeleton } from './components/ShimmerSkeleton';
 // Lazy load page components wrapped with Firebase Perf tracing
 
+const EvidenceRegistryPage = React.lazy(trackLazyLoad('EvidenceRegistryPage', () => import('./pages/EvidenceRegistryPage')));
+const ESGDashboard = React.lazy(trackLazyLoad('ESGDashboard', () => import('./components/ESGDashboard')));
 const RuralDevelopmentPage = React.lazy(trackLazyLoad('RuralDevelopmentPage', () => import('./pages/RuralDevelopmentPage')));
 const InvestmentPortalPage = React.lazy(trackLazyLoad('InvestmentPortalPage', () => import('./pages/InvestmentPortalPage')));
 const PilotRequestPage = React.lazy(trackLazyLoad('PilotRequestPage', () => import('./pages/PilotRequestPage')));
@@ -120,7 +123,7 @@ const CookieConsent: React.FC = () => {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-slate-900 border-t border-slate-700 text-slate-300 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
       <div className="text-sm">
-        <strong>Data Usage & Privacy Compliance:</strong> In alignment with our sustainability and transparency commitments, we use cookies to streamline your experience and minimize unnecessary data processing. Please note that all environmental metrics, CO2 reduction figures, and LiveEnergyTicker data displayed on this platform are currently <em>simulated</em> for demonstration and compliance reporting purposes. By continuing, you agree to our strict data usage policy and cookie practices.
+        <strong>Governance & Data Transparency:</strong> In alignment with KKM International Group's Production Truth Layer, all engineering specifications, technical performance indicators, and ESG metrics on this platform are governed by the formal <em>KKM Evidence Registry (Levels A through G)</em>. Unverified simulated counters have been retired from production presentation. By continuing, you agree to our data usage and verified reporting standards.
       </div>
       <div className="flex gap-2">
         <button 
@@ -137,22 +140,7 @@ const CookieConsent: React.FC = () => {
   );
 };
 
-const PageSkeleton = () => (
-  <div className="flex flex-col min-h-[calc(100vh-80px)] w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8 animate-pulse pt-12">
-    <div className="w-full flex flex-col items-start justify-start space-y-4 mb-8">
-        <div className="w-1/3 md:w-1/4 h-10 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
-        <div className="w-2/3 md:w-1/2 h-4 bg-slate-100 dark:bg-slate-800/50 rounded-lg"></div>
-    </div>
-    <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {[1, 2, 3].map(i => (
-            <div key={i} className="w-full h-64 bg-slate-100 dark:bg-slate-800/60 rounded-2xl flex flex-col p-6 space-y-4 border border-slate-200 dark:border-slate-800">
-                <div className="w-3/4 h-6 bg-slate-200 dark:bg-slate-700 rounded-md"></div>
-                <div className="w-full h-32 bg-slate-200 dark:bg-slate-700/50 rounded-md mt-auto"></div>
-            </div>
-        ))}
-    </div>
-  </div>
-);
+const PageSkeleton = () => <PageTemplateSkeleton template="standard" />;
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState<Page>(Page.Home);
@@ -199,11 +187,11 @@ const App: React.FC = () => {
         const params = new URLSearchParams(window.location.search);
         const pageParam = params.get('page');
         
-        if (path === '/rural' || path === '/rural-development') {
+        if (path === '/rural' || path === '/rural-development' || path === '/rural-development/') {
              setCurrentPage(Page.RuralStudies);
              return;
         }
-        if (path === '/exhibition' || path === '/rural-1405') {
+        if (path === '/exhibition' || path === '/rural-1405' || path === '/exhibition/rural-1405' || path === '/exhibition/rural-1405/' || path === '/exhibition/') {
              setCurrentPage(Page.Exhibition);
              return;
         }
@@ -229,6 +217,14 @@ const App: React.FC = () => {
         }
         if (path === '/invest') {
              setCurrentPage(Page.InvestmentPortal);
+             return;
+        }
+        if (path === '/evidence' || path === '/evidence-registry') {
+             setCurrentPage(Page.EvidenceRegistry);
+             return;
+        }
+        if (path === '/sustainability' || path === '/esg') {
+             setCurrentPage(Page.Sustainability);
              return;
         }
 
@@ -473,6 +469,18 @@ const App: React.FC = () => {
         break;
       case Page.ProjectDevelopment:
         pageComponent = <ProjectDevelopmentPage setPage={setCurrentPage} />;
+        break;
+      case Page.EvidenceRegistry:
+        pageComponent = <EvidenceRegistryPage setPage={setCurrentPage} />;
+        break;
+      case Page.Sustainability:
+        pageComponent = (
+          <div className="w-full bg-slate-50 dark:bg-slate-950 min-h-screen pt-24 pb-16 transition-colors" dir={direction}>
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <ESGDashboard setPage={setCurrentPage} />
+            </div>
+          </div>
+        );
         break;
       case Page.Ecosystems:
       case Page.GMELHub:

@@ -144,3 +144,65 @@ export const SearchResultSkeleton: React.FC = () => (
     </div>
   </div>
 );
+
+/**
+ * Enterprise PageTemplateSkeleton matching real KKM page architecture
+ */
+export const PageTemplateSkeleton: React.FC<{ template?: 'dashboard' | 'article' | 'standard' }> = ({ template = 'standard' }) => (
+  <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 pb-16 pt-20 transition-colors">
+    {/* Page Banner Header Skeleton */}
+    <div className="w-full bg-slate-900 border-b border-slate-800 py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-4">
+        <ShimmerBlock className="h-6 w-36 rounded-full" />
+        <ShimmerBlock className="h-10 sm:h-12 w-3/4 sm:w-1/2 rounded-xl" />
+        <ShimmerBlock className="h-4 w-full sm:w-2/3 rounded-lg" />
+        <div className="flex gap-3 pt-2">
+          <ShimmerBlock className="h-8 w-28 rounded-lg" />
+          <ShimmerBlock className="h-8 w-32 rounded-lg" />
+        </div>
+      </div>
+    </div>
+
+    {/* Body Content Skeleton */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+      {/* Metrics Row */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {[1, 2, 3, 4].map(i => (
+          <div key={i} className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-2">
+            <ShimmerBlock className="h-3.5 w-20 rounded" />
+            <ShimmerBlock className="h-8 w-28 rounded-lg" />
+            <ShimmerBlock className="h-3 w-16 rounded" />
+          </div>
+        ))}
+      </div>
+
+      {/* Main Grid Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
+            <ShimmerBlock className="h-6 w-48 rounded-lg" />
+            <ShimmerBlock className="h-4 w-full rounded" />
+            <ShimmerBlock className="h-4 w-11/12 rounded" />
+            <ShimmerBlock className="h-4 w-4/5 rounded" />
+            <div className="h-48 sm:h-64 rounded-2xl overflow-hidden mt-4">
+              <ShimmerBlock className="w-full h-full" />
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar Skeleton */}
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
+            <ShimmerBlock className="h-5 w-32 rounded" />
+            <div className="space-y-2">
+              <ShimmerBlock className="h-10 w-full rounded-xl" />
+              <ShimmerBlock className="h-10 w-full rounded-xl" />
+              <ShimmerBlock className="h-10 w-full rounded-xl" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+

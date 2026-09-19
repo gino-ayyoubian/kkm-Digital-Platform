@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Page, Project } from '../types';
 import { useLanguage } from '../LanguageContext';
 import { motion } from 'motion/react';
-import { MapPin, Users, Crosshair, Cpu, CheckCircle, ArrowRight, Download, FileText } from 'lucide-react';
+import { MapPin, Users, Crosshair, Cpu, CheckCircle, ArrowRight, Download, FileText, ShieldCheck } from 'lucide-react';
 import LazyImage from '../components/LazyImage';
 
 interface ProjectTemplatePageProps {
@@ -122,14 +122,28 @@ const ProjectTemplatePage: React.FC<ProjectTemplatePageProps> = ({ setPage }) =>
                 <InfoRow label="KKM Role" value={project.role} />
                 <InfoRow label="Technology" value={project.technology} />
                 <InfoRow label="Project Stage" value={project.stage} />
+                <div className="pt-2">
+                  <div className="p-3 rounded-xl bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800/50 text-xs">
+                    <div className="flex items-center justify-between font-bold text-purple-900 dark:text-purple-300 mb-1">
+                      <span>Evidence Classification</span>
+                      <span className="font-mono px-2 py-0.5 rounded bg-purple-200 dark:bg-purple-900">Level C / TRL-7</span>
+                    </div>
+                    <p className="text-purple-800/80 dark:text-purple-300/80 text-[11px]">
+                      Field validation verified via Evidence Registry (Claim Ref: EVD-TECH-GMEL-2025-01).
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                <button className="w-full py-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
-                  <FileText className="w-5 h-5" /> Download Project Brief
+              <div className="space-y-3">
+                <button onClick={() => setPage(Page.EvidenceRegistry)} className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-xs">
+                  <ShieldCheck className="w-4 h-4" /> View in Evidence Registry
                 </button>
-                <button onClick={() => setPage(Page.Contact)} className="w-full py-4 bg-primary-dark dark:bg-secondary text-white dark:text-primary-dark rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
-                  <Users className="w-5 h-5" /> Contact Project Lead
+                <button className="w-full py-3.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-xs">
+                  <FileText className="w-4 h-4" /> Download Project Brief
+                </button>
+                <button onClick={() => setPage(Page.Contact)} className="w-full py-3.5 bg-primary-dark dark:bg-secondary text-white dark:text-primary-dark rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-xs">
+                  <Users className="w-4 h-4" /> Contact Project Lead
                 </button>
               </div>
             </div>

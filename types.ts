@@ -41,7 +41,8 @@ export enum Page {
   ProjectDevelopment = 'Project Development',
   InvestmentPortal = 'Investment Portal',
   IPCenter = 'IP Center',
-
+  EvidenceRegistry = 'Evidence Registry',
+  Sustainability = 'Sustainability & Governance',
 }
 
 export interface Project {
@@ -52,6 +53,11 @@ export interface Project {
     role?: string;
     technology?: string;
     stage?: string;
+    startDate?: string;
+    currentStatus?: string;
+    evidence?: string;
+    partners?: string[];
+    nextMilestone?: string;
     deliverables?: string[];
     results?: string;
     nextPhase?: string;
@@ -88,7 +94,7 @@ export interface NewsItem {
     excerpt: string;
     image: string;
     content: string;
-    category: 'Technology' | 'Projects' | 'Corporate' | 'Archive' | 'Research' | 'Reports' | 'News' | 'Technical';
+    category: 'Technology' | 'Projects' | 'Corporate' | 'Archive' | 'Research' | 'Reports' | 'News' | 'Technical' | 'Sustainability' | 'Events';
 }
 
 export interface Video {
@@ -141,6 +147,49 @@ export interface Innovation {
     image: string;
     impact: string;
     date: string;
+    // Research & Technology Development fields (Item 15)
+    technology?: string;
+    problem?: string;
+    solution?: string;
+    developmentStage?: string;
+    evidence?: string;
+    performance?: string;
+    ip?: string;
+    applications?: string[];
+    nextMilestone?: string;
+}
+
+export type LeadOpportunityType = 'Project' | 'Pilot' | 'Partnership' | 'Investment';
+export type LeadSector = 'Energy' | 'Water' | 'Infrastructure' | 'Industrial' | 'Agriculture' | 'Healthcare' | 'Mining' | 'Other';
+export type LeadPriority = 'Urgent' | 'High' | 'Medium' | 'Standard';
+export type LeadStatus = 'New' | 'Qualified' | 'Meeting Scheduled' | 'Technical Assessment' | 'Concept Note' | 'Pilot/Project' | 'Closed';
+
+export interface CRMLead {
+    id: string; // Lead ID (e.g. LEAD-2026-09-001)
+    date: string; // ISO date string
+    organization: string;
+    person: string;
+    position?: string;
+    country: string;
+    province?: string;
+    opportunityType: LeadOpportunityType;
+    sector: LeadSector;
+    projectLocation?: string;
+    problem: string;
+    requiredTechnology?: string;
+    estimatedScale?: string;
+    investmentPotential?: string;
+    decisionAuthority?: string;
+    priority: LeadPriority;
+    owner: string;
+    nextAction: string;
+    nextActionDate?: string;
+    status: LeadStatus;
+    email?: string;
+    phone?: string;
+    source?: string;
+    createdAt?: any;
+    updatedAt?: any;
 }
 
 export interface MapMarker {

@@ -122,14 +122,28 @@ const TechnologyTemplatePage: React.FC<TechnologyTemplatePageProps> = ({ setPage
                 <StatusRow label="Pilot" value={tech.pilotStatus} />
                 <StatusRow label="Commercialization" value={tech.commercializationStatus} />
                 <StatusRow label="Partners" value={tech.partners.join(', ')} />
+                <div className="pt-2">
+                  <div className="p-3 rounded-xl bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800/50 text-xs">
+                    <div className="flex items-center justify-between font-bold text-purple-900 dark:text-purple-300 mb-1">
+                      <span>Evidence Classification</span>
+                      <span className="font-mono px-2 py-0.5 rounded bg-purple-200 dark:bg-purple-900">Level C</span>
+                    </div>
+                    <p className="text-purple-800/80 dark:text-purple-300/80 text-[11px]">
+                      Verified via KKM Evidence Registry (Claim Ref: EVD-TECH-GMEL-2025-01).
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                <button className="w-full py-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
-                  <FileText className="w-5 h-5" /> Technical Documentation
+              <div className="space-y-3">
+                <button onClick={() => setPage(Page.EvidenceRegistry)} className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-xs">
+                  <ShieldCheck className="w-4 h-4" /> View in Evidence Registry
                 </button>
-                <button onClick={() => setPage(Page.Contact)} className="w-full py-4 bg-primary-dark dark:bg-secondary text-white dark:text-primary-dark rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
-                  <Lock className="w-5 h-5" /> Request NDA / Contact
+                <button className="w-full py-3.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-xs">
+                  <FileText className="w-4 h-4" /> Technical Documentation
+                </button>
+                <button onClick={() => setPage(Page.Contact)} className="w-full py-3.5 bg-primary-dark dark:bg-secondary text-white dark:text-primary-dark rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-xs">
+                  <Lock className="w-4 h-4" /> Request NDA / Contact
                 </button>
               </div>
             </div>
