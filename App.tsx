@@ -16,6 +16,7 @@ import { performDeepSearch } from './searchEngine';
 import SkipToContent from './components/SkipToContent';
 import { trackLazyLoad } from './trackLazyLoad';
 import { trackPageView, parseUTMParams } from './lib/analytics';
+import { Analytics } from '@vercel/analytics/react';
 
 import ExhibitionPage from './pages/ExhibitionPage';
 import DownloadsPage from './pages/DownloadsPage';
@@ -599,6 +600,7 @@ const App: React.FC = () => {
       <BackToTopButton />
       <A11yDebugOverlay />
       <CookieConsent />
+      <Analytics />
     </div>
   );
 };
