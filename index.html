@@ -199,6 +199,48 @@
         letter-spacing: normal;
         word-spacing: -0.02em;
       }
+
+      /* High-performance Shimmer Skeleton Effect */
+      @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      .shimmer-box {
+        position: relative;
+        overflow: hidden;
+        background-color: #e2e8f0;
+      }
+      .dark .shimmer-box {
+        background-color: #1e293b;
+      }
+      .shimmer-box::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+        background-image: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.55) 50%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        animation: shimmer 1.8s ease-in-out infinite;
+        content: '';
+        pointer-events: none;
+      }
+      .dark .shimmer-box::after {
+        background-image: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.09) 50%,
+          rgba(255, 255, 255, 0) 100%
+        );
+      }
+      [dir="rtl"] .shimmer-box::after {
+        animation-direction: reverse;
+      }
       @keyframes gradient-animation {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
