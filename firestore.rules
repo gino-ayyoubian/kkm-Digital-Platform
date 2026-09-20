@@ -67,5 +67,13 @@ service cloud.firestore {
       allow create, update: if isSignedIn();
       allow delete: if isAdmin();
     }
+
+    match /claims/{claimId} {
+      // Claims are publicly readable for transparency and evidence governance
+      allow read: if true;
+      // Only admins and signed-in technical governance staff can modify claims
+      allow create, update: if isSignedIn();
+      allow delete: if isAdmin();
+    }
   }
 }

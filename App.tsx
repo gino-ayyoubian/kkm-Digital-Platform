@@ -361,6 +361,64 @@ const App: React.FC = () => {
            "name": "About KKM International Group",
            "description": description
          };
+     } else if (currentPage === Page.RuralStudies) {
+         title = "Rural & Nomadic Territorial Development Platform | KKM International Group";
+         description = "Integrated rural development platform engineering the energy-water-infrastructure nexus, modular mini-grids, and local value creation across 25 priority arid villages.";
+         jsonLdSchema = {
+           "@context": "https://schema.org",
+           "@type": "WebPage",
+           "name": "Rural & Nomadic Territorial Development Platform",
+           "description": description,
+           "url": "https://www.kkm-intl.com/rural-development"
+         };
+     } else if (currentPage === Page.EvidenceRegistry) {
+         title = "Evidence & Technical Verification Registry (Levels A-G) | KKM";
+         description = "Transparent corporate evidence registry mapping performance metrics, geothermal engineering claims, patent filings, and lab testbeds to Level A-G audit files.";
+         jsonLdSchema = {
+           "@context": "https://schema.org",
+           "@type": "ItemPage",
+           "name": "KKM Evidence & Technical Verification Registry",
+           "description": description,
+           "url": "https://www.kkm-intl.com/evidence"
+         };
+     } else if (currentPage === Page.Sustainability) {
+         title = "Sustainability, ESG & Claim Governance (P0-13) | KKM International Group";
+         description = "Corporate sustainability reporting and claim governance registry formalizing Verified, Internal, Estimated, and Demonstration data across KKM operations.";
+         jsonLdSchema = {
+           "@context": "https://schema.org",
+           "@type": "WebPage",
+           "name": "Sustainability & ESG Governance",
+           "description": description,
+           "url": "https://www.kkm-intl.com/sustainability"
+         };
+     } else if (currentPage === Page.Exhibition) {
+         title = "Rural & Nomadic Development Exhibition 1405 | KKM International Group";
+         description = "Official national exhibition portal showcasing KKM's signature architecture for decentralized rural utilities, Energy Villages, and pilot partnerships.";
+         jsonLdSchema = {
+           "@context": "https://schema.org",
+           "@type": "Event",
+           "name": "Rural & Nomadic Integrated Development Exhibition 1405",
+           "description": description,
+           "url": "https://www.kkm-intl.com/exhibition/rural-1405"
+         };
+     } else if (currentPage === Page.InvestmentPortal || currentPage === Page.Invest) {
+         title = "Infrastructure Investment & Strategic Co-Development | KKM";
+         description = "Institutional investor portal providing capital allocation structures, IRR scenarios, and project financing frameworks for closed-loop geothermal infrastructure.";
+     } else if (currentPage === Page.PilotRequest) {
+         title = "Pilot Testbed & Industrial Deployment Application | KKM";
+         description = "Request commercial pilot deployment for GMEL closed-loop geothermal retrofit, heat recovery, or rural multi-utility microgrids.";
+     } else if (currentPage === Page.ProjectDevelopment) {
+         title = "Subsurface & Geothermal Project Development Pipeline | KKM";
+         description = "End-to-end EPCM project development methodology covering subsurface geological appraisal, thermodynamic cycle engineering, and facility delivery.";
+     } else if (currentPage === Page.IPCenter || currentPage === Page.IntellectualProperty) {
+         title = "Intellectual Property, Patents & Technology Assets | KKM";
+         description = "Proprietary IP portfolio covering GMEL closed-loop well architecture, supercritical heat transfer fluids, and sonic casing vibration tools.";
+     } else if (currentPage === Page.CorporateInfo) {
+         title = "Corporate Identity, Legal Registration & Governance | KKM";
+         description = "Kimia Karan Mâd Private Joint Stock Company legal registration, official gazette disclosures, leadership structure, and bank certifications.";
+     } else if (currentPage === Page.GMELHub || currentPage === Page.Ecosystems) {
+         title = "GeoMeta Energy Layer (GMEL) Technology Ecosystem | KKM";
+         description = "Comprehensive engineering overview of the GMEL ecosystem uniting closed-loop heat extraction, thermodynamic ORC cycles, and industrial AI digital twins.";
      }
   }
 

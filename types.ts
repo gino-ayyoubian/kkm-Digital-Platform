@@ -212,3 +212,33 @@ export interface JobOpening {
   responsibilities: string[];
   qualifications: string[];
 }
+
+export type EvidenceLevel = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
+export type ClaimStatus = 'Verified' | 'Internal' | 'Estimated' | 'Demonstration';
+export type ClaimDomain = 'Performance' | 'Technical' | 'ESG' | 'Corporate' | 'IP';
+
+export interface Claim {
+  id: string;
+  statementEn: string;
+  statementFa: string;
+  domain: ClaimDomain;
+  status: ClaimStatus;
+  verificationStatusType?: 'Verified' | 'Target' | 'Estimate' | 'Demonstration';
+  evidenceLevel: EvidenceLevel;
+  evidenceRefId: string;
+  evidenceFile?: string;
+  ownerDepartment: string;
+  verifiedBy?: string;
+  verificationDate?: string;
+  lastReviewDate?: string;
+  sourceMethodologyEn?: string;
+  sourceMethodologyFa?: string;
+  reviewCycleMonths: number;
+  metricValue?: string;
+  baselineComparison?: string;
+  qualificationNotesEn?: string;
+  qualificationNotesFa?: string;
+  p013Compliant: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}

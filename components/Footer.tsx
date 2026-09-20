@@ -16,7 +16,7 @@ interface FooterProps {
 }
 
 const FOOTER_LINKS = {
-    quickLinks: [Page.Home, Page.AboutUs, Page.CoreTechnologies, Page.Futures, Page.Projects, Page.Sustainability],
+    quickLinks: [Page.Home, Page.AboutUs, Page.CoreTechnologies, Page.RuralStudies, Page.Projects, Page.Sustainability],
     engagementLinks: [Page.Careers, Page.InnovationHub, Page.EvidenceRegistry, Page.News, Page.InternalPortal]
 };
 

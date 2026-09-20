@@ -13,6 +13,7 @@ import {
   ClaimCategory,
   EvidenceClaim 
 } from '../data/evidenceRegistry';
+import { ClaimRegistry } from '../components/ClaimRegistry';
 
 interface EvidenceRegistryPageProps {
   setPage: (page: Page) => void;
@@ -31,6 +32,7 @@ const CATEGORIES: ClaimCategory[] = [
 
 export const EvidenceRegistryPage: React.FC<EvidenceRegistryPageProps> = ({ setPage }) => {
   const { isFa, direction } = useLanguage();
+  const [activeMainTab, setActiveMainTab] = React.useState<'evidenceRecords' | 'claimsGovernance'>('evidenceRecords');
   const [selectedCategory, setSelectedCategory] = React.useState<ClaimCategory | 'All'>('All');
   const [selectedLevel, setSelectedLevel] = React.useState<VerificationLevel | 'All'>('All');
   const [searchQuery, setSearchQuery] = React.useState<string>('');
@@ -127,6 +129,42 @@ export const EvidenceRegistryPage: React.FC<EvidenceRegistryPageProps> = ({ setP
       {/* Verification Standard Explainer Card */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
         <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-800">
+          
+          {/* Main View Mode Selector (Evidence Records vs Claims Governance) */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-slate-200 dark:border-slate-800">
+            <div>
+              <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold block mb-1">
+                {isFa ? 'پورتال حاکمیت داده و شواهد فنی' : 'Governance & Truth Layer Architecture'}
+              </span>
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
+                {isFa ? 'انتخاب نمای رجیستری: شواهد استنادی یا ماتریس ادعاها' : 'Registry View Selection'}
+              </h2>
+            </div>
+
+            <div className="inline-flex p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+              <button
+                onClick={() => setActiveMainTab('evidenceRecords')}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  activeMainTab === 'evidenceRecords'
+                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                {isFa ? 'شواهد استنادی (سطوح A-G)' : '1. Evidence Records (A-G)'}
+              </button>
+              <button
+                onClick={() => setActiveMainTab('claimsGovernance')}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  activeMainTab === 'claimsGovernance'
+                    ? 'bg-primary text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                {isFa ? 'ماتریس ادعاها (P0-13 Directive)' : '2. Claims Registry (P0-13)'}
+              </button>
+            </div>
+          </div>
+
           <div className="flex items-center gap-2 mb-3">
             <Info className="w-4 h-4 text-primary dark:text-secondary" />
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
@@ -162,7 +200,13 @@ export const EvidenceRegistryPage: React.FC<EvidenceRegistryPageProps> = ({ setP
         </div>
       </div>
 
-      {/* Main Filter & Registry List Section */}
+      {/* Main Content Area */}
+      {activeMainTab === 'claimsGovernance' ? (
+        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <ClaimRegistry setPage={setPage} />
+        </section>
+      ) : (
+      /* Main Filter & Registry List Section */
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
         
         {/* Search & Category Filter Controls */}
@@ -204,7 +248,7 @@ export const EvidenceRegistryPage: React.FC<EvidenceRegistryPageProps> = ({ setP
             >
               {isFa ? 'همه سطوح' : 'All Levels'} ({EVIDENCE_REGISTRY.length})
             </button>
-            {(['A', 'B', 'C', 'D', 'E'] as VerificationLevel[]).map(lvl => (
+            {(['A', 'B', 'C', 'D', 'E', 'F', 'G'] as VerificationLevel[]).map(lvl => (
               <button
                 key={lvl}
                 onClick={() => setSelectedLevel(selectedLevel === lvl ? 'All' : lvl)}
@@ -412,6 +456,7 @@ export const EvidenceRegistryPage: React.FC<EvidenceRegistryPageProps> = ({ setP
         </div>
 
       </section>
+      )}
 
       {/* Claim Detail Modal */}
       {activeClaimModal && (

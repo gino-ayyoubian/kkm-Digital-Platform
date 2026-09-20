@@ -309,6 +309,76 @@
         "status",
         "createdAt"
       ]
+    },
+    "Claim": {
+      "title": "Claim Governance Record",
+      "description": "Official claim governance registry tracking technical, performance, and ESG claims under P0-13 directive.",
+      "type": "object",
+      "properties": {
+        "statementEn": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "statementFa": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "domain": {
+          "type": "string",
+          "enum": [
+            "Performance",
+            "Technical",
+            "ESG",
+            "Corporate",
+            "IP"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Verified",
+            "Internal",
+            "Estimated",
+            "Demonstration"
+          ]
+        },
+        "evidenceLevel": {
+          "type": "string",
+          "enum": ["A", "B", "C", "D", "E", "F", "G"]
+        },
+        "evidenceRefId": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "evidenceFile": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "ownerDepartment": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "p013Compliant": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "statementEn",
+        "domain",
+        "status",
+        "evidenceLevel",
+        "evidenceRefId",
+        "ownerDepartment",
+        "p013Compliant"
+      ]
     }
   },
   "firestore": {
@@ -343,6 +413,10 @@
     "/contentArticles/{articleId}": {
       "schema": "ContentArticle",
       "description": "Stores content going through governance workflow."
+    },
+    "/claims/{claimId}": {
+      "schema": "Claim",
+      "description": "Stores performance, technical, and ESG claims formalized under P0-13 directive."
     }
   }
 }
