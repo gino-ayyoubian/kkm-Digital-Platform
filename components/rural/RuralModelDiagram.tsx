@@ -52,10 +52,10 @@ export const RuralModelDiagram: React.FC = () => {
     {
       id: 'resources',
       step: 1,
-      titleEn: 'LOCAL RESOURCES',
-      titleFa: 'ظرفیت‌ها و منابع محلی',
-      subtitleEn: 'Auditing Regional Endowments',
-      subtitleFa: 'شناسایی و ممیزی پتانسیل‌های بومی',
+      titleEn: 'LOCAL CAPACITY',
+      titleFa: 'ظرفیت و توانمندی بومی',
+      subtitleEn: 'Auditing Regional Endowments & Capacities',
+      subtitleFa: 'شناسایی و ممیزی پتانسیل‌ها و ظرفیت‌های بومی',
       descEn: 'Every rural territory possesses unique natural, physical and human endowments: solar irradiance, wind corridors, geothermal gradients, surface and groundwater aquifers, agricultural lands, mineral deposits, and traditional craftsmanship.',
       descFa: 'هر منطقه روستایی یا عشایری دارای مجموعه‌ای از دارایی‌ها و ظرفیت‌های طبیعی و انسانی است: تابش خورشیدی، باد، شیب زمین‌گرمایی، منابع آب، خاک‌های کشاورزی، کانسارها و مهارت‌های سنتی و بومی.',
       inputsEn: ['Baseline territory geography', 'Climate history records', 'Demographic census', 'Traditional farming logs'],
@@ -296,8 +296,8 @@ export const RuralModelDiagram: React.FC = () => {
           </h2>
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
             {isFa 
-              ? 'جریان پیوسته و هدفمند تبدیل «ظرفیت‌های خام محلی» به «اقتصاد پایدار و شکوفای روستایی» از طریق ۱۰ مرحله هم‌افزا و هماهنگ.' 
-              : 'The unbroken, catalytic progression converting "Local Resources" into a "Sustainable Rural Economy" through ten synergistic phases.'}
+              ? 'جریان پیوسته و هدفمند تبدیل «ظرفیت‌های بومی» (Local Capacity) به «اقتصاد پایدار روستایی» (Sustainable Rural Economy) از طریق ۱۰ مرحله هم‌افزا و هماهنگ.' 
+              : 'The unbroken, catalytic visual flow converting "Local Capacity" into a "Sustainable Rural Economy" through ten synergistic phases.'}
           </p>
 
           {/* Autoplay & Reset Controls */}
@@ -325,10 +325,10 @@ export const RuralModelDiagram: React.FC = () => {
           <div className="flex items-center justify-between text-xs font-mono font-bold text-slate-400 mb-3 px-1">
             <div className="flex items-center gap-2 text-amber-400">
               <Sun className="w-4 h-4" />
-              <span>{isFa ? 'گام ۰۱: منابع و ظرفیت‌های بومی' : 'STAGE 01: LOCAL RESOURCES'}</span>
+              <span>{isFa ? 'گام ۰۱: ظرفیت و توانمندی بومی' : 'STAGE 01: LOCAL CAPACITY'}</span>
             </div>
             <div className="flex items-center gap-2 text-emerald-400">
-              <span>{isFa ? 'گام ۱۰: اقتصاد پایدار و خوداتکا' : 'STAGE 10: SUSTAINABLE ECONOMY'}</span>
+              <span>{isFa ? 'گام ۱۰: اقتصاد پایدار و خوداتکا' : 'STAGE 10: SUSTAINABLE RURAL ECONOMY'}</span>
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>

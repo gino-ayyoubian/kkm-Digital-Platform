@@ -123,12 +123,12 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <link rel="canonical" href={url} />
 
       {/* Multilingual Hreflang Tags */}
-      <link rel="alternate" hrefLang="en" href="https://www.kkm-intl.com/" />
-      <link rel="alternate" hrefLang="fa" href="https://www.kkm-intl.com/?lang=fa" />
-      <link rel="alternate" hrefLang="ar" href="https://www.kkm-intl.com/?lang=ar" />
-      <link rel="alternate" hrefLang="ku" href="https://www.kkm-intl.com/?lang=ku" />
-      <link rel="alternate" hrefLang="ru" href="https://www.kkm-intl.com/?lang=ru" />
-      <link rel="alternate" hrefLang="x-default" href="https://www.kkm-intl.com/" />
+      <link rel="alternate" hrefLang="en" href={url} />
+      <link rel="alternate" hrefLang="fa" href={`${url}${url.includes('?') ? '&' : '?'}lang=fa`} />
+      <link rel="alternate" hrefLang="ar" href={`${url}${url.includes('?') ? '&' : '?'}lang=ar`} />
+      <link rel="alternate" hrefLang="ku" href={`${url}${url.includes('?') ? '&' : '?'}lang=ku`} />
+      <link rel="alternate" hrefLang="ru" href={`${url}${url.includes('?') ? '&' : '?'}lang=ru`} />
+      <link rel="alternate" hrefLang="x-default" href={url} />
 
       {/* Open Graph */}
       <meta property="og:title" content={title} />

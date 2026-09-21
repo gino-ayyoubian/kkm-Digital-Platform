@@ -42,6 +42,7 @@ export enum Page {
   InvestmentPortal = 'Investment Portal',
   IPCenter = 'IP Center',
   EvidenceRegistry = 'Evidence Registry',
+  ClaimRegistry = 'Claim Registry',
   Sustainability = 'Sustainability & Governance',
 }
 

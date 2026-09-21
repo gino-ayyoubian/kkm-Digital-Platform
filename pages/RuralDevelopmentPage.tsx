@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { RuralHero } from '../components/rural/RuralHero';
 import { RuralModelDiagram } from '../components/rural/RuralModelDiagram';
 import { RuralPillars } from '../components/rural/RuralPillars';
+import { RuralDedicatedDomains } from '../components/rural/RuralDedicatedDomains';
 import { EnergyVillageSection } from '../components/rural/EnergyVillageSection';
 import { InvestmentGovernanceSection } from '../components/rural/InvestmentGovernanceSection';
 import { PilotIntakeForm } from '../components/rural/PilotIntakeForm';
@@ -42,8 +43,10 @@ const RuralDevelopmentPage: React.FC<RuralDevelopmentPageProps> = ({ setPage }) 
             ? 'پلتفرم راهبردی KKM برای توسعه پایدار روستایی و عشایری با یکپارچه‌سازی انرژی‌های تجدیدپذیر، امنیت آب، کشاورزی مولد، صنایع فرآوری و تأمین مالی پروژه‌محور.' 
             : 'KKM Rural & Nomadic Development Platform: Integrated technology, engineering and investment solutions for sustainable rural and nomadic prosperity.'} 
         />
+        <link rel="canonical" href="https://www.kkm-intl.com/rural-development" />
         <meta property="og:title" content={isFa ? 'پلتفرم توسعه روستایی و عشایری KKM' : 'KKM Rural & Nomadic Development Platform'} />
         <meta property="og:description" content={isFa ? 'راهکارهای یکپارچه فناوری، مهندسی و سرمایه‌گذاری برای توسعه پایدار روستایی و عشایری' : 'Integrated Technology, Engineering and Investment Solutions for Sustainable Rural and Nomadic Development'} />
+        <meta property="og:url" content="https://www.kkm-intl.com/rural-development" />
       </Helmet>
 
       {/* Sub-navigation Sticky Anchor Bar */}
@@ -61,6 +64,30 @@ const RuralDevelopmentPage: React.FC<RuralDevelopmentPageProps> = ({ setPage }) 
               className="px-2.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors whitespace-nowrap cursor-pointer"
             >
               {isFa ? 'مدل یکپارچه (۱۰ گام)' : '10-Stage Model'}
+            </button>
+            <button
+              onClick={() => scrollToSection('rural-energy')}
+              className="px-2.5 py-1 rounded-lg text-amber-300 hover:text-amber-200 hover:bg-amber-500/10 transition-colors whitespace-nowrap cursor-pointer"
+            >
+              {isFa ? 'انرژی پاک' : 'Energy'}
+            </button>
+            <button
+              onClick={() => scrollToSection('rural-water')}
+              className="px-2.5 py-1 rounded-lg text-sky-300 hover:text-sky-200 hover:bg-sky-500/10 transition-colors whitespace-nowrap cursor-pointer"
+            >
+              {isFa ? 'امنیت آب' : 'Water'}
+            </button>
+            <button
+              onClick={() => scrollToSection('rural-infrastructure')}
+              className="px-2.5 py-1 rounded-lg text-emerald-300 hover:text-emerald-200 hover:bg-emerald-500/10 transition-colors whitespace-nowrap cursor-pointer"
+            >
+              {isFa ? 'زیرساخت و زنجیره سرد' : 'Infrastructure'}
+            </button>
+            <button
+              onClick={() => scrollToSection('rural-value-creation')}
+              className="px-2.5 py-1 rounded-lg text-purple-300 hover:text-purple-200 hover:bg-purple-500/10 transition-colors whitespace-nowrap cursor-pointer"
+            >
+              {isFa ? 'خلق ارزش بومی' : 'Value Creation'}
             </button>
             <button
               onClick={() => scrollToSection('rural-pillars')}
@@ -108,7 +135,13 @@ const RuralDevelopmentPage: React.FC<RuralDevelopmentPageProps> = ({ setPage }) 
       {/* 2. Integrated Rural Development Model (10-Stage Diagram 10.4, 10.5) */}
       <RuralModelDiagram />
 
-      {/* 3. Six Core Pillars & Agro-Livestock Value Chains (Sections 10.6, 10.7, 10.8, 10.9, 10.10) */}
+      {/* 3. Dedicated Sections: Energy, Water, Infrastructure, and Local Value Creation */}
+      <RuralDedicatedDomains 
+        setPage={setPage} 
+        onNavigatePilot={() => scrollToSection('pilot-intake-form')} 
+      />
+
+      {/* 4. Six Core Pillars & Agro-Livestock Value Chains (Sections 10.6, 10.7, 10.8, 10.9, 10.10) */}
       <div id="rural-pillars">
         <RuralPillars />
       </div>

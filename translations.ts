@@ -31,6 +31,7 @@ export const translations: Translations = {
     [Page.InnovationHub]: 'Innovation Hub',
     [Page.IPCenter]: 'IP & Innovation Center',
     [Page.EvidenceRegistry]: 'Evidence Registry',
+    [Page.ClaimRegistry]: 'Claim Registry',
     [Page.Sustainability]: 'Sustainability & Governance',
     [Page.Offline]: 'Offline Mode',
 
@@ -894,6 +895,7 @@ export const translations: Translations = {
     [Page.InnovationHub]: 'مرکز نوآوری',
     [Page.IPCenter]: 'مرکز مالکیت فکری و پتنت‌ها',
     [Page.EvidenceRegistry]: 'سامانه ممیزی شواهد (Evidence Registry)',
+    [Page.ClaimRegistry]: 'سامانه ثبت و اعتبارسنجی ادعاها (Claim Registry)',
     [Page.Sustainability]: 'پایداری و حاکمیت سازمانی',
     // Submenus
     'Who We Are': 'ما چه کسی هستیم',

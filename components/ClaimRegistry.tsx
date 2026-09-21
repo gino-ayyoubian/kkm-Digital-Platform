@@ -353,7 +353,7 @@ export const ClaimRegistry: React.FC<ClaimRegistryProps> = ({ setPage, defaultDo
               <tr className="bg-slate-100/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
                 <th className="py-3.5 px-4 font-mono uppercase tracking-wider">{isFa ? 'شناسه ادعا' : 'Claim ID'}</th>
                 <th className="py-3.5 px-4 min-w-[280px]">{isFa ? 'گزاره ادعا و شاخص کمی' : 'Claim Statement & Metric'}</th>
-                <th className="py-3.5 px-4 min-w-[140px]">{isFa ? 'وضعیت صلاحیت (ممیزی/هدف/برآورد)' : 'Verification Status'}</th>
+                <th className="py-3.5 px-4 min-w-[160px]">{isFa ? 'وضعیت صلاحیت (Verified / Target / Estimate)' : 'Verification Status (Verified / Target / Estimate)'}</th>
                 <th className="py-3.5 px-4 min-w-[220px]">{isFa ? 'متدولوژی و منبع اندازه‌گیری' : 'Source Methodology'}</th>
                 <th className="py-3.5 px-4 min-w-[120px]">{isFa ? 'سطح شواهد' : 'Level & Audit Ref'}</th>
                 <th className="py-3.5 px-4 min-w-[110px]">{isFa ? 'تاریخ بازنگری' : 'Last Review'}</th>
@@ -430,7 +430,7 @@ export const ClaimRegistry: React.FC<ClaimRegistryProps> = ({ setPage, defaultDo
                       {/* Verification Status */}
                       <td className="py-3 px-4 whitespace-nowrap">
                         <div className="space-y-1">
-                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold border ${statusCfg.badgeBg} ${statusCfg.textColor} ${statusCfg.borderColor}`}>
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border ${statusCfg.badgeBg} ${statusCfg.textColor} ${statusCfg.borderColor}`}>
                             {claim.status === 'Verified' ? (
                               <CheckCircle2 className="w-3 h-3 shrink-0" />
                             ) : claim.status === 'Demonstration' ? (
@@ -438,10 +438,10 @@ export const ClaimRegistry: React.FC<ClaimRegistryProps> = ({ setPage, defaultDo
                             ) : (
                               <ShieldCheck className="w-3 h-3 shrink-0" />
                             )}
-                            <span>{isFa ? statusCfg.labelFa : statusCfg.labelEn}</span>
+                            <span>{statusCfg.statusType}</span>
                           </span>
-                          <div className="text-[10px] font-mono text-slate-400">
-                            P0-13 Compliant
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                            {isFa ? statusCfg.labelFa : statusCfg.labelEn}
                           </div>
                         </div>
                       </td>

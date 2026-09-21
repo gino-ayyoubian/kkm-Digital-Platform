@@ -1,26 +1,20 @@
 import express from "express";
 import path from "path";
-import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import compression from "compression";
 import morgan from "morgan";
 import logger from "./logger";
-import * as Sentry from "@sentry/node";
-import { nodeProfilingIntegration } from "@sentry/profiling-node";
 
+// Lazy Sentry initialization only when valid DSN is provided
 if (process.env.SENTRY_DSN && process.env.SENTRY_DSN.startsWith('http')) {
-  try {
+  import("@sentry/node").then((Sentry) => {
     Sentry.init({
       dsn: process.env.SENTRY_DSN,
-      integrations: [
-        nodeProfilingIntegration(),
-      ],
       tracesSampleRate: 1.0,
-      profilesSampleRate: 1.0,
     });
-  } catch (e) {
+  }).catch((e) => {
     logger.warn("Failed to initialize Sentry on backend: " + String(e));
-  }
+  });
 }
 
 async function startServer() {
@@ -86,8 +80,9 @@ async function startServer() {
     }
   });
 
-  // Vite middleware for development
+  // Vite middleware for development, static serve for production
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -99,8 +94,8 @@ async function startServer() {
     // Set caching rules for static assets in production
     app.use(express.static(distPath, {
       maxAge: "1y",
-      setHeaders: (res, path) => {
-        if (path.endsWith('.html')) {
+      setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.html')) {
           res.setHeader('Cache-Control', 'no-cache');
         }
       }
@@ -113,12 +108,21 @@ async function startServer() {
 
   // The error handler must be before any other error middleware and after all controllers
   if (process.env.SENTRY_DSN) {
-    Sentry.setupExpressErrorHandler(app);
+    try {
+      const Sentry = await import("@sentry/node");
+      Sentry.setupExpressErrorHandler(app);
+    } catch (e) {
+      // ignore
+    }
   }
 
   app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on http://0.0.0.0:${PORT}`);
     logger.info(`Server running on http://0.0.0.0:${PORT}`);
   });
 }
 
-startServer();
+startServer().catch((err) => {
+  console.error("FATAL: Error starting server:", err);
+  process.exit(1);
+});
