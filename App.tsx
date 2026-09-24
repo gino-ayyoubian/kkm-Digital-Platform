@@ -63,45 +63,116 @@ interface PageErrorBoundaryProps {
 
 interface PageErrorBoundaryState {
   hasError: boolean;
+  isChunkError: boolean;
+  countdown: number;
 }
 
-// Error Boundary to catch lazy loading chunk errors
+// Error Boundary to catch lazy loading chunk errors and auto-recover
 class PageErrorBoundary extends Component<PageErrorBoundaryProps, PageErrorBoundaryState> {
+  private timer: any = null;
+
   constructor(props: PageErrorBoundaryProps) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, isChunkError: false, countdown: 4 };
   }
 
   static getDerivedStateFromError(error: any) {
-    return { hasError: true };
+    const errorMsg = String(error?.message || error || '').toLowerCase();
+    const isChunk =
+      errorMsg.includes('importing a module script failed') ||
+      errorMsg.includes('failed to fetch dynamically imported module') ||
+      errorMsg.includes('error loading dynamically imported module') ||
+      error?.name === 'TypeError';
+    return { hasError: true, isChunkError: isChunk, countdown: 4 };
   }
 
   componentDidCatch(error: any, errorInfo: any) {
-    console.error("Page Loading Error:", error, errorInfo);
+    console.error("Page Loading Error caught by boundary:", error, errorInfo);
+    const errorMsg = String(error?.message || error || '').toLowerCase();
+    const isChunk =
+      errorMsg.includes('importing a module script failed') ||
+      errorMsg.includes('failed to fetch dynamically imported module') ||
+      errorMsg.includes('error loading dynamically imported module') ||
+      error?.name === 'TypeError';
+
+    if (isChunk && typeof window !== 'undefined') {
+      try {
+        const reloadKey = 'kkm_boundary_reload_ts';
+        const lastReload = window.sessionStorage.getItem(reloadKey);
+        const now = Date.now();
+        // If haven't reloaded in the last 15 seconds, automatically reload immediately
+        if (!lastReload || now - parseInt(lastReload, 10) > 15000) {
+          window.sessionStorage.setItem(reloadKey, String(now));
+          window.location.reload();
+          return;
+        }
+      } catch (_) {}
+    }
+
+    // Auto-countdown to retry reload
+    this.timer = setInterval(() => {
+      this.setState((prev) => {
+        if (prev.countdown <= 1) {
+          clearInterval(this.timer);
+          window.location.reload();
+          return { ...prev, countdown: 0 };
+        }
+        return { ...prev, countdown: prev.countdown - 1 };
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   }
 
   handleRetry = () => {
+    if (this.timer) clearInterval(this.timer);
     this.setState({ hasError: false });
     window.location.reload();
-  }
+  };
+
+  handleGoHome = () => {
+    if (this.timer) clearInterval(this.timer);
+    window.location.href = '/';
+  };
 
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
-           <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-red-400 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-          <h2 className="text-3xl font-display font-bold text-gray-800 dark:text-gray-200 mb-3">System Malfunction</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md leading-relaxed">
-            We encountered a critical error while loading the digital interface. This may be due to a network interruption.
+        <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 py-12 bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
+          <div className="w-16 h-16 rounded-2xl bg-amber-500/10 dark:bg-amber-400/10 flex items-center justify-center mb-6 border border-amber-500/20">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </div>
+          <h2 className="text-2xl md:text-3xl font-display font-bold text-gray-800 dark:text-gray-100 mb-2">
+            {this.state.isChunkError ? "Updating Interface Modules" : "Interface Refresh Needed"}
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-3 max-w-md leading-relaxed text-sm md:text-base">
+            {this.state.isChunkError
+              ? "A module update was detected. The interface is refreshing to synchronize latest application assets."
+              : "We encountered a temporary module loading interruption."}
           </p>
-          <button 
-            onClick={this.handleRetry}
-            className="px-8 py-3 bg-primary text-white font-bold rounded-full hover:bg-secondary transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-          >
-            Re-initialize System
-          </button>
+          <p className="text-xs font-mono text-primary font-bold mb-6">
+            Auto-refreshing in {this.state.countdown}s...
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button 
+              onClick={this.handleRetry}
+              className="px-6 py-2.5 bg-primary text-white text-sm font-bold rounded-xl hover:bg-secondary transition-all shadow-md active:scale-95"
+            >
+              Refresh Interface Now
+            </button>
+            <button 
+              onClick={this.handleGoHome}
+              className="px-6 py-2.5 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-sm font-bold rounded-xl hover:bg-slate-300 dark:hover:bg-slate-700 transition-all shadow-sm"
+            >
+              Return to Homepage
+            </button>
+          </div>
         </div>
       );
     }
@@ -157,6 +228,27 @@ const App: React.FC = () => {
 
   React.useEffect(() => {
     parseUTMParams(); // Parse and store UTMs on load
+  }, []);
+
+  // Listen for Vite chunk load failure and auto-recover
+  React.useEffect(() => {
+    const handlePreloadError = (event: any) => {
+      event.preventDefault();
+      try {
+        const reloadKey = 'kkm_vite_preload_ts';
+        const lastReload = window.sessionStorage.getItem(reloadKey);
+        const now = Date.now();
+        if (!lastReload || now - parseInt(lastReload, 10) > 10000) {
+          window.sessionStorage.setItem(reloadKey, String(now));
+          window.location.reload();
+        }
+      } catch (_) {
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener('vite:preloadError', handlePreloadError);
+    return () => window.removeEventListener('vite:preloadError', handlePreloadError);
   }, []);
 
   const [selectedArticle, setSelectedArticle] = React.useState<NewsItem | null>(null);

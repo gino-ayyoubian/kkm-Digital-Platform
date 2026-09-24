@@ -76,6 +76,21 @@
             e.stopPropagation();
           }
         }, true);
+
+        window.addEventListener('vite:preloadError', function(event) {
+          event.preventDefault();
+          try {
+            var reloadKey = 'kkm_vite_preload_ts';
+            var lastReload = window.sessionStorage.getItem(reloadKey);
+            var now = Date.now();
+            if (!lastReload || now - parseInt(lastReload, 10) > 10000) {
+              window.sessionStorage.setItem(reloadKey, String(now));
+              window.location.reload();
+            }
+          } catch (_) {
+            window.location.reload();
+          }
+        });
       })();
     </script>
 

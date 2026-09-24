@@ -14,8 +14,9 @@ import type { TranslationKey } from '../translations';
 
 import GlobalCTA from '../components/GlobalCTA';
 import { ArrowRight, Layers, Sprout } from 'lucide-react';
+import { trackLazyLoad } from '../trackLazyLoad';
 // Lazy load modal
-const ProjectDetailModal = React.lazy(() => import('./ProjectDetailModal'));
+const ProjectDetailModal = React.lazy(trackLazyLoad('ProjectDetailModal', () => import('./ProjectDetailModal')));
 
 interface ProjectsPageProps {
     setPage: (page: Page) => void;
