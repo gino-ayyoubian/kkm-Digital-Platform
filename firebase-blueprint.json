@@ -2,26 +2,65 @@
   "entities": {
     "User": {
       "title": "User",
-      "description": "An internal portal user representing an employee or administrator.",
+      "description": "An internal portal user representing an employee, manager, director, or executive administrator.",
       "type": "object",
       "properties": {
         "email": {
           "type": "string",
           "description": "User email address"
         },
+        "displayName": {
+          "type": "string",
+          "maxLength": 100
+        },
         "role": {
           "type": "string",
           "enum": [
-            "admin",
-            "employee"
+            "super_admin",
+            "executive",
+            "director",
+            "manager",
+            "reviewer",
+            "employee",
+            "admin"
           ],
           "description": "RBAC role of the user"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 100
         },
         "department": {
           "type": "string",
           "description": "Department the user belongs to"
         },
+        "employeeId": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "clearanceLevel": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "leave", "suspended"]
+        },
+        "permissions": {
+          "type": "object"
+        },
+        "lastLogin": {
+          "type": "string"
+        },
         "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
           "type": "string",
           "format": "date-time"
         }
@@ -379,12 +418,262 @@
         "ownerDepartment",
         "p013Compliant"
       ]
+    },
+    "AutomationRequest": {
+      "title": "Automation Request",
+      "description": "Organizational automation workflow requests such as leave, procurement, travel missions, engineering sign-offs, and IT access.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "type": {
+          "type": "string",
+          "enum": ["leave", "purchase", "mission", "technical_review", "it_access", "memo"]
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 3000
+        },
+        "requesterId": {
+          "type": "string"
+        },
+        "requesterName": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "requesterRole": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "department": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "urgent"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending_manager", "pending_finance", "pending_ceo", "approved", "rejected", "draft"]
+        },
+        "amount": {
+          "type": "number"
+        },
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "approvals": {
+          "type": "array"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "title",
+        "type",
+        "requesterId",
+        "requesterName",
+        "department",
+        "priority",
+        "status",
+        "createdAt"
+      ]
+    },
+    "DmsDocument": {
+      "title": "DMS Document",
+      "description": "Document Management System files, circulars, corporate directives, and engineering standards.",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "titleFa": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "category": {
+          "type": "string",
+          "enum": ["Directive", "Policy", "Standard", "Legal", "Technical", "Form"]
+        },
+        "securityClearance": {
+          "type": "string",
+          "enum": ["Top Secret", "Confidential", "Operational", "Internal"]
+        },
+        "department": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "summaryFa": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "releaseDate": {
+          "type": "string"
+        },
+        "fileUrl": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "code",
+        "title",
+        "category",
+        "securityClearance",
+        "department",
+        "version",
+        "releaseDate",
+        "createdAt"
+      ]
+    },
+    "AttendanceRecord": {
+      "title": "Attendance Record",
+      "description": "Employee attendance, check-in, check-out, and remote work telemetry log.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "date": {
+          "type": "string"
+        },
+        "checkInTime": {
+          "type": "string"
+        },
+        "checkOutTime": {
+          "type": "string"
+        },
+        "isRemote": {
+          "type": "boolean"
+        },
+        "durationSeconds": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["checked_in", "checked_out"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "userId",
+        "date",
+        "checkInTime",
+        "isRemote",
+        "status",
+        "createdAt"
+      ]
+    },
+    "ProjectMilestone": {
+      "title": "Project Milestone",
+      "description": "Enterprise strategic and operational project milestone with deliverables and risk indicators.",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string" },
+        "projectTitle": { "type": "string" },
+        "milestoneCode": { "type": "string" },
+        "title": { "type": "string" },
+        "targetDate": { "type": "string" },
+        "completionDate": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["planned", "in_progress", "completed", "delayed"]
+        },
+        "evidenceLevelRequired": {
+          "type": "string",
+          "enum": ["Level A", "Level B", "Level C", "Level D", "Level E", "Level F", "Level G"]
+        },
+        "assignedLead": { "type": "string" },
+        "department": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["projectId", "milestoneCode", "title", "status", "evidenceLevelRequired", "createdAt"]
+    },
+    "EvidenceRegistryItem": {
+      "title": "Evidence Registry Item",
+      "description": "Scientific, engineering, operational, or strategic proof artifact certified across levels A through G.",
+      "type": "object",
+      "properties": {
+        "registryCode": { "type": "string" },
+        "title": { "type": "string" },
+        "evidenceLevel": {
+          "type": "string",
+          "enum": ["Level A", "Level B", "Level C", "Level D", "Level E", "Level F", "Level G"]
+        },
+        "domain": { "type": "string" },
+        "certificationDate": { "type": "string" },
+        "certifyingAuthority": { "type": "string" },
+        "cryptographicHash": { "type": "string" },
+        "fileUri": { "type": "string" },
+        "metadata": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["registryCode", "title", "evidenceLevel", "domain", "createdAt"]
     }
   },
   "firestore": {
     "/users/{userId}": {
       "schema": "User",
       "description": "Stores user profiles and RBAC roles."
+    },
+    "/projectMilestones/{milestoneId}": {
+      "schema": "ProjectMilestone",
+      "description": "Stores organizational project milestones."
+    },
+    "/evidenceRegistry/{evidenceId}": {
+      "schema": "EvidenceRegistryItem",
+      "description": "Stores certified evidence registry items across levels A through G."
+    },
+    "/automationRequests/{requestId}": {
+      "schema": "AutomationRequest",
+      "description": "Stores organizational automation workflow requests."
+    },
+    "/dmsDocuments/{docId}": {
+      "schema": "DmsDocument",
+      "description": "Stores document management records, policies, and directives."
+    },
+    "/attendanceRecords/{recordId}": {
+      "schema": "AttendanceRecord",
+      "description": "Stores attendance and remote work check-in logs."
     },
     "/announcements/{announcementId}": {
       "schema": "Announcement",

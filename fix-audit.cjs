@@ -16,7 +16,7 @@ replace('pages/HomePage.tsx', [[
   /<h4 className="font-bold text-sm sm:text-base mb-2 text-slate-900 dark:text-white">/g,
   '<h3 className="font-bold text-sm sm:text-base mb-2 text-slate-900 dark:text-white">'
 ], [
-  /<\/h4>(\s*\n\s*<\/div>\s*\n\s*\)\)}/g,
+  /<\/h4>(\s*\n\s*<\/div>\s*\n\s*\)\s*\})/g,
   '</h3>$1'
 ]]);
 replace('components/CEOSignatureBanner.tsx', [[

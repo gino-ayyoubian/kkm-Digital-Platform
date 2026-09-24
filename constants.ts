@@ -499,23 +499,29 @@ export const JOB_OPENINGS: JobOpening[] = [
     },
 ];
 
-export const EMPLOYEE_TESTIMONIALS: { quote: string; name: string; role: string; image: string; }[] = [
+export const EMPLOYEE_TESTIMONIALS: { quote: string; name: string; role: string; image?: string; initials?: string; department?: string; }[] = [
     {
         quote: "Emp_Testimonial_1_Quote",
         name: 'Ali Rezaei',
         role: 'Emp_Testimonial_1_Role',
-        image: 'https://i.pravatar.cc/100?u=employee1',
+        initials: 'AR',
+        department: 'Reservoir & Thermodynamics',
+        image: '',
     },
     {
         quote: 'Emp_Testimonial_2_Quote',
         name: 'Dr. Benyamin Rezaei',
         role: 'Emp_Testimonial_2_Role',
-        image: 'https://i.pravatar.cc/100?u=employee2',
+        initials: 'BR',
+        department: 'Thermal Spallation & Drilling',
+        image: '',
     },
     {
         quote: "Emp_Testimonial_3_Quote",
         name: 'Fatemeh Ghasemi',
         role: 'Emp_Testimonial_3_Role',
-        image: 'https://i.pravatar.cc/100?u=employee3',
+        initials: 'FG',
+        department: 'Environmental Impact & HSE',
+        image: '',
     }
 ];

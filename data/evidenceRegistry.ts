@@ -359,5 +359,39 @@ export const EVIDENCE_REGISTRY: EvidenceClaim[] = [
     verificationLevel: 'A',
     publicationStatus: 'Public',
     reviewDate: '2026-11-20'
+  },
+
+  // Team Member Verified Corporate Credentials
+  {
+    id: 'KKM-EVID-2026-CEO-001',
+    claimEn: 'Gino Ayyoubian is certified as Founder, Chief Executive Officer & Chairman with full sovereign signature authority.',
+    claimFa: 'سید ژینو ایوبیان به عنوان بنیان‌گذار، مدیرعامل و رئیس هیئت مدیره با حق امضای تعهدآور و اختیارات کامل قانونی تأیید شده است.',
+    category: 'Certifications',
+    source: 'KKM Directorate of Governance & Identity Registry / Official Gazette Reg. 493011',
+    evidenceFile: 'EVD-EXEC-CEO-GINO-AYYOUBIAN-2026.pdf',
+    measurementMethodEn: 'Official Gazette ratification, corporate charter registration, and biometrically attested board minutes',
+    measurementMethodFa: 'تأییدیه روزنامه رسمی، ثبت شرکت‌ها و صورت‌جلسات هیئت مدیره با توشیح قانونی و امضای دیجیتال',
+    date: '2026-09-24',
+    owner: 'KKM Directorate of Governance',
+    reviewer: 'Executive Board Secretariat',
+    verificationLevel: 'A',
+    publicationStatus: 'Public',
+    reviewDate: '2027-09-24'
+  },
+  {
+    id: 'KKM-EVID-2026-CTO-002',
+    claimEn: 'Dr. Reza Asakereh is certified as Chief Technology Officer directing AI telemetry, digital twin and subsurface algorithms.',
+    claimFa: 'دکتر رضا عساکره به عنوان مدیر ارشد فناوری و هدایت‌کننده هوش مصنوعی، دوقلوی دیجیتال و الگوریتم‌های شناختی تأیید شده است.',
+    category: 'Certifications',
+    source: 'KKM Technical Advisory Board & IEEE Senior Membership Registry',
+    evidenceFile: 'EVD-EXEC-CTO-REZA-ASAKEREH-2026.pdf',
+    measurementMethodEn: 'Doctoral credential validation, technical peer review, and enterprise security clearance clearance',
+    measurementMethodFa: 'تطبیق مدارک دانشگاهی دکتری، داوری فنی شورای نخبگان و تایید صلاحیت دسترسی راهبردی',
+    date: '2026-09-24',
+    owner: 'Chief Executive Officer',
+    reviewer: 'Technical Advisory Board',
+    verificationLevel: 'A',
+    publicationStatus: 'Public',
+    reviewDate: '2027-09-24'
   }
 ];

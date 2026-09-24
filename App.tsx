@@ -54,6 +54,7 @@ const GMELTwinPage = React.lazy(trackLazyLoad('GMELTwinPage', () => import('./pa
 const REETwinPage = React.lazy(trackLazyLoad('REETwinPage', () => import('./pages/REETwinPage')));
 const CareersPage = React.lazy(trackLazyLoad('CareersPage', () => import('./pages/CareersPage')));
 const InternalPortalPage = React.lazy(trackLazyLoad('InternalPortalPage', () => import('./pages/InternalPortalPage')));
+const GoogleKeepPage = React.lazy(trackLazyLoad('GoogleKeepPage', () => import('./pages/GoogleKeepPage')));
 const OfflinePage = React.lazy(trackLazyLoad('OfflinePage', () => import('./pages/OfflinePage')));
 
 interface PageErrorBoundaryProps {
@@ -833,7 +834,10 @@ const App: React.FC = () => {
         pageComponent = <CareersPage />;
         break;
       case Page.InternalPortal:
-        pageComponent = <InternalPortalPage />;
+        pageComponent = <InternalPortalPage setPage={setCurrentPage} />;
+        break;
+      case Page.GoogleKeep:
+        pageComponent = <GoogleKeepPage setPage={setCurrentPage} />;
         break;
       case Page.Futures:
         pageComponent = <FuturesPage />;

@@ -14,10 +14,12 @@ const ExhibitionPage: React.FC<{ setPage: (p: Page) => void }> = ({ setPage }) =
     });
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [isSuccess, setIsSuccess] = React.useState(false);
+    const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setErrorMessage(null);
         try {
             
             const utms = parseUTMParams();
@@ -40,7 +42,7 @@ const ExhibitionPage: React.FC<{ setPage: (p: Page) => void }> = ({ setPage }) =
             setFormData({ name: '', organization: '', position: '', country: '', category: 'Government', preferredDate: '', message: '' });
         } catch (error) {
             console.error("Failed to book meeting", error);
-            alert("Failed to submit request. Please try again or contact us directly.");
+            setErrorMessage("Failed to submit request. Please try again or contact us directly.");
         } finally {
             setIsSubmitting(false);
         }
@@ -123,6 +125,11 @@ const ExhibitionPage: React.FC<{ setPage: (p: Page) => void }> = ({ setPage }) =
                                     </motion.div>
                                 ) : (
                                     <motion.form initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleSubmit} className="space-y-4">
+                                        {errorMessage && (
+                                            <div className="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-600 dark:text-red-400">
+                                                {errorMessage}
+                                            </div>
+                                        )}
                                         <div className="grid sm:grid-cols-2 gap-4">
                                             <div>
                                                 <label className="block text-sm font-semibold text-text-dark dark:text-slate-300 mb-1">Full Name *</label>

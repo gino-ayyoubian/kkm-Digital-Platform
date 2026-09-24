@@ -39,7 +39,7 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
 
 const SustainabilityAlertsPanel: React.FC = () => {
   const [alerts, setAlerts] = useState<SustainabilityAlert[]>([]);
-  const { currentUser, userProfile } = useAuth();
+  const { currentUser, userProfile, isAdmin } = useAuth();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const SustainabilityAlertsPanel: React.FC = () => {
   }, [currentUser]);
 
   const generateMockAlert = async () => {
-    if (!currentUser || userProfile?.role !== 'admin') return;
+    if (!currentUser || !isAdmin) return;
     try {
       const severities: ('info' | 'warning' | 'critical')[] = ['info', 'warning', 'critical'];
       const sev = severities[Math.floor(Math.random() * severities.length)];
@@ -96,7 +96,7 @@ const SustainabilityAlertsPanel: React.FC = () => {
           </svg>
           Live Sustainability Alerts
         </h3>
-        {userProfile?.role === 'admin' && (
+        {isAdmin && (
            <button onClick={generateMockAlert} className="text-xs bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300 transition-colors">
               Simulate Event
            </button>

@@ -9,7 +9,7 @@ import { PWAInstallButton } from './PWAInstallButton';
 import KKMLogo from './KKMLogo';
 import { 
   Search, Sun, Moon, Globe, Menu, X, ChevronDown, 
-  Check, User, ArrowRight, ShieldCheck, Sparkles, Building2
+  Check, User, ArrowRight, ShieldCheck, Sparkles, Building2, StickyNote
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -315,6 +315,22 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
                 ) : (
                   <Sun className="w-5 h-5 text-amber-400" />
                 )}
+              </button>
+
+              {/* Google Keep Workspace Quick Access */}
+              <button
+                id="header-keep-btn"
+                type="button"
+                onClick={() => setPage(Page.GoogleKeep)}
+                className={`p-2 sm:p-2.5 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-400 hidden sm:inline-flex ${
+                  currentPage === Page.GoogleKeep
+                    ? 'bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 ring-1 ring-amber-400/50'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+                aria-label="Google Keep Workspace"
+                title="Google Keep Workspace"
+              >
+                <StickyNote className="w-5 h-5 text-amber-500" />
               </button>
 
               {/* Internal / Employee Portal Quick Access */}
@@ -700,6 +716,33 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
                         <div className="text-xs font-bold">{t(Page.InternalPortal)}</div>
                         <div className="text-[11px] text-slate-400">
                           {isRtl ? 'سامانه یکپارچه همکاران و اتوماسیون' : 'Employee & Executive Systems'}
+                        </div>
+                      </div>
+                    </div>
+                    <ArrowRight className={`w-4 h-4 text-slate-400 ${isRtl ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {/* Google Keep Workspace Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPage(Page.GoogleKeep);
+                      setIsMenuOpen(false);
+                    }}
+                    className={`flex items-center justify-between w-full p-3.5 rounded-2xl border text-start transition-all ${
+                      currentPage === Page.GoogleKeep
+                        ? 'border-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-400'
+                        : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-200 hover:border-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-amber-500/15 flex items-center justify-center text-amber-500">
+                        <StickyNote className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold">Google Keep Notes</div>
+                        <div className="text-[11px] text-slate-400">
+                          {isRtl ? 'یادداشت‌ها و چک‌لیست‌های متصل به ابری' : 'Cloud Sync Notes & Checklists'}
                         </div>
                       </div>
                     </div>

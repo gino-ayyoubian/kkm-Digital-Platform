@@ -27,6 +27,7 @@ export enum Page {
   Legal = 'Legal & Policies',
   SearchResults = 'Search Results',
   InternalPortal = 'Internal Portal',
+  GoogleKeep = 'Google Keep Workspace',
   Offline = 'Offline Mode',
 
 
@@ -214,7 +215,7 @@ export interface JobOpening {
   qualifications: string[];
 }
 
-export type EvidenceLevel = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
+export type EvidenceLevel = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'Level A' | 'Level B' | 'Level C' | 'Level D' | 'Level E' | 'Level F' | 'Level G';
 export type ClaimStatus = 'Verified' | 'Internal' | 'Estimated' | 'Demonstration';
 export type ClaimDomain = 'Performance' | 'Technical' | 'ESG' | 'Corporate' | 'IP';
 
@@ -242,4 +243,182 @@ export interface Claim {
   p013Compliant: boolean;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export type OrgRole = 'super_admin' | 'executive' | 'director' | 'manager' | 'reviewer' | 'employee';
+
+export interface OrgUserPermissions {
+  canApproveAll: boolean;
+  canApproveDepartment: boolean;
+  canManageUsers: boolean;
+  canAccessFinancials: boolean;
+  canAccessConfidentialDMS: boolean;
+  canIssueDirectives: boolean;
+  canSubmitRequests: boolean;
+  [key: string]: boolean;
+}
+
+export interface OrgMemberProfile {
+  uid: string;
+  email: string;
+  username?: string; // Standard corporate username (e.g. g.ayyoubian@kkm-intl.org or g.ayyoubian)
+  password?: string; // Custom corporate password set by member
+  displayName: string;
+  displayNameFa?: string;
+  role: OrgRole;
+  title: string;
+  titleFa?: string;
+  department: string;
+  departmentFa?: string;
+  employeeId: string;
+  avatarUrl?: string;
+  phone?: string;
+  sipExtension?: string; // Direct internal telephone extension (e.g. '101', '206962')
+  sipUsername?: string; // SIP Trunk extension username (e.g. '206962' on ext.daftareshoma.com)
+  isVerifiedMember?: boolean; // Verified Member status indicator
+  evidenceRegistryId?: string; // ID in KKM Evidence Registry (e.g. 'KKM-EVID-2026-CEO-001')
+  engineeringDomains?: string[]; // Specialized engineering domains
+  linkedInUrl?: string; // Professional profile link
+  shortBio?: string;
+  shortBioFa?: string;
+  clearanceLevel: 'Top Secret / Strategic' | 'Confidential / Tier-1' | 'Operational / Tier-2' | 'Internal / Standard';
+  permissions: OrgUserPermissions;
+  status: 'active' | 'leave' | 'suspended';
+  lastLogin?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type AutomationRequestType = 'leave' | 'purchase' | 'mission' | 'technical_review' | 'it_access' | 'memo';
+export type AutomationPriority = 'low' | 'medium' | 'high' | 'urgent';
+export type AutomationStatus = 'pending_manager' | 'pending_finance' | 'pending_ceo' | 'approved' | 'rejected' | 'draft';
+
+export interface AutomationApprovalStep {
+  step: string;
+  approverName: string;
+  approverRole: string;
+  action: 'approved' | 'rejected';
+  timestamp: string;
+  comments?: string;
+}
+
+export interface AutomationRequest {
+  id: string;
+  title: string;
+  type: AutomationRequestType;
+  description: string;
+  requesterId: string;
+  requesterName: string;
+  requesterRole: string;
+  department: string;
+  priority: AutomationPriority;
+  status: AutomationStatus;
+  amount?: number;
+  startDate?: string;
+  endDate?: string;
+  destination?: string;
+  approvals: AutomationApprovalStep[];
+  attachments?: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DmsDocument {
+  id: string;
+  code: string;
+  title: string;
+  titleFa: string;
+  category: 'Directive' | 'Policy' | 'Standard' | 'Legal' | 'Technical' | 'Form';
+  securityClearance: 'Top Secret' | 'Confidential' | 'Operational' | 'Internal';
+  department: string;
+  summary: string;
+  summaryFa: string;
+  version: string;
+  releaseDate: string;
+  fileUrl?: string;
+  createdAt?: string;
+}
+
+export interface AttendanceRecord {
+  id: string;
+  userId: string;
+  userName: string;
+  date: string;
+  checkIn?: string;
+  checkOut?: string;
+  checkInTime?: string;
+  checkOutTime?: string;
+  isRemote?: boolean;
+  type?: 'remote' | 'office' | 'site';
+  location?: string;
+  totalHours?: number;
+  durationSeconds?: number;
+  status: 'checked_in' | 'checked_out' | 'completed';
+  createdAt?: string;
+}
+
+export interface ChecklistItem {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
+export interface EvidenceRegistryItem {
+  id: string;
+  registryCode: string;
+  title: string;
+  titleFa?: string;
+  evidenceLevel: EvidenceLevel;
+  domain: string;
+  domainFa?: string;
+  certificationDate: string;
+  certifyingAuthority: string;
+  cryptographicHash?: string;
+  fileUri?: string;
+  description?: string;
+  descriptionFa?: string;
+  metadata?: Record<string, any>;
+  createdAt: string;
+}
+
+export interface ProjectMilestone {
+  id: string;
+  projectId: string;
+  projectTitle: string;
+  projectTitleFa?: string;
+  milestoneCode: string;
+  title: string;
+  titleFa?: string;
+  targetDate: string;
+  completionDate?: string;
+  status: 'planned' | 'in_progress' | 'completed' | 'delayed';
+  evidenceLevelRequired: EvidenceLevel;
+  evidenceId?: string;
+  assignedLead?: string;
+  department?: string;
+  departmentFa?: string;
+  createdAt: string;
+}
+
+export interface KeepNote {
+  id: string;
+  title: string;
+  content: string;
+  color: 'default' | 'amber' | 'emerald' | 'blue' | 'purple' | 'rose';
+  pinned: boolean;
+  archived: boolean;
+  tags?: string[];
+  isChecklist?: boolean;
+  checklistItems?: ChecklistItem[];
+  userId?: string;
+  userEmail?: string;
+  authorName?: string;
+  createdAt?: any;
+  updatedAt?: any;
+  // Backward compatibility alias
+  isPinned?: boolean;
+  isArchived?: boolean;
+  isTrash?: boolean;
+  labels?: string[];
+  checklist?: ChecklistItem[];
 }

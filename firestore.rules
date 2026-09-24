@@ -14,7 +14,11 @@ service cloud.firestore {
 
     function isAdmin() {
       return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+        && (
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'super_admin' ||
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'executive'
+        );
     }
 
     function isOwner(userId) {
@@ -30,6 +34,36 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if isSignedIn();
       allow create, update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /projectMilestones/{milestoneId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /evidenceRegistry/{evidenceId} {
+      // Evidence Registry is publicly readable for transparency and scientific verification
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /automationRequests/{requestId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isAdmin();
+    }
+
+    match /dmsDocuments/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /attendanceRecords/{recordId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isOwner(resource.data.userId) || isAdmin();
       allow delete: if isAdmin();
     }
 

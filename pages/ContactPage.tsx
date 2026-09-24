@@ -6,7 +6,8 @@ import { useLanguage } from '../LanguageContext';
 import PageHeader from '../components/PageHeader';
 import Accordion from '../components/Accordion';
 import { motion, AnimatePresence } from 'motion/react';
-import { MapPin } from 'lucide-react';
+import { MapPin, PhoneCall } from 'lucide-react';
+import { IvrCommunicationsConsole } from '../components/ivr/IvrCommunicationsConsole';
 
 import { trackFormSubmission, parseUTMParams } from '../lib/analytics';
 import { db } from '../firebase';
@@ -80,6 +81,7 @@ const ContactPage: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [formStatus, setFormStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
     const [submitError, setSubmitError] = React.useState<string | null>(null);
+    const [isIvrConsoleOpen, setIsIvrConsoleOpen] = React.useState<boolean>(false);
 
     // Memoized Data
     const officeLocations: MapMarker[] = React.useMemo(() => [
@@ -513,6 +515,14 @@ const ContactPage: React.FC = () => {
                                             <a href={`tel:${t('IVRPhone').replace(/\s/g, '')}`} className="hover:text-primary dark:hover:text-secondary transition-colors" dir="ltr">{t('IVRPhone')}</a>
                                         </div>
                                     </div>
+
+                                    <button
+                                        onClick={() => setIsIvrConsoleOpen(true)}
+                                        className="mt-3 w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                    >
+                                        <PhoneCall className="w-3.5 h-3.5" />
+                                        <span>تلفن گویا، سافت‌فون تحت وب و خطوط داخلی (IVR)</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -595,6 +605,18 @@ const ContactPage: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+            {/* IVR Communications Console Modal */}
+            {isIvrConsoleOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+                    <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                        <IvrCommunicationsConsole
+                            isOpen={isIvrConsoleOpen}
+                            onClose={() => setIsIvrConsoleOpen(false)}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

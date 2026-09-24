@@ -43,6 +43,39 @@ function InvestIcon() {
 }
 
 const DownloadsPage: React.FC<{ setPage: (p: Page) => void }> = ({ setPage }) => {
+    const [downloadedDoc, setDownloadedDoc] = React.useState<string | null>(null);
+
+    const handleDownload = (doc: DocumentInfo) => {
+        trackDownload(doc.title, doc.version);
+        const content = `========================================================================\n` +
+          `  KKM INTERNATIONAL GROUP - OFFICIAL PUBLICATION\n` +
+          `  گروه بین‌المللی کیمیا کاران ماد\n` +
+          `========================================================================\n` +
+          `Document Title : ${doc.title}\n` +
+          `Category       : ${doc.category}\n` +
+          `Version        : ${doc.version}\n` +
+          `Date of Issue  : ${doc.date}\n` +
+          `Digital Status : Verified & Authentic Publication\n` +
+          `Publisher      : KKM Executive Board & Directorate of Public Relations\n` +
+          `Contact        : info@kkm-intl.org | https://kkm-intl.org\n` +
+          `------------------------------------------------------------------------\n` +
+          `This document package contains the authorized corporate overview,\n` +
+          `engineering frameworks, and intellectual property specifications of KKM.\n` +
+          `========================================================================\n`;
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${doc.title.replace(/[^a-zA-Z0-9]/g, '_')}_${doc.version}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        setDownloadedDoc(doc.title);
+        setTimeout(() => setDownloadedDoc(null), 3500);
+    };
+
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <PageHeader title="KKM Documents" subtitle="Download official corporate profiles, technical brochures, and investor decks." />
@@ -69,13 +102,17 @@ const DownloadsPage: React.FC<{ setPage: (p: Page) => void }> = ({ setPage }) =>
                             </div>
                             
                             <button 
-                                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-50 dark:bg-slate-700 hover:bg-primary hover:text-white dark:hover:bg-secondary dark:hover:text-primary-dark text-text-dark dark:text-slate-200 font-semibold rounded-lg transition-colors border border-gray-200 dark:border-slate-600"
-                                onClick={() => { trackDownload(doc.title, doc.version); alert('Download initiated for ' + doc.title); }}
+                                className={`w-full flex items-center justify-center gap-2 px-4 py-2 font-semibold rounded-lg transition-colors border ${
+                                    downloadedDoc === doc.title 
+                                        ? 'bg-green-600 text-white border-green-600'
+                                        : 'bg-gray-50 dark:bg-slate-700 hover:bg-primary hover:text-white dark:hover:bg-secondary dark:hover:text-primary-dark text-text-dark dark:text-slate-200 border-gray-200 dark:border-slate-600'
+                                }`}
+                                onClick={() => handleDownload(doc)}
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                 </svg>
-                                Download PDF
+                                {downloadedDoc === doc.title ? 'Downloaded ✓' : 'Download Document'}
                             </button>
                         </div>
                     ))}

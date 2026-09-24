@@ -4,6 +4,7 @@ import { GoogleGenAI } from "@google/genai";
 import compression from "compression";
 import morgan from "morgan";
 import logger from "./logger";
+import { setupBackendRoutes } from "./backend/server";
 
 // Lazy Sentry initialization only when valid DSN is provided
 if (process.env.SENTRY_DSN && process.env.SENTRY_DSN.startsWith('http')) {
@@ -50,7 +51,176 @@ async function startServer() {
     });
   });
 
+  // Mount Official Corporate Backend Routes (JWT, Protected Route Middleware, Evidence Registry, Project Milestones)
+  setupBackendRoutes(app);
+
   // API routes FIRST
+  // Enterprise Portal - Real Backend Endpoints
+  // In-Memory store for portal state with persistent corporate baseline
+  const portalRequests = [
+    {
+      id: "REQ-2026-1042",
+      type: "leave",
+      title: "درخواست مرخصی استحقاقی سالانه - ۳ روز کاری",
+      titleEn: "Annual Leave Request - 3 Days",
+      requesterId: "kkm-user-005",
+      requesterName: "Dr. Ali Rezaei",
+      department: "Science & Sustainability",
+      priority: "normal",
+      status: "pending",
+      details: "درخواست مرخصی استحقاقی جهت شرکت در همایش بین‌المللی انرژی و محیط‌زیست ژنو",
+      startDate: "2026-10-05",
+      endDate: "2026-10-08",
+      approvals: [
+        {
+          step: 1,
+          role: "مدیر واحد پایداری",
+          approverName: "Dr. Reza Asakereh",
+          status: "pending"
+        }
+      ],
+      createdAt: "2026-09-22T08:30:00Z",
+      updatedAt: "2026-09-22T08:30:00Z"
+    },
+    {
+      id: "REQ-2026-1039",
+      type: "procurement",
+      title: "خرید تجهیزات سرور GPU کلاستر مدل NVIDIA H100",
+      titleEn: "Procurement of NVIDIA H100 GPU Cluster Nodes",
+      requesterId: "kkm-user-002",
+      requesterName: "Dr. Reza Asakereh",
+      department: "R&D & AI Systems",
+      priority: "critical",
+      status: "approved",
+      amount: "45000 USD",
+      details: "توسعه زیرساخت محاسباتی هوش مصنوعی لایه دوقلوی دیجیتال برای مدلسازی هیدرودینامیکی GMEL",
+      approvals: [
+        {
+          step: 1,
+          role: "مدیر ارشد فناوری",
+          approverName: "Dr. Reza Asakereh",
+          status: "approved",
+          comments: "تایید فنی انجام شد. اولویت راهبردی گروه.",
+          timestamp: "2026-09-21 10:14"
+        },
+        {
+          step: 2,
+          role: "مدیرعامل و هیئت مدیره",
+          approverName: "Gino Ayyoubian",
+          status: "approved",
+          comments: "تخصیص بودجه از محل ذخیره استراتژیک R&D تصویب شد.",
+          timestamp: "2026-09-21 14:30"
+        }
+      ],
+      createdAt: "2026-09-21T09:00:00Z",
+      updatedAt: "2026-09-21T14:30:00Z"
+    },
+    {
+      id: "REQ-2026-1044",
+      type: "technical_review",
+      title: "ممیزی امنیتی کد قرارداد هوشمند بلاکچین صدور اعتبارات کربن",
+      titleEn: "Security & Formal Verification of Carbon Credit Smart Contract",
+      requesterId: "kkm-user-003",
+      requesterName: "Dr. Kasra Jarrahian",
+      department: "Energy Systems",
+      priority: "urgent",
+      status: "in_review",
+      details: "بررسی رسمی آسیب‌پذیری‌های امنیتی اسمارت‌کانترکت‌های شبکه قبل از دیپلوی روی شبکه اصلی",
+      approvals: [
+        {
+          step: 1,
+          role: "ممیز ارشد نرم‌افزار و قرارداد هوشمند",
+          approverName: "Eng. Farzad Kazemi",
+          status: "pending"
+        }
+      ],
+      createdAt: "2026-09-22T14:20:00Z",
+      updatedAt: "2026-09-22T14:20:00Z"
+    }
+  ];
+
+  const portalRecoveryTickets: Array<{
+    ticketId: string;
+    targetEmail: string;
+    requesterNote?: string;
+    status: string;
+    createdAt: string;
+  }> = [];
+
+  // 1. Password Recovery Ticket Dispatch Endpoint (IT Security Desk)
+  app.post("/api/portal/auth/recovery-request", (req, res) => {
+    const { email, reason } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: "Corporate email is required." });
+    }
+
+    const ticketId = `IT-SEC-TKT-${Math.floor(10000 + Math.random() * 90000)}`;
+    const newTicket = {
+      ticketId,
+      targetEmail: email.trim().toLowerCase(),
+      requesterNote: reason || "کاربر درخواست بازنشانی رمز عبور سازمانی ثبت نموده است.",
+      status: "dispatched_to_it_desk",
+      createdAt: new Date().toISOString()
+    };
+
+    portalRecoveryTickets.push(newTicket);
+    logger.info(`Password recovery ticket logged for ${email}: ${ticketId}`);
+
+    return res.status(200).json({
+      success: true,
+      ticketId,
+      itDeskEmail: "it-security@kkm-intl.org",
+      message: "درخواست بازیابی رمز عبور به بخش امنیت و فناوری اطلاعات (IT Desk) ارسال شد.",
+      timestamp: newTicket.createdAt
+    });
+  });
+
+  // 2. Automation Cartable Endpoints
+  app.get("/api/portal/cartable/requests", (req, res) => {
+    return res.json({ requests: portalRequests });
+  });
+
+  app.post("/api/portal/cartable/requests", (req, res) => {
+    const newReq = req.body;
+    if (!newReq || !newReq.title) {
+      return res.status(400).json({ error: "Invalid request payload." });
+    }
+    const requestId = `REQ-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+    const fullRequest = {
+      ...newReq,
+      id: requestId,
+      approvals: newReq.approvals || [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      status: newReq.status || "pending"
+    };
+    portalRequests.unshift(fullRequest);
+    return res.status(201).json({ success: true, request: fullRequest });
+  });
+
+  app.patch("/api/portal/cartable/requests/:id/status", (req, res) => {
+    const { id } = req.params;
+    const { status, comments, approverName, approverRole } = req.body;
+    const reqItem = portalRequests.find((r) => r.id === id);
+    if (!reqItem) {
+      return res.status(404).json({ error: "Request not found." });
+    }
+    reqItem.status = status;
+    reqItem.updatedAt = new Date().toISOString();
+    if (comments || approverName) {
+      reqItem.approvals.push({
+        step: reqItem.approvals.length + 1,
+        role: approverRole || "مقام تاییدکننده",
+        approverName: approverName || "System Approver",
+        status: status === "approved" ? "approved" : "rejected",
+        comments: comments || "",
+        timestamp: new Date().toISOString().replace("T", " ").substring(0, 16)
+      });
+    }
+    return res.json({ success: true, request: reqItem });
+  });
+
+  // 3. AI Analysis endpoint
   app.post("/api/analyze", async (req, res) => {
     try {
       const apiKey = process.env.GEMINI_API_KEY;

@@ -21,9 +21,9 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ setPage }) => {
     const [currentTestimonial, setCurrentTestimonial] = React.useState(0);
 
     const testimonials = [
-        { quote: 'TestimonialQuote1', name: 'TestimonialName1', company: 'TestimonialCompany1', image: 'https://i.pravatar.cc/150?u=client1' },
-        { quote: 'TestimonialQuote2', name: 'TestimonialName2', company: 'TestimonialCompany2', image: 'https://i.pravatar.cc/150?u=client2' },
-        { quote: 'TestimonialQuote3', name: 'TestimonialName3', company: 'TestimonialCompany3', image: 'https://i.pravatar.cc/150?u=client3' },
+        { quote: 'TestimonialQuote1', name: 'TestimonialName1', company: 'TestimonialCompany1', code: 'EGC', badge: 'European Geothermal Consortium' },
+        { quote: 'TestimonialQuote2', name: 'TestimonialName2', company: 'TestimonialCompany2', code: 'REU', badge: 'Regional Energy Utility' },
+        { quote: 'TestimonialQuote3', name: 'TestimonialName3', company: 'TestimonialCompany3', code: 'NID', badge: 'National Infrastructure Directorate' },
     ];
 
     return (
@@ -220,7 +220,7 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ setPage }) => {
             </Section>
 
             {/* Leadership Team Section with Clickable Profiles and Dossier Modals */}
-            <LeadershipTeam />
+            <LeadershipTeam onNavigate={setPage} />
 
             <Section title={t('ClientTestimonials')} id="testimonials" className="bg-white dark:bg-slate-800">
                 <div className="relative bg-gradient-to-br from-primary/5 to-secondary/10 dark:from-slate-800 dark:to-slate-700 p-8 md:p-12 rounded-2xl min-h-[350px] flex items-center justify-center overflow-hidden border border-gray-100 dark:border-slate-600">
@@ -234,8 +234,16 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ setPage }) => {
                             className="text-center max-w-3xl"
                         >
                             <div className="mb-6 relative inline-block">
-                                <div className="absolute inset-0 bg-secondary rounded-full blur opacity-40 transform translate-y-1"></div>
-                                <img src={testimonials[currentTestimonial].image} alt="" className="w-24 h-24 rounded-full relative z-10 object-cover ring-4 ring-white dark:ring-slate-600" />
+                                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-slate-900 to-primary-dark p-1 border-2 border-secondary/40 shadow-xl flex items-center justify-center relative mx-auto">
+                                    <div className="w-full h-full rounded-xl bg-slate-900/90 flex flex-col items-center justify-center border border-white/10">
+                                        <span className="font-display font-black text-2xl text-white tracking-wider">
+                                            {testimonials[currentTestimonial].code}
+                                        </span>
+                                        <span className="text-[8px] font-mono text-secondary uppercase tracking-widest mt-0.5">
+                                            PARTNER
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                             <blockquote className="text-xl md:text-2xl italic text-text-dark dark:text-slate-200 leading-relaxed font-display">"{t(testimonials[currentTestimonial].quote as TranslationKey)}"</blockquote>
                             <cite className="block mt-6 not-italic">
@@ -265,15 +273,29 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ setPage }) => {
                     {EMPLOYEE_TESTIMONIALS.map((testimonial, index) => (
                         <div key={index} className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-slate-700 flex flex-col items-center text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
                             <div className="relative mb-4">
-                                <img src={testimonial.image} alt={testimonial.name} className="w-20 h-20 rounded-full object-cover ring-4 ring-gray-100 dark:ring-slate-700 group-hover:ring-secondary/50 transition-all duration-300" />
-                                <div className="absolute -bottom-2 -right-2 bg-white dark:bg-slate-800 rounded-full p-1 shadow-sm">
-                                    <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.0547 15.1953 15.125 16.5938 14.2109C17.3984 13.6797 18.0234 12.9609 18.0234 11.25V9H14.017V3H21V11.25C21 16.6953 16.9219 21 14.017 21ZM5 21L5 18C5 16.0547 6.17969 15.125 7.57812 14.2109C8.38281 13.6797 9.00781 12.9609 9.00781 11.25V9H5V3H11.9844V11.25C11.9844 16.6953 7.90625 21 5 21Z"/></svg>
+                                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-900 via-primary-dark to-slate-950 p-1 border-2 border-primary/30 dark:border-secondary/40 shadow-md flex items-center justify-center group-hover:scale-105 transition-transform">
+                                    <div className="w-full h-full rounded-xl bg-slate-900/90 flex flex-col items-center justify-center border border-white/10">
+                                        <span className="font-display font-black text-xl text-white">
+                                            {testimonial.initials || 'ENG'}
+                                        </span>
+                                        <span className="text-[8px] font-mono font-bold text-secondary uppercase tracking-widest mt-0.5">
+                                            KKM-ENG
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="absolute -bottom-2 -right-2 bg-white dark:bg-slate-800 rounded-full p-1 shadow-sm border border-gray-200 dark:border-slate-700">
+                                    <svg className="w-4 h-4 text-primary dark:text-secondary" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.0547 15.1953 15.125 16.5938 14.2109C17.3984 13.6797 18.0234 12.9609 18.0234 11.25V9H14.017V3H21V11.25C21 16.6953 16.9219 21 14.017 21ZM5 21L5 18C5 16.0547 6.17969 15.125 7.57812 14.2109C8.38281 13.6797 9.00781 12.9609 9.00781 11.25V9H5V3H11.9844V11.25C11.9844 16.6953 7.90625 21 5 21Z"/></svg>
                                 </div>
                             </div>
                             <p className="text-text-light dark:text-slate-300 italic mb-6 text-sm flex-grow leading-relaxed">"{t(testimonial.quote as TranslationKey)}"</p>
                             <div>
-                                <h4 className="font-display font-bold text-text-dark dark:text-white text-lg">{testimonial.name}</h4>
+                                <h4 className="font-display font-bold text-text-dark dark:text-white text-base sm:text-lg">{testimonial.name}</h4>
                                 <p className="text-xs text-primary dark:text-secondary uppercase tracking-wide font-semibold mt-1">{t(testimonial.role as TranslationKey)}</p>
+                                {testimonial.department && (
+                                    <span className="text-[10px] text-text-light dark:text-slate-400 font-mono block mt-1">
+                                        {testimonial.department}
+                                    </span>
+                                )}
                             </div>
                         </div>
                     ))}
