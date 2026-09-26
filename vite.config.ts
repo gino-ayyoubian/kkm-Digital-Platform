@@ -28,12 +28,12 @@ function generateCompressedAssets() {
 
         if (raw.length === 0) continue;
 
-        writeFileSync(path.join(outDir, `${output.fileName}.gz`), gzipSync(raw, { level: 9 }));
+        writeFileSync(path.join(outDir, `${output.fileName}.gz`), gzipSync(raw, { level: 6 }));
         writeFileSync(
           path.join(outDir, `${output.fileName}.br`),
           brotliCompressSync(raw, {
             params: {
-              [constants.BROTLI_PARAM_QUALITY]: 11,
+              [constants.BROTLI_PARAM_QUALITY]: 6,
             },
           })
         );
