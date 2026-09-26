@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 import logger from "../logger";
 import { INITIAL_ORG_MEMBERS } from "../data/orgMembers";
 import { getCorporateAuthSetupMessage, isCorporateAuthConfigured, verifyCorporatePassword } from "./corporateAuth";
+import { createInMemoryRateLimit } from "./rateLimit";
 
 export interface AuthenticatedUserPayload {
   uid: string;
@@ -102,6 +103,16 @@ export const requireRoles = (allowedRoles: string[]) => {
 export function setupBackendRoutes(app: express.Application) {
   // Mount Cookie Parser
   app.use(cookieParser());
+  const authRateLimit = createInMemoryRateLimit({
+    windowMs: 15 * 60 * 1000,
+    maxRequests: 10,
+    message: "Too many authentication attempts. Please try again later."
+  });
+  const portalReadRateLimit = createInMemoryRateLimit({
+    windowMs: 60 * 1000,
+    maxRequests: 120,
+    message: "Too many portal requests. Please slow down and try again."
+  });
 
   // Corporate Users Store (Initialized from INITIAL_ORG_MEMBERS, dynamic in-memory)
   const corporateUsers = [...INITIAL_ORG_MEMBERS];
@@ -353,7 +364,7 @@ export function setupBackendRoutes(app: express.Application) {
    * POST /api/auth/login
    * Validates corporate credentials and returns a secure JWT token + HTTP-only session cookie
    */
-  app.post("/api/auth/login", (req: Request, res: Response) => {
+  app.post("/api/auth/login", authRateLimit, (req: Request, res: Response) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
@@ -466,7 +477,7 @@ export function setupBackendRoutes(app: express.Application) {
    * POST /api/portal/auth/recovery-request
    * Formal IT Helpdesk Ticket Dispatch
    */
-  app.post("/api/portal/auth/recovery-request", (req: Request, res: Response) => {
+  app.post("/api/portal/auth/recovery-request", authRateLimit, (req: Request, res: Response) => {
     const { email, reason } = req.body;
     if (!email) {
       return res.status(400).json({ error: "Corporate email is required." });
@@ -501,7 +512,7 @@ export function setupBackendRoutes(app: express.Application) {
    * GET /api/portal/evidence-registry
    * Returns certified evidence items across levels A through G
    */
-  app.get("/api/portal/evidence-registry", requireCorporateAuth, (req: Request, res: Response) => {
+  app.get("/api/portal/evidence-registry", portalReadRateLimit, requireCorporateAuth, (req: Request, res: Response) => {
     return res.json({
       success: true,
       levels: ["Level A", "Level B", "Level C", "Level D", "Level E", "Level F", "Level G"],
@@ -546,7 +557,7 @@ export function setupBackendRoutes(app: express.Application) {
    * GET /api/portal/project-milestones
    * Returns strategic project milestones and evidence requirements
    */
-  app.get("/api/portal/project-milestones", requireCorporateAuth, (req: Request, res: Response) => {
+  app.get("/api/portal/project-milestones", portalReadRateLimit, requireCorporateAuth, (req: Request, res: Response) => {
     return res.json({ success: true, milestones: projectMilestones });
   });
 
@@ -575,7 +586,7 @@ export function setupBackendRoutes(app: express.Application) {
   // AUTOMATION CARTABLE ENDPOINTS (PROTECTED)
   // ==========================================
 
-  app.get("/api/portal/cartable/requests", requireCorporateAuth, (req: Request, res: Response) => {
+  app.get("/api/portal/cartable/requests", portalReadRateLimit, requireCorporateAuth, (req: Request, res: Response) => {
     return res.json({ requests: portalRequests });
   });
 

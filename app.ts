@@ -4,6 +4,7 @@ import compression from 'compression';
 import morgan from 'morgan';
 import { GoogleGenAI } from '@google/genai';
 import logger from './logger';
+import { createInMemoryRateLimit } from './backend/rateLimit';
 import { setupBackendRoutes } from './backend/server';
 
 let sentryInitialized = false;
@@ -30,6 +31,16 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
 
   const includeFrontend = options?.includeFrontend ?? true;
   const app = express();
+  const pageRequestLimiter = createInMemoryRateLimit({
+    windowMs: 60_000,
+    maxRequests: 240,
+    message: 'Too many page requests. Please slow down and try again shortly.',
+  });
+  const aiRequestLimiter = createInMemoryRateLimit({
+    windowMs: 60_000,
+    maxRequests: 20,
+    message: 'AI analysis request limit reached. Please wait a minute before retrying.',
+  });
 
   app.use(compression());
   app.use(express.json({ limit: '32kb' }));
@@ -61,7 +72,10 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
     const isCanonical = host === 'www.kkm-intl.org' && forwardedProto !== 'http';
 
     if (isOwnedDomain && !isCanonical) {
-      const targetUrl = `https://www.kkm-intl.org${req.originalUrl || req.url || '/'}`;
+      const redirectPath = (req.originalUrl || req.url || '/').startsWith('/')
+        ? (req.originalUrl || req.url || '/')
+        : '/';
+      const targetUrl = `https://www.kkm-intl.org${redirectPath}`;
       return res.redirect(301, targetUrl);
     }
 
@@ -79,7 +93,7 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
 
   setupBackendRoutes(app);
 
-  app.post('/api/analyze', async (req, res) => {
+  app.post('/api/analyze', aiRequestLimiter, async (req, res) => {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return res.status(503).json({
@@ -130,7 +144,7 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
         })
       );
 
-      app.get('*all', (_req, res) => {
+      app.get('*all', pageRequestLimiter, (_req, res) => {
         res.sendFile(path.join(distPath, 'index.html'));
       });
     }
