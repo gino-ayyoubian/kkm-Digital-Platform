@@ -1,7 +1,46 @@
 import path from 'path';
+import { mkdirSync, writeFileSync } from 'fs';
 import { defineConfig } from 'vite';
+import { brotliCompressSync, constants, gzipSync } from 'zlib';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+
+function generateCompressedAssets() {
+  return {
+    name: 'generate-compressed-assets',
+    apply: 'build' as const,
+    writeBundle(options: { dir?: string }, bundle: Record<string, { type: 'asset' | 'chunk'; fileName: string; source?: string | Uint8Array; code?: string }>) {
+      const outDir = options.dir;
+      if (!outDir) return;
+
+      mkdirSync(outDir, { recursive: true });
+
+      for (const output of Object.values(bundle)) {
+        const shouldCompress = /\.(css|html|js|json|svg|xml)$/i.test(output.fileName);
+        if (!shouldCompress) continue;
+
+        const raw =
+          output.type === 'asset'
+            ? typeof output.source === 'string'
+              ? Buffer.from(output.source)
+              : Buffer.from(output.source ?? '')
+            : Buffer.from(output.code ?? '');
+
+        if (raw.length === 0) continue;
+
+        writeFileSync(path.join(outDir, `${output.fileName}.gz`), gzipSync(raw, { level: 9 }));
+        writeFileSync(
+          path.join(outDir, `${output.fileName}.br`),
+          brotliCompressSync(raw, {
+            params: {
+              [constants.BROTLI_PARAM_QUALITY]: 11,
+            },
+          })
+        );
+      }
+    },
+  };
+}
 
 export default defineConfig(() => {
     return {
@@ -22,6 +61,7 @@ export default defineConfig(() => {
       },
       plugins: [
         react(),
+        generateCompressedAssets(),
         VitePWA({
           registerType: 'autoUpdate',
           injectRegister: false,

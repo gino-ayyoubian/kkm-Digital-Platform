@@ -1,5 +1,16 @@
 /* KKM International Group Global Styles */
 @layer base {
+  button,
+  [role='button'],
+  input[type='button'],
+  input[type='submit'],
+  input[type='reset'] {
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
+@layer base {
   html {
     color-scheme: light dark;
   }

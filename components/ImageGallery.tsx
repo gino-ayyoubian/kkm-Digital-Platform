@@ -35,8 +35,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, altText }) => {
             
             {images.length > 1 && (
                 <>
-                    <button onClick={prevImage} className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/80 transition-colors z-10" aria-label="Previous image">‹</button>
-                    <button onClick={nextImage} className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/80 transition-colors z-10" aria-label="Next image">›</button>
+                    <button onClick={prevImage} className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/80 transition-colors z-10 min-h-[48px] min-w-[48px]" aria-label="Previous image">‹</button>
+                    <button onClick={nextImage} className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/80 transition-colors z-10 min-h-[48px] min-w-[48px]" aria-label="Next image">›</button>
 
                     <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
                         <div className="flex justify-center gap-2">
@@ -45,7 +45,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, altText }) => {
                                     key={index}
                                     onClick={(e) => selectImage(e, index)}
                                     aria-label={`View image ${index + 1}`}
-                                    className={`w-16 h-10 rounded-md overflow-hidden transition-all duration-200 ${index === currentImageIndex ? 'ring-2 ring-accent-yellow ring-offset-2 ring-offset-black/50' : 'opacity-60 hover:opacity-100'}`}
+                                    className={`w-16 h-12 rounded-md overflow-hidden transition-all duration-200 ${index === currentImageIndex ? 'ring-2 ring-accent-yellow ring-offset-2 ring-offset-black/50' : 'opacity-60 hover:opacity-100'}`}
                                 >
                                     <img src={imgSrc} alt={`Thumbnail ${index + 1}`} loading="lazy" className="w-full h-full object-cover" />
                                 </button>

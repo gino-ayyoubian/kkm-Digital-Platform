@@ -373,7 +373,7 @@ const App: React.FC = () => {
          "name": "KKM International Group",
          "logo": {
            "@type": "ImageObject",
-           "url": "https://storage.googleapis.com/aistudio-chat-prod-gemini-image-serving/e0cfcd0b2fb249f3906371f4b3df36c7"
+           "url": "https://www.kkm-intl.org/pwa-512x512.png"
          }
        }
      };
@@ -397,7 +397,7 @@ const App: React.FC = () => {
      title = `${pageName} | KKM International Group`;
      
      if (currentPage === Page.Home) {
-         title = "KKM International Group | Technology. Engineering. Infrastructure. Innovation.";
+         title = "KKM International | Technology & Engineering";
          description = 'Leading multi-disciplinary engineering group pioneering closed-loop geothermal systems (GMEL), water-energy nexus technologies, rural microgrids, and sustainable infrastructure.';
          canonicalUrl = `${CANONICAL_HOST}/`;
          jsonLdSchema = {
@@ -406,7 +406,7 @@ const App: React.FC = () => {
            "name": "KKM International Group",
            "alternateName": "Kimia Karan Mâd Private Joint Stock Company",
            "url": CANONICAL_HOST,
-           "logo": "https://storage.googleapis.com/aistudio-chat-prod-gemini-image-serving/e0cfcd0b2fb249f3906371f4b3df36c7",
+           "logo": "https://www.kkm-intl.org/pwa-512x512.png",
            "contactPoint": {
              "@type": "ContactPoint",
              "telephone": "+98 21 9103 0830",

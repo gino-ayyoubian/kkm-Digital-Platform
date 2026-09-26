@@ -24,7 +24,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   title,
   description,
   url = 'https://www.kkm-intl.org',
-  image = 'https://storage.googleapis.com/aistudio-chat-prod-gemini-image-serving/e0cfcd0b2fb249f3906371f4b3df36c7',
+  image = 'https://www.kkm-intl.org/pwa-512x512.png',
   type = 'website',
   keywords = 'Geothermal Energy Technology, Closed Loop Geothermal, Rural Energy Systems, Rural Infrastructure, Energy Village, Water Energy Nexus, Industrial AI, EPCM Iran, Sustainable Infrastructure, Rural Development Technology, Geothermal Multi Energy, GeoMeta Energy Layer, Gmel Technology Ecosystem',
   schemaType = 'WebSite',

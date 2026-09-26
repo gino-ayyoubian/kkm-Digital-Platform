@@ -85,6 +85,8 @@ const InnovationHubPage: React.FC = () => {
                                 <LazyImage 
                                     src="https://picsum.photos/seed/innovation/500/300" 
                                     alt="Collaborative workshop environment" 
+                                    width={500}
+                                    height={300}
                                     className="w-full h-full object-cover hover:scale-105"
                                 />
                             </div>
