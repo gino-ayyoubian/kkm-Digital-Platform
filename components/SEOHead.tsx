@@ -23,7 +23,7 @@ interface SEOHeadProps {
 const SEOHead: React.FC<SEOHeadProps> = ({
   title,
   description,
-  url = 'https://www.kkm-intl.com',
+  url = 'https://www.kkm-intl.org',
   image = 'https://storage.googleapis.com/aistudio-chat-prod-gemini-image-serving/e0cfcd0b2fb249f3906371f4b3df36c7',
   type = 'website',
   keywords = 'Geothermal Energy Technology, Closed Loop Geothermal, Rural Energy Systems, Rural Infrastructure, Energy Village, Water Energy Nexus, Industrial AI, EPCM Iran, Sustainable Infrastructure, Rural Development Technology, Geothermal Multi Energy, GeoMeta Energy Layer, Gmel Technology Ecosystem',
@@ -54,7 +54,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     "@type": "Organization",
     "name": "KKM International Group",
     "alternateName": "Kimia Karan Mâd Private Joint Stock Company",
-    "url": "https://www.kkm-intl.com",
+    "url": "https://www.kkm-intl.org",
     "logo": image,
     "contactPoint": {
       "@type": "ContactPoint",
@@ -73,10 +73,10 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "KKM International Group",
-    "url": "https://www.kkm-intl.com",
+    "url": "https://www.kkm-intl.org",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://www.kkm-intl.com/search?q={search_term_string}",
+      "target": "https://www.kkm-intl.org/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -91,7 +91,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     "author": [{
         "@type": "Organization",
         "name": articleData.author,
-        "url": "https://www.kkm-intl.com"
+        "url": "https://www.kkm-intl.org"
       }]
   } : null;
 
@@ -121,13 +121,6 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <link rel="canonical" href={url} />
-
-      {/* Multilingual Hreflang Tags */}
-      <link rel="alternate" hrefLang="en" href={url} />
-      <link rel="alternate" hrefLang="fa" href={`${url}${url.includes('?') ? '&' : '?'}lang=fa`} />
-      <link rel="alternate" hrefLang="ar" href={`${url}${url.includes('?') ? '&' : '?'}lang=ar`} />
-      <link rel="alternate" hrefLang="ku" href={`${url}${url.includes('?') ? '&' : '?'}lang=ku`} />
-      <link rel="alternate" hrefLang="ru" href={`${url}${url.includes('?') ? '&' : '?'}lang=ru`} />
       <link rel="alternate" hrefLang="x-default" href={url} />
 
       {/* Open Graph */}

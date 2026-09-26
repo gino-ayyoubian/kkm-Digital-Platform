@@ -20,13 +20,22 @@ import { Analytics } from '@vercel/analytics/react';
 
 import ExhibitionPage from './pages/ExhibitionPage';
 import DownloadsPage from './pages/DownloadsPage';
+import HomePage from './pages/HomePage';
+import AboutUsPage from './pages/AboutUsPage';
+import CoreTechnologiesPage from './pages/CoreTechnologiesPage';
+import ProjectsPage from './pages/ProjectsPage';
+import NewsPage from './pages/NewsPage';
+import NewsArticlePage from './pages/NewsArticlePage';
+import ContactPage from './pages/ContactPage';
+import EvidenceRegistryPage from './pages/EvidenceRegistryPage';
+import RuralDevelopmentPage from './pages/RuralDevelopmentPage';
+import NotFoundPage from './pages/NotFoundPage';
+import { pathToPage, pageToPath, CANONICAL_HOST } from './lib/routes';
 import { PageTemplateSkeleton } from './components/ShimmerSkeleton';
-// Lazy load page components wrapped with Firebase Perf tracing
+// Lazy load specialized portal and secondary tools wrapped with Firebase Perf tracing
 
-const EvidenceRegistryPage = React.lazy(trackLazyLoad('EvidenceRegistryPage', () => import('./pages/EvidenceRegistryPage')));
 const ClaimRegistryPage = React.lazy(trackLazyLoad('ClaimRegistryPage', () => import('./pages/ClaimRegistryPage')));
 const ESGDashboard = React.lazy(trackLazyLoad('ESGDashboard', () => import('./components/ESGDashboard')));
-const RuralDevelopmentPage = React.lazy(trackLazyLoad('RuralDevelopmentPage', () => import('./pages/RuralDevelopmentPage')));
 const InvestmentPortalPage = React.lazy(trackLazyLoad('InvestmentPortalPage', () => import('./pages/InvestmentPortalPage')));
 const PilotRequestPage = React.lazy(trackLazyLoad('PilotRequestPage', () => import('./pages/PilotRequestPage')));
 const ProjectDevelopmentPage = React.lazy(trackLazyLoad('ProjectDevelopmentPage', () => import('./pages/ProjectDevelopmentPage')));
@@ -35,22 +44,14 @@ const CorporateInfoPage = React.lazy(trackLazyLoad('CorporateInfoPage', () => im
 const IPCenterPage = React.lazy(trackLazyLoad('IPCenterPage', () => import('./pages/IPCenterPage')));
 const TechnologyTemplatePage = React.lazy(trackLazyLoad('TechnologyTemplatePage', () => import('./pages/TechnologyTemplatePage')));
 const ProjectTemplatePage = React.lazy(trackLazyLoad('ProjectTemplatePage', () => import('./pages/ProjectTemplatePage')));
-
-const HomePage = React.lazy(trackLazyLoad('HomePage', () => import('./pages/HomePage')));
-const AboutUsPage = React.lazy(trackLazyLoad('AboutUsPage', () => import('./pages/AboutUsPage')));
-const CoreTechnologiesPage = React.lazy(trackLazyLoad('CoreTechnologiesPage', () => import('./pages/CoreTechnologiesPage')));
-const ProjectsPage = React.lazy(trackLazyLoad('ProjectsPage', () => import('./pages/ProjectsPage')));
 const InnovationHubPage = React.lazy(trackLazyLoad('InnovationHubPage', () => import('./pages/InnovationHubPage')));
 const CarbonCreditPage = React.lazy(trackLazyLoad('CarbonCreditPage', () => import('./pages/CarbonCreditPage')));
-const ContactPage = React.lazy(trackLazyLoad('ContactPage', () => import('./pages/ContactPage')));
 const ComingSoonPage = React.lazy(trackLazyLoad('ComingSoonPage', () => import('./pages/ComingSoonPage')));
 const LegalPage = React.lazy(trackLazyLoad('LegalPage', () => import('./pages/LegalPage')));
-const NewsPage = React.lazy(trackLazyLoad('NewsPage', () => import('./pages/NewsPage')));
-const NewsArticlePage = React.lazy(trackLazyLoad('NewsArticlePage', () => import('./pages/NewsArticlePage')));
 const SearchResultsPage = React.lazy(trackLazyLoad('SearchResultsPage', () => import('./pages/SearchResultsPage')));
 const FuturesPage = React.lazy(trackLazyLoad('FuturesPage', () => import('./pages/FuturesPage')));
 const DigitalTwinHubPage = React.lazy(trackLazyLoad('DigitalTwinHubPage', () => import('./pages/DigitalTwinHubPage')));
-const GMELTwinPage = React.lazy(trackLazyLoad('GMELTwinPage', () => import('./pages/DigitalTwinPage'))); // Keeping the original for GMEL
+const GMELTwinPage = React.lazy(trackLazyLoad('GMELTwinPage', () => import('./pages/DigitalTwinPage')));
 const REETwinPage = React.lazy(trackLazyLoad('REETwinPage', () => import('./pages/REETwinPage')));
 const CareersPage = React.lazy(trackLazyLoad('CareersPage', () => import('./pages/CareersPage')));
 const InternalPortalPage = React.lazy(trackLazyLoad('InternalPortalPage', () => import('./pages/InternalPortalPage')));
@@ -217,7 +218,18 @@ const CookieConsent: React.FC = () => {
 const PageSkeleton = () => <PageTemplateSkeleton template="standard" />;
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = React.useState<Page>(Page.Home);
+  const [currentPage, setCurrentPage] = React.useState<Page>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const legacyPage = params.get('page');
+      if (legacyPage) {
+        const found = Object.values(Page).find(p => p.replace(/\s/g, '').toLowerCase() === legacyPage.toLowerCase());
+        if (found) return found;
+      }
+      return pathToPage(window.location.pathname);
+    }
+    return Page.Home;
+  });
 
   React.useEffect(() => {
     trackPageView(currentPage, window.location.href);
@@ -272,107 +284,42 @@ const App: React.FC = () => {
     };
   }, []);
 
-  // --- VIRTUAL ROUTING LOGIC ---
+  // --- CANONICAL REAL PATH ROUTING (WEB-01) ---
   
-  // 1. On Mount: Check URL query param to set initial page
-  
+  // 1. Synchronize URL pathname on Page state changes
   React.useEffect(() => {
     try {
-        const path = window.location.pathname;
-        const params = new URLSearchParams(window.location.search);
-        const pageParam = params.get('page');
-        
-        if (path === '/rural' || path === '/rural-development' || path === '/rural-development/') {
-             setCurrentPage(Page.RuralStudies);
-             return;
-        }
-        if (path === '/exhibition' || path === '/rural-1405' || path === '/exhibition/rural-1405' || path === '/exhibition/rural-1405/' || path === '/exhibition/') {
-             setCurrentPage(Page.Exhibition);
-             return;
-        }
-        if (path === '/corporate' || path === '/corporate-info') {
-             setCurrentPage(Page.CorporateInfo);
-             return;
-        }
-        if (path === '/ip' || path === '/ip-center') {
-             setCurrentPage(Page.IPCenter);
-             return;
-        }
-        if (path === '/gmel') {
-             setCurrentPage(Page.GMELHub);
-             return;
-        }
-        if (path === '/pilot-request') {
-             setCurrentPage(Page.PilotRequest);
-             return;
-        }
-        if (path === '/project-development') {
-             setCurrentPage(Page.ProjectDevelopment);
-             return;
-        }
-        if (path === '/invest') {
-             setCurrentPage(Page.InvestmentPortal);
-             return;
-        }
-        if (path === '/evidence' || path === '/evidence-registry') {
-             setCurrentPage(Page.EvidenceRegistry);
-             return;
-        }
-        if (path === '/sustainability' || path === '/esg') {
-             setCurrentPage(Page.Sustainability);
-             return;
-        }
+      if (typeof window === 'undefined') return;
+      const targetPath = pageToPath(currentPage);
+      
+      // If we are at a 404, do not overwrite the unknown URL so the user/audit can see what was entered
+      if (currentPage === Page.NotFound) return;
 
-        if (pageParam) {
-          const pageEnum = Object.values(Page).find(p => p.replace(/\s/g, '') === pageParam);
-          if (pageEnum) {
-            setCurrentPage(pageEnum);
-          }
-        }
+      const currentPath = window.location.pathname;
+      const hasLegacyQuery = window.location.search.includes('page=');
+
+      if (currentPath !== targetPath || hasLegacyQuery) {
+        window.history.pushState({ page: currentPage }, '', targetPath);
+      }
+      window.scrollTo(0, 0);
     } catch (e) {
-        console.warn("Failed to parse URL parameters:", e);
-    }
-  }, []);
-
-
-  // 2. On Page Change: Update URL without reloading (Deep Linking)
-  React.useEffect(() => {
-    try {
-        const params = new URLSearchParams(window.location.search);
-        // Remove spaces for cleaner URLs (e.g. "AboutUs" instead of "About Us")
-        const urlFriendlyName = currentPage.replace(/\s/g, '');
-        
-        if (currentPage === Page.Home) {
-            // Clear params for home
-            const newUrl = window.location.pathname;
-            window.history.pushState({ page: currentPage }, '', newUrl);
-        } else {
-            params.set('page', urlFriendlyName);
-            const newUrl = `${window.location.pathname}?${params.toString()}`;
-            window.history.pushState({ page: currentPage }, '', newUrl);
-        }
-        
-        window.scrollTo(0, 0);
-    } catch (e) {
-        console.warn("History API interaction failed (likely due to security sandbox):", e);
+      console.warn("History API interaction failed:", e);
     }
   }, [currentPage]);
 
-  // 3. Handle Browser Back/Forward Buttons
+  // 2. Handle Browser Back/Forward Navigation
   React.useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
-        try {
-            const params = new URLSearchParams(window.location.search);
-            const pageParam = params.get('page');
-            if (pageParam) {
-                 const pageEnum = Object.values(Page).find(p => p.replace(/\s/g, '') === pageParam);
-                 if (pageEnum) setCurrentPage(pageEnum);
-            } else {
-                setCurrentPage(Page.Home);
-            }
-        } catch (e) {
-            console.warn("Popstate handling failed:", e);
+      try {
+        if (event.state && event.state.page) {
+          setCurrentPage(event.state.page);
+        } else {
+          const resolvedPage = pathToPage(window.location.pathname);
+          setCurrentPage(resolvedPage);
         }
+      } catch (e) {
+        console.warn("Popstate navigation resolution failed:", e);
+      }
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -384,19 +331,19 @@ const App: React.FC = () => {
   // Determine SEO Properties based on state
   let title = 'KKM International Group';
   let description = 'Technology. Engineering. Infrastructure. Innovation.';
-  let canonicalUrl = 'https://www.kkm-intl.com';
+  let canonicalUrl = `${CANONICAL_HOST}${pageToPath(currentPage)}`;
   let jsonLdSchema: Record<string, any> = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "KKM International Group",
-    "url": "https://www.kkm-intl.com"
+    "url": CANONICAL_HOST
   };
 
   if (currentPage === Page.News && selectedArticle) {
      title = `${selectedArticle.title} | KKM News`;
      description = selectedArticle.excerpt;
      const articleSlug = encodeURIComponent(selectedArticle.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
-     canonicalUrl = `https://www.kkm-intl.com/news/${articleSlug}`;
+     canonicalUrl = `${CANONICAL_HOST}/news/${articleSlug}`;
      jsonLdSchema = {
        "@context": "https://schema.org",
        "@type": "NewsArticle",
@@ -419,7 +366,7 @@ const App: React.FC = () => {
   } else if (currentPage === Page.SearchResults) {
      title = `Search Results: "${searchQuery}" | KKM Technical Index`;
      description = `Deep intelligence search results for "${searchQuery}" across KKM proprietary technologies, patent filings, active projects, news, and technical publications.`;
-     canonicalUrl = `https://www.kkm-intl.com/search?q=${encodeURIComponent(searchQuery)}`;
+     canonicalUrl = `${CANONICAL_HOST}/search?q=${encodeURIComponent(searchQuery)}`;
      jsonLdSchema = {
        "@context": "https://schema.org",
        "@type": "SearchResultsPage",
@@ -427,6 +374,10 @@ const App: React.FC = () => {
        "description": description,
        "url": canonicalUrl
      };
+  } else if (currentPage === Page.NotFound) {
+     title = 'Page Not Found (404) | KKM International Group';
+     description = 'The requested resource could not be found within the KKM International Group digital ecosystem.';
+     canonicalUrl = typeof window !== 'undefined' ? `${CANONICAL_HOST}${window.location.pathname}` : `${CANONICAL_HOST}/404`;
   } else {
      const pageName = t(currentPage as TranslationKey) || currentPage;
      title = `${pageName} | KKM International Group`;
@@ -434,13 +385,13 @@ const App: React.FC = () => {
      if (currentPage === Page.Home) {
          title = "KKM International Group | Technology. Engineering. Infrastructure. Innovation.";
          description = 'Leading multi-disciplinary engineering group pioneering closed-loop geothermal systems (GMEL), water-energy nexus technologies, rural microgrids, and sustainable infrastructure.';
-         canonicalUrl = "https://www.kkm-intl.com";
+         canonicalUrl = `${CANONICAL_HOST}/`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "Organization",
            "name": "KKM International Group",
            "alternateName": "Kimia Karan Mâd Private Joint Stock Company",
-           "url": "https://www.kkm-intl.com",
+           "url": CANONICAL_HOST,
            "logo": "https://storage.googleapis.com/aistudio-chat-prod-gemini-image-serving/e0cfcd0b2fb249f3906371f4b3df36c7",
            "contactPoint": {
              "@type": "ContactPoint",
@@ -451,7 +402,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.Careers) {
          title = "Careers, Engineering Fellowships & Talent Operations | KKM International Group";
          description = 'Explore high-impact career opportunities in geothermal engineering, thermodynamic cycles, smart grid modeling, and international infrastructure.';
-         canonicalUrl = "https://www.kkm-intl.com/careers";
+         canonicalUrl = `${CANONICAL_HOST}/careers`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -462,7 +413,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.Projects) {
          title = "Global Projects, Pilot Testbeds & Regional Deployments | KKM";
          description = 'Portfolio of active infrastructure projects, geothermal demonstration testbeds, desalination installations, and rural transformation programs.';
-         canonicalUrl = "https://www.kkm-intl.com/projects";
+         canonicalUrl = `${CANONICAL_HOST}/projects`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "CollectionPage",
@@ -473,7 +424,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.CoreTechnologies) {
          title = "Core Proprietary Technologies & Advanced Engineering | KKM";
          description = 'Overview of KKM proprietary technology domains: closed-loop geothermal (GMEL), thermal desalination, water-energy nexus, and industrial IoT.';
-         canonicalUrl = "https://www.kkm-intl.com/technologies";
+         canonicalUrl = `${CANONICAL_HOST}/technology`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "CollectionPage",
@@ -484,7 +435,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.Contact) {
          title = "Contact KKM International Group | Global Offices & Inquiries";
          description = 'Connect with KKM International Group headquarters, engineering centers, and regional development desks for partnerships, pilots, and tenders.';
-         canonicalUrl = "https://www.kkm-intl.com/contact";
+         canonicalUrl = `${CANONICAL_HOST}/contact`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "ContactPage",
@@ -495,7 +446,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.AboutUs) {
          title = "About KKM International Group | History, Leadership & Vision";
          description = 'Learn about KKM International Group\'s foundational engineering milestones, board leadership, and mission driving sustainable industrial transformation.';
-         canonicalUrl = "https://www.kkm-intl.com/about";
+         canonicalUrl = `${CANONICAL_HOST}/about`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "AboutPage",
@@ -506,7 +457,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.RuralStudies) {
          title = "Rural & Nomadic Territorial Development Platform | KKM International Group";
          description = "Integrated rural development platform engineering the energy-water-infrastructure nexus, modular mini-grids, and local value creation across 25 priority arid villages.";
-         canonicalUrl = "https://www.kkm-intl.com/rural-development";
+         canonicalUrl = `${CANONICAL_HOST}/rural-development`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -517,7 +468,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.EvidenceRegistry) {
          title = "Evidence & Technical Verification Registry (Levels A-G) | KKM";
          description = "Transparent corporate evidence registry mapping performance metrics, geothermal engineering claims, patent filings, and lab testbeds to Level A-G audit files.";
-         canonicalUrl = "https://www.kkm-intl.com/evidence";
+         canonicalUrl = `${CANONICAL_HOST}/evidence-registry`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "ItemPage",
@@ -528,7 +479,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.ClaimRegistry) {
          title = "Performance, Technical & ESG Claims Registry (P0-13) | KKM";
          description = "Structured registry matrix managing all performance, technical, ESG, and intellectual property claims with verified, target, and estimate status classifications.";
-         canonicalUrl = "https://www.kkm-intl.com/claims";
+         canonicalUrl = `${CANONICAL_HOST}/claims-registry`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "DataCatalog",
@@ -539,7 +490,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.Sustainability) {
          title = "Sustainability, ESG & Claim Governance (P0-13) | KKM International Group";
          description = "Corporate sustainability reporting and claim governance registry formalizing Verified, Internal, Estimated, and Demonstration data across KKM operations.";
-         canonicalUrl = "https://www.kkm-intl.com/sustainability";
+         canonicalUrl = `${CANONICAL_HOST}/sustainability`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -550,7 +501,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.Exhibition) {
          title = "Rural & Nomadic Development Exhibition 1405 | KKM International Group";
          description = "Official national exhibition portal showcasing KKM's signature architecture for decentralized rural utilities, Energy Villages, and pilot partnerships.";
-         canonicalUrl = "https://www.kkm-intl.com/exhibition/rural-1405";
+         canonicalUrl = `${CANONICAL_HOST}/exhibition/rural-1405`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "Event",
@@ -561,7 +512,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.InvestmentPortal || currentPage === Page.Invest) {
          title = "Infrastructure Investment & Strategic Co-Development | KKM";
          description = "Institutional investor portal providing capital allocation structures, IRR scenarios, and project financing frameworks for closed-loop geothermal infrastructure.";
-         canonicalUrl = "https://www.kkm-intl.com/invest";
+         canonicalUrl = `${CANONICAL_HOST}/invest`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -572,7 +523,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.PilotRequest) {
          title = "Pilot Testbed & Industrial Deployment Application | KKM";
          description = "Request commercial pilot deployment for GMEL closed-loop geothermal retrofit, heat recovery, or rural multi-utility microgrids.";
-         canonicalUrl = "https://www.kkm-intl.com/pilot-request";
+         canonicalUrl = `${CANONICAL_HOST}/pilot-request`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -583,7 +534,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.ProjectDevelopment) {
          title = "Subsurface & Geothermal Project Development Pipeline | KKM";
          description = "End-to-end EPCM project development methodology covering subsurface geological appraisal, thermodynamic cycle engineering, and facility delivery.";
-         canonicalUrl = "https://www.kkm-intl.com/project-development";
+         canonicalUrl = `${CANONICAL_HOST}/project-development`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -594,7 +545,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.IPCenter || currentPage === Page.IntellectualProperty || currentPage === Page.InnovationHub) {
          title = "Intellectual Property, Patents & Technology Assets | KKM";
          description = "Proprietary IP portfolio covering GMEL closed-loop well architecture, supercritical heat transfer fluids, and sonic casing vibration tools.";
-         canonicalUrl = "https://www.kkm-intl.com/ip-center";
+         canonicalUrl = `${CANONICAL_HOST}/ip-center`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "CollectionPage",
@@ -605,7 +556,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.CorporateInfo) {
          title = "Corporate Identity, Legal Registration & Governance | KKM";
          description = "Kimia Karan Mâd Private Joint Stock Company legal registration, official gazette disclosures, leadership structure, and bank certifications.";
-         canonicalUrl = "https://www.kkm-intl.com/corporate-info";
+         canonicalUrl = `${CANONICAL_HOST}/corporate-info`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "AboutPage",
@@ -616,7 +567,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.GMELHub || currentPage === Page.Ecosystems || currentPage === Page.Technology) {
          title = "GeoMeta Energy Layer (GMEL) Technology Ecosystem | KKM";
          description = "Comprehensive engineering overview of the GMEL ecosystem uniting closed-loop heat extraction, thermodynamic ORC cycles, and industrial AI digital twins.";
-         canonicalUrl = "https://www.kkm-intl.com/technologies/gmel";
+         canonicalUrl = `${CANONICAL_HOST}/gmel`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -627,7 +578,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.Downloads) {
          title = "Technical Whitepapers, Dossiers & Specifications | KKM";
          description = "Official repository of downloadable engineering whitepapers, GMEL technical dossiers, exhibition catalogs, and verified Level A-G audit summaries.";
-         canonicalUrl = "https://www.kkm-intl.com/downloads";
+         canonicalUrl = `${CANONICAL_HOST}/downloads`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "CollectionPage",
@@ -638,7 +589,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.DigitalTwinHub || currentPage === Page.DigitalTwinGMEL || currentPage === Page.DigitalTwinREE) {
          title = "Digital Twin Platform & Subsurface Telemetry Hub | KKM";
          description = "Next-generation enterprise digital twin platform for thermodynamic simulation, geothermal well telemetry, and real-time sustainability optimization.";
-         canonicalUrl = "https://www.kkm-intl.com/digital-twins";
+         canonicalUrl = `${CANONICAL_HOST}/digital-twins`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -649,7 +600,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.CarbonCredit) {
          title = "Carbon Credits, Decarbonization & Offset Pipeline | KKM";
          description = "Verified greenhouse gas emissions reduction certificates and high-integrity carbon credits generated by KKM clean energy and geothermal assets.";
-         canonicalUrl = "https://www.kkm-intl.com/carbon-credits";
+         canonicalUrl = `${CANONICAL_HOST}/carbon-credits`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "ItemPage",
@@ -660,7 +611,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.Legal) {
          title = "Legal Notice, Privacy Policy & Compliance Standards | KKM";
          description = "Official legal statements, data privacy protocols, corporate compliance charters, and regulatory disclosures of KKM International Group.";
-         canonicalUrl = "https://www.kkm-intl.com/legal";
+         canonicalUrl = `${CANONICAL_HOST}/legal`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -671,7 +622,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.News || currentPage === Page.Insights) {
          title = "News, Field Milestones & Technical Whitepapers | KKM";
          description = "Latest corporate announcements, field project milestones, technology licensing developments, and media briefings from KKM International Group.";
-         canonicalUrl = "https://www.kkm-intl.com/news";
+         canonicalUrl = `${CANONICAL_HOST}/news`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "CollectionPage",
@@ -682,7 +633,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.Offline) {
          title = "Offline Mode | KKM International Group";
          description = "You are currently viewing cached content in offline mode. Reconnect to access live telemetry and network data.";
-         canonicalUrl = "https://www.kkm-intl.com/offline";
+         canonicalUrl = `${CANONICAL_HOST}/offline`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -693,7 +644,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.Biomedical) {
          title = "Biomedical & Healthcare Innovation Hub | KKM International Group";
          description = "Advancing biomedical technologies, health informatics, and clinical engineering systems under KKM's cross-disciplinary innovation framework.";
-         canonicalUrl = "https://www.kkm-intl.com/biomedical";
+         canonicalUrl = `${CANONICAL_HOST}/technology`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -704,7 +655,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.SportsManagement) {
          title = "Sports Technology & Performance Infrastructure | KKM International Group";
          description = "Integrating performance analytics, biomechanical telemetry, and modern athletic infrastructure management.";
-         canonicalUrl = "https://www.kkm-intl.com/sports";
+         canonicalUrl = `${CANONICAL_HOST}/technology`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -715,7 +666,7 @@ const App: React.FC = () => {
      } else if (currentPage === Page.Futures) {
          title = "Strategic Futures & Long-Range Foresight | KKM International Group";
          description = "Multi-decade technological forecasting, energy transition roadmaps, and planetary resource resilience models developed by KKM Research.";
-         canonicalUrl = "https://www.kkm-intl.com/futures";
+         canonicalUrl = `${CANONICAL_HOST}/futures`;
          jsonLdSchema = {
            "@context": "https://schema.org",
            "@type": "WebPage",
@@ -934,8 +885,11 @@ const App: React.FC = () => {
       case Page.Futures:
         pageComponent = <FuturesPage />;
         break;
+      case Page.NotFound:
+        pageComponent = <NotFoundPage setPage={setCurrentPage} />;
+        break;
       default:
-        pageComponent = <ComingSoonPage pageTitle={currentPage} />;
+        pageComponent = <NotFoundPage setPage={setCurrentPage} />;
         break;
       }
     }

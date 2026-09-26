@@ -308,6 +308,16 @@ const Footer: React.FC<FooterProps> = ({ setPage, onSelectArticle, showNewsTicke
                                 >
                                     {subscriptionState === 'loading' ? 'Processing...' : subscriptionState === 'success' ? 'Subscribed!' : 'Subscribe'}
                                 </button>
+                                <p className="text-[11px] text-gray-400 mt-1 leading-snug">
+                                    By subscribing, you agree to receive KKM technical publications in accordance with our{' '}
+                                    <button 
+                                        type="button" 
+                                        onClick={() => setPage(Page.Legal)} 
+                                        className="text-secondary underline hover:text-white transition-colors"
+                                    >
+                                        Privacy Policy
+                                    </button>.
+                                </p>
                             </form>
                         </div>
                     </div>

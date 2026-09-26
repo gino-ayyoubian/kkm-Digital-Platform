@@ -40,6 +40,25 @@ async function startServer() {
     next();
   });
 
+  // Canonical Host Redirect Middleware (WEB-01)
+  // Enforces canonical HTTPS host https://www.kkm-intl.org across all owned host variants
+  // (e.g. kkm-intl.com, www.kkm-intl.com, apex kkm-intl.org, or unencrypted HTTP on production)
+  app.use((req, res, next) => {
+    const rawHost = (req.headers.host || "").toLowerCase();
+    const host = rawHost.split(":")[0]; // strip port if present
+    const forwardedProto = (req.headers["x-forwarded-proto"] || "").toString().toLowerCase();
+
+    // Only redirect production domains (do not redirect localhost, 127.0.0.1, or cloud test containers)
+    const isOwnedDomain = host === "kkm-intl.com" || host === "www.kkm-intl.com" || host === "kkm-intl.org" || host === "www.kkm-intl.org";
+    const isCanonical = host === "www.kkm-intl.org" && forwardedProto !== "http";
+
+    if (isOwnedDomain && !isCanonical) {
+      const targetUrl = `https://www.kkm-intl.org${req.originalUrl || req.url || "/"}`;
+      return res.redirect(301, targetUrl);
+    }
+    next();
+  });
+
   // Enterprise Observability Health Check
   app.get("/api/health", (req, res) => {
     logger.debug("Health check accessed");

@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@firebase/eslint-plugin-security-rules": "^0.0.2",
+    "@tailwindcss/vite": "^4.3.3",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
@@ -54,6 +55,7 @@
     "@vitejs/plugin-react": "^5.0.0",
     "esbuild": "^0.28.2",
     "jsdom": "^30.0.1",
+    "tailwindcss": "^4.3.3",
     "tsx": "^4.23.13",
     "typescript": "~5.8.2",
     "vite": "^8.2.2",

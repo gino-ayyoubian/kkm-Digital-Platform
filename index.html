@@ -98,9 +98,6 @@
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
     <meta charset="UTF-8" />
-    <meta name="google-site-verification" content="GSC_VERIFICATION_TOKEN_HERE" />
-    <!-- gtag removed for preview to prevent security errors -->
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     
     <!-- Primary Meta Tags -->
@@ -111,10 +108,11 @@
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
     <meta name="author" content="KKM International Group" />
+    <link rel="canonical" href="https://www.kkm-intl.org/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.kkm-intl.com/" />
+    <meta property="og:url" content="https://www.kkm-intl.org/" />
     <meta property="og:title" content="KKM International Group | Technology. Engineering. Infrastructure. Innovation." />
     <meta property="og:description" content="Technology. Engineering. Infrastructure. Innovation. From Evidence to Technology, Projects, and Scalable Impact." />
     <meta property="og:image" content="data:image/svg+xml,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><rect width='200' height='200' rx='28' fill='%23002D56'/><path d='M95 18C100 28 85 45 76 60C62 83 55 106 58 132C62 161 86 182 116 182C138 182 158 169 168 150C164 163 151 176 132 181C110 186 85 180 68 165C45 144 40 112 48 84C55 58 74 34 95 18Z' fill='white'/><path d='M102 38C108 50 96 68 89 82C79 101 76 122 83 143C88 158 100 169 116 172C134 175 152 167 163 152C169 144 172 133 172 122C172 102 162 82 147 69C152 82 153 97 149 111C144 129 130 144 112 147C96 150 83 140 80 125C76 108 83 91 92 76C98 66 104 52 102 38Z' fill='white'/><circle cx='126' cy='132' r='28' fill='white'/></svg>" />
@@ -122,7 +120,7 @@
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://www.kkm-intl.com/" />
+    <meta property="twitter:url" content="https://www.kkm-intl.org/" />
     <meta property="twitter:title" content="KKM International Group | Technology. Engineering. Infrastructure. Innovation." />
     <meta property="twitter:description" content="Technology. Engineering. Infrastructure. Innovation. From Evidence to Technology, Projects, and Scalable Impact." />
     <meta property="twitter:image" content="data:image/svg+xml,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><rect width='200' height='200' rx='28' fill='%23002D56'/><path d='M95 18C100 28 85 45 76 60C62 83 55 106 58 132C62 161 86 182 116 182C138 182 158 169 168 150C164 163 151 176 132 181C110 186 85 180 68 165C45 144 40 112 48 84C55 58 74 34 95 18Z' fill='white'/><path d='M102 38C108 50 96 68 89 82C79 101 76 122 83 143C88 158 100 169 116 172C134 175 152 167 163 152C169 144 172 133 172 122C172 102 162 82 147 69C152 82 153 97 149 111C144 129 130 144 112 147C96 150 83 140 80 125C76 108 83 91 92 76C98 66 104 52 102 38Z' fill='white'/><circle cx='126' cy='132' r='28' fill='white'/></svg>" />
@@ -135,6 +133,17 @@
     <meta name="apple-mobile-web-app-title" content="KKM Intl">
 
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg viewBox='0 0 170 160' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='flogoSwooshDark' x1='50%25' y1='0%25' x2='50%25' y2='100%25'><stop offset='0%25' stop-color='%2300529B'/><stop offset='100%25' stop-color='%23002D56'/></linearGradient><linearGradient id='flogoSwooshLight' x1='50%25' y1='0%25' x2='50%25' y2='100%25'><stop offset='0%25' stop-color='%2389CFF0'/><stop offset='100%25' stop-color='%230A92EF'/></linearGradient><radialGradient id='flogoSphereGradient' cx='50%25' cy='50%25' r='50%25' fx='30%25' fy='30%25'><stop offset='0%25' stop-color='%23FFD700'/><stop offset='100%25' stop-color='%23FFC107'/></radialGradient></defs><g><path d='M76.3 150.3C34.2 147.1 3.5 113.8 9.2 72.3C14.8 30.8 52.8 0.1 94.9 3.3C137 6.4 167.7 39.7 162.1 81.2C158.4 107.9 141.2 131.5 117.8 141.6C103.6 147.9 88.6 151.3 76.3 150.3Z' fill='url(%23flogoSwooshDark)'/><path d='M152.5 73.1C152.5 53.6 143.1 35.8 127.8 24.8C110.1 12.1 87.1 8.8 66.8 15.6C41.7 23.9 24.8 45.4 22.1 71.9C21.3 80.2 22.8 88.5 26.2 96C40.1 66.7 72.8 53.8 102.1 67.7C124.7 78.4 138.8 100.7 138.8 125.6C148.1 110.8 152.5 92.6 152.5 73.1Z' fill='url(%23flogoSwooshLight)'/><circle cx='115' cy='98' r='33' fill='url(%23flogoSphereGradient)'/></g></svg>">
+    <script>
+      (function() {
+        var _warn = console.warn;
+        console.warn = function() {
+          if (arguments[0] && typeof arguments[0] === 'string' && arguments[0].indexOf('cdn.tailwindcss.com') !== -1) {
+            return;
+          }
+          return _warn.apply(console, arguments);
+        };
+      })();
+    </script>
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -54,9 +54,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [allUsers, setAllUsers] = useState<UserProfile[]>(INITIAL_ORG_MEMBERS);
   const [loading, setLoading] = useState(true);
 
-  // Sync users from Firestore or seed with initial members
+  // Sync users from Firestore only when user is authenticated
   const fetchAllUsers = useCallback(async () => {
-    if (!db) return;
+    if (!db || !auth?.currentUser) return;
     try {
       const snap = await getDocs(collection(db, 'users'));
       if (!snap.empty) {
@@ -77,26 +77,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
         }
         setAllUsers(merged);
-      } else {
-        // First boot: Seed initial users into Firestore
-        for (const member of INITIAL_ORG_MEMBERS) {
-          try {
-            await setDoc(doc(db, 'users', member.uid), member);
-          } catch (e) {
-            // Ignore if rules restrict offline
-          }
-        }
-        setAllUsers(INITIAL_ORG_MEMBERS);
       }
-    } catch (err) {
-      console.warn('Using local org members roster fallback:', err);
+    } catch (_) {
       setAllUsers(INITIAL_ORG_MEMBERS);
     }
   }, []);
 
   useEffect(() => {
-    fetchAllUsers();
-  }, [fetchAllUsers]);
+    if (currentUser) {
+      fetchAllUsers();
+    }
+  }, [currentUser, fetchAllUsers]);
 
   // Auth state listener
   useEffect(() => {

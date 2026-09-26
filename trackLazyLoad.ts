@@ -36,8 +36,6 @@ async function retryImport<T>(
         if (!lastReload || now - parseInt(lastReload, 10) > 15000) {
           window.sessionStorage.setItem(reloadKey, String(now));
           window.location.reload();
-          // Return pending promise so React Suspense does not immediately crash before reload
-          return new Promise<never>(() => {});
         }
       } catch (_) {
         // Ignore sessionStorage restrictions in private/sandboxed mode

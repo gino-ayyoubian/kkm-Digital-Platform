@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kkm-intl.org/sitemap.xml
+Sitemap: https://www.kkm-intl.org/sitemap.xml

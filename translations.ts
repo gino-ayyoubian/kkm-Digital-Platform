@@ -33,6 +33,7 @@ export const translations: Translations = {
     [Page.EvidenceRegistry]: 'Evidence Registry',
     [Page.ClaimRegistry]: 'Claim Registry',
     [Page.Sustainability]: 'Sustainability & Governance',
+    [Page.NotFound]: 'Page Not Found',
     [Page.Offline]: 'Offline Mode',
 
     // Home Redesign

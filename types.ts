@@ -45,6 +45,7 @@ export enum Page {
   EvidenceRegistry = 'Evidence Registry',
   ClaimRegistry = 'Claim Registry',
   Sustainability = 'Sustainability & Governance',
+  NotFound = 'Page Not Found',
 }
 
 export interface Project {

@@ -5,8 +5,8 @@ import type { Project, NavLink, NewsItem, Video, JobOpening, Innovation } from '
 export const RECENT_INNOVATIONS: Innovation[] = [
     {
         id: 'tech-res-01',
-        title: 'Innovation_1_Title',
-        description: 'Innovation_1_Desc',
+        title: 'GMEL-CLG Downhole Closed-Loop Subsurface Circuit',
+        description: 'Hermetically sealed coaxial deep borehole heat exchangers extracting geothermal energy without formation fluid withdrawal or induced seismicity.',
         image: 'https://picsum.photos/seed/gmel-closed-loop/600/400',
         impact: '92–108 W/m thermal extraction verified in non-permeable dry formations (TRL-6).',
         date: '2026-06-12',
@@ -22,8 +22,8 @@ export const RECENT_INNOVATIONS: Innovation[] = [
     },
     {
         id: 'tech-res-02',
-        title: 'Innovation_2_Title',
-        description: 'Innovation_2_Desc',
+        title: 'KKM-GeoTwin PINN Hybrid Subsurface Simulation Engine',
+        description: 'Physics-informed neural networks computing thermal decay and fluid mechanics in <50ms with <3.2% root-mean-square error.',
         image: 'https://picsum.photos/seed/digital-twin-reservoir/600/400',
         impact: 'Physics-informed neural networks computing thermal decay in <50ms (<3.2% RMSE).',
         date: '2026-04-18',
@@ -39,8 +39,8 @@ export const RECENT_INNOVATIONS: Innovation[] = [
     },
     {
         id: 'tech-res-03',
-        title: 'Innovation_3_Title',
-        description: 'Innovation_3_Desc',
+        title: 'Modular Low-Temperature Geothermal Desalination & ZLD Nexus',
+        description: 'Multi-stage vacuum distillation integrated with low-grade geothermal exhaust heat and zero-liquid discharge crystallization.',
         image: 'https://picsum.photos/seed/desal-nexus/600/400',
         impact: 'Specific energy consumption lowered to 2.1 kWh/m³ via low-grade geothermal brine heat integration.',
         date: '2026-03-05',
@@ -351,98 +351,98 @@ export const PROJECTS: Project[] = [
 
 export const NEWS_ITEMS: NewsItem[] = [
     {
-        title: "News_1_Title",
-        date: "2026-08-15",
-        excerpt: "News_1_Excerpt",
+        title: "KKM Unveils Verified Evidence Registry for Engineering & ESG Integrity",
+        date: "2026-09-15",
+        excerpt: "In alignment with KKM's Production Truth Layer, all engineering metrics, thermodynamic claims, and ESG indicators are now mapped to formal Evidence Levels A through G.",
         image: "https://picsum.photos/seed/truth-evidence/600/400",
-        content: "News_1_Content",
+        content: "KKM International Group has officially launched its comprehensive Evidence Registry, establishing an unshakeable empirical foundation for all public technical claims, energy harvest rates, and decarbonization metrics. Operating under strict ISO 14064, API, and ASME verification benchmarks, the registry documents third-party validation dossiers, field SCADA logs, and patent certifications across all active energy and infrastructure projects.",
         category: 'Corporate'
     },
     {
-        title: "News_2_Title",
-        date: "2026-07-22",
-        excerpt: "News_2_Excerpt",
+        title: "Qeshm Island Green Energy & Marine Intake Facility Completes Phase 1 Verification",
+        date: "2026-08-28",
+        excerpt: "Phase 1 offshore intake pipeline deployment and high-pressure hydrostatic tests have been successfully finalized in collaboration with the Free Zone Authority.",
         image: "https://picsum.photos/seed/qeshm-oilfield/600/400",
-        content: "News_2_Content",
+        content: "The Qeshm Island clean energy and marine water nexus facility has passed its critical Phase 1 engineering acceptance milestone. Covering deep subsea intake conduits and onshore manifold infrastructure, the project establishes the physical foundation for the upcoming closed-loop geothermal binary generation and marine biotechnology research facility.",
         category: 'Projects'
     },
     {
-        title: "News_3_Title",
-        date: "2026-06-10",
-        excerpt: "News_3_Excerpt",
-        image: "https://picsum.photos/seed/rural-platform/600/400",
-        content: "News_3_Content",
-        category: 'Sustainability'
-    },
-    {
-        title: "News_4_Title",
-        date: "2026-05-05",
-        excerpt: "News_4_Excerpt",
+        title: "Sarakhs Depleted Gas Basin Closed-Loop Geothermal Simulation Achieves TRL-6",
+        date: "2026-08-10",
+        excerpt: "Empirical telemetry and physics-informed neural network modeling validate heat extraction rates of 92–108 W/m in high-temperature dry formation testbeds.",
         image: "https://picsum.photos/seed/gmel-closed-loop/600/400",
-        content: "News_4_Content",
+        content: "Engineering simulations and rig-tested surface loop data from the Sarakhs Khangiran reservoir testbed have confirmed the thermodynamic feasibility of converting retired deep hydrocarbons wells into baseload geothermal power generators. The proprietary GMEL-CLG closed-loop design eliminates induced seismicity and subsurface fluid loss risks.",
         category: 'Technology'
     },
     {
-        title: "News_5_Title",
-        date: "2026-04-12",
-        excerpt: "News_5_Excerpt",
+        title: "Rural & Nomadic Territorial Development Platform Debuts at National Exhibition 1405",
+        date: "2026-07-25",
+        excerpt: "The 'One Village, One Integrated System' model links microgrid clean energy, localized water desalination, and agri-processing to create self-sustaining local economies.",
+        image: "https://picsum.photos/seed/rural-platform/600/400",
+        content: "At the National Capabilities Exhibition 1405, KKM showcased its integrated rural revitalization blueprint. By deploying skid-mounted low-temperature thermal desalination units, micro-solar/geothermal hybrid power nodes, and AI-driven agricultural cold chain operations, the initiative provides remote settlements with bankable, long-term self-sufficiency.",
+        category: 'Sustainability'
+    },
+    {
+        title: "WIPO PCT Patent Filings Expanded for GMEL Thermodynamic Energy Extraction Cycles",
+        date: "2026-06-30",
+        excerpt: "KKM International Group expands its global intellectual property portfolio with new PCT disclosures protecting specialized coaxial downhole heat exchangers.",
         image: "https://picsum.photos/seed/exhibition-hall/600/400",
-        content: "News_5_Content",
+        content: "The KKM Intellectual Property Directorate has formally advanced international patent protection for its hermetically sealed coaxial downhole heat exchanger and phase-change nanofluid circulating cycles under the Patent Cooperation Treaty (PCT), reinforcing its defensible technological moat.",
         category: 'Events'
     },
     // Archived 2023 News
     {
-        title: "News_Archive_1_Title",
+        title: "Phase 1 Environmental & Hydrological Assessment Completed for Qeshm Free Zone",
         date: "2023-11-15",
-        excerpt: "News_Archive_1_Excerpt",
+        excerpt: "Baseline environmental impact assessment and marine benthic studies completed ahead of pipeline intake placement.",
         image: "https://picsum.photos/seed/archive-lab/600/400",
-        content: "News_Archive_1_Content",
+        content: "Technical environmental baseline audit approved by regional marine regulatory bodies, confirming zero adverse ecological impact on coastal reefs.",
         category: 'Archive'
     },
     {
-        title: "News_Archive_2_Title",
+        title: "Hydrostatic Pipeline Integrity Verification Finalized for Southern Corridor",
         date: "2023-09-30",
-        excerpt: "News_Archive_2_Excerpt",
+        excerpt: "Factory acceptance and field pressure testing completed for 18-inch HDPE high-durability intake conduits.",
         image: "https://picsum.photos/seed/archive-pipeline/600/400",
-        content: "News_Archive_2_Content",
+        content: "Engineers validated full pressure containment up to 1.5x nominal operating pressure across all marine pipeline joints.",
         category: 'Archive'
     },
     {
-        title: "News_Archive_3_Title",
+        title: "Joint Research MOU Executed for Subsurface Heat Transfer Modeling",
         date: "2023-06-10",
-        excerpt: "News_Archive_3_Excerpt",
+        excerpt: "Academic collaboration agreement initiated to evaluate thermodynamic behavior in deep sedimentary basins.",
         image: "https://picsum.photos/seed/archive-mou/600/400",
-        content: "News_Archive_3_Content",
+        content: "KKM engineering directors signed a multi-year research framework with university thermodynamics faculties to model transient heat transfer.",
         category: 'Archive'
     },
     {
-        title: "News_Archive_4_Title",
+        title: "Zero-Incident HSE Safety Milestone Reached Across All Active Field Sites",
         date: "2023-03-25",
-        excerpt: "News_Archive_4_Excerpt",
+        excerpt: "Over 500,000 work-hours logged without lost-time injuries in marine and civil construction operations.",
         image: "https://picsum.photos/seed/archive-hse/600/400",
-        content: "News_Archive_4_Content",
+        content: "Rigorous ISO 45001 safety management protocols maintained across civil infrastructure, subsea pipe handling, and high-pressure well operations.",
         category: 'Archive'
     }
 ];
 
 export const VIDEOS: Video[] = [
     {
-        title: "News_1_Title", // "Breakthrough in Closed-Loop Geothermal"
+        title: "GMEL Closed-Loop Subsurface Energy Extraction Demonstration",
         description: "VisionInMotionSubtitle",
         thumbnail: "https://i.ytimg.com/vi/1k1J7f7t7wM/hqdefault.jpg", 
-        youtubeId: "1k1J7f7t7wM" // "Eavor-Loop 2.0" - Closed-Loop Geothermal Tech
+        youtubeId: "1k1J7f7t7wM"
     },
     {
-        title: "News_2_Title", // "Qeshm Project Phase 1"
+        title: "Qeshm Island Marine Intake & Energy Infrastructure Overview",
         description: "VisionInMotionSubtitle",
         thumbnail: "https://i.ytimg.com/vi/Mj9Gj6QgM_E/hqdefault.jpg",
-        youtubeId: "Mj9Gj6QgM_E" // "Geothermal Power Plant 3D Animation" - Relevant to Plant construction
+        youtubeId: "Mj9Gj6QgM_E"
     },
     {
-        title: "News_3_Title", // "Strategic Partnership" (Drilling Tech)
+        title: "Autonomous Subsurface Modeling & Automated Wellbore Engineering",
         description: "VisionInMotionSubtitle",
         thumbnail: "https://i.ytimg.com/vi/Fj4s3q7y8wE/hqdefault.jpg",
-        youtubeId: "Fj4s3q7y8wE" // "Automated Drilling Rig" - Relevant to Drilling/Engineering
+        youtubeId: "Fj4s3q7y8wE"
     }
 ];
 

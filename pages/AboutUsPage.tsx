@@ -107,9 +107,15 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ setPage }) => {
                             </div>
                             <div className="flex flex-col items-center">
                                 <img 
-                                    src="https://i.imgur.com/lJ4n79b.jpeg" 
-                                    alt="Seyed Gino Ayyoubian" 
+                                    src="/images/gino-ayyoubian.jpg" 
+                                    alt="Seyed Gino Ayyoubian, Chief Executive Officer of KKM International Group" 
+                                    width={128}
+                                    height={128}
+                                    loading="lazy"
                                     className="w-32 h-32 rounded-full border-4 border-accent-yellow shadow-lg object-cover mb-4"
+                                    onError={(e) => {
+                                        (e.currentTarget as HTMLImageElement).src = '/gino-ayyoubian.jpg';
+                                    }}
                                 />
                                 <div className="text-center">
                                     <p className="font-bold text-lg">{t('GinoAyyoubian')}</p>
