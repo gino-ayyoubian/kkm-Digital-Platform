@@ -26,7 +26,7 @@ function generateCompressedAssets() {
               : Buffer.from(output.source ?? '')
             : Buffer.from(output.code ?? '');
 
-        if (raw.length === 0) continue;
+        if (raw.length < 1024) continue;
 
         writeFileSync(path.join(outDir, `${output.fileName}.gz`), gzipSync(raw, { level: 6 }));
         writeFileSync(

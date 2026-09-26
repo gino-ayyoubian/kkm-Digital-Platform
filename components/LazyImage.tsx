@@ -69,10 +69,10 @@ const LazyImage: React.FC<LazyImageProps> = ({
       ref={containerRef} 
       className="w-full h-full bg-gray-200 dark:bg-slate-700 animate-pulse relative"
       style={{
-        animationPlayState: isLoaded ? 'paused' : 'running',
-        backgroundColor: isLoaded ? 'transparent' : undefined,
-        aspectRatio,
         ...style,
+        animationPlayState: isLoaded ? 'paused' : 'running',
+        backgroundColor: isLoaded ? 'transparent' : style?.backgroundColor,
+        ...(aspectRatio ? { aspectRatio } : null),
       }}
     >
       {isVisible && (

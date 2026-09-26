@@ -172,7 +172,9 @@
     <script defer src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
     <style>
       :root {
         --bg-grad-1: #F8F9FA;
@@ -339,9 +341,7 @@
         scroll-margin-top: 100px;
       }
     </style>
-    <link rel="preload" href="/index.css" as="style">
-    <link rel="stylesheet" href="/index.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="/index.css"></noscript>
+    <link rel="stylesheet" href="/index.css">
   </head>
   <body>
     <div id="root"></div>
