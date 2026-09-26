@@ -10,7 +10,6 @@ import { useLanguage } from './LanguageContext';
 import BackToTopButton from './components/BackToTopButton';
 import A11yDebugOverlay from './components/A11yDebugOverlay';
 import { CEOSignatureBanner } from './components/CEOSignatureBanner';
-import { PROJECTS, NEWS_ITEMS } from './constants';
 import type { TranslationKey } from './translations';
 import { performDeepSearch } from './searchEngine';
 import SkipToContent from './components/SkipToContent';
@@ -31,6 +30,7 @@ import EvidenceRegistryPage from './pages/EvidenceRegistryPage';
 import RuralDevelopmentPage from './pages/RuralDevelopmentPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { pathToPage, pageToPath, CANONICAL_HOST } from './lib/routes';
+import { findArticleBySlug, getArticleSlug, getArticleSlugFromPath } from './lib/news';
 import { PageTemplateSkeleton } from './components/ShimmerSkeleton';
 // Lazy load specialized portal and secondary tools wrapped with Firebase Perf tracing
 
@@ -263,7 +263,10 @@ const App: React.FC = () => {
     return () => window.removeEventListener('vite:preloadError', handlePreloadError);
   }, []);
 
-  const [selectedArticle, setSelectedArticle] = React.useState<NewsItem | null>(null);
+  const [selectedArticle, setSelectedArticle] = React.useState<NewsItem | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return findArticleBySlug(getArticleSlugFromPath(window.location.pathname));
+  });
   const [searchResults, setSearchResults] = React.useState<GeminiSearchResult | null>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [isOnline, setIsOnline] = React.useState<boolean>(() => typeof navigator !== 'undefined' ? navigator.onLine : true);
@@ -290,7 +293,10 @@ const App: React.FC = () => {
   React.useEffect(() => {
     try {
       if (typeof window === 'undefined') return;
-      const targetPath = pageToPath(currentPage);
+      const targetPath =
+        currentPage === Page.News && selectedArticle
+          ? `/news/${getArticleSlug(selectedArticle.title)}`
+          : pageToPath(currentPage);
       
       // If we are at a 404, do not overwrite the unknown URL so the user/audit can see what was entered
       if (currentPage === Page.NotFound) return;
@@ -312,9 +318,17 @@ const App: React.FC = () => {
     const handlePopState = (event: PopStateEvent) => {
       try {
         if (event.state && event.state.page) {
+          const article = event.state.page === Page.News
+            ? findArticleBySlug(getArticleSlugFromPath(window.location.pathname))
+            : null;
+          setSelectedArticle(article);
           setCurrentPage(event.state.page);
         } else {
           const resolvedPage = pathToPage(window.location.pathname);
+          const article = resolvedPage === Page.News
+            ? findArticleBySlug(getArticleSlugFromPath(window.location.pathname))
+            : null;
+          setSelectedArticle(article);
           setCurrentPage(resolvedPage);
         }
       } catch (e) {
@@ -342,7 +356,7 @@ const App: React.FC = () => {
   if (currentPage === Page.News && selectedArticle) {
      title = `${selectedArticle.title} | KKM News`;
      description = selectedArticle.excerpt;
-     const articleSlug = encodeURIComponent(selectedArticle.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+     const articleSlug = getArticleSlug(selectedArticle.title);
      canonicalUrl = `${CANONICAL_HOST}/news/${articleSlug}`;
      jsonLdSchema = {
        "@context": "https://schema.org",

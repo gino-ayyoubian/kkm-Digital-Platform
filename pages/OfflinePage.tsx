@@ -3,6 +3,7 @@ import { NEWS_ITEMS } from '../constants';
 import type { NewsItem } from '../types';
 import { Page } from '../types';
 import { useLanguage } from '../LanguageContext';
+import { sanitizeHtml } from '../utils/sanitizeHtml';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface OfflinePageProps {
@@ -267,6 +268,7 @@ export const OfflinePage: React.FC<OfflinePageProps> = ({
                   </span>
                   <button
                     onClick={() => setReadingArticle(null)}
+                    aria-label="Close offline article reader"
                     className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition"
                   >
                     ✕
@@ -288,7 +290,7 @@ export const OfflinePage: React.FC<OfflinePageProps> = ({
 
                 <div
                   className="prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 text-sm leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: readingArticle.content }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(readingArticle.content) }}
                 />
 
                 <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-end">

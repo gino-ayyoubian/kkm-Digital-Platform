@@ -4,14 +4,11 @@
  * Evidence Registry (Levels A-G) & Project Milestones
  */
 import express, { Request, Response, NextFunction } from "express";
-import path from "path";
-import { GoogleGenAI } from "@google/genai";
-import compression from "compression";
-import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import logger from "../logger";
 import { INITIAL_ORG_MEMBERS } from "../data/orgMembers";
+import { getCorporateAuthSetupMessage, isCorporateAuthConfigured, verifyCorporatePassword } from "./corporateAuth";
 
 export interface AuthenticatedUserPayload {
   uid: string;
@@ -34,8 +31,12 @@ declare global {
   }
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || "kkm-intl-group-eaos-enterprise-secret-key-2026";
+const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRY = "12h";
+
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required.");
+}
 
 /**
  * Enterprise Protected Route Middleware
@@ -382,24 +383,20 @@ export function setupBackendRoutes(app: express.Application) {
       });
     }
 
-    // Verify Password
-    const expectedPassword = member.password;
-    if (expectedPassword && expectedPassword.trim() !== "") {
-      if (password !== expectedPassword) {
-        return res.status(401).json({
-          success: false,
-          message: "کلمه عبور سازمانی وارد شده نادرست است. در صورت فراموشی درخواست بازیابی به بخش IT ارسال فرمایید.",
-          messageEn: "Invalid corporate password. Use 'Request IT Support' to recover."
-        });
-      }
-    } else {
-      if (password.length < 4) {
-        return res.status(401).json({
-          success: false,
-          message: "کلمه عبور نامعتبر است.",
-          messageEn: "Password must be at least 4 characters."
-        });
-      }
+    if (!isCorporateAuthConfigured()) {
+      return res.status(503).json({
+        success: false,
+        message: "سامانه احراز هویت سازمانی هنوز پیکربندی نشده است.",
+        messageEn: getCorporateAuthSetupMessage()
+      });
+    }
+
+    if (!verifyCorporatePassword(member, username, password)) {
+      return res.status(401).json({
+        success: false,
+        message: "کلمه عبور سازمانی وارد شده نادرست است. در صورت فراموشی درخواست بازیابی به بخش IT ارسال فرمایید.",
+        messageEn: "Invalid corporate password. Use 'Request IT Support' to recover."
+      });
     }
 
     // Generate JWT Payload
@@ -433,7 +430,6 @@ export function setupBackendRoutes(app: express.Application) {
 
     return res.status(200).json({
       success: true,
-      token,
       user: {
         ...userPayload,
         title: member.title,
@@ -505,7 +501,7 @@ export function setupBackendRoutes(app: express.Application) {
    * GET /api/portal/evidence-registry
    * Returns certified evidence items across levels A through G
    */
-  app.get("/api/portal/evidence-registry", (req: Request, res: Response) => {
+  app.get("/api/portal/evidence-registry", requireCorporateAuth, (req: Request, res: Response) => {
     return res.json({
       success: true,
       levels: ["Level A", "Level B", "Level C", "Level D", "Level E", "Level F", "Level G"],
@@ -550,7 +546,7 @@ export function setupBackendRoutes(app: express.Application) {
    * GET /api/portal/project-milestones
    * Returns strategic project milestones and evidence requirements
    */
-  app.get("/api/portal/project-milestones", (req: Request, res: Response) => {
+  app.get("/api/portal/project-milestones", requireCorporateAuth, (req: Request, res: Response) => {
     return res.json({ success: true, milestones: projectMilestones });
   });
 
@@ -579,7 +575,7 @@ export function setupBackendRoutes(app: express.Application) {
   // AUTOMATION CARTABLE ENDPOINTS (PROTECTED)
   // ==========================================
 
-  app.get("/api/portal/cartable/requests", (req: Request, res: Response) => {
+  app.get("/api/portal/cartable/requests", requireCorporateAuth, (req: Request, res: Response) => {
     return res.json({ requests: portalRequests });
   });
 

@@ -263,7 +263,6 @@ export interface OrgMemberProfile {
   uid: string;
   email: string;
   username?: string; // Standard corporate username (e.g. g.ayyoubian@kkm-intl.org or g.ayyoubian)
-  password?: string; // Custom corporate password set by member
   displayName: string;
   displayNameFa?: string;
   role: OrgRole;

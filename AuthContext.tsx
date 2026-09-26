@@ -5,7 +5,6 @@ import { auth, db, googleProvider } from './firebase';
 import { INITIAL_ORG_MEMBERS } from './data/orgMembers';
 import { OrgMemberProfile, OrgRole, OrgUserPermissions } from './types';
 
-import { normalizeCorporateUsername, generateCorporateEmail } from './utils/corporateAccount';
 
 export type { OrgRole, OrgUserPermissions };
 export type UserProfile = OrgMemberProfile;
@@ -21,7 +20,6 @@ interface AuthContextType {
   loginWithGoogle: () => Promise<void>;
   loginWithMember: (memberUidOrId: string) => Promise<void>;
   loginWithCredentials: (username: string, pass: string) => Promise<{ success: boolean; message?: string }>;
-  resetPasswordByEmail: (email: string, newPass: string) => Promise<boolean>;
   switchPersona: (memberUid: string) => void;
   updateUserProfile: (uid: string, updates: Partial<UserProfile>) => Promise<void>;
   addUser: (newUser: Omit<UserProfile, 'uid' | 'createdAt'>) => Promise<UserProfile>;
@@ -39,7 +37,6 @@ const AuthContext = createContext<AuthContextType>({
   loginWithGoogle: async () => {},
   loginWithMember: async () => {},
   loginWithCredentials: async () => ({ success: false }),
-  resetPasswordByEmail: async () => false,
   switchPersona: () => {},
   updateUserProfile: async () => {},
   addUser: async () => INITIAL_ORG_MEMBERS[0],
@@ -158,18 +155,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           console.error("Error fetching user profile:", error);
         }
       } else {
-        // If not authenticated via Firebase, check if local storage persona was saved
-        const savedPersona = localStorage.getItem('kkm_active_persona');
-        if (savedPersona) {
-          try {
-            const parsed = JSON.parse(savedPersona);
-            setUserProfile(parsed);
-          } catch (e) {
-            setUserProfile(null);
+        let restoredProfile: UserProfile | null = null;
+
+        try {
+          const response = await fetch('/api/auth/me');
+          if (response.ok) {
+            const data = await response.json();
+            if (data?.user) {
+              restoredProfile = data.user as UserProfile;
+            }
           }
-        } else {
-          setUserProfile(null);
+        } catch {
+          // Ignore session restore errors and continue to local fallback.
         }
+
+        if (!restoredProfile) {
+          const savedPersona = localStorage.getItem('kkm_active_persona');
+          if (savedPersona) {
+            try {
+              const parsed = JSON.parse(savedPersona);
+              if (parsed && typeof parsed === 'object' && typeof parsed.uid === 'string' && typeof parsed.email === 'string') {
+                restoredProfile = parsed as UserProfile;
+              } else {
+                localStorage.removeItem('kkm_active_persona');
+              }
+            } catch {
+              localStorage.removeItem('kkm_active_persona');
+            }
+          }
+        }
+
+        setUserProfile(restoredProfile);
       }
       setLoading(false);
     });
@@ -222,10 +238,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const data = await response.json();
 
       if (response.ok && data.success) {
-        // Store JWT token for Authorization headers
-        if (data.token) {
-          localStorage.setItem('kkm_jwt_token', data.token);
-        }
         const activeMember = data.user as UserProfile;
         setUserProfile(activeMember);
         localStorage.setItem('kkm_active_persona', JSON.stringify(activeMember));
@@ -246,68 +258,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
       }
     } catch (apiError) {
-      console.warn('Backend authentication API unreachable, falling back to local verification:', apiError);
-    }
-
-    // 2. Fallback in case backend server is unreachable
-    const raw = username.trim().toLowerCase();
-    const normalized = normalizeCorporateUsername(raw);
-
-    // Look up user by corporate email, username, or employee ID
-    const matched = allUsers.find((u) => {
-      const email = u.email.toLowerCase();
-      const userField = u.username ? u.username.toLowerCase() : '';
-      const empId = u.employeeId.toLowerCase();
-      return (
-        email === normalized ||
-        email === raw ||
-        userField === normalized ||
-        userField === raw ||
-        empId === raw
-      );
-    });
-
-    if (!matched) {
-      return { 
-        success: false, 
-        message: 'شناسه کاربری سازمانی یافت نشد. ورود صرفاً با نام‌کاربری و رمز عبور سازمانی اعضا امکان‌پذیر است.' 
+      console.warn('Backend authentication API unreachable:', apiError);
+      return {
+        success: false,
+        message: 'سامانه احراز هویت سازمانی در دسترس نیست. تنظیمات سرور و محیط را بررسی نمایید.'
       };
     }
-
-    // Verify corporate password set by member
-    const expectedPassword = matched.password;
-    if (expectedPassword && expectedPassword.trim() !== '') {
-      if (pass !== expectedPassword) {
-        return { 
-          success: false, 
-          message: 'کلمه عبور سازمانی وارد شده نادرست است. در صورت فراموشی، درخواست به بخش پشتیبانی IT ارسال شود.' 
-        };
-      }
-    } else {
-      if (!pass || pass.trim().length < 4) {
-        return { 
-          success: false, 
-          message: 'لطفاً کلمه عبور سازمانی را وارد نمایید.' 
-        };
-      }
-    }
-
-    await loginWithMember(matched.uid);
-    return { success: true };
-  };
-
-  const resetPasswordByEmail = async (email: string, newPass: string): Promise<boolean> => {
-    const cleanEmail = normalizeCorporateUsername(email);
-    const target = allUsers.find(
-      (u) =>
-        u.email.toLowerCase() === cleanEmail ||
-        (u.username && u.username.toLowerCase() === cleanEmail)
-    );
-
-    if (!target) return false;
-
-    await updateUserProfile(target.uid, { password: newPass });
-    return true;
   };
 
   const switchPersona = (memberUid: string) => {
@@ -362,7 +318,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       localStorage.removeItem('kkm_active_persona');
-      localStorage.removeItem('kkm_jwt_token');
       setUserProfile(null);
       // Inform backend to clear HTTP-only session cookie
       try {
@@ -394,7 +349,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       loginWithGoogle: login,
       loginWithMember, 
       loginWithCredentials,
-      resetPasswordByEmail,
       switchPersona,
       updateUserProfile,
       addUser,

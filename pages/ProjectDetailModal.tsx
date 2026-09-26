@@ -7,6 +7,7 @@ import Accordion from '../components/Accordion';
 import { useLanguage } from '../LanguageContext';
 import type { TranslationKey } from '../translations';
 import { motion, AnimatePresence } from 'motion/react';
+import { sanitizeHtml } from '../utils/sanitizeHtml';
 
 interface ProjectDetailModalProps {
   project: Project;
@@ -226,7 +227,7 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project, onClos
                 <Accordion title={t('ProjectDetails')} defaultOpen>
                     <div 
                         className="prose dark:prose-invert max-w-none text-text-light dark:text-slate-300" 
-                        dangerouslySetInnerHTML={{ __html: detailedContent }}
+                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(detailedContent) }}
                     />
                      <div className="mt-6 flex justify-center border-t border-gray-200 dark:border-slate-700 pt-6">
                         <button

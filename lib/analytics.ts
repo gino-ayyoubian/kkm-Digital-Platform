@@ -73,7 +73,21 @@ export const parseUTMParams = (): Record<string, string> => {
     } catch (e) {
         console.warn('LocalStorage is disabled or restricted:', e);
     }
-    
-    return stored ? JSON.parse(stored) : utm;
+
+    if (!stored) {
+        return utm;
+    }
+
+    try {
+        return JSON.parse(stored);
+    } catch (e) {
+        console.warn('Invalid stored UTM payload; resetting local copy.', e);
+        try {
+            window.localStorage.removeItem('kkm_utm');
+        } catch {
+            // ignore localStorage cleanup failures
+        }
+        return utm;
+    }
 
 };
