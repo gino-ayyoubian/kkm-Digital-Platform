@@ -3,6 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gino-ayyoubian/kkm-Digital-Platform.git"
+  },
+  "homepage": "https://github.com/gino-ayyoubian/kkm-Digital-Platform#readme",
+  "bugs": {
+    "url": "https://github.com/gino-ayyoubian/kkm-Digital-Platform/issues"
+  },
   "scripts": {
     "dev": "tsx server.ts",
     "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --outfile=dist/server.cjs",

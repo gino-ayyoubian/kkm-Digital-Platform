@@ -16,8 +16,8 @@ This application acts as a central hub for KKM International's core engineering 
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-org/kkm-international-group.git
-   cd kkm-international-group
+   git clone https://github.com/gino-ayyoubian/kkm-Digital-Platform.git
+   cd kkm-Digital-Platform
    ```
 
 2. **Install Dependencies**:
