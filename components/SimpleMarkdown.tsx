@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { escapeHtml, sanitizeHtml } from '../utils/sanitizeHtml';
 
 // A simple component to render basic markdown
 const SimpleMarkdown: React.FC<{ text: string }> = ({ text }) => {
@@ -11,6 +12,7 @@ const SimpleMarkdown: React.FC<{ text: string }> = ({ text }) => {
         .map(line => line.trim())
         .filter(line => line.length > 0)
         .map(line => {
+            line = escapeHtml(line);
             // Bold
             line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             // Headers (simplified)
@@ -26,7 +28,7 @@ const SimpleMarkdown: React.FC<{ text: string }> = ({ text }) => {
         .replace(/<\/li><p><\/p><li>/g, '</li><li>') // Clean up empty paragraphs between list items
         .replace(/((?:<li>.*?<\/li>)+)/g, '<ul>$1</ul>'); // Group consecutive LIs into a UL
 
-    return <div className="prose dark:prose-invert max-w-none text-text-light dark:text-slate-300" dangerouslySetInnerHTML={{ __html: html }} />;
+    return <div className="prose dark:prose-invert max-w-none text-text-light dark:text-slate-300" dangerouslySetInnerHTML={{ __html: sanitizeHtml(html) }} />;
 };
 
 export default SimpleMarkdown;

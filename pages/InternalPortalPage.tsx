@@ -165,7 +165,7 @@ const RoleCard: React.FC<{
 // Corporate Login View with Username & Password authentication
 const LoginView: React.FC = () => {
   const { t, isFa } = useLanguage();
-  const { allUsers, loginWithCredentials, resetPasswordByEmail } = useAuth();
+  const { allUsers, loginWithCredentials } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -423,11 +423,6 @@ const LoginView: React.FC = () => {
         isOpen={isForgotModalOpen}
         onClose={() => setIsForgotModalOpen(false)}
         allUsers={allUsers}
-        onResetPasswordSuccess={async (email, newPass) => {
-          await resetPasswordByEmail(email, newPass);
-          setUsername(email);
-          setPassword(newPass);
-        }}
       />
     </div>
   );
@@ -506,12 +501,10 @@ const InternalPortalPage: React.FC = () => {
 
     // 1. Post to real Backend API
     try {
-      const jwtToken = localStorage.getItem('kkm_jwt_token');
       await fetch('/api/portal/cartable/requests', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          ...(jwtToken ? { 'Authorization': `Bearer ${jwtToken}` } : {})
         },
         body: JSON.stringify(newRequest)
       });
@@ -566,12 +559,10 @@ const InternalPortalPage: React.FC = () => {
 
     // Sync with backend API
     try {
-      const jwtToken = localStorage.getItem('kkm_jwt_token');
       await fetch(`/api/portal/cartable/requests/${requestId}/status`, {
         method: 'PATCH',
         headers: { 
           'Content-Type': 'application/json',
-          ...(jwtToken ? { 'Authorization': `Bearer ${jwtToken}` } : {})
         },
         body: JSON.stringify({
           status: 'approved',
@@ -629,12 +620,10 @@ const InternalPortalPage: React.FC = () => {
 
     // Sync with backend API
     try {
-      const jwtToken = localStorage.getItem('kkm_jwt_token');
       await fetch(`/api/portal/cartable/requests/${requestId}/status`, {
         method: 'PATCH',
         headers: { 
           'Content-Type': 'application/json',
-          ...(jwtToken ? { 'Authorization': `Bearer ${jwtToken}` } : {})
         },
         body: JSON.stringify({
           status: 'rejected',

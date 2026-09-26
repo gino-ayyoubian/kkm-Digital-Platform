@@ -33,11 +33,7 @@ const GlobalPresenceMap: React.FC = () => {
                   fill="#e2e8f0" // slate-200
                   stroke="#cbd5e1" // slate-300
                   strokeWidth={0.5}
-                  style={{
-                    default: { outline: "none" },
-                    hover: { outline: "none", fill: "#cbd5e1" },
-                    pressed: { outline: "none" },
-                  }}
+                  className="outline-none transition-colors hover:fill-slate-300"
                 />
               ))
             }
@@ -79,7 +75,7 @@ const GlobalPresenceMap: React.FC = () => {
             >
               <div className="flex justify-between items-start mb-2">
                 <h4 className="font-bold text-slate-900 dark:text-white">{selectedMarker.name}</h4>
-                <button onClick={() => setSelectedMarker(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <button aria-label="Close location details" onClick={() => setSelectedMarker(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>

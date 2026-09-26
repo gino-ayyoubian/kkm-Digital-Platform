@@ -13,6 +13,10 @@ export function pathToPage(pathname: string): Page {
   const p = pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
   const normalized = p.toLowerCase();
 
+  if (/^\/news\/[^/]+/.test(normalized)) {
+    return Page.News;
+  }
+
   switch (normalized) {
     case '':
     case '/':

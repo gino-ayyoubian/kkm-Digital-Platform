@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../LanguageContext';
-import { X, UserPlus, Shield, AlertCircle, Sparkles, Key } from 'lucide-react';
+import { X, UserPlus, Shield, AlertCircle, Sparkles } from 'lucide-react';
 import { UserProfile, OrgRole } from '../../AuthContext';
 import { generateCorporateEmail } from '../../utils/corporateAccount';
 import { ExecutiveMemberIdentity } from '../common/ExecutiveMemberIdentity';
@@ -21,7 +21,6 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
   const [displayName, setDisplayName] = useState('');
   const [displayNameFa, setDisplayNameFa] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [autoEmail, setAutoEmail] = useState(true);
   const [employeeId, setEmployeeId] = useState(`KKM-${Math.floor(100 + Math.random() * 900)}`);
   const [department, setDepartment] = useState('Energy Systems');
@@ -35,15 +34,11 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Auto-generate corporate email and initial password when displayName changes
+  // Auto-generate corporate email when displayName changes
   useEffect(() => {
     if (displayName.trim() && autoEmail) {
       const generated = generateCorporateEmail(displayName);
       setEmail(generated);
-      if (!password) {
-        const cleanName = displayName.replace(/[^a-zA-Z]/g, '');
-        setPassword(`kkm!${cleanName || 'User'}2026`);
-      }
     }
   }, [displayName, autoEmail]);
 
@@ -68,7 +63,6 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
         displayName,
         displayNameFa: displayNameFa || displayName,
         email: email.trim().toLowerCase(),
-        password: password || 'kkm!Member2026',
         employeeId,
         department,
         title,
@@ -94,7 +88,6 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
       setDisplayName('');
       setDisplayNameFa('');
       setEmail('');
-      setPassword('');
       setTitle('');
       setTitleFa('');
       setAvatarUrl('');
@@ -134,6 +127,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
           </div>
           <button
             onClick={onClose}
+            aria-label={isFa ? 'بستن پنجره افزودن کاربر' : 'Close add user dialog'}
             className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -225,23 +219,10 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
                 {isFa ? 'الگوی استاندارد: حرف اول نام + نقطه + نام خانوادگی' : 'Standard pattern: first_initial.lastname@kkm-intl.org'}
               </p>
             </div>
-            <div>
-              <label className="block text-xs font-bold text-text-dark dark:text-slate-300 mb-1">
-                {isFa ? 'رمز عبور اولیه سازمانی' : 'Initial Corporate Password'} *
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="e.g. kkm!Member2026"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-text-dark dark:text-white text-xs font-mono outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <p className="text-[10px] text-text-light dark:text-slate-400 mt-1">
-                {isFa ? 'قابل تغییر توسط عضو در اولین ورود یا بازیابی با ایمیل' : 'Can be changed by member or recovered via corporate email'}
-              </p>
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-3.5 py-3 text-[11px] text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-200">
+              {isFa
+                ? 'اعتبارنامه ورود این عضو از طریق پیکربندی امن سمت سرور/محیط استقرار تعریف می‌شود و در رابط کاربری ذخیره یا نمایش داده نخواهد شد.'
+                : 'This member’s sign-in credential must be provisioned through the secure server/deployment environment and is no longer stored in the UI.'}
             </div>
           </div>
 

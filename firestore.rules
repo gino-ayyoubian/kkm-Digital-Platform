@@ -50,9 +50,15 @@ service cloud.firestore {
 
     match /automationRequests/{requestId} {
       allow read: if isSignedIn();
-      allow create: if isSignedIn();
-      allow update: if isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.requesterId == request.auth.uid;
+      allow update: if isAdmin() || (isSignedIn() && resource.data.requesterId == request.auth.uid);
       allow delete: if isAdmin();
+    }
+
+    match /keepNotes/{noteId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
     }
 
     match /dmsDocuments/{docId} {

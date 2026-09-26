@@ -8,14 +8,12 @@ interface ForgotPasswordModalProps {
   isOpen: boolean;
   onClose: () => void;
   allUsers: UserProfile[];
-  onResetPasswordSuccess?: (email: string, newPass: string) => Promise<void>;
 }
 
 export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   isOpen,
   onClose,
   allUsers,
-  onResetPasswordSuccess,
 }) => {
   const { isFa } = useLanguage();
   const [step, setStep] = useState<'request' | 'ticket_issued'>('request');
@@ -111,6 +109,7 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
           </div>
           <button
             onClick={handleClose}
+            aria-label={isFa ? 'بستن پنجره بازیابی رمز عبور' : 'Close password recovery dialog'}
             className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 text-gray-400 hover:text-gray-600 dark:hover:text-slate-300 transition-colors"
           >
             <X className="w-5 h-5" />

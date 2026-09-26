@@ -3,6 +3,7 @@ import type { NewsItem } from '../types';
 import { useLanguage } from '../LanguageContext';
 import { NEWS_ITEMS } from '../constants';
 import { motion } from 'motion/react';
+import { sanitizeHtml } from '../utils/sanitizeHtml';
 
 interface NewsArticlePageProps {
     article: NewsItem;
@@ -65,7 +66,7 @@ const NewsArticlePage: React.FC<NewsArticlePageProps> = ({ article, onBack, onSe
 
                     <div 
                         className="mt-10 prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-relaxed text-base sm:text-lg" 
-                        dangerouslySetInnerHTML={{ __html: article.content }}
+                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }}
                     />
                 </article>
 

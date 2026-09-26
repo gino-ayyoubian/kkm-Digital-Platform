@@ -10,6 +10,7 @@ import ProjectMetricsChart from '../components/ProjectMetricsChart';
 import ImageGallery from '../components/ImageGallery';
 import Accordion from '../components/Accordion';
 import { motion, AnimatePresence } from 'motion/react';
+import { sanitizeHtml } from '../utils/sanitizeHtml';
 import type { TranslationKey } from '../translations';
 
 import GlobalCTA from '../components/GlobalCTA';
@@ -353,7 +354,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
                                                     <div className="pt-4 space-y-6">
                                                          <div 
                                                             className="prose dark:prose-invert max-w-none text-text-light dark:text-slate-300 text-sm" 
-                                                            dangerouslySetInnerHTML={{ __html: t(activeProjectForMap.detailedContent as TranslationKey) }}
+                                                            dangerouslySetInnerHTML={{ __html: sanitizeHtml(t(activeProjectForMap.detailedContent as TranslationKey)) }}
                                                         />
                                                         
                                                         {activeProjectForMap.metrics && (
