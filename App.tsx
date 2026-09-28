@@ -346,6 +346,7 @@ const App: React.FC = () => {
   let title = 'KKM International Group';
   let description = 'Technology. Engineering. Infrastructure. Innovation.';
   let canonicalUrl = `${CANONICAL_HOST}${pageToPath(currentPage)}`;
+  let noindex = false;
   let jsonLdSchema: Record<string, any> = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -373,7 +374,7 @@ const App: React.FC = () => {
          "name": "KKM International Group",
          "logo": {
            "@type": "ImageObject",
-           "url": "https://storage.googleapis.com/aistudio-chat-prod-gemini-image-serving/e0cfcd0b2fb249f3906371f4b3df36c7"
+           "url": "https://www.kkm-intl.org/og-image.png"
          }
        }
      };
@@ -381,6 +382,7 @@ const App: React.FC = () => {
      title = `Search Results: "${searchQuery}" | KKM Technical Index`;
      description = `Deep intelligence search results for "${searchQuery}" across KKM proprietary technologies, patent filings, active projects, news, and technical publications.`;
      canonicalUrl = `${CANONICAL_HOST}/search?q=${encodeURIComponent(searchQuery)}`;
+     noindex = true;
      jsonLdSchema = {
        "@context": "https://schema.org",
        "@type": "SearchResultsPage",
@@ -392,6 +394,7 @@ const App: React.FC = () => {
      title = 'Page Not Found (404) | KKM International Group';
      description = 'The requested resource could not be found within the KKM International Group digital ecosystem.';
      canonicalUrl = typeof window !== 'undefined' ? `${CANONICAL_HOST}${window.location.pathname}` : `${CANONICAL_HOST}/404`;
+     noindex = true;
   } else {
      const pageName = t(currentPage as TranslationKey) || currentPage;
      title = `${pageName} | KKM International Group`;
@@ -406,7 +409,7 @@ const App: React.FC = () => {
            "name": "KKM International Group",
            "alternateName": "Kimia Karan Mâd Private Joint Stock Company",
            "url": CANONICAL_HOST,
-           "logo": "https://storage.googleapis.com/aistudio-chat-prod-gemini-image-serving/e0cfcd0b2fb249f3906371f4b3df36c7",
+           "logo": "https://www.kkm-intl.org/og-image.png",
            "contactPoint": {
              "@type": "ContactPoint",
              "telephone": "+98 21 9103 0830",

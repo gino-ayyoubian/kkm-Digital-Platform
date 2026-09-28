@@ -3,9 +3,9 @@ import path from 'path';
 import compression from 'compression';
 import morgan from 'morgan';
 import { GoogleGenAI } from '@google/genai';
-import logger from './logger';
-import { createInMemoryRateLimit } from './backend/rateLimit';
-import { setupBackendRoutes } from './backend/server';
+import logger from './logger.ts';
+import { createInMemoryRateLimit } from './backend/rateLimit.ts';
+import { setupBackendRoutes } from './backend/server.ts';
 
 let sentryInitialized = false;
 
@@ -56,9 +56,47 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('X-Frame-Options', 'SAMEORIGIN');
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    res.setHeader(
+      'Content-Security-Policy-Report-Only',
+      "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:; frame-ancestors 'self';"
+    );
     next();
   });
 
+  // Scoped CORS for API routes (TKT-051)
+  const allowedOrigins = [
+    'https://www.kkm-intl.org',
+    'https://kkm-intl.org',
+    'https://www.kkm-intl.com',
+    'https://kkm-intl.com',
+  ];
+
+  app.use('/api', (req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin) {
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        origin.startsWith('http://localhost:') ||
+        origin.startsWith('http://127.0.0.1:') ||
+        origin.endsWith('.run.app');
+
+      if (isAllowed) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+      }
+    }
+
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
+    }
+    next();
+  });
+
+  // Single 308 apex -> www permanent redirect (TKT-004)
   app.use((req, res, next) => {
     const rawHost = (req.headers.host || '').toLowerCase();
     const host = rawHost.split(':')[0];
@@ -76,7 +114,7 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
         ? (req.originalUrl || req.url || '/')
         : '/';
       const targetUrl = `https://www.kkm-intl.org${redirectPath}`;
-      return res.redirect(301, targetUrl);
+      return res.redirect(308, targetUrl);
     }
 
     next();
@@ -122,6 +160,16 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
     }
   });
 
+  // Unhandled API routes return structured JSON 404 (TKT-003, TKT-010)
+  app.use('/api', (_req, res) => {
+    res.status(404).json({
+      ok: false,
+      error: 'API endpoint not found',
+      documentation: '/api/docs/openapi.json',
+      timestamp: new Date().toISOString(),
+    });
+  });
+
   if (includeFrontend) {
     if (process.env.NODE_ENV !== 'production') {
       const { createServer: createViteServer } = await import('vite');
@@ -135,10 +183,11 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
 
       app.use(
         express.static(distPath, {
-          maxAge: '1y',
           setHeaders: (res, filePath) => {
             if (filePath.endsWith('.html')) {
-              res.setHeader('Cache-Control', 'no-cache');
+              res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+            } else if (filePath.match(/\.(js|css|webp|avif|png|jpg|svg|woff2)$/)) {
+              res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
             }
           },
         })
@@ -149,6 +198,27 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
       });
     }
   }
+
+  // Global Structured Error Handler (TKT-012)
+  app.use((err: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    logger.error('Unhandled Server Error: ' + String(err?.message || err), { stack: err?.stack });
+    if (req.path.startsWith('/api/')) {
+      return res.status(500).json({
+        ok: false,
+        error: 'Internal Server Error',
+        message:
+          process.env.NODE_ENV === 'production'
+            ? 'An unexpected system error occurred.'
+            : String(err?.message || err),
+        timestamp: new Date().toISOString(),
+      });
+    }
+    return res
+      .status(500)
+      .send(
+        '<!DOCTYPE html><html><head><title>500 Internal Error</title></head><body style="font-family:sans-serif;padding:40px;text-align:center;"><h1>500 — System Error</h1><p>Our engineering team has been alerted.</p><a href="/">Return to Homepage</a></body></html>'
+      );
+  });
 
   if (process.env.SENTRY_DSN) {
     try {

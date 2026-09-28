@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useTheme } from '../ThemeContext';
 import { PWAInstallButton } from './PWAInstallButton';
 import KKMLogo from './KKMLogo';
+import LanguageSwitcher from './LanguageSwitcher';
 import { 
   Search, Sun, Moon, Globe, Menu, X, ChevronDown, 
   Check, User, ArrowRight, ShieldCheck, Sparkles, Building2, StickyNote
@@ -18,24 +19,9 @@ interface HeaderProps {
   onSearch: (query: string) => void;
 }
 
-interface LanguageOption {
-  code: Language;
-  label: string;
-  nativeName: string;
-}
-
-const LANGUAGES: LanguageOption[] = [
-  { code: 'EN', label: 'English', nativeName: 'English' },
-  { code: 'FA', label: 'Persian', nativeName: 'فارسی' },
-  { code: 'AR', label: 'Arabic', nativeName: 'العربية' },
-  { code: 'KU', label: 'Kurdish', nativeName: 'کوردی' },
-  { code: 'RU', label: 'Russian', nativeName: 'Русский' }
-];
-
 const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false);
   const [isSearchOpen, setIsSearchOpen] = React.useState<boolean>(false);
-  const [isLangDropdownOpen, setIsLangDropdownOpen] = React.useState<boolean>(false);
   const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null);
   const [openMobileSubMenu, setOpenMobileSubMenu] = React.useState<string | null>(null);
   const [searchQuery, setSearchQuery] = React.useState<string>('');
@@ -46,7 +32,6 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
   const searchInputRef = React.useRef<HTMLInputElement>(null);
   const mobileSearchInputRef = React.useRef<HTMLInputElement>(null);
   const desktopNavRef = React.useRef<HTMLDivElement>(null);
-  const langDropdownRef = React.useRef<HTMLDivElement>(null);
   const dropdownCloseTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { language, setLanguage, direction, t } = useLanguage();
@@ -82,7 +67,6 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
   React.useEffect(() => {
     setIsMenuOpen(false);
     setIsSearchOpen(false);
-    setIsLangDropdownOpen(false);
     setActiveDropdown(null);
     setOpenMobileSubMenu(null);
   }, [currentPage]);
@@ -96,22 +80,18 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
     }
   }, [isSearchOpen]);
 
-  // Outside click listener for desktop submenus & language dropdown
+  // Outside click listener for desktop submenus
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
       if (desktopNavRef.current && !desktopNavRef.current.contains(target)) {
         setActiveDropdown(null);
       }
-      if (langDropdownRef.current && !langDropdownRef.current.contains(target)) {
-        setIsLangDropdownOpen(false);
-      }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setActiveDropdown(null);
-        setIsLangDropdownOpen(false);
         setIsSearchOpen(false);
         setIsMenuOpen(false);
       }
@@ -148,8 +128,6 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
       setActiveDropdown(null);
     }, 180);
   };
-
-  const currentLangObj = LANGUAGES.find(l => l.code === language) || LANGUAGES[0];
 
   return (
     <>
@@ -345,59 +323,9 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
                 <User className="w-5 h-5" />
               </button>
 
-              {/* Desktop Language Selector Dropdown */}
-              <div ref={langDropdownRef} className="relative hidden sm:block">
-                <button
-                  id="header-language-btn"
-                  type="button"
-                  onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary"
-                  aria-label="Select Language"
-                  aria-expanded={isLangDropdownOpen}
-                >
-                  <Globe className="w-3.5 h-3.5 text-primary dark:text-secondary" />
-                  <span>{currentLangObj.code}</span>
-                  <ChevronDown className="w-3 h-3 text-slate-400" />
-                </button>
-
-                <AnimatePresence>
-                  {isLangDropdownOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 6, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 4, scale: 0.95 }}
-                      transition={{ duration: 0.15 }}
-                      className={`absolute top-full mt-2 w-44 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-1.5 border border-slate-200 dark:border-slate-800 z-50 ${
-                        isRtl ? 'left-0' : 'right-0'
-                      }`}
-                    >
-                      {LANGUAGES.map((langItem) => {
-                        const isSelected = language === langItem.code;
-                        return (
-                          <button
-                            key={langItem.code}
-                            type="button"
-                            onClick={() => {
-                              setLanguage(langItem.code);
-                              setIsLangDropdownOpen(false);
-                            }}
-                            className={`flex items-center justify-between w-full px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
-                              isSelected
-                                ? 'bg-primary/10 dark:bg-secondary/15 text-primary dark:text-secondary font-bold'
-                                : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-                            }`}
-                          >
-                            <div className="flex items-center gap-2">
-                              <span className="font-semibold">{langItem.nativeName}</span>
-                              <span className="text-[10px] text-slate-400 uppercase">({langItem.code})</span>
-                            </div>
-                            {isSelected && <Check className="w-3.5 h-3.5 text-primary dark:text-secondary" />}
-                          </button>
-                        );
-                      })}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+              {/* Language Switcher Component */}
+              <div className="flex items-center">
+                <LanguageSwitcher variant="header" />
               </div>
 
               {/* Mobile & Tablet Hamburger Button */}
@@ -562,36 +490,11 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
                 </form>
 
                 {/* Dedicated Mobile Language Switcher Segmented Bar */}
-                <div className="p-2 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
-                  <div className="flex items-center justify-between mb-2 px-1">
-                    <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                      <Globe className="w-3.5 h-3.5 text-primary dark:text-secondary" />
-                      {isRtl ? 'زبان سامانه' : 'Platform Language'}
-                    </span>
-                    <span className="text-[10px] font-mono text-primary dark:text-secondary font-bold">
-                      {currentLangObj.nativeName}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-5 gap-1">
-                    {LANGUAGES.map((langItem) => {
-                      const isCurrent = language === langItem.code;
-                      return (
-                        <button
-                          key={langItem.code}
-                          type="button"
-                          onClick={() => setLanguage(langItem.code)}
-                          className={`py-2 px-1 rounded-xl text-xs font-bold transition-all text-center min-h-[40px] flex flex-col items-center justify-center ${
-                            isCurrent
-                              ? 'bg-primary text-white shadow-md shadow-primary/30 scale-[1.02]'
-                              : 'bg-white dark:bg-slate-700/80 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
-                          }`}
-                        >
-                          <span className="leading-none">{langItem.nativeName}</span>
-                          <span className="text-[9px] opacity-75 font-mono mt-0.5">{langItem.code}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
+                <div className="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+                  <LanguageSwitcher
+                    variant="segmented"
+                    onLanguageChange={() => setIsMenuOpen(false)}
+                  />
                 </div>
 
                 {/* Primary Navigation List (Accordions) */}
