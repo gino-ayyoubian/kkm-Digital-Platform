@@ -54,9 +54,13 @@ const DigitalTwinHubPage = React.lazy(trackLazyLoad('DigitalTwinHubPage', () => 
 const GMELTwinPage = React.lazy(trackLazyLoad('GMELTwinPage', () => import('./pages/DigitalTwinPage')));
 const REETwinPage = React.lazy(trackLazyLoad('REETwinPage', () => import('./pages/REETwinPage')));
 const CareersPage = React.lazy(trackLazyLoad('CareersPage', () => import('./pages/CareersPage')));
+const TeamPage = React.lazy(trackLazyLoad('TeamPage', () => import('./pages/TeamPage')));
+const FAQPage = React.lazy(trackLazyLoad('FAQPage', () => import('./pages/FAQPage')));
+const DivisionsPage = React.lazy(trackLazyLoad('DivisionsPage', () => import('./pages/DivisionsPage')));
 const InternalPortalPage = React.lazy(trackLazyLoad('InternalPortalPage', () => import('./pages/InternalPortalPage')));
 const GoogleKeepPage = React.lazy(trackLazyLoad('GoogleKeepPage', () => import('./pages/GoogleKeepPage')));
 const OfflinePage = React.lazy(trackLazyLoad('OfflinePage', () => import('./pages/OfflinePage')));
+import CookieConsent from './components/CookieConsent';
 
 interface PageErrorBoundaryProps {
   children?: React.ReactNode;
@@ -181,39 +185,6 @@ class PageErrorBoundary extends Component<PageErrorBoundaryProps, PageErrorBound
     return this.props.children;
   }
 }
-
-const CookieConsent: React.FC = () => {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const { t } = useLanguage();
-
-  React.useEffect(() => {
-    let hasConsented = null; try { hasConsented = window.localStorage.getItem('kkm-cookie-consent'); } catch (e) {}
-    if (!hasConsented) {
-      setIsVisible(true);
-    }
-  }, []);
-
-  if (!isVisible) return null;
-
-  return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-slate-900 border-t border-slate-700 text-slate-300 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
-      <div className="text-sm">
-        <strong>Governance & Data Transparency:</strong> In alignment with KKM International Group's Production Truth Layer, all engineering specifications, technical performance indicators, and ESG metrics on this platform are governed by the formal <em>KKM Evidence Registry (Levels A through G)</em>. Unverified simulated counters have been retired from production presentation. By continuing, you agree to our data usage and verified reporting standards.
-      </div>
-      <div className="flex gap-2">
-        <button 
-          onClick={() => {
-            try { window.localStorage.setItem('kkm-cookie-consent', 'accepted'); } catch (e) {}
-            setIsVisible(false);
-          }}
-          className="px-4 py-2 bg-primary text-white text-sm font-bold rounded hover:bg-secondary transition-colors whitespace-nowrap"
-        >
-          Accept & Continue
-        </button>
-      </div>
-    </div>
-  );
-};
 
 const PageSkeleton = () => <PageTemplateSkeleton template="standard" />;
 

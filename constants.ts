@@ -7,7 +7,7 @@ export const RECENT_INNOVATIONS: Innovation[] = [
         id: 'tech-res-01',
         title: 'GMEL-CLG Downhole Closed-Loop Subsurface Circuit',
         description: 'Hermetically sealed coaxial deep borehole heat exchangers extracting geothermal energy without formation fluid withdrawal or induced seismicity.',
-        image: 'https://picsum.photos/seed/gmel-closed-loop/600/400',
+        image: '/images/gmel-closed-loop.svg',
         impact: '92–108 W/m thermal extraction verified in non-permeable dry formations (TRL-6).',
         date: '2026-06-12',
         technology: 'GMEL-CLG Downhole Closed-Loop Subsurface Circuit',
@@ -24,7 +24,7 @@ export const RECENT_INNOVATIONS: Innovation[] = [
         id: 'tech-res-02',
         title: 'KKM-GeoTwin PINN Hybrid Subsurface Simulation Engine',
         description: 'Physics-informed neural networks computing thermal decay and fluid mechanics in <50ms with <3.2% root-mean-square error.',
-        image: 'https://picsum.photos/seed/digital-twin-reservoir/600/400',
+        image: '/images/digital-twin-reservoir.svg',
         impact: 'Physics-informed neural networks computing thermal decay in <50ms (<3.2% RMSE).',
         date: '2026-04-18',
         technology: 'KKM-GeoTwin PINN Hybrid Subsurface Simulation Engine',
@@ -41,7 +41,7 @@ export const RECENT_INNOVATIONS: Innovation[] = [
         id: 'tech-res-03',
         title: 'Modular Low-Temperature Geothermal Desalination & ZLD Nexus',
         description: 'Multi-stage vacuum distillation integrated with low-grade geothermal exhaust heat and zero-liquid discharge crystallization.',
-        image: 'https://picsum.photos/seed/desal-nexus/600/400',
+        image: '/images/desal-nexus.svg',
         impact: 'Specific energy consumption lowered to 2.1 kWh/m³ via low-grade geothermal brine heat integration.',
         date: '2026-03-05',
         technology: 'Modular Low-Temperature Geothermal Desalination & ZLD Nexus',
@@ -196,10 +196,10 @@ export const PROJECTS: Project[] = [
         results: 'Marine intake pipeline successfully deployed with verified hydro-testing and pressure containment.',
         nextPhase: 'Phase 2: Geothermal binary power generation & biotech incubation facility.',
         description: "Project_Qeshm_Desc",
-        image: "https://picsum.photos/seed/qeshm-oilfield/600/400",
+        image: "/images/qeshm-oilfield.svg",
         tags: ["Tag_OilGas", "Tag_EPCI", "Tag_Midstream", "Tag_Biotech"],
         coordinates: { lat: 26.907, lng: 56.002 },
-        gallery: ["https://picsum.photos/seed/qeshm-gallery1/800/600", "https://picsum.photos/seed/qeshm-gallery2/800/600", "https://picsum.photos/seed/qeshm-gallery3/800/600"],
+        gallery: ["/images/qeshm-gallery1.svg", "/images/qeshm-gallery2.svg", "/images/qeshm-gallery3.svg"],
         videoUrl: "https://www.youtube.com/embed/Mj9Gj6QgM_E",
         detailedContent: "Project_Qeshm_Content",
         metrics: {
@@ -232,11 +232,11 @@ export const PROJECTS: Project[] = [
         results: 'Validated pressure decay prediction model within 3% variance of field gauge telemetry.',
         nextPhase: 'Implementation of automated downhole pressure monitoring nodes.',
         description: "Project_ICOFC_Desc",
-        image: "https://picsum.photos/seed/icofc-sarakhs/600/400",
+        image: "/images/icofc-sarakhs.svg",
         tags: ["Tag_OilGas", "Tag_Upstream", "Tag_FieldDev"],
         coordinates: { lat: 36.5438, lng: 61.1573 },
         googleMapsLink: "https://maps.app.goo.gl/vDbZahSzSifjz3KQ6",
-        gallery: ["https://picsum.photos/seed/icofc-gallery1/800/600", "https://picsum.photos/seed/icofc-gallery2/800/600"],
+        gallery: ["/images/icofc-gallery1.svg", "/images/icofc-gallery2.svg"],
         detailedContent: "Project_ICOFC_Content",
     },
     { 
@@ -256,19 +256,19 @@ export const PROJECTS: Project[] = [
         results: 'Achieved ISO 14644-1 Class 5 compliance under qualification air test runs.',
         nextPhase: 'Secondary cleanroom fit-out and validation for diagnostic production.',
         description: "Project_TehranBiomed_Desc",
-        image: "https://picsum.photos/seed/tehran-biomed/600/400",
+        image: "/images/tehran-biomed.svg",
         tags: ["Tag_Health", "Tag_Biotech", "Tag_Infrastructure"],
         coordinates: { lat: 35.7219, lng: 51.3347 },
-        gallery: ["https://picsum.photos/seed/biomed-gallery1/800/600", "https://picsum.photos/seed/biomed-gallery2/800/600"],
+        gallery: ["/images/biomed-gallery1.svg", "/images/biomed-gallery2.svg"],
         detailedContent: "Project_TehranBiomed_Content",
     },
     { 
         name: "Project_PowerWater_Name",
         description: "Project_PowerWater_Desc",
-        image: "https://picsum.photos/seed/power-water/600/400",
+        image: "/images/power-water.svg",
         tags: ["Tag_Power", "Tag_Water", "Tag_Infrastructure"],
         coordinates: { lat: 27.1832, lng: 56.2666 }, // Near Bandar Abbas
-        gallery: ["https://picsum.photos/seed/powerwater-1/800/600", "https://picsum.photos/seed/powerwater-2/800/600"],
+        gallery: ["/images/powerwater-1.svg", "/images/powerwater-2.svg"],
         detailedContent: "Project_PowerWater_Content",
         metrics: {
             budget: {
@@ -285,55 +285,55 @@ export const PROJECTS: Project[] = [
     { 
         name: "Project_GreenChem_Name",
         description: "Project_GreenChem_Desc",
-        image: "https://picsum.photos/seed/green-chem/600/400",
+        image: "/images/green-chem.svg",
         tags: ["Tag_Chemical", "Tag_GreenTech"],
         coordinates: { lat: 27.5000, lng: 52.6000 }, // Assaluyeh Industrial Zone area
-        gallery: ["https://picsum.photos/seed/greenchem-1/800/600"],
+        gallery: ["/images/greenchem-1.svg"],
         detailedContent: "Project_GreenChem_Content",
     },
     { 
         name: "Project_CombinedCycle_Name",
         description: "Project_CombinedCycle_Desc",
-        image: "https://picsum.photos/seed/combined-cycle/600/400",
+        image: "/images/combined-cycle.svg",
         tags: ["Tag_Power", "Tag_Chemical", "Tag_Water"],
         coordinates: { lat: 34.6416, lng: 50.8746 }, // Qom/Central Iran area
-        gallery: ["https://picsum.photos/seed/combined-1/800/600", "https://picsum.photos/seed/combined-2/800/600"],
+        gallery: ["/images/combined-1.svg", "/images/combined-2.svg"],
         detailedContent: "Project_CombinedCycle_Content",
     },
     { 
         name: "Project_GeoLayer_Name",
         description: "Project_GeoLayer_Desc",
-        image: "https://picsum.photos/seed/geo-layer/600/400",
+        image: "/images/geo-layer.svg",
         tags: ["Tag_Geothermal", "Tag_GreenTech"],
         coordinates: { lat: 38.3932, lng: 47.6644 }, // Meshkin Shahr (Geothermal area)
-        gallery: ["https://picsum.photos/seed/geolayer-1/800/600"],
+        gallery: ["/images/geolayer-1.svg"],
         detailedContent: "Project_GeoLayer_Content",
     },
     { 
         name: "Project_FossilRefinery_Name",
         description: "Project_FossilRefinery_Desc",
-        image: "https://picsum.photos/seed/fossil-refinery/600/400",
+        image: "/images/fossil-refinery.svg",
         tags: ["Tag_Refining", "Tag_OilGas"],
         coordinates: { lat: 30.4325, lng: 48.1672 }, // Khuzestan
-        gallery: ["https://picsum.photos/seed/refinery-1/800/600"],
+        gallery: ["/images/refinery-1.svg"],
         detailedContent: "Project_FossilRefinery_Content",
     },
     { 
         name: "Project_OilRefinement_Name",
         description: "Project_OilRefinement_Desc",
-        image: "https://picsum.photos/seed/oil-stabilization/600/400",
+        image: "/images/oil-stabilization.svg",
         tags: ["Tag_Refining", "Tag_Upstream"],
         coordinates: { lat: 29.2570, lng: 50.3235 }, // Kharg Island vicinity
-        gallery: ["https://picsum.photos/seed/stabilization-1/800/600"],
+        gallery: ["/images/stabilization-1.svg"],
         detailedContent: "Project_OilRefinement_Content",
     },
     { 
         name: "Project_LaveJetty_Name",
         description: "Project_LaveJetty_Desc",
-        image: "https://picsum.photos/seed/lave-jetty/600/400",
+        image: "/images/lave-jetty.svg",
         tags: ["Tag_Marine", "Tag_Logistics", "Tag_EPCI"],
         coordinates: { lat: 30.4900, lng: 49.2000 }, // Bandar Imam/Mahshahr area
-        gallery: ["https://picsum.photos/seed/jetty-1/800/600", "https://picsum.photos/seed/jetty-2/800/600"],
+        gallery: ["/images/jetty-1.svg", "/images/jetty-2.svg"],
         detailedContent: "Project_LaveJetty_Content",
         metrics: {
             budget: {
@@ -354,7 +354,7 @@ export const NEWS_ITEMS: NewsItem[] = [
         title: "KKM Unveils Verified Evidence Registry for Engineering & ESG Integrity",
         date: "2026-09-15",
         excerpt: "In alignment with KKM's Production Truth Layer, all engineering metrics, thermodynamic claims, and ESG indicators are now mapped to formal Evidence Levels A through G.",
-        image: "https://picsum.photos/seed/truth-evidence/600/400",
+        image: "/images/truth-evidence.svg",
         content: "KKM International Group has officially launched its comprehensive Evidence Registry, establishing an unshakeable empirical foundation for all public technical claims, energy harvest rates, and decarbonization metrics. Operating under strict ISO 14064, API, and ASME verification benchmarks, the registry documents third-party validation dossiers, field SCADA logs, and patent certifications across all active energy and infrastructure projects.",
         category: 'Corporate'
     },
@@ -362,7 +362,7 @@ export const NEWS_ITEMS: NewsItem[] = [
         title: "Qeshm Island Green Energy & Marine Intake Facility Completes Phase 1 Verification",
         date: "2026-08-28",
         excerpt: "Phase 1 offshore intake pipeline deployment and high-pressure hydrostatic tests have been successfully finalized in collaboration with the Free Zone Authority.",
-        image: "https://picsum.photos/seed/qeshm-oilfield/600/400",
+        image: "/images/qeshm-oilfield.svg",
         content: "The Qeshm Island clean energy and marine water nexus facility has passed its critical Phase 1 engineering acceptance milestone. Covering deep subsea intake conduits and onshore manifold infrastructure, the project establishes the physical foundation for the upcoming closed-loop geothermal binary generation and marine biotechnology research facility.",
         category: 'Projects'
     },
@@ -370,7 +370,7 @@ export const NEWS_ITEMS: NewsItem[] = [
         title: "Sarakhs Depleted Gas Basin Closed-Loop Geothermal Simulation Achieves TRL-6",
         date: "2026-08-10",
         excerpt: "Empirical telemetry and physics-informed neural network modeling validate heat extraction rates of 92–108 W/m in high-temperature dry formation testbeds.",
-        image: "https://picsum.photos/seed/gmel-closed-loop/600/400",
+        image: "/images/gmel-closed-loop.svg",
         content: "Engineering simulations and rig-tested surface loop data from the Sarakhs Khangiran reservoir testbed have confirmed the thermodynamic feasibility of converting retired deep hydrocarbons wells into baseload geothermal power generators. The proprietary GMEL-CLG closed-loop design eliminates induced seismicity and subsurface fluid loss risks.",
         category: 'Technology'
     },
@@ -378,7 +378,7 @@ export const NEWS_ITEMS: NewsItem[] = [
         title: "Rural & Nomadic Territorial Development Platform Debuts at National Exhibition 1405",
         date: "2026-07-25",
         excerpt: "The 'One Village, One Integrated System' model links microgrid clean energy, localized water desalination, and agri-processing to create self-sustaining local economies.",
-        image: "https://picsum.photos/seed/rural-platform/600/400",
+        image: "/images/rural-platform.svg",
         content: "At the National Capabilities Exhibition 1405, KKM showcased its integrated rural revitalization blueprint. By deploying skid-mounted low-temperature thermal desalination units, micro-solar/geothermal hybrid power nodes, and AI-driven agricultural cold chain operations, the initiative provides remote settlements with bankable, long-term self-sufficiency.",
         category: 'Sustainability'
     },
@@ -386,7 +386,7 @@ export const NEWS_ITEMS: NewsItem[] = [
         title: "WIPO PCT Patent Filings Expanded for GMEL Thermodynamic Energy Extraction Cycles",
         date: "2026-06-30",
         excerpt: "KKM International Group expands its global intellectual property portfolio with new PCT disclosures protecting specialized coaxial downhole heat exchangers.",
-        image: "https://picsum.photos/seed/exhibition-hall/600/400",
+        image: "/images/exhibition-hall.svg",
         content: "The KKM Intellectual Property Directorate has formally advanced international patent protection for its hermetically sealed coaxial downhole heat exchanger and phase-change nanofluid circulating cycles under the Patent Cooperation Treaty (PCT), reinforcing its defensible technological moat.",
         category: 'Events'
     },
@@ -395,7 +395,7 @@ export const NEWS_ITEMS: NewsItem[] = [
         title: "Phase 1 Environmental & Hydrological Assessment Completed for Qeshm Free Zone",
         date: "2023-11-15",
         excerpt: "Baseline environmental impact assessment and marine benthic studies completed ahead of pipeline intake placement.",
-        image: "https://picsum.photos/seed/archive-lab/600/400",
+        image: "/images/archive-lab.svg",
         content: "Technical environmental baseline audit approved by regional marine regulatory bodies, confirming zero adverse ecological impact on coastal reefs.",
         category: 'Archive'
     },
@@ -403,7 +403,7 @@ export const NEWS_ITEMS: NewsItem[] = [
         title: "Hydrostatic Pipeline Integrity Verification Finalized for Southern Corridor",
         date: "2023-09-30",
         excerpt: "Factory acceptance and field pressure testing completed for 18-inch HDPE high-durability intake conduits.",
-        image: "https://picsum.photos/seed/archive-pipeline/600/400",
+        image: "/images/archive-pipeline.svg",
         content: "Engineers validated full pressure containment up to 1.5x nominal operating pressure across all marine pipeline joints.",
         category: 'Archive'
     },
@@ -411,7 +411,7 @@ export const NEWS_ITEMS: NewsItem[] = [
         title: "Joint Research MOU Executed for Subsurface Heat Transfer Modeling",
         date: "2023-06-10",
         excerpt: "Academic collaboration agreement initiated to evaluate thermodynamic behavior in deep sedimentary basins.",
-        image: "https://picsum.photos/seed/archive-mou/600/400",
+        image: "/images/archive-mou.svg",
         content: "KKM engineering directors signed a multi-year research framework with university thermodynamics faculties to model transient heat transfer.",
         category: 'Archive'
     },
@@ -419,7 +419,7 @@ export const NEWS_ITEMS: NewsItem[] = [
         title: "Zero-Incident HSE Safety Milestone Reached Across All Active Field Sites",
         date: "2023-03-25",
         excerpt: "Over 500,000 work-hours logged without lost-time injuries in marine and civil construction operations.",
-        image: "https://picsum.photos/seed/archive-hse/600/400",
+        image: "/images/archive-hse.svg",
         content: "Rigorous ISO 45001 safety management protocols maintained across civil infrastructure, subsea pipe handling, and high-pressure well operations.",
         category: 'Archive'
     }

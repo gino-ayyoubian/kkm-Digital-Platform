@@ -65,8 +65,23 @@ export function pathToPage(pathname: string): Page {
       return Page.ClaimRegistry;
 
     case '/invest':
+    case '/investors':
     case '/investment-portal':
       return Page.InvestmentPortal;
+
+    case '/team':
+    case '/leadership':
+    case '/board':
+      return Page.Team;
+
+    case '/faq':
+    case '/faqs':
+    case '/questions':
+      return Page.FAQ;
+
+    case '/divisions':
+    case '/business-units':
+      return Page.Divisions;
 
     case '/innovation':
     case '/innovation-hub':
@@ -98,6 +113,10 @@ export function pathToPage(pathname: string): Page {
       return Page.CarbonCredit;
 
     case '/legal':
+    case '/privacy':
+    case '/terms':
+    case '/cookies':
+    case '/dpa':
       return Page.Legal;
 
     case '/careers':
@@ -205,6 +224,15 @@ export function pageToPath(page: Page): string {
 
     case Page.Careers:
       return '/careers';
+
+    case Page.Team:
+      return '/team';
+
+    case Page.FAQ:
+      return '/faq';
+
+    case Page.Divisions:
+      return '/divisions';
 
     case Page.Contact:
       return '/contact';

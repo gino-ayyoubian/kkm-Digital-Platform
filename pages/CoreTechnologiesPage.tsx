@@ -228,7 +228,7 @@ const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
                         {/* GMEL Vision */}
                         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl overflow-hidden border border-gray-100 dark:border-slate-700 flex flex-col group">
                             <div className="h-56 relative overflow-hidden">
-                                <img src="https://picsum.photos/seed/gmel-vision-app/600/400" alt="GMEL Vision" loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                <img src="/images/gmel-vision.svg" alt="GMEL Vision" loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                                 <div className="absolute inset-0 bg-primary/20 dark:bg-primary/40 group-hover:bg-primary/10 transition-colors duration-300"></div>
                             </div>
                             <div className="p-8 flex-grow flex flex-col">
@@ -251,7 +251,7 @@ const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
                         {/* GMEL Navigator */}
                         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl overflow-hidden border border-gray-100 dark:border-slate-700 flex flex-col group">
                             <div className="h-56 relative overflow-hidden">
-                                <img src="https://picsum.photos/seed/gmel-navigator-app/600/400" alt="GMEL Navigator" loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                <img src="/images/gmel-navigator.svg" alt="GMEL Navigator" loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                                 <div className="absolute inset-0 bg-secondary/20 dark:bg-secondary/40 group-hover:bg-secondary/10 transition-colors duration-300"></div>
                             </div>
                             <div className="p-8 flex-grow flex flex-col">
