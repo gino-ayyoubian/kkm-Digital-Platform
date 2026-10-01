@@ -65,6 +65,88 @@ const CorporateInfoPage: React.FC<CorporateInfoPageProps> = ({ setPage }) => {
              <InfoRow label={isFa ? 'حاکمیت شرکتی' : 'Governance'} value={isFa ? 'هیئت مدیره و مجمع عمومی صاحبان سهام' : 'Board of Directors & General Assembly'} />
           </div>
 
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Briefcase className="text-primary w-5 h-5" /> 
+                {isFa ? 'اعضای اصلی هیئت مدیره و کادر اجرایی' : 'Executive Board & Leadership'}
+              </h3>
+              <button
+                onClick={() => setPage(Page.Team)}
+                className="text-xs font-bold text-primary hover:text-primary-dark transition-colors inline-flex items-center gap-1"
+              >
+                {isFa ? 'مشاهده کادر کامل رهبری' : 'View Full Leadership'}
+                <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
+              </button>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                {
+                  name: 'Gino Ayyoubian',
+                  nameFa: 'سید ژینو ایوبیان',
+                  role: 'CEO & Chairman',
+                  roleFa: 'مدیرعامل و رئیس هیئت مدیره',
+                  image: '/images/gino-ayyoubian.jpg',
+                  dept: 'Executive Board',
+                  deptFa: 'هیئت مدیره',
+                },
+                {
+                  name: 'Reza Baghdadchi',
+                  nameFa: 'رضا بغدادچی',
+                  role: 'Vice Chairman',
+                  roleFa: 'نایب رئیس هیئت مدیره',
+                  image: '/images/reza-baghdadchi.jpg',
+                  dept: 'Executive Board',
+                  deptFa: 'هیئت مدیره',
+                },
+                {
+                  name: 'Ashkan Tofangchiha',
+                  nameFa: 'اشکان تفنگچی‌ها',
+                  role: 'Board Member & CCIO',
+                  roleFa: 'عضو هیئت مدیره و مدیر بازرگانی',
+                  image: '/images/ashkan-tofangchiha.jpg',
+                  dept: 'Commercial Directorate',
+                  deptFa: 'هیئت مدیره و بازرگانی',
+                },
+                {
+                  name: 'Dr. Khosro Jarrahian',
+                  nameFa: 'دکتر خسرو جراحیان',
+                  role: 'Director of Sustainability',
+                  roleFa: 'مدیر دپارتمان پایداری و آب',
+                  image: '/images/khosro-jarrahian.jpg',
+                  dept: 'Sustainability & Water',
+                  deptFa: 'پایداری و محیط زیست',
+                },
+              ].map((leader) => (
+                <div
+                  key={leader.name}
+                  onClick={() => setPage(Page.Team)}
+                  className="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-primary/40 transition-all cursor-pointer group flex flex-col items-center text-center"
+                >
+                  <img
+                    src={leader.image}
+                    alt={isFa ? leader.nameFa : leader.name}
+                    width={64}
+                    height={64}
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                    className="w-16 h-16 rounded-xl object-cover shadow-sm mb-3 border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform"
+                  />
+                  <h4 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                    {isFa ? leader.nameFa : leader.name}
+                  </h4>
+                  <p className="text-[11px] font-semibold text-primary dark:text-secondary mt-0.5">
+                    {isFa ? leader.roleFa : leader.role}
+                  </p>
+                  <p className="text-[10px] text-slate-400 mt-0.5">
+                    {isFa ? leader.deptFa : leader.dept}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
             <MapPin className="text-primary w-5 h-5" /> {isFa ? 'نشانی‌های رسمی' : 'Official Locations'}
           </h3>

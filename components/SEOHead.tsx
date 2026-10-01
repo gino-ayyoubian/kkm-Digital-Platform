@@ -9,6 +9,7 @@ interface SEOHeadProps {
   image?: string;
   type?: string;
   keywords?: string;
+  noindex?: boolean;
   schemaType?: 'Organization' | 'WebSite' | 'Article' | 'Breadcrumb';
   customSchema?: Record<string, any>;
   articleData?: {
@@ -20,13 +21,16 @@ interface SEOHeadProps {
   breadcrumbData?: { name: string; item: string }[];
 }
 
+const DEFAULT_OG_IMAGE = 'https://www.kkm-intl.org/og-image.png';
+
 const SEOHead: React.FC<SEOHeadProps> = ({
   title,
   description,
   url = 'https://www.kkm-intl.org',
-  image = 'https://www.kkm-intl.org/pwa-512x512.png',
+  image = DEFAULT_OG_IMAGE,
   type = 'website',
   keywords = 'Geothermal Energy Technology, Closed Loop Geothermal, Rural Energy Systems, Rural Infrastructure, Energy Village, Water Energy Nexus, Industrial AI, EPCM Iran, Sustainable Infrastructure, Rural Development Technology, Geothermal Multi Energy, GeoMeta Energy Layer, Gmel Technology Ecosystem',
+  noindex = false,
   schemaType = 'WebSite',
   customSchema,
   articleData,
@@ -120,7 +124,17 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
+      {noindex ? (
+        <>
+          <meta name="robots" content="noindex, nofollow" />
+          <meta name="googlebot" content="noindex, nofollow" />
+        </>
+      ) : (
+        <meta name="robots" content="index, follow" />
+      )}
       <link rel="canonical" href={url} />
+      <link rel="alternate" hrefLang="en" href={url} />
+      <link rel="alternate" hrefLang="fa" href={url} />
       <link rel="alternate" hrefLang="x-default" href={url} />
 
       {/* Open Graph */}
@@ -128,6 +142,11 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={image} />
+      <meta property="og:image:secure_url" content={image} />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={title} />
       <meta property="og:type" content={type} />
       <meta property="og:site_name" content="KKM International Group" />
       <meta property="og:locale" content={locale} />

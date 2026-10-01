@@ -45,6 +45,9 @@ export enum Page {
   EvidenceRegistry = 'Evidence Registry',
   ClaimRegistry = 'Claim Registry',
   Sustainability = 'Sustainability & Governance',
+  Team = 'Team & Leadership',
+  FAQ = 'Frequently Asked Questions',
+  Divisions = 'Strategic Divisions',
   NotFound = 'Page Not Found',
 }
 

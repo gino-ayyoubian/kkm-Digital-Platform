@@ -1,5 +1,5 @@
 import { createApp } from './app.ts';
-import logger from './logger';
+import logger from './logger.ts';
 
 async function startServer() {
   const app = await createApp({ includeFrontend: true });

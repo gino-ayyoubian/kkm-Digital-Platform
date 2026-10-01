@@ -172,18 +172,27 @@ const CareersPage: React.FC = () => {
             <section className="container mx-auto px-4 sm:px-6 lg:px-8 my-20">
                 <h2 className="text-3xl md:text-4xl font-display font-extrabold text-primary-dark dark:text-white text-center mb-12">{t('HearFromOurTeam')}</h2>
                 <div className="grid md:grid-cols-3 gap-8">
-                    {EMPLOYEE_TESTIMONIALS.map(testimonial => (
-                        <div key={testimonial.name} className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-lg text-center">
-                            <img src={testimonial.image} alt={testimonial.name} className="w-24 h-24 rounded-full mx-auto mb-4 object-cover ring-4 ring-secondary"/>
-                            <blockquote className="italic text-text-light dark:text-slate-300 before:content-['“'] after:content-['”']">
-                                {testimonial.quote}
-                            </blockquote>
-                            <cite className="block mt-4 not-italic">
-                                <span className="font-bold text-primary-dark dark:text-white">{testimonial.name}</span>,
-                                <span className="text-text-light dark:text-slate-400 text-sm"> {testimonial.role}</span>
-                            </cite>
-                        </div>
-                    ))}
+                    {EMPLOYEE_TESTIMONIALS.map(testimonial => {
+                        const quoteText = t(testimonial.quote as any);
+                        const roleText = t(testimonial.role as any);
+                        return (
+                            <div key={testimonial.name} className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-700 text-center flex flex-col items-center">
+                                <div className="w-20 h-20 rounded-full mb-5 bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white font-bold text-xl shadow-md ring-4 ring-primary/20">
+                                    {testimonial.initials || testimonial.name.slice(0, 2)}
+                                </div>
+                                <blockquote className="italic text-text-light dark:text-slate-300 before:content-['“'] after:content-['”'] text-sm leading-relaxed mb-4 flex-grow">
+                                    {quoteText}
+                                </blockquote>
+                                <cite className="block mt-auto not-italic">
+                                    <span className="font-bold text-primary-dark dark:text-white block">{testimonial.name}</span>
+                                    <span className="text-text-light dark:text-slate-400 text-xs">{roleText}</span>
+                                    {testimonial.department && (
+                                        <span className="text-primary dark:text-secondary text-[11px] block mt-1 font-medium">{testimonial.department}</span>
+                                    )}
+                                </cite>
+                            </div>
+                        );
+                    })}
                 </div>
             </section>
         </div>

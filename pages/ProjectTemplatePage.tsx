@@ -24,8 +24,8 @@ const ProjectTemplatePage: React.FC<ProjectTemplatePageProps> = ({ setPage }) =>
     results: 'Validated thermal gradient of 45°C/km. Prototype phase demonstrated stable fluid circulation with 0% leak rate.',
     nextPhase: 'Phase 3 (Turbine Commissioning & Grid Synchronization)',
     gallery: [
-      'https://picsum.photos/seed/kkm-proj-1/800/600',
-      'https://picsum.photos/seed/kkm-proj-2/800/600'
+      '/images/kkm-proj-1.svg',
+      '/images/kkm-proj-2.svg'
     ]
   };
 

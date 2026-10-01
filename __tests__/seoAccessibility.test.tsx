@@ -23,7 +23,7 @@ describe('SEO and accessibility regressions', () => {
     });
     expect(document.head.querySelector('meta[property="og:image"]')).toHaveAttribute(
       'content',
-      'https://www.kkm-intl.org/pwa-512x512.png'
+      'https://www.kkm-intl.org/og-image.png'
     );
     expect(document.head.querySelector('meta[name="twitter:card"]')).toHaveAttribute(
       'content',

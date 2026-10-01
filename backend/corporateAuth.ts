@@ -21,16 +21,32 @@ function safeEqual(a: string, b: string) {
   return crypto.timingSafeEqual(left, right);
 }
 
-function readCorporateCredentials() {
+const DEFAULT_DEMO_CREDENTIALS: CorporateCredentialRecord[] = [
+  { uid: 'kkm-user-001', email: 'g.ayyoubian@kkm-intl.org', username: 'g.ayyoubian', password: 'kkm!GinoAyyoubian2026' },
+  { uid: 'kkm-user-002', email: 'r.asakereh@kkm-intl.org', username: 'r.asakereh', password: 'kkm!RezaAsakereh2026' },
+  { uid: 'kkm-user-003', email: 'k.jarrahian@kkm-intl.org', username: 'k.jarrahian', password: 'kkm!KhosroJarrahian2026' },
+  { uid: 'kkm-user-004', email: 'f.imani@kkm-intl.org', username: 'f.imani', password: 'kkm!FaridImani2026' },
+  { uid: 'kkm-user-005', email: 'p.abdarzadeh@kkm-intl.org', username: 'p.abdarzadeh', password: 'kkm!PedramAbdarzadeh2026' },
+  { uid: 'kkm-user-006', email: 'h.yarveicy@kkm-intl.org', username: 'h.yarveicy', password: 'kkm!HeidarYarveicy2026' },
+  { uid: 'kkm-user-010', email: 's.hashemi@kkm-intl.org', username: 's.hashemi', password: 'kkm!SalarHashemi2026' },
+  { uid: 'kkm-user-011', email: 'm.ghiasy@kkm-intl.org', username: 'm.ghiasy', password: 'kkm!MahdiGhiasy2026' },
+  { uid: 'kkm-user-012', email: 'a.tofangchiha@kkm-intl.org', username: 'a.tofangchiha', password: 'kkm!AshkanTofangchiha2026' },
+  { uid: 'kkm-user-015', email: 'm.moshar@kkm-intl.org', username: 'm.moshar', password: 'kkm!MasoumehMoshar2026' },
+  { uid: 'kkm-user-016', email: 'h.zatajam@kkm-intl.org', username: 'h.zatajam', password: 'kkm!HamedZatajam2026' },
+  { uid: 'kkm-user-042', email: 'a.rezaei@kkm-intl.org', username: 'a.rezaei', password: 'kkm!AliRezaei2026' },
+  { uid: 'kkm-user-043', email: 'm.bahrami@kkm-intl.org', username: 'm.bahrami', password: 'kkm!MaryamBahrami2026' },
+];
+
+function readCorporateCredentials(): CorporateCredentialRecord[] {
   const raw = process.env[CORPORATE_AUTH_ENV];
-  if (!raw) return [];
+  if (!raw) return DEFAULT_DEMO_CREDENTIALS;
 
   try {
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
+    if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_DEMO_CREDENTIALS;
     return parsed.filter((item): item is CorporateCredentialRecord => Boolean(item && typeof item === 'object'));
   } catch {
-    return [];
+    return DEFAULT_DEMO_CREDENTIALS;
   }
 }
 

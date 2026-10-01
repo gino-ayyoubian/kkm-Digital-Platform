@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#071526" />
+      <stop offset="50%" stop-color="#0B2545" />
+      <stop offset="100%" stop-color="#0F3866" />
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0B3A6B" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#1E88E5" stop-opacity="0.9" />
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="circuit" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E88E5" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0B3A6B" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg)" />
+  <rect width="800" height="600" fill="url(#grid)" />
+
+  <!-- Abstract Technical Lines & Waves -->
+  <path d="M-100 450 Q 200 300 400 420 T 900 350 L 900 600 L -100 600 Z" fill="url(#circuit)" />
+  <path d="M-50 490 Q 250 380 450 460 T 950 420" fill="none" stroke="#1E88E5" stroke-width="2" stroke-opacity="0.4" />
+  <path d="M-50 510 Q 270 410 470 480 T 950 440" fill="none" stroke="#0B3A6B" stroke-width="1.5" stroke-dasharray="6,6" stroke-opacity="0.5" />
+
+  <!-- Engineering Nodes -->
+  <circle cx="200" cy="300" r="4" fill="#1E88E5" />
+  <circle cx="200" cy="300" r="12" fill="none" stroke="#1E88E5" stroke-width="1" stroke-opacity="0.5" />
+  <circle cx="400" cy="420" r="5" fill="#1E88E5" />
+  <circle cx="650" cy="360" r="4" fill="#1E88E5" />
+  <line x1="200" y1="300" x2="400" y2="420" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" />
+  <line x1="400" y1="420" x2="650" y2="360" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" />
+
+  <!-- Technical Schematic Accent Box -->
+  <rect x="60" y="60" width="680" height="480" rx="16" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+  <line x1="60" y1="120" x2="740" y2="120" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+
+  <!-- Badge -->
+  <rect x="90" y="82" width="220" height="26" rx="6" fill="#0B3A6B" fill-opacity="0.3" stroke="#1E88E5" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="102" y="99" fill="#93C5FD" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="11" font-weight="bold" letter-spacing="1.5">IP CENTER</text>
+
+  <!-- Title & Subtitle -->
+  <text x="90" y="240" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="34" font-weight="800" letter-spacing="-0.5">Innovation Hub</text>
+  <text x="90" y="280" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="18" font-weight="500">Patents, Incubation & Academic Partnerships</text>
+
+  <!-- Technical telemetry badges bottom -->
+  <g transform="translate(90, 470)">
+    <rect width="180" height="40" rx="8" fill="rgba(15,23,42,0.6)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+    <text x="16" y="25" fill="#38BDF8" font-family="monospace" font-size="12" font-weight="bold">ISO 14001 / ASME</text>
+  </g>
+  <g transform="translate(290, 470)">
+    <rect width="180" height="40" rx="8" fill="rgba(15,23,42,0.6)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+    <text x="16" y="25" fill="#34D399" font-family="monospace" font-size="12" font-weight="bold">KKM VERIFIED IP</text>
+  </g>
+</svg>

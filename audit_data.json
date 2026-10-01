@@ -1,0 +1,844 @@
+{
+  "findings": [
+    {
+      "id": "F-01",
+      "sev": "crit",
+      "cats": [
+        "SEO"
+      ],
+      "title": "og:image on all pages is an inline data:image/svg+xml URI",
+      "evidence": "Every route returns the same <meta property=\"og:image\"> whose value is a data:image/svg+xml,<svg viewBox='0 0 200 200' ...> URI (brand navy #002D56, two white leaf/flame paths + a white circle).",
+      "impact": "Facebook/LinkedIn/X/Slack/WhatsApp will not render a preview image — link shares appear imageless, hurting the trust funnel for investors and EPC partners.",
+      "root": "The build injects a data-URI SVG instead of an absolute HTTPS raster URL.",
+      "fix": "Generate a real 1200×630 PNG/JPG (OG + Twitter) per route, host it, set <meta property=\"og:image\"> to the absolute HTTPS URL, and add og:image:width/height/alt/type."
+    },
+    {
+      "id": "F-02",
+      "sev": "crit",
+      "cats": [
+        "SEO"
+      ],
+      "title": "Identical <title> and meta description on every route",
+      "evidence": "/, /contact, /projects, /technologies and /careers all return the same title \"KKM International Group | Technology. Engineering. Infrastructure. Innovation.\" and the same lone site-wide description.",
+      "impact": "No per-page relevance, keyword cannibalisation, poor SERP snippets and low CTR.",
+      "root": "SPA renders content client-side with no route-level <head> management (no SSR/SSG/head library).",
+      "fix": "Route-level metadata via SSR/SSG or a head manager; unique title/meta/canonical/OG/Twitter per route, localised."
+    },
+    {
+      "id": "F-03",
+      "sev": "high",
+      "cats": [
+        "IA",
+        "SEO"
+      ],
+      "title": "Soft-404: unknown routes return HTTP 200 serving index.html",
+      "evidence": "/nonexistent-xyz-123 → 307 → 200, Content-Disposition \"index.html\", ETag W/\"8b3159f02e60e8b7395ef0fd17abf5b7\" identical to the homepage; the same class was confirmed for 30+ tested paths.",
+      "impact": "Crawlers index endless duplicates, users hit blank/dead pages and receive no error guidance.",
+      "root": "Catch-all rewrite to index.html with no route-match handler and no 404 status.",
+      "fix": "Real 404 route with a 404/410 status, helpful navigation and noindex; keep SPA routing but return the correct status at the edge/SSR."
+    },
+    {
+      "id": "F-04",
+      "sev": "high",
+      "cats": [
+        "BE"
+      ],
+      "title": "The API / serverless function is failing",
+      "evidence": "/api, /api/health and /api/contact all return HTTP 500 with header \"X-Vercel-Error: FUNCTION_INVOCATION_FAILED\" (region pdx1); the body is the ~96-byte Vercel default error page.",
+      "impact": "If the contact/inquiry form posts here, submissions are silently lost — direct revenue and lead loss.",
+      "root": "A Vercel function throwing at runtime (missing env var, bad import, or no handler for GET).",
+      "fix": "Implement the route handler robustly: input validation, structured error handling + logging, a health endpoint that returns 200, and alerting."
+    },
+    {
+      "id": "F-05",
+      "sev": "high",
+      "cats": [
+        "CT"
+      ],
+      "title": "Evidence Registry cites downloadable .pdf files that do not resolve",
+      "evidence": "/EVD-CORP-REG-384054.pdf returns HTTP 200 but Content-Type text/html, filename=\"index.html\" (the SPA fallback) — the PDFs are missing.",
+      "impact": "Undermines the whole Evidence Registry credibility premise — cited proof is not retrievable.",
+      "root": "Evidence documents are referenced as filenames but were never deployed or linked.",
+      "fix": "Host evidence PDFs at stable URLs, link each claim's Evidence Ref to the actual document, and return 404 for missing ones."
+    },
+    {
+      "id": "F-06",
+      "sev": "high",
+      "cats": [
+        "CT"
+      ],
+      "title": "Untranslated i18n keys leak into production on /careers",
+      "evidence": "The \"Hear From Our Team\" testimonials render literally \"Emp_Testimonial_1_Quote\", \"Emp_Testimonial_1_Role\", … \"Emp_Testimonial_3_Role\".",
+      "impact": "Looks broken/unfinished and damages credibility with candidates and partners.",
+      "root": "Missing translation entries plus no fallback handling.",
+      "fix": "Supply real testimonial quotes/roles; add a fallback so a missing key never renders raw; add a lint/CI check for missing keys."
+    },
+    {
+      "id": "F-07",
+      "sev": "high",
+      "cats": [
+        "UX",
+        "CT"
+      ],
+      "title": "Random third-party placeholder images (picsum.photos) used as real content",
+      "evidence": "/technologies GMEL Vision & Navigator images and all 4 /insights article images use picsum.photos/seed/… (e.g. https://picsum.photos/seed/gmel-vision-app/600/400).",
+      "impact": "Unprofessional, non-deterministic (images change), external dependency and co-branding risk.",
+      "root": "Placeholder assets were never replaced.",
+      "fix": "Replace with owned, optimised imagery or on-brand generated visuals; remove picsum."
+    },
+    {
+      "id": "F-08",
+      "sev": "high",
+      "cats": [
+        "GR"
+      ],
+      "title": "Contact backend broken behind a 24-hour response promise",
+      "evidence": "The /contact page states \"We usually respond within 24 hours\" and \"Inquiries are automatically routed to the appropriate internal department…\", while /api/contact returns HTTP 500.",
+      "impact": "Inquiries may never arrive; the SLA promise cannot be met; leads are lost.",
+      "root": "The same broken function plus no verified email/CRM pipeline.",
+      "fix": "Implement and monitor the submission pipeline end-to-end (store + email + CRM) and add success/error UI states with retry."
+    },
+    {
+      "id": "F-09",
+      "sev": "high",
+      "cats": [
+        "UX",
+        "A11Y"
+      ],
+      "title": "Interactive components are stubbed/disabled in production",
+      "evidence": "/contact shows \"Interactive Map Disabled in Preview\"; /technologies shows \"🌐 3D-Inspired Interactive Subsurface Architecture\", a \"1 / 6\" carousel and an \"Interactive Technology Map\".",
+      "impact": "Promised interactivity is missing; users on some environments see dead UI with no graceful fallback.",
+      "root": "Preview-only guards and unfinished interactive components were shipped.",
+      "fix": "Ship working components with static fallbacks, accessible controls, keyboard support and reduced-motion handling."
+    },
+    {
+      "id": "F-10",
+      "sev": "med",
+      "cats": [
+        "SEO"
+      ],
+      "title": "apex→www uses a 307 Temporary Redirect (double hop)",
+      "evidence": "Chain: scheme-less host → HTTP/1.0 308 → https://kkm-intl.org/ → HTTP/1.1 307 Temporary Redirect → https://www.kkm-intl.org/ (200).",
+      "impact": "Temporary redirects don't consolidate ranking signals as strongly; the extra hop adds latency.",
+      "root": "Default Vercel redirect configuration.",
+      "fix": "Configure a single 308 permanent apex→www redirect (one hop) and self-canonicalise to the www host."
+    },
+    {
+      "id": "F-11",
+      "sev": "med",
+      "cats": [
+        "SEC"
+      ],
+      "title": "Missing security headers",
+      "evidence": "Responses lack Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy and Permissions-Policy; only Strict-Transport-Security is present.",
+      "impact": "Increased XSS/clickjacking/MIME-sniffing exposure; no referrer or privacy control.",
+      "root": "No headers configuration.",
+      "fix": "Add CSP (report-only first), X-Frame-Options/frame-ancestors, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin and Permissions-Policy."
+    },
+    {
+      "id": "F-12",
+      "sev": "med",
+      "cats": [
+        "SEC"
+      ],
+      "title": "HTML and assets served with Access-Control-Allow-Origin: *",
+      "evidence": "200 responses for \"/\" and static assets include \"Access-Control-Allow-Origin: *\".",
+      "impact": "Overly permissive CORS; any origin can read responses.",
+      "root": "Blanket CORS set for public assets.",
+      "fix": "Restrict CORS to trusted origins for anything non-public; keep public assets cacheable but scoped."
+    },
+    {
+      "id": "F-13",
+      "sev": "med",
+      "cats": [
+        "SEC"
+      ],
+      "title": "HSTS present but without includeSubDomains or preload while subdomains exist",
+      "evidence": "Strict-Transport-Security: max-age=63072000 (no includeSubDomains, no preload), while gmel.vision.kkm-intl.org and gmel.navigator.kkm-intl.org are active.",
+      "impact": "Subdomains are not forced to HTTPS via HSTS.",
+      "root": "Partial HSTS configuration.",
+      "fix": "Add includeSubDomains (and preload only after an audit) once all subdomains are HTTPS-ready."
+    },
+    {
+      "id": "F-14",
+      "sev": "med",
+      "cats": [
+        "PF"
+      ],
+      "title": "A single hero image is served unoptimised at ~690 KB",
+      "evidence": "/images/gino-ayyoubian.jpg → image/jpeg, Content-Length 705,881 bytes (~690 KB).",
+      "impact": "Heavy LCP candidate; slow on mobile/Iranian networks.",
+      "root": "No image optimisation pipeline or responsive formats.",
+      "fix": "Serve AVIF/WebP with responsive srcset/sizes, correct dimensions, lazy-load below the fold, and use a CDN image transformer."
+    },
+    {
+      "id": "F-15",
+      "sev": "med",
+      "cats": [
+        "PF"
+      ],
+      "title": "HTML served with public, max-age=0, must-revalidate; assets unverifiable",
+      "evidence": "Cache-Control: public, max-age=0, must-revalidate on HTML; hashed static assets could not be inspected (raw HTML unavailable).",
+      "impact": "Potential revalidation of cacheable assets adds latency.",
+      "root": "Default Vercel static caching.",
+      "fix": "Set long-lived immutable caching for content-hashed assets, keep short revalidation for HTML, and add stale-while-revalidate."
+    },
+    {
+      "id": "F-16",
+      "sev": "med",
+      "cats": [
+        "SEO"
+      ],
+      "title": "Very low indexation",
+      "evidence": "Web search for \"site:kkm-intl.org\" returns only the homepage (1 result); a brand query returns 1 result.",
+      "impact": "Near-zero organic discoverability despite a real sitemap.",
+      "root": "Client-only rendering + thin/duplicated meta + possibly an unreferenced sitemap give crawlers little to index.",
+      "fix": "Prerender/SSR content routes, add unique metadata and internal linking, submit the sitemap to Search Console, and add structured data."
+    },
+    {
+      "id": "F-17",
+      "sev": "med",
+      "cats": [
+        "IA"
+      ],
+      "title": "Key IA nodes absent as real pages",
+      "evidence": "/divisions, /team, /privacy, /terms, /faq, /services and /solutions all fall through to the SPA catch-all fallback (HTTP 200, no content).",
+      "impact": "Visitors and crawlers dead-end; divisions/capabilities are not discoverable.",
+      "root": "Routes referenced/expected but not implemented.",
+      "fix": "Implement the missing pages or remove dead links; enforce a route manifest and return 404 for unknown paths."
+    },
+    {
+      "id": "F-18",
+      "sev": "med",
+      "cats": [
+        "IA"
+      ],
+      "title": "/news, /investors and /downloads resolve but return no content",
+      "evidence": "All three return HTTP 200 with no extractable body.",
+      "impact": "Audience-targeted destinations (press, investor, downloads) are dead.",
+      "root": "Empty or canvas-only routes / unfinished pages.",
+      "fix": "Populate or remove; make them crawlable and content-rich, or return 404."
+    },
+    {
+      "id": "F-19",
+      "sev": "med",
+      "cats": [
+        "CT",
+        "IA"
+      ],
+      "title": "No Persian routes resolve; manifest lang is en-only; no hreflang observed",
+      "evidence": "/fa and /fa-IR fall through to the catch-all; the PWA manifest declares lang \"en\"; no hreflang was observable.",
+      "impact": "The expected Persian/English bilingual audience is effectively English-only.",
+      "root": "No i18n routing or localisation layer wired.",
+      "fix": "Add locale-prefixed routes (/fa, /en) with hreflang alternates, RTL layout for Persian, localised metadata and a language switcher."
+    },
+    {
+      "id": "F-20",
+      "sev": "med",
+      "cats": [
+        "IA",
+        "CT"
+      ],
+      "title": "Duplicate content across alias routes with no canonical",
+      "evidence": "/about and /about-us; /contact and /contact-us; /sustainability and /esg render the same content with no canonical.",
+      "impact": "Duplicate-content dilution and inconsistent linking.",
+      "root": "Multiple URLs for one page without canonicalisation.",
+      "fix": "Pick one canonical URL each, 301 the aliases and set rel=canonical."
+    },
+    {
+      "id": "F-21",
+      "sev": "med",
+      "cats": [
+        "CT",
+        "SEC"
+      ],
+      "title": "No accessible legal pages",
+      "evidence": "/privacy and /terms fall through to the fallback; no cookie policy observed; the only \"consent\" is an overlay stating \"By continuing, you agree…\".",
+      "impact": "Data-protection/compliance exposure and a trust gap for enterprise/international clients.",
+      "root": "Legal pages were not built; consent is implied.",
+      "fix": "Publish Privacy, Terms, Cookie and Data-Processing pages; implement explicit cookie consent (banner + preferences) with regional handling."
+    },
+    {
+      "id": "F-22",
+      "sev": "low",
+      "cats": [
+        "CT"
+      ],
+      "title": "Inconsistent claim taxonomy between /sustainability and /evidence",
+      "evidence": "/sustainability says \"four audited categories: Verified, Internal, Estimated, and Demonstration\", while /evidence defines a \"7-tier\" Levels A–G system.",
+      "impact": "Confusing governance story; harder for auditors/investors to follow.",
+      "root": "Two vocabularies for the same governance model.",
+      "fix": "Unify on one published taxonomy and cross-link \"four categories\" to the A–G levels."
+    },
+    {
+      "id": "F-23",
+      "sev": "low",
+      "cats": [
+        "CT",
+        "SEC"
+      ],
+      "title": "Implied consent is not GDPR-style valid consent",
+      "evidence": "The overlay says \"By continuing, you agree to our data usage and verified reporting standards\" but there are no cookie controls and no linked policy.",
+      "impact": "Implied consent is not valid consent under privacy regimes.",
+      "root": "Banner-as-consent.",
+      "fix": "Implement granular consent with opt-in for non-essential cookies and links to the policies."
+    },
+    {
+      "id": "F-24",
+      "sev": "med",
+      "cats": [
+        "GR"
+      ],
+      "title": "Contact spam protection is a static client-side arithmetic challenge (2 + 4 = ?)",
+      "evidence": "The /contact form shows \"Security Question — 2 + 4 = ?\" while the server endpoint returns HTTP 500.",
+      "impact": "Trivial to bypass with a bot, yet real submissions fail.",
+      "root": "Client-only static CAPTCHA plus a broken backend.",
+      "fix": "Server-side validation + rate limiting + honeypot/timestamp + (Turnstile/reCAPTCHA) as defence-in-depth, and a working endpoint."
+    },
+    {
+      "id": "F-25",
+      "sev": "low",
+      "cats": [
+        "UX"
+      ],
+      "title": "Two overlapping length indicators on the contact form",
+      "evidence": "The form shows both \"1000 chars left\" and \"0 / 1000\".",
+      "impact": "Minor visual redundancy/confusion.",
+      "root": "Two counters implemented.",
+      "fix": "Keep a single clear character counter with an accessible live region."
+    },
+    {
+      "id": "F-26",
+      "sev": "med",
+      "cats": [
+        "PF"
+      ],
+      "title": "Critical visuals depend on a third-party origin (picsum.photos) at view time",
+      "evidence": "/technologies and /insights load images from picsum.photos at runtime.",
+      "impact": "Adds external requests, potential latency/blocking, non-deterministic content and a privacy data flow.",
+      "root": "Placeholders shipped to production.",
+      "fix": "Self-host all media (see F-07) and remove third-party placeholder origins."
+    },
+    {
+      "id": "F-27",
+      "sev": "low",
+      "cats": [
+        "CT"
+      ],
+      "title": "The \"4,600t CO₂e\" figure appears without an inline evidence-level label",
+      "evidence": "/technologies shows \"Measured Environmental Impact — 4,600t CO₂e\" without an A–G chip, though the group's governance requires claims to carry a label.",
+      "impact": "Inconsistency with the stated Production Truth Layer.",
+      "root": "The metric is not wired to the registry labelling.",
+      "fix": "Render each metric with its evidence-level chip, sourced from the registry."
+    },
+    {
+      "id": "F-28",
+      "sev": "med",
+      "cats": [
+        "OPS"
+      ],
+      "title": "Failures surface as Vercel's default 500 page with no monitoring",
+      "evidence": "/api* returns Vercel's stock 500 page; no custom error handling, no status page and no observable monitoring.",
+      "impact": "Users see an unbranded error; outages go unnoticed.",
+      "root": "No error boundaries/observability.",
+      "fix": "Custom 404/500 pages, structured logging + alerting (Sentry/Vercel logs), uptime monitoring, a status page and CI checks."
+    }
+  ],
+  "tickets": [
+    {
+      "id": "TKT-001",
+      "title": "Per-route unique title, meta description and canonical",
+      "type": "bug",
+      "pri": "P0",
+      "sev": "high",
+      "epic": "EP-1 SEO & Discoverability",
+      "effort": "2d",
+      "deps": "—",
+      "maps": "F-02",
+      "ac": "Given any content route, When it is requested by a crawler, Then it returns a unique <title>, a unique meta description and a self-referential canonical, and no two routes share a title.",
+      "impl": "Add an SSR/SSG head layer or a route-metadata manifest; render metadata server-side so crawlers see it before JS executes.",
+      "qa": "Crawl every route; assert title/description uniqueness across the set; verify in Search Console URL Inspection.",
+      "dod": "All routes carry unique metadata; an automated uniqueness test is green and deployed."
+    },
+    {
+      "id": "TKT-002",
+      "title": "Real OG/Twitter 1200×630 images at absolute URLs",
+      "type": "bug",
+      "pri": "P0",
+      "sev": "critical",
+      "epic": "EP-1 SEO & Discoverability",
+      "effort": "1d",
+      "deps": "—",
+      "maps": "F-01",
+      "ac": "Given a page is shared on LinkedIn/X/Facebook, When the crawler reads og:image, Then it gets an absolute HTTPS raster (1200×630) and a valid preview renders.",
+      "impl": "Generate per-route 1200×630 PNG/JPG under /og/*; set og:image, twitter:image and og:image:width/height/alt/type.",
+      "qa": "Run the Facebook Sharing Debugger, X Card Validator and LinkedIn Post Inspector on three routes.",
+      "dod": "Every content route exposes a valid raster OG/Twitter image."
+    },
+    {
+      "id": "TKT-003",
+      "title": "Proper 404 route with correct status and noindex",
+      "type": "story",
+      "pri": "P0",
+      "sev": "high",
+      "epic": "EP-1 SEO & Discoverability",
+      "effort": "0.5d",
+      "deps": "—",
+      "maps": "F-03",
+      "ac": "Given an unknown path, When requested, Then the server returns HTTP 404, renders a branded page with navigation and sets noindex; known routes still return 200.",
+      "impl": "Handle unmatched routes at the edge/SSR to emit 404; add a 404 view; only enter client routing after a valid match.",
+      "qa": "Request 10 random paths and assert 404 + noindex; assert known routes stay 200.",
+      "dod": "Soft-404 eliminated; unknown paths return 404."
+    },
+    {
+      "id": "TKT-004",
+      "title": "Single 308 apex→www redirect + self-canonical",
+      "type": "task",
+      "pri": "P1",
+      "sev": "medium",
+      "epic": "EP-1 SEO & Discoverability",
+      "effort": "0.25d",
+      "deps": "—",
+      "maps": "F-10",
+      "ac": "Given a request to the apex or scheme-less host, When followed, Then it reaches https://www.kkm-intl.org/ in a single 308 hop and pages self-canonical to www.",
+      "impl": "Configure a permanent redirect in the hosting config; set the canonical host to www.",
+      "qa": "curl -I the apex; assert exactly one 308 hop to www.",
+      "dod": "One-hop 308 redirect; canonicals target www."
+    },
+    {
+      "id": "TKT-005",
+      "title": "Prerender/SSR content routes + submit sitemap",
+      "type": "story",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-1 SEO & Discoverability",
+      "effort": "3d",
+      "deps": "TKT-001",
+      "maps": "F-16",
+      "ac": "Given a content route, When fetched without JS, Then the full body and head are present and the route appears in a valid, submitted sitemap.",
+      "impl": "Add SSR/SSG prerendering; regenerate sitemap.xml from the route manifest; submit via Search Console.",
+      "qa": "Disable JS and fetch routes; validate sitemap.xml; confirm indexing in Search Console.",
+      "dod": "Inner routes indexable without JS; sitemap submitted."
+    },
+    {
+      "id": "TKT-006",
+      "title": "hreflang FA/EN + locale-prefixed routes",
+      "type": "task",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-1 SEO & Discoverability",
+      "effort": "1d",
+      "deps": "TKT-070",
+      "maps": "F-19",
+      "ac": "Given a page, When requested, Then en/fa/x-default alternates are emitted and /fa resolves with RTL.",
+      "impl": "Emit hreflang link tags; wire /en and /fa routing from the locale manifest.",
+      "qa": "Validate hreflang with an online validator; fetch /fa and assert dir=rtl.",
+      "dod": "hreflang valid on all content routes."
+    },
+    {
+      "id": "TKT-010",
+      "title": "Fix failing serverless function(s) /api*",
+      "type": "bug",
+      "pri": "P0",
+      "sev": "high",
+      "epic": "EP-2 Reliability, API & CMS Backend",
+      "effort": "1d",
+      "deps": "—",
+      "maps": "F-04",
+      "ac": "Given GET /api/health, When requested, Then it returns HTTP 200 JSON; POST /api/contact with a valid body returns 200.",
+      "impl": "Read Vercel runtime logs, fix the throwing import/env var, implement method handling and structured error handling.",
+      "qa": "curl each endpoint and assert 200; confirm no FUNCTION_INVOCATION_FAILED in logs.",
+      "dod": "/api/health = 200; functions no longer throw."
+    },
+    {
+      "id": "TKT-011",
+      "title": "End-to-end contact pipeline (validate→store→email→CRM) + success/error UI",
+      "type": "story",
+      "pri": "P0",
+      "sev": "high",
+      "epic": "EP-2 Reliability, API & CMS Backend",
+      "effort": "2d",
+      "deps": "TKT-010",
+      "maps": "F-08",
+      "ac": "Given a valid submission, When posted, Then it is stored, emailed to the routed department and synced to CRM, returning 200 {ok:true,id}; invalid input returns 400.",
+      "impl": "Implement validate/store/email/CRM steps; add success/error/retry UI states; emit structured logs.",
+      "qa": "Submit via UI and API; confirm inbox + CRM receipt; exercise invalid and failure paths.",
+      "dod": "A real submission is received end-to-end; UI shows honest success/error."
+    },
+    {
+      "id": "TKT-012",
+      "title": "Health/status endpoint + custom 404/500 + alerting",
+      "type": "task",
+      "pri": "P1",
+      "sev": "medium",
+      "epic": "EP-2 Reliability, API & CMS Backend",
+      "effort": "2d",
+      "deps": "TKT-010",
+      "maps": "F-28",
+      "ac": "Given an unhandled error, When it occurs, Then a branded 500 renders and an alert fires; /api/health is monitored on an interval.",
+      "impl": "Add error boundaries, a custom 500 page, an uptime monitor on /api/health and an alert channel.",
+      "qa": "Force an error and confirm the branded page plus a received alert.",
+      "dod": "Errors are branded; alerting verified."
+    },
+    {
+      "id": "TKT-013",
+      "title": "CMS content model + API contracts",
+      "type": "story",
+      "pri": "P1",
+      "sev": "medium",
+      "epic": "EP-2 Reliability, API & CMS Backend",
+      "effort": "3d",
+      "deps": "—",
+      "maps": "—",
+      "ac": "Given the content API, When editors publish a claim/division/project, Then typed records are returned and an OpenAPI contract is published.",
+      "impl": "Model claims/divisions/projects; publish /api/claims, /api/divisions; document the contract.",
+      "qa": "Run contract tests against the schema; validate the level enum A–G.",
+      "dod": "Content served from a typed model with a published contract."
+    },
+    {
+      "id": "TKT-014",
+      "title": "Rate limiting + spam defence-in-depth",
+      "type": "task",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-2 Reliability, API & CMS Backend",
+      "effort": "1d",
+      "deps": "TKT-011",
+      "maps": "F-24",
+      "ac": "Given more than 5 submissions/minute from one IP, When posted, Then 429 is returned; honeypot and too-fast submissions are dropped silently.",
+      "impl": "Add a token-bucket (Redis/Upstash), a honeypot field, a timestamp check and optional Turnstile.",
+      "qa": "Automate a burst and confirm 429; submit the honeypot and confirm the drop.",
+      "dod": "Rate limiting and bot traps enforced server-side."
+    },
+    {
+      "id": "TKT-015",
+      "title": "Performance budget + CI performance gate",
+      "type": "task",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-5 Performance",
+      "effort": "1d",
+      "deps": "TKT-040",
+      "maps": "F-14/F-15",
+      "ac": "Given a build, When CI runs, Then it fails if the LCP-image or JS budget is exceeded.",
+      "impl": "Define budgets, add Lighthouse CI, persist results per run.",
+      "qa": "Intentionally break a budget and confirm CI fails.",
+      "dod": "CI enforces the performance budget."
+    },
+    {
+      "id": "TKT-020",
+      "title": "Host & link Evidence Registry PDFs; 404 missing",
+      "type": "bug",
+      "pri": "P0",
+      "sev": "high",
+      "epic": "EP-3 Content, Trust & Evidence",
+      "effort": "1d",
+      "deps": "—",
+      "maps": "F-05",
+      "ac": "Given a claim's Evidence Ref link, When clicked, Then the real PDF downloads as application/pdf; a missing file returns 404.",
+      "impl": "Upload the cited PDFs to stable URLs; wire each claim link; return 404 for absent files.",
+      "qa": "Click through all 14 claim references; assert PDF or 404 — none may serve index.html.",
+      "dod": "All cited evidence resolves to its document."
+    },
+    {
+      "id": "TKT-021",
+      "title": "Fix leaked i18n keys on /careers + missing-key fallback + CI lint",
+      "type": "bug",
+      "pri": "P1",
+      "sev": "high",
+      "epic": "EP-3 Content, Trust & Evidence",
+      "effort": "0.5d",
+      "deps": "—",
+      "maps": "F-06",
+      "ac": "Given /careers, When rendered, Then no raw keys appear; a missing key falls back to EN and CI fails when a key is absent.",
+      "impl": "Add real testimonials, implement an EN fallback, add a CI key-diff check.",
+      "qa": "Render /careers and assert no 'Emp_' strings; delete a key and confirm CI fails.",
+      "dod": "No raw keys in production; CI guards regressions."
+    },
+    {
+      "id": "TKT-022",
+      "title": "Replace picsum placeholders with owned optimised media",
+      "type": "task",
+      "pri": "P1",
+      "sev": "high",
+      "epic": "EP-3 Content, Trust & Evidence",
+      "effort": "1d",
+      "deps": "—",
+      "maps": "F-07/F-26",
+      "ac": "Given any page, When loaded, Then no request targets picsum.photos and images are self-hosted AVIF/WebP.",
+      "impl": "Produce owned imagery; replace every picsum URL; self-host.",
+      "qa": "Search the DOM for picsum.photos (expect zero); measure reduced external requests.",
+      "dod": "Zero third-party placeholder origins in production."
+    },
+    {
+      "id": "TKT-023",
+      "title": "Unify claim taxonomy + label metrics on pages",
+      "type": "story",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-3 Content, Trust & Evidence",
+      "effort": "1d",
+      "deps": "TKT-013",
+      "maps": "F-22/F-27",
+      "ac": "Given a metric or claim, When rendered, Then it carries an A–G evidence chip sourced from the registry and one taxonomy is published.",
+      "impl": "Unify the four-category vs A–G vocabulary; render metric chips (e.g. the 4,600t CO₂e figure).",
+      "qa": "Verify each metric carries a chip; cross-check taxonomy copy between /sustainability and /evidence.",
+      "dod": "Single taxonomy; all metrics labelled."
+    },
+    {
+      "id": "TKT-030",
+      "title": "Build missing pages (/divisions,/team,/faq) or remove dead links",
+      "type": "story",
+      "pri": "P1",
+      "sev": "medium",
+      "epic": "EP-4 IA & Navigation",
+      "effort": "3d",
+      "deps": "TKT-013",
+      "maps": "F-17",
+      "ac": "Given the navigation, When any link is activated, Then it resolves to a real page or is removed; no link lands on the fallback shell.",
+      "impl": "Implement /capabilities, /divisions/{slug}, /team and /faq; enforce a route manifest.",
+      "qa": "Crawl all nav links and assert none return an empty 200.",
+      "dod": "No dead navigation links remain."
+    },
+    {
+      "id": "TKT-031",
+      "title": "Populate or remove /news, /investors, /downloads",
+      "type": "story",
+      "pri": "P1",
+      "sev": "medium",
+      "epic": "EP-4 IA & Navigation",
+      "effort": "2d",
+      "deps": "TKT-013",
+      "maps": "F-18",
+      "ac": "Given these routes, When requested, Then each shows real content or returns 404/redirect.",
+      "impl": "Build content or decommission; add kept routes to the sitemap.",
+      "qa": "Fetch each route; assert content or 404.",
+      "dod": "No empty 200 destinations."
+    },
+    {
+      "id": "TKT-032",
+      "title": "Canonicalise alias routes + 301s",
+      "type": "task",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-4 IA & Navigation",
+      "effort": "0.5d",
+      "deps": "TKT-003",
+      "maps": "F-20",
+      "ac": "Given /about-us, /contact-us, /esg, When requested, Then a 301 directs to the canonical and rel=canonical matches.",
+      "impl": "301 the aliases; set canonicals.",
+      "qa": "curl each alias; assert 301 to the canonical.",
+      "dod": "Aliases 301; canonicals consistent."
+    },
+    {
+      "id": "TKT-040",
+      "title": "Image optimisation pipeline (AVIF/WebP/srcset/lazy)",
+      "type": "task",
+      "pri": "P1",
+      "sev": "medium",
+      "epic": "EP-5 Performance",
+      "effort": "1.5d",
+      "deps": "—",
+      "maps": "F-14",
+      "ac": "Given the hero image, When served, Then it is AVIF/WebP with srcset/sizes, correct dimensions and lazy-loading below the fold.",
+      "impl": "Use a CDN transform or build-time encode; add responsive attributes.",
+      "qa": "Inspect responses and bytes saved; confirm lazy-load behaviour.",
+      "dod": "Hero image within budget; responsive images live."
+    },
+    {
+      "id": "TKT-041",
+      "title": "Caching policy for hashed assets (immutable)",
+      "type": "task",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-5 Performance",
+      "effort": "0.5d",
+      "deps": "—",
+      "maps": "F-15",
+      "ac": "Given a hashed asset, When requested, Then Cache-Control is immutable, max-age=31536000; HTML revalidates briefly with stale-while-revalidate.",
+      "impl": "Add header rules per asset class.",
+      "qa": "curl an asset and assert immutable; curl HTML and assert short revalidation.",
+      "dod": "Correct caching per asset class."
+    },
+    {
+      "id": "TKT-050",
+      "title": "Add security headers incl. CSP (report-only first)",
+      "type": "task",
+      "pri": "P1",
+      "sev": "medium",
+      "epic": "EP-6 Security & Compliance",
+      "effort": "0.5d",
+      "deps": "—",
+      "maps": "F-11",
+      "ac": "Given a response, When fetched, Then CSP (report-only), X-Frame-Options/frame-ancestors, nosniff, Referrer-Policy and Permissions-Policy are present.",
+      "impl": "Add headers in the hosting config; start CSP as report-only and review reports before enforcing.",
+      "qa": "Scan headers and assert presence; review CSP violation reports.",
+      "dod": "Headers present; CSP clean or tightly limited."
+    },
+    {
+      "id": "TKT-051",
+      "title": "Scope CORS",
+      "type": "task",
+      "pri": "P1",
+      "sev": "medium",
+      "epic": "EP-6 Security & Compliance",
+      "effort": "0.25d",
+      "deps": "—",
+      "maps": "F-12",
+      "ac": "Given a non-public endpoint, When called cross-origin, Then CORS is restricted to trusted origins.",
+      "impl": "Replace ACAO:* with an explicit allow-list for anything non-public.",
+      "qa": "Call cross-origin from an untrusted origin; expect denial.",
+      "dod": "CORS scoped to trusted origins."
+    },
+    {
+      "id": "TKT-052",
+      "title": "HSTS includeSubDomains after subdomain audit",
+      "type": "task",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-6 Security & Compliance",
+      "effort": "0.5d",
+      "deps": "—",
+      "maps": "F-13",
+      "ac": "Given all subdomains serve HTTPS, When HSTS is set, Then includeSubDomains is present and preload is considered only post-audit.",
+      "impl": "Audit subdomains, then extend the HSTS header.",
+      "qa": "Assert the header; test a subdomain over HTTP redirects to HTTPS.",
+      "dod": "HSTS extended safely across subdomains."
+    },
+    {
+      "id": "TKT-060",
+      "title": "WCAG 2.2 AA audit + fixes",
+      "type": "story",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-7 Accessibility (WCAG 2.2 AA)",
+      "effort": "4d",
+      "deps": "TKT-101",
+      "maps": "F-09/F-25",
+      "ac": "Given the site, When audited, Then keyboard, focus order, ARIA, contrast, reduced motion and form labels pass, and interactive components operate by keyboard.",
+      "impl": "Audit and remediate; add reduced-motion media queries; fix stubs and counters.",
+      "qa": "Run automated + manual audits and a keyboard-only walkthrough.",
+      "dod": "No WCAG 2.2 AA blockers; report attached."
+    },
+    {
+      "id": "TKT-070",
+      "title": "Persian localization + RTL layout + language switcher",
+      "type": "story",
+      "pri": "P1",
+      "sev": "medium",
+      "epic": "EP-8 i18n & Localization",
+      "effort": "3d",
+      "deps": "—",
+      "maps": "F-19",
+      "ac": "Given /fa, When requested, Then content renders in Persian with dir=rtl, logical CSS mirrors the layout and the switcher reflects the locale.",
+      "impl": "Add locale routing, message files, RTL styles and the switcher.",
+      "qa": "Load /fa; verify RTL, no clipped glyphs and switcher state.",
+      "dod": "Persian route live and correct."
+    },
+    {
+      "id": "TKT-080",
+      "title": "Lead capture + inquiry qualification + analytics plan",
+      "type": "story",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-9 Growth & Conversion",
+      "effort": "2d",
+      "deps": "TKT-011",
+      "maps": "F-08/F-24",
+      "ac": "Given a submission, When received, Then it is qualified/routed and fires a conversion event, and a documented measurement plan exists.",
+      "impl": "Add inquiry routing rules, GA4 events and KPIs.",
+      "qa": "Submit test leads; confirm events and routing.",
+      "dod": "Capture and events verified against the plan."
+    },
+    {
+      "id": "TKT-090",
+      "title": "Publish Privacy/Terms/Cookie/DPA pages",
+      "type": "task",
+      "pri": "P1",
+      "sev": "medium",
+      "epic": "EP-10 Legal & Data Protection",
+      "effort": "2d",
+      "deps": "TKT-030",
+      "maps": "F-21",
+      "ac": "Given the footer, When a legal link is activated, Then a real legal page renders at /legal/*.",
+      "impl": "Draft and publish legal pages; link them in the footer.",
+      "qa": "Fetch each legal page; assert content and working footer links.",
+      "dod": "Legal pages live and linked."
+    },
+    {
+      "id": "TKT-091",
+      "title": "Cookie consent (granular, opt-in)",
+      "type": "task",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-10 Legal & Data Protection",
+      "effort": "1.5d",
+      "deps": "TKT-090",
+      "maps": "F-23",
+      "ac": "Given a first visit, When non-essential cookies are off, Then nothing non-essential loads until opt-in and preferences are stored and changeable.",
+      "impl": "Implement a consent banner with categories and preferences; gate scripts behind consent.",
+      "qa": "Verify no non-essential cookies pre-consent; test toggles.",
+      "dod": "Valid granular consent implemented."
+    },
+    {
+      "id": "TKT-100",
+      "title": "Design-system rollout",
+      "type": "task",
+      "pri": "P3",
+      "sev": "low",
+      "epic": "EP-11 Design System",
+      "effort": "5d",
+      "deps": "—",
+      "maps": "—",
+      "ac": "Given the components, When used, Then they consume tokens (type/space/colour) and match the documented inventory.",
+      "impl": "Tokenise styles; refactor header/footer/cards/tables; document.",
+      "qa": "Visual + accessibility regression on key pages.",
+      "dod": "Tokens adopted across the site."
+    },
+    {
+      "id": "TKT-101",
+      "title": "Replace interactive stubs with working, accessible components",
+      "type": "story",
+      "pri": "P3",
+      "sev": "low",
+      "epic": "EP-7 Accessibility (WCAG 2.2 AA)",
+      "effort": "4d",
+      "deps": "—",
+      "maps": "F-09",
+      "ac": "Given the carousel/map, When operated by mouse or keyboard, Then it works and respects reduced-motion with a static fallback.",
+      "impl": "Rebuild the carousel and map with keyboard support, ARIA and reduced-motion fallbacks.",
+      "qa": "Keyboard walkthrough; reduced-motion test.",
+      "dod": "No stubbed or disabled UI in production."
+    },
+    {
+      "id": "TKT-102",
+      "title": "DevOps: CI/CD checks, versioning, staging, backup/DR",
+      "type": "story",
+      "pri": "P2",
+      "sev": "medium",
+      "epic": "EP-12 DevOps & Tooling",
+      "effort": "3d",
+      "deps": "—",
+      "maps": "F-28",
+      "ac": "Given a pull request, When CI runs, Then build, header assertions and missing-key lint pass; a staging environment exists and backups/DR are documented.",
+      "impl": "Add a CI pipeline, a staging environment and a backup/restore runbook.",
+      "qa": "Open a failing PR and confirm CI blocks; restore from backup in staging.",
+      "dod": "CI gates, staging and DR in place."
+    },
+    {
+      "id": "TKT-103",
+      "title": "Structured data & rich results",
+      "type": "task",
+      "pri": "P3",
+      "sev": "low",
+      "epic": "EP-1 SEO & Discoverability",
+      "effort": "1d",
+      "deps": "TKT-001",
+      "maps": "F-16",
+      "ac": "Given a content route, When rendered, Then valid Organization/BreadcrumbList (and Article) JSON-LD is present and passes the Rich Results Test.",
+      "impl": "Add JSON-LD per template.",
+      "qa": "Run the Rich Results Test on three routes.",
+      "dod": "Structured data valid on key templates."
+    }
+  ]
+}

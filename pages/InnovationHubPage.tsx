@@ -83,7 +83,7 @@ const InnovationHubPage: React.FC = () => {
                         >
                             <div className="rounded-xl overflow-hidden mb-6 shadow-md aspect-[5/3]">
                                 <LazyImage 
-                                    src="https://picsum.photos/seed/innovation/500/300" 
+                                    src="/images/innovation-hub.svg" 
                                     alt="Collaborative workshop environment" 
                                     width={500}
                                     height={300}

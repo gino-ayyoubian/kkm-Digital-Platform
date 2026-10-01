@@ -82,6 +82,8 @@ const ContactPage: React.FC = () => {
     const [formStatus, setFormStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
     const [submitError, setSubmitError] = React.useState<string | null>(null);
     const [isIvrConsoleOpen, setIsIvrConsoleOpen] = React.useState<boolean>(false);
+    const [leadReference, setLeadReference] = React.useState<{ id: string; routedDepartment?: string } | null>(null);
+    const formRenderTimeRef = React.useRef<number>(Date.now());
 
     // Memoized Data
     const officeLocations: MapMarker[] = React.useMemo(() => [
@@ -213,30 +215,61 @@ const ContactPage: React.FC = () => {
                     formData.inquiryType.includes('Investment') ? 'Investment' :
                     formData.inquiryType.includes('Pilot') ? 'Pilot' : 'Project';
 
-                if (db) {
-                    await addDoc(collection(db, 'leads'), {
+                // Call backend validated contact pipeline (TKT-010, TKT-011)
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
                         name: formData.name,
                         email: formData.email,
                         inquiryType: formData.inquiryType,
-                        opportunityType: leadOpportunityType,
                         subject: formData.subject,
                         message: formData.message,
-                        status: 'New',
-                        priority: 'High',
-                        source: 'Contact Page Inquiry',
-                        utmData: utms,
-                        createdAt: serverTimestamp(),
-                        updatedAt: serverTimestamp()
-                    });
+                        _gotcha: formData._gotcha,
+                        renderedAt: formRenderTimeRef.current,
+                        utmData: utms
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.ok) {
+                    throw new Error(data.message || data.error || 'Failed to submit inquiry.');
+                }
+
+                setLeadReference({
+                    id: data.id,
+                    routedDepartment: data.routedDepartment
+                });
+
+                if (db) {
+                    try {
+                        await addDoc(collection(db, 'leads'), {
+                            name: formData.name,
+                            email: formData.email,
+                            inquiryType: formData.inquiryType,
+                            opportunityType: leadOpportunityType,
+                            subject: formData.subject,
+                            message: formData.message,
+                            leadId: data.id,
+                            status: 'New',
+                            priority: 'High',
+                            source: 'Contact Page Inquiry',
+                            utmData: utms,
+                            createdAt: serverTimestamp(),
+                            updatedAt: serverTimestamp()
+                        });
+                    } catch (_) {}
                 }
                 trackFormSubmission('contact_inquiry', formData.inquiryType, utms);
 
                 setIsSubmitting(false);
                 setFormStatus('success');
-            } catch (err) {
-                console.warn("Contact form persistence fallback:", err);
+            } catch (err: any) {
+                console.warn("Contact submission error:", err);
                 setIsSubmitting(false);
-                setFormStatus('success'); // Ensure seamless experience even when offline
+                setSubmitError(err?.message || 'Failed to submit inquiry. Please verify your details and retry.');
+                setFormStatus('error');
             }
         }
     };
@@ -247,6 +280,8 @@ const ContactPage: React.FC = () => {
         setErrors({});
         setFormStatus('idle');
         setSubmitError(null);
+        setLeadReference(null);
+        formRenderTimeRef.current = Date.now();
     }
     
     const getInputClass = (fieldName: string, value: string) => {
@@ -291,8 +326,21 @@ const ContactPage: React.FC = () => {
                                             />
                                         </svg>
                                     </div>
-                                    <h2 className="text-3xl font-display font-bold text-primary dark:text-secondary mb-4">{t('ContactFormSuccessTitle')}</h2>
-                                    <p className="text-text-light dark:text-slate-300 mb-8 max-w-sm mx-auto leading-relaxed">{t('ContactFormSuccess')}</p>
+                                    <h2 className="text-3xl font-display font-bold text-primary dark:text-secondary mb-3">{t('ContactFormSuccessTitle')}</h2>
+                                    <p className="text-text-light dark:text-slate-300 mb-6 max-w-sm mx-auto leading-relaxed">{t('ContactFormSuccess')}</p>
+                                    
+                                    {leadReference && (
+                                        <div className="mb-8 p-4 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 text-center max-w-md w-full">
+                                            <p className="text-xs uppercase font-mono tracking-wider text-slate-500 dark:text-slate-400 mb-1">Inquiry Tracking Code</p>
+                                            <p className="font-mono text-lg font-bold text-primary dark:text-secondary select-all">{leadReference.id}</p>
+                                            {leadReference.routedDepartment && (
+                                                <p className="text-xs text-slate-600 dark:text-slate-300 mt-2">
+                                                    Routed to: <span className="font-semibold text-primary-dark dark:text-white">{leadReference.routedDepartment}</span>
+                                                </p>
+                                            )}
+                                        </div>
+                                    )}
+
                                     <button onClick={resetForm} className="px-8 py-3 font-bold text-white bg-primary rounded-full hover:bg-secondary transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1">
                                         {t('SendAnotherMessage')}
                                     </button>
@@ -315,11 +363,20 @@ const ContactPage: React.FC = () => {
                                                 exit={{ opacity: 0, height: 0, marginBottom: 0 }}
                                                 className="overflow-hidden"
                                             >
-                                                <div className="p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-lg flex items-center gap-3">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                    </svg>
-                                                    <p className="text-sm text-red-700 dark:text-red-400 font-semibold">{submitError}</p>
+                                                <div className="p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                                    <div className="flex items-center gap-3">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <p className="text-sm text-red-700 dark:text-red-400 font-semibold">{submitError}</p>
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setFormStatus('idle')}
+                                                        className="px-3 py-1 bg-red-100 hover:bg-red-200 dark:bg-red-800 dark:hover:bg-red-700 text-red-800 dark:text-red-100 text-xs font-bold rounded transition-colors self-end sm:self-auto"
+                                                    >
+                                                        Dismiss / Edit
+                                                    </button>
                                                 </div>
                                             </motion.div>
                                         )}
