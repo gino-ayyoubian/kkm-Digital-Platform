@@ -196,7 +196,7 @@ const Footer: React.FC<FooterProps> = ({ setPage, onSelectArticle, showNewsTicke
                                     target="_blank" 
                                     rel="noopener noreferrer" 
                                     aria-label={link.name} 
-                                    className="text-gray-300 hover:text-primary transition-all duration-300 transform hover:scale-110"
+                                    className="inline-flex min-w-12 min-h-12 items-center justify-center text-gray-300 hover:text-primary transition-all duration-300 transform hover:scale-110"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                                         <path d={link.path}/>
@@ -274,11 +274,11 @@ const Footer: React.FC<FooterProps> = ({ setPage, onSelectArticle, showNewsTicke
                             </div>
                             
                             <div className="flex gap-2 mt-2">
-                                <a href="https://waze.com/ul/htnke6nf0q" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 bg-gray-700 hover:bg-gray-600 text-white text-xs px-2 py-1 rounded transition-colors" aria-label={t('NavigateWithWaze')}>
+                                <a href="https://waze.com/ul/htnke6nf0q" target="_blank" rel="noopener noreferrer" className="flex min-w-12 min-h-12 items-center gap-1 bg-gray-700 hover:bg-gray-600 text-white text-xs px-2 py-1 rounded transition-colors" aria-label={t('NavigateWithWaze')}>
                                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M12.005 6.002c-3.31 0-6 2.69-6 6s2.69 6 6 6c3.31 0 6-2.69 6-6s-2.69-6-6-6zm8.823 5.417c-.012-4.524-3.418-8.29-7.85-8.917v-1.5h-1.95v1.5c-4.432.628-7.838 4.393-7.85 8.917h-2.178v1.95h2.19c.148 4.432 3.618 8.04 8.088 8.423v1.207h2.5v-1.23c4.392-.51 7.798-4.118 7.946-8.52h2.277v-1.95h-2.273zm-8.823 8.35c-4.22 0-7.65-3.43-7.65-7.65s3.43-7.65 7.65-7.65 7.65 3.43 7.65 7.65-3.43 7.65-7.65 7.65z"/></svg>
                                     Waze
                                 </a>
-                                <a href="https://maps.app.goo.gl/tbE3Hg1VrWThWFnY8?g_st=ic" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 bg-gray-700 hover:bg-gray-600 text-white text-xs px-2 py-1 rounded transition-colors" aria-label={t('NavigateWithGoogle')}>
+                                <a href="https://maps.app.goo.gl/tbE3Hg1VrWThWFnY8?g_st=ic" target="_blank" rel="noopener noreferrer" className="flex min-w-12 min-h-12 items-center gap-1 bg-gray-700 hover:bg-gray-600 text-white text-xs px-2 py-1 rounded transition-colors" aria-label={t('NavigateWithGoogle')}>
                                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                                     Google Maps
                                 </a>

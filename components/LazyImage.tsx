@@ -69,7 +69,6 @@ const LazyImage: React.FC<LazyImageProps> = ({
       ref={containerRef} 
       className="w-full h-full bg-gray-200 dark:bg-slate-700 animate-pulse relative"
       style={{
-        ...style,
         animationPlayState: isLoaded ? 'paused' : 'running',
         backgroundColor: isLoaded ? 'transparent' : style?.backgroundColor,
         ...(aspectRatio ? { aspectRatio } : null),
@@ -84,6 +83,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
           loading={loading ?? 'lazy'}
           decoding={decoding ?? 'async'}
           className={`${className} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-all`}
+          style={style}
           onLoad={() => setIsLoaded(true)}
           {...imgProps}
         />
