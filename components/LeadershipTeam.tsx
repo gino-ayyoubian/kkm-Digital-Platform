@@ -151,7 +151,7 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredMembers.map((member) => (
             <TeamCard
-              key={member.uid}
+              key={`${member.uid}-${member.employeeId}`}
               member={member}
               onVerifyClick={handleVerifyMember}
               onCallClick={handleCallMember}
