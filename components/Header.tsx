@@ -660,7 +660,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
                         setPage(Page.CorporateInfo);
                         setIsMenuOpen(false);
                       }}
-                      className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors min-h-[44px]"
+                      className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors min-h-[48px]"
                     >
                       <Building2 className="w-4 h-4 text-primary dark:text-secondary" />
                       <span>{t('CorporateInformation')}</span>
@@ -671,7 +671,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
                         setPage(Page.Contact);
                         setIsMenuOpen(false);
                       }}
-                      className="p-3 rounded-2xl bg-primary text-white text-xs font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-colors shadow-md shadow-primary/25 min-h-[44px]"
+                      className="p-3 rounded-2xl bg-primary text-white text-xs font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-colors shadow-md shadow-primary/25 min-h-[48px]"
                     >
                       <Sparkles className="w-4 h-4" />
                       <span>{t(Page.Contact)}</span>
@@ -686,7 +686,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
                 <button
                   type="button"
                   onClick={toggleTheme}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 min-h-[40px]"
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 min-h-[48px]"
                 >
                   {theme === 'light' ? (
                     <>

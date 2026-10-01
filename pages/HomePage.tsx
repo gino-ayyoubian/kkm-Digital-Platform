@@ -748,9 +748,9 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                   <div className="w-8 h-8 rounded-full bg-primary/10 text-primary dark:text-secondary flex items-center justify-center mx-auto mb-3 font-mono font-bold text-xs">
                     0{i + 1}
                   </div>
-                  <h4 className="font-bold text-sm sm:text-base mb-2 text-slate-900 dark:text-white">
+                  <h3 className="font-bold text-sm sm:text-base mb-2 text-slate-900 dark:text-white">
                     {isFa ? reason.titleFa : reason.titleEn}
-                  </h4>
+                  </h3>
                   <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                     {isFa ? reason.descFa : reason.descEn}
                   </p>

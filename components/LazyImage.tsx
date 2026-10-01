@@ -16,6 +16,21 @@ const LazyImage: React.FC<LazyImageProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const {
+    width,
+    height,
+    loading,
+    decoding,
+    style,
+    ...imgProps
+  } = props;
+  const aspectRatio =
+    typeof width === 'number' &&
+    typeof height === 'number' &&
+    width > 0 &&
+    height > 0
+      ? `${width} / ${height}`
+      : style?.aspectRatio;
 
   useEffect(() => {
     const currentRef = containerRef.current;
@@ -53,15 +68,24 @@ const LazyImage: React.FC<LazyImageProps> = ({
     <div 
       ref={containerRef} 
       className="w-full h-full bg-gray-200 dark:bg-slate-700 animate-pulse relative"
-      style={{ animationPlayState: isLoaded ? 'paused' : 'running', backgroundColor: isLoaded ? 'transparent' : undefined }}
+      style={{
+        animationPlayState: isLoaded ? 'paused' : 'running',
+        backgroundColor: isLoaded ? 'transparent' : style?.backgroundColor,
+        ...(aspectRatio ? { aspectRatio } : null),
+      }}
     >
       {isVisible && (
         <img
           src={src}
           alt={alt}
+          width={width}
+          height={height}
+          loading={loading ?? 'lazy'}
+          decoding={decoding ?? 'async'}
           className={`${className} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-all`}
+          style={style}
           onLoad={() => setIsLoaded(true)}
-          {...props}
+          {...imgProps}
         />
       )}
     </div>

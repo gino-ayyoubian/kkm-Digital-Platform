@@ -43,9 +43,9 @@ export const CEOSignatureBanner: React.FC = () => {
                     
                     <div className="flex items-center gap-5 border-b md:border-b-0 md:border-s border-gray-200 dark:border-slate-700 pb-6 md:pb-0 md:ps-10 order-1 md:order-2 w-full md:w-auto justify-center md:justify-end">
                         <div className="text-center md:text-end">
-                            <h4 className="font-display font-extrabold text-xl text-primary-dark dark:text-white leading-tight whitespace-nowrap">
+                            <h3 className="font-display font-extrabold text-xl text-primary-dark dark:text-white leading-tight whitespace-nowrap">
                                 {t('GinoAyyoubian')}
-                            </h4>
+                            </h3>
                             <p className="text-xs text-primary dark:text-secondary uppercase tracking-widest font-semibold mt-1.5">
                                 {t('CEO')}
                             </p>

@@ -371,7 +371,7 @@ const App: React.FC = () => {
      title = `${pageName} | KKM International Group`;
      
      if (currentPage === Page.Home) {
-         title = "KKM International Group | Technology. Engineering. Infrastructure. Innovation.";
+         title = "KKM International | Technology & Engineering";
          description = 'Leading multi-disciplinary engineering group pioneering closed-loop geothermal systems (GMEL), water-energy nexus technologies, rural microgrids, and sustainable infrastructure.';
          canonicalUrl = `${CANONICAL_HOST}/`;
          jsonLdSchema = {

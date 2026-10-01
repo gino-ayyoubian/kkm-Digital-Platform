@@ -57,11 +57,11 @@ const ProjectTemplatePage: React.FC<ProjectTemplatePageProps> = ({ setPage }) =>
             {/* Visuals */}
             <section className="space-y-6">
               <div className="w-full h-[400px] rounded-3xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 relative">
-                <LazyImage src={project.gallery[0]} alt="Project Primary" className="w-full h-full object-cover" />
+                <LazyImage src={project.gallery[0]} alt="Project Primary" width={800} height={600} className="w-full h-full object-cover" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="h-48 rounded-2xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-800">
-                  <LazyImage src={project.gallery[1]} alt="Project Secondary" className="w-full h-full object-cover" />
+                  <LazyImage src={project.gallery[1]} alt="Project Secondary" width={800} height={600} className="w-full h-full object-cover" />
                 </div>
                 <div className="h-48 rounded-2xl bg-primary-dark text-white p-6 flex flex-col justify-center shadow-md border border-slate-200 dark:border-slate-800">
                   <h3 className="font-bold text-lg mb-2">View CAD Drawings</h3>
