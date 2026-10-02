@@ -43,7 +43,7 @@ The main application and page routing live in `App.tsx`, with page components in
 
 ### Requirements
 
-- Node.js 22 (the version used by the repository's CI workflow)
+- Node.js 22.22.2 (the version pinned by the repository's CI workflow)
 - npm
 
 ### Install and run locally
@@ -52,11 +52,10 @@ The main application and page routing live in `App.tsx`, with page components in
 git clone https://github.com/gino-ayyoubian/kkm-Digital-Platform.git
 cd kkm-Digital-Platform
 npm ci --legacy-peer-deps
-cp .env.example .env
 npm run dev
 ```
 
-The Express development server starts on port `3000` by default and serves the Vite-powered app. Configure optional integrations in `.env` as needed; the core development server can start without all third-party services being configured.
+The Express development server starts on port `3000` by default and serves the Vite-powered app. The server does not load `.env` automatically: export any desired variables in your shell before running `npm run dev` (for example, `export GEMINI_API_KEY=...`), or configure them in your deployment environment. `.env.example` lists the available settings; the core development server can start without all third-party services being configured.
 
 ### Environment variables
 
@@ -88,7 +87,7 @@ The repository includes `vercel.json` with a Vite build, `dist` output, an `/api
 
 ### Node.js host or container
 
-Build with `npm run build`, then start with `npm start`. The server listens on `PORT` when provided, or port `3000` otherwise. Configure the required server-side environment variables in the hosting platform. Review the host's request, timeout, and persistent-storage characteristics before selecting it for stateful API workloads.
+Build with `npm run build`, then start with `NODE_ENV=production npm start`. The server listens on `PORT` when provided, or port `3000` otherwise. Configure the required server-side environment variables in the hosting platform. Review the host's request, timeout, and persistent-storage characteristics before selecting it for stateful API workloads.
 
 ## Quality checks
 
