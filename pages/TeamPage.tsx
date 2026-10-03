@@ -2,7 +2,7 @@ import * as React from 'react';
 import PageHeader from '../components/PageHeader';
 import { useLanguage } from '../LanguageContext';
 import { Page } from '../types';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { 
   Award, ShieldCheck, Briefcase, Sparkles, Cpu, Users, 
   ExternalLink, X, Mail, Phone, Copy, Check, ChevronRight, 
@@ -30,6 +30,7 @@ export interface Member {
   imageUrl?: string;
   category: TeamCategory;
   linkedInUrl?: string;
+  verificationStatus?: 'pending';
   email?: string;
   phone?: string;
   sipExtension?: string;
@@ -37,6 +38,25 @@ export interface Member {
   clearanceLevel?: string;
   engineeringDomains?: string[];
 }
+
+const parseLinkedInHandle = (url?: string): string | null => {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    if (!/(^|\.)linkedin\.com$/.test(u.hostname)) return null;
+    const m = u.pathname.match(/^\/in\/([^/]+)/);
+    return m ? decodeURIComponent(m[1]) : null;
+  } catch {
+    return null;
+  }
+};
+
+const buildExperienceSummary = (m: Member, isFa: boolean): string => {
+  const areas = (m.engineeringDomains && m.engineeringDomains.length ? m.engineeringDomains : m.credentials).slice(0, 4).join(isFa ? '، ' : ', ');
+  return isFa
+    ? `${m.titleFa} در ${m.departmentFa}؛ تجربه در: ${areas}.`
+    : `${m.title} in ${m.department}; experience across: ${areas}.`;
+};
 
 const LEADERSHIP: Member[] = [
   // ============================
@@ -83,7 +103,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Corporate Governance", "Strategic Planning", "International Joint Ventures", "Executive Board"],
     imageUrl: "/images/reza-baghdadchi.jpg",
     category: "leadership",
-    linkedInUrl: "https://www.linkedin.com/in/reza-baghdadchi",
+    linkedInUrl: "https://www.linkedin.com/in/reza-baghdadchi-8028b07a",
     email: "r.baghdadchi@kkm-intl.org",
     phone: "+98 21 9103 0834",
     sipExtension: "105",
@@ -110,7 +130,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Project Financing", "Capital Structuring", "Commercial Contracts", "Executive Board"],
     imageUrl: "/images/ashkan-tofangchiha.jpg",
     category: "leadership",
-    linkedInUrl: "https://www.linkedin.com/in/ashkan-tofangchiha",
+    linkedInUrl: "https://www.linkedin.com/in/ashkantofangchiha",
     email: "a.tofangchiha@kkm-intl.org",
     phone: "+98 21 9103 0835",
     sipExtension: "106",
@@ -137,7 +157,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Ph.D. Economics & Finance", "IFRS Clean Tech Compliance", "Executive Committee"],
     imageUrl: "/images/pedram-abdarzadeh.jpg",
     category: "leadership",
-    linkedInUrl: "https://www.linkedin.com/in/pedram-abdarzadeh",
+    linkedInUrl: "https://www.linkedin.com/in/pedram-abdarzadeh-64515689",
     email: "p.abdarzadeh@kkm-intl.org",
     phone: "+98 21 9103 0834",
     sipExtension: "105",
@@ -163,7 +183,7 @@ const LEADERSHIP: Member[] = [
     initials: "FI",
     credentials: ["Infrastructure Financing", "Capital Syndication", "Asset Valuation"],
     category: "leadership",
-    linkedInUrl: "https://www.linkedin.com/in/farid-imani",
+    linkedInUrl: "https://www.linkedin.com/in/farid-imani-0aaa0313",
     email: "f.imani@kkm-intl.org",
     phone: "+98 21 9103 0833",
     sipExtension: "104",
@@ -193,7 +213,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Ph.D. Computer Science / AI", "PINN Specialist", "Telemetry Fellow"],
     imageUrl: "/images/reza-asakereh.jpg",
     category: "engineering",
-    linkedInUrl: "https://www.linkedin.com/in/reza-asakereh",
+    linkedInUrl: "https://www.linkedin.com/in/canada-reza-asakereh",
     email: "r.asakereh@kkm-intl.org",
     phone: "+98 21 9103 0831",
     sipExtension: "102",
@@ -220,7 +240,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Ph.D. Environmental Engineering", "ZLD Desalination Expert", "ISO 14001 Auditor", "Nexus Architecture"],
     imageUrl: "/images/khosro-jarrahian.jpg",
     category: "engineering",
-    linkedInUrl: "https://www.linkedin.com/in/khosro-jarrahian",
+    linkedInUrl: "https://www.linkedin.com/in/khosro-jarrahian-phd-7a83b641",
     email: "k.jarrahian@kkm-intl.org",
     phone: "+98 21 9103 0832",
     sipExtension: "103",
@@ -247,7 +267,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Energy Systems Modeling", "Clean Tech Prototyping", "R&D Associate"],
     imageUrl: "/images/sina-ayyoubian.jpg",
     category: "engineering",
-    linkedInUrl: "https://www.linkedin.com/in/sina-ayyoubian",
+    linkedInUrl: "https://www.linkedin.com/in/sina-a-6a4426157",
     email: "s.ayyoubian@kkm-intl.org",
     phone: "+98 21 9103 0848",
     sipExtension: "208",
@@ -259,6 +279,23 @@ const LEADERSHIP: Member[] = [
       "Advanced Sensor Validation",
       "Innovation System Integration"
     ]
+  },
+  {
+    id: "mostafa-sharifi",
+    name: "Mostafa Sharifi",
+    nameFa: "مصطفی شریفی",
+    title: "Senior Engineering Specialist",
+    titleFa: "کارشناس ارشد مهندسی",
+    department: "Engineering & Technical Office",
+    departmentFa: "دفتر فنی و مهندسی",
+    bio: "Senior engineering specialist supporting project design, technical documentation, and delivery coordination across KKM's energy and industrial infrastructure programs.",
+    bioFa: "کارشناس ارشد مهندسی، پشتیبان طراحی پروژه، مستندات فنی و هماهنگی اجرا در برنامه‌های انرژی و زیرساخت صنعتی KKM.",
+    initials: "MS",
+    credentials: ["Project Engineering", "Technical Documentation"],
+    category: "engineering",
+    verificationStatus: "pending",
+    linkedInUrl: "https://www.linkedin.com/in/mostafa-sharifi-0686a284",
+    engineeringDomains: ["Project Design Support", "Technical Documentation", "Delivery Coordination"]
   },
   {
     id: "benyamin-rezaei",
@@ -370,7 +407,7 @@ const LEADERSHIP: Member[] = [
     initials: "HY",
     credentials: ["Turnkey Rig Procurement", "EPC Mobilization", "Zero-Accident HSE"],
     category: "support",
-    linkedInUrl: "https://www.linkedin.com/in/heidar-yarveicy",
+    linkedInUrl: "https://www.linkedin.com/in/heidar-yarveicy-ab4420179",
     email: "h.yarveicy@kkm-intl.org",
     phone: "+98 21 9103 0835",
     sipExtension: "106",
@@ -435,6 +472,7 @@ const LEADERSHIP: Member[] = [
 
 export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
   const { direction, isFa } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
   const [selectedCategory, setSelectedCategory] = React.useState<'all' | TeamCategory>('all');
   const [searchQuery, setSearchQuery] = React.useState<string>('');
   const [selectedMember, setSelectedMember] = React.useState<Member | null>(null);
@@ -671,7 +709,13 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
             </button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <motion.div
+            key={`${selectedCategory}-${searchQuery}`}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+            animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto"
+          >
             {filteredMembers.map((member) => {
               const badge = getCategoryBadge(member.category);
               return (
@@ -681,11 +725,16 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                   className="group/card bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-md hover:shadow-2xl hover:border-amber-400/50 dark:hover:border-amber-400/40 transition-all duration-300 flex flex-col justify-between relative overflow-hidden cursor-pointer"
                 >
                   {/* Category Pill in Card Header */}
-                  <div className="absolute top-4 right-4 rtl:right-auto rtl:left-4 z-10">
+                  <div className="absolute top-4 right-4 rtl:right-auto rtl:left-4 z-10 flex flex-col items-end gap-1">
                     <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider border shadow-xs ${badge.color}`}>
                       {badge.icon}
                       <span>{badge.label}</span>
                     </span>
+                    {member.verificationStatus === 'pending' && (
+                      <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 text-[9px] font-bold border border-amber-500/30">
+                        {isFa ? 'در انتظار تأیید' : 'Pending verification'}
+                      </span>
+                    )}
                   </div>
 
                   <div>
@@ -714,12 +763,14 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                         )}
 
                         {/* Verified Badge Checkmark */}
-                        <div 
-                          className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] shadow-md border-2 border-white dark:border-slate-900 z-10" 
-                          title="Verified KKM Executive Identity"
-                        >
-                          ✓
-                        </div>
+                        {member.verificationStatus !== 'pending' && (
+                          <div
+                            className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] shadow-md border-2 border-white dark:border-slate-900 z-10"
+                            title="Verified KKM Executive Identity"
+                          >
+                            ✓
+                          </div>
+                        )}
                       </div>
 
                       {/* Header Text */}
@@ -790,7 +841,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                 </div>
               );
             })}
-          </div>
+          </motion.div>
         )}
 
         {/* CTA Banner */}
@@ -855,9 +906,11 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
               {/* Drawer Header */}
               <div className="p-6 border-b border-slate-200/80 dark:border-slate-800 flex items-center justify-between bg-slate-50/80 dark:bg-slate-900/90 backdrop-blur-xs">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-amber-500" />
+                  {selectedMember.verificationStatus !== 'pending' && <ShieldCheck className="w-5 h-5 text-amber-500" />}
                   <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                    {isFa ? 'مشخصات تأییدشده عضو KKM' : 'Verified Member Dossier'}
+                    {selectedMember.verificationStatus === 'pending'
+                      ? (isFa ? 'در انتظار تأیید' : 'Pending Verification')
+                      : (isFa ? 'مشخصات تأییدشده عضو KKM' : 'Verified Member Dossier')}
                   </span>
                 </div>
                 <button
@@ -888,9 +941,11 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                         {selectedMember.initials}
                       </div>
                     )}
-                    <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white dark:border-slate-900">
-                      ✓
-                    </div>
+                    {selectedMember.verificationStatus !== 'pending' && (
+                      <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white dark:border-slate-900">
+                        ✓
+                      </div>
+                    )}
                   </div>
 
                   {/* Name and Designation */}
@@ -938,7 +993,9 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                         {isFa ? 'صفحه حرفه‌ای لینکدین' : 'Official LinkedIn Profile'}
                       </div>
                       <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                        {isFa ? 'مشاهده سوابق و تجربیات حرفه‌ای' : 'Verified credentials & network'}
+                        {selectedMember.verificationStatus === 'pending'
+                          ? (isFa ? 'اطلاعات پروفایل هنوز تأیید نشده است' : 'Profile details have not been verified')
+                          : (isFa ? 'مشاهده سوابق و تجربیات حرفه‌ای' : 'Verified credentials & network')}
                       </div>
                     </div>
                   </div>
@@ -957,7 +1014,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                 {/* Professional Biography Section */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                    <CheckCircle2 className="w-4 h-4 text-primary dark:text-secondary" />
+                    {selectedMember.verificationStatus !== 'pending' && <CheckCircle2 className="w-4 h-4 text-primary dark:text-secondary" />}
                     <span>{isFa ? 'شرح تجربیات و بیوگرافی حرفه‌ای' : 'Professional Biography'}</span>
                   </div>
 
@@ -972,6 +1029,22 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                     </div>
                   </div>
                 </div>
+
+                {selectedMember.verificationStatus !== 'pending' && (
+                  <div className="space-y-2.5">
+                    <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                      {isFa ? 'خلاصه تجربه و سمت رسمی' : 'Experience Summary & Official Title'}
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+                      {buildExperienceSummary(selectedMember, isFa)}
+                    </p>
+                    {parseLinkedInHandle(selectedMember.linkedInUrl) && (
+                      <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                        linkedin.com/in/{parseLinkedInHandle(selectedMember.linkedInUrl)}
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Engineering Domains & Specializations */}
                 {selectedMember.engineeringDomains && selectedMember.engineeringDomains.length > 0 && (
