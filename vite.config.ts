@@ -10,9 +10,7 @@ const createCompressedAssetsPlugin = (): Plugin => ({
   enforce: 'post',
   generateBundle(_, bundle) {
     const compressibleAssetRegex = /\.(?:css|js|mjs|json|svg|xml|txt|html)$/i;
-    const generatedBundle = bundle as Record<string, any>;
-
-    for (const [fileName, output] of Object.entries(generatedBundle)) {
+    for (const [fileName, output] of Object.entries(bundle as Record<string, any>)) {
       if (fileName.endsWith('.br') || fileName.endsWith('.gz') || !compressibleAssetRegex.test(fileName)) {
         continue;
       }
@@ -26,13 +24,13 @@ const createCompressedAssetsPlugin = (): Plugin => ({
         continue;
       }
 
-      generatedBundle[`${fileName}.gz`] = {
+      this.emitFile({
         type: 'asset',
         fileName: `${fileName}.gz`,
         source: gzipSync(sourceBuffer, { level: 9 }),
-      };
+      });
 
-      generatedBundle[`${fileName}.br`] = {
+      this.emitFile({
         type: 'asset',
         fileName: `${fileName}.br`,
         source: brotliCompressSync(sourceBuffer, {
@@ -40,7 +38,7 @@ const createCompressedAssetsPlugin = (): Plugin => ({
             [zlibConstants.BROTLI_PARAM_QUALITY]: 11,
           },
         }),
-      };
+      });
     }
   }
 });
