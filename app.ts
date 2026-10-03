@@ -210,15 +210,27 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
         if (!['GET', 'HEAD'].includes(req.method)) return next();
         if (!compressibleAssetRegex.test(req.path)) return next();
 
-        const decodedPath = decodeURIComponent(req.path);
+        let decodedPath: string;
+        try {
+          decodedPath = decodeURIComponent(req.path);
+        } catch {
+          return res.sendStatus(400);
+        }
         const normalizedPath = path.posix.normalize(decodedPath);
         if (normalizedPath.includes('\0') || normalizedPath.startsWith('..')) return next();
 
-        const acceptEncoding = String(req.headers['accept-encoding'] || '');
         const brotliPath = `${normalizedPath}.br`;
         const gzipPath = `${normalizedPath}.gz`;
-        const shouldUseBrotli = acceptEncoding.includes('br') && distFiles.has(brotliPath);
-        const shouldUseGzip = !shouldUseBrotli && acceptEncoding.includes('gzip') && distFiles.has(gzipPath);
+        const availableEncodings = [
+          ...(distFiles.has(brotliPath) ? ['br'] : []),
+          ...(distFiles.has(gzipPath) ? ['gzip'] : []),
+        ];
+        const acceptedEncoding = availableEncodings.length
+          ? req.acceptsEncodings(...availableEncodings)
+          : false;
+        const selectedEncoding = Array.isArray(acceptedEncoding) ? acceptedEncoding[0] : acceptedEncoding;
+        const shouldUseBrotli = selectedEncoding === 'br';
+        const shouldUseGzip = selectedEncoding === 'gzip';
 
         if (!shouldUseBrotli && !shouldUseGzip) return next();
 

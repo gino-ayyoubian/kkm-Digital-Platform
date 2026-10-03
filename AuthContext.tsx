@@ -166,6 +166,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             try {
               const response = await fetch('/api/auth/me', { credentials: 'same-origin' });
               if (!response.ok) {
+                if (response.status === 401) {
+                  document.cookie = 'kkm_session_hint=; Max-Age=0; Path=/; SameSite=Lax';
+                }
                 return null;
               }
               const data = await response.json();
