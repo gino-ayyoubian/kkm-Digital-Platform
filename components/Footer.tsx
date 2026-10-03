@@ -259,18 +259,18 @@ const Footer: React.FC<FooterProps> = ({ setPage, onSelectArticle, showNewsTicke
                             </div>
                             <div className="flex items-center gap-2">
                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                                 <a href={`tel:${t('CompanyPhone').replace(/\s/g, '')}`} className="text-sm text-gray-300 hover:text-white transition-colors" dir="ltr">{t('CompanyPhone')}</a>
+                                 <a href={`tel:${t('CompanyPhone').replace(/\s/g, '')}`} className="inline-flex min-h-12 items-center py-3 text-sm text-gray-300 hover:text-white transition-colors" dir="ltr">{t('CompanyPhone')}</a>
                             </div>
                              <div className="flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                                 <div className="flex flex-col">
                                     <span className="text-[10px] text-gray-500 uppercase tracking-widest leading-none mb-0.5">{t('IVRLabel')}</span>
-                                    <a href={`tel:${t('IVRPhone').replace(/\s/g, '')}`} className="text-sm text-gray-300 hover:text-white transition-colors" dir="ltr">{t('IVRPhone')}</a>
+                                    <a href={`tel:${t('IVRPhone').replace(/\s/g, '')}`} className="inline-flex min-h-12 items-center py-3 text-sm text-gray-300 hover:text-white transition-colors" dir="ltr">{t('IVRPhone')}</a>
                                 </div>
                             </div>
                              <div className="flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                                <a href="mailto:info@kkm-intl.org" className="text-sm text-gray-300 hover:text-white transition-colors">info@kkm-intl.org</a>
+                                <a href="mailto:info@kkm-intl.org" className="inline-flex min-h-12 items-center py-3 text-sm text-gray-300 hover:text-white transition-colors">info@kkm-intl.org</a>
                             </div>
                             
                             <div className="flex gap-2 mt-2">

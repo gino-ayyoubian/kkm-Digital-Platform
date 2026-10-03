@@ -30,7 +30,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
     width > 0 &&
     height > 0
       ? `${width} / ${height}`
-      : style?.aspectRatio;
+      : style?.aspectRatio ?? '16 / 9';
 
   useEffect(() => {
     const currentRef = containerRef.current;

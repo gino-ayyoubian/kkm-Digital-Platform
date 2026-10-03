@@ -45,6 +45,10 @@ const AuthContext = createContext<AuthContextType>({
 
 export const useAuth = () => useContext(AuthContext);
 
+const hasCorporateSessionHintCookie = () =>
+  typeof document !== 'undefined' &&
+  document.cookie.split(';').some((cookie) => cookie.trim().startsWith('kkm_session_hint=1'));
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -157,16 +161,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } else {
         let restoredProfile: UserProfile | null = null;
 
-        try {
-          const response = await fetch('/api/auth/me');
-          if (response.ok) {
-            const data = await response.json();
-            if (data?.user) {
-              restoredProfile = data.user as UserProfile;
+        if (hasCorporateSessionHintCookie()) {
+          const restoreFromServerSession = async () => {
+            try {
+              const response = await fetch('/api/auth/me', { credentials: 'same-origin' });
+              if (!response.ok) {
+                if (response.status === 401) {
+                  document.cookie = 'kkm_session_hint=; Max-Age=0; Path=/; SameSite=Lax';
+                }
+                return null;
+              }
+              const data = await response.json();
+              if (data?.user) {
+                return data.user as UserProfile;
+              }
+            } catch {
+              // Ignore session restore errors and continue to local fallback.
             }
-          }
-        } catch {
-          // Ignore session restore errors and continue to local fallback.
+            return null;
+          };
+
+          restoredProfile = await new Promise<UserProfile | null>((resolve) => {
+            window.setTimeout(async () => resolve(await restoreFromServerSession()), 0);
+          });
         }
 
         if (!restoredProfile) {

@@ -1,4 +1,5 @@
 import express from 'express';
+import fs from 'fs';
 import path from 'path';
 import compression from 'compression';
 import morgan from 'morgan';
@@ -8,6 +9,23 @@ import { createInMemoryRateLimit } from './backend/rateLimit.ts';
 import { setupBackendRoutes } from './backend/server.ts';
 
 let sentryInitialized = false;
+
+function collectDistFiles(rootDir: string, currentDir = ''): string[] {
+  const absoluteDir = path.join(rootDir, currentDir);
+  const entries = fs.readdirSync(absoluteDir, { withFileTypes: true });
+  const files: string[] = [];
+
+  for (const entry of entries) {
+    const entryRelativePath = path.posix.join(currentDir.replace(/\\/g, '/'), entry.name);
+    if (entry.isDirectory()) {
+      files.push(...collectDistFiles(rootDir, entryRelativePath));
+    } else if (entry.isFile()) {
+      files.push(`/${entryRelativePath}`);
+    }
+  }
+
+  return files;
+}
 
 async function ensureSentry() {
   if (sentryInitialized) return;
@@ -40,6 +58,11 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
     windowMs: 60_000,
     maxRequests: 20,
     message: 'AI analysis request limit reached. Please wait a minute before retrying.',
+  });
+  const staticAssetLimiter = createInMemoryRateLimit({
+    windowMs: 60_000,
+    maxRequests: 1200,
+    message: 'Too many static asset requests. Please slow down and try again shortly.',
   });
 
   app.use(compression());
@@ -180,13 +203,56 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
       app.use(vite.middlewares);
     } else {
       const distPath = path.join(process.cwd(), 'dist');
+      const compressibleAssetRegex = /\.(?:css|js|mjs|json|svg|xml|txt|html)$/i;
+      const distFiles = new Set(collectDistFiles(distPath));
+
+      app.use(staticAssetLimiter, (req, res, next) => {
+        if (!['GET', 'HEAD'].includes(req.method)) return next();
+        if (!compressibleAssetRegex.test(req.path)) return next();
+
+        let decodedPath: string;
+        try {
+          decodedPath = decodeURIComponent(req.path);
+        } catch {
+          return res.sendStatus(400);
+        }
+        const normalizedPath = path.posix.normalize(decodedPath);
+        if (normalizedPath.includes('\0') || normalizedPath.startsWith('..')) return next();
+
+        const brotliPath = `${normalizedPath}.br`;
+        const gzipPath = `${normalizedPath}.gz`;
+        const availableEncodings = [
+          ...(distFiles.has(brotliPath) ? ['br'] : []),
+          ...(distFiles.has(gzipPath) ? ['gzip'] : []),
+        ];
+        const acceptedEncoding = availableEncodings.length
+          ? req.acceptsEncodings(...availableEncodings)
+          : false;
+        const selectedEncoding = Array.isArray(acceptedEncoding) ? acceptedEncoding[0] : acceptedEncoding;
+        const shouldUseBrotli = selectedEncoding === 'br';
+        const shouldUseGzip = selectedEncoding === 'gzip';
+
+        if (!shouldUseBrotli && !shouldUseGzip) return next();
+
+        const [pathname, query = ''] = req.url.split('?');
+        req.url = shouldUseBrotli
+          ? `${brotliPath}${query ? `?${query}` : ''}`
+          : `${gzipPath}${query ? `?${query}` : ''}`;
+
+        res.setHeader('Vary', 'Accept-Encoding');
+        res.setHeader('Content-Encoding', shouldUseBrotli ? 'br' : 'gzip');
+        res.type(path.extname(normalizedPath));
+        next();
+      });
 
       app.use(
         express.static(distPath, {
           setHeaders: (res, filePath) => {
-            if (filePath.endsWith('.html')) {
+            const normalizedFilePath = filePath.replace(/\.(br|gz)$/i, '');
+
+            if (normalizedFilePath.endsWith('.html')) {
               res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
-            } else if (filePath.match(/\.(js|css|webp|avif|png|jpg|svg|woff2)$/)) {
+            } else if (normalizedFilePath.match(/\.(js|mjs|css|webp|avif|png|jpg|svg|woff2)$/)) {
               res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
             }
           },

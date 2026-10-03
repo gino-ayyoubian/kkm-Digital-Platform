@@ -59,6 +59,8 @@ const NewsArticlePage: React.FC<NewsArticlePageProps> = ({ article, onBack, onSe
                         <img 
                             src={article.image} 
                             alt={article.title} 
+                            width={1600}
+                            height={900}
                             loading="lazy" 
                             className="w-full h-80 sm:h-[450px] object-cover" 
                         />
@@ -105,6 +107,8 @@ const NewsArticlePage: React.FC<NewsArticlePageProps> = ({ article, onBack, onSe
                                             <img
                                                 src={relItem.image}
                                                 alt={relItem.title}
+                                                width={1200}
+                                                height={675}
                                                 loading="lazy"
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                             />

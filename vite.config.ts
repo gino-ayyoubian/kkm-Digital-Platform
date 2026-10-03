@@ -1,7 +1,47 @@
 import path from 'path';
-import { defineConfig } from 'vite';
+import { brotliCompressSync, constants as zlibConstants, gzipSync } from 'node:zlib';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+
+const createCompressedAssetsPlugin = (): Plugin => ({
+  name: 'generate-compressed-assets',
+  apply: 'build',
+  enforce: 'post',
+  generateBundle(_, bundle) {
+    const compressibleAssetRegex = /\.(?:css|js|mjs|json|svg|xml|txt|html)$/i;
+    for (const [fileName, output] of Object.entries(bundle as Record<string, any>)) {
+      if (fileName.endsWith('.br') || fileName.endsWith('.gz') || !compressibleAssetRegex.test(fileName)) {
+        continue;
+      }
+
+      const sourceBuffer =
+        output.type === 'asset'
+          ? Buffer.from(typeof output.source === 'string' ? output.source : output.source ?? '')
+          : Buffer.from(output.code ?? '');
+
+      if (sourceBuffer.length < 1024) {
+        continue;
+      }
+
+      this.emitFile({
+        type: 'asset',
+        fileName: `${fileName}.gz`,
+        source: gzipSync(sourceBuffer, { level: 9 }),
+      });
+
+      this.emitFile({
+        type: 'asset',
+        fileName: `${fileName}.br`,
+        source: brotliCompressSync(sourceBuffer, {
+          params: {
+            [zlibConstants.BROTLI_PARAM_QUALITY]: 11,
+          },
+        }),
+      });
+    }
+  }
+});
 
 export default defineConfig(() => {
     return {
@@ -22,6 +62,7 @@ export default defineConfig(() => {
       },
       plugins: [
         react(),
+        createCompressedAssetsPlugin(),
         VitePWA({
           registerType: 'autoUpdate',
           injectRegister: false,
