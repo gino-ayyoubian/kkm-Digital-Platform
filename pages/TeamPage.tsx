@@ -38,6 +38,25 @@ export interface Member {
   engineeringDomains?: string[];
 }
 
+const parseLinkedInHandle = (url?: string): string | null => {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    if (!/(^|\.)linkedin\.com$/.test(u.hostname)) return null;
+    const m = u.pathname.match(/^\/in\/([^/]+)/);
+    return m ? decodeURIComponent(m[1]) : null;
+  } catch {
+    return null;
+  }
+};
+
+const buildExperienceSummary = (m: Member, isFa: boolean): string => {
+  const areas = (m.engineeringDomains && m.engineeringDomains.length ? m.engineeringDomains : m.credentials).slice(0, 4).join(isFa ? '، ' : ', ');
+  return isFa
+    ? `${m.titleFa} در ${m.departmentFa}؛ تجربه در: ${areas}.`
+    : `${m.title} in ${m.department}; experience across: ${areas}.`;
+};
+
 const LEADERSHIP: Member[] = [
   // ============================
   // LEADERSHIP CATEGORY
@@ -83,7 +102,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Corporate Governance", "Strategic Planning", "International Joint Ventures", "Executive Board"],
     imageUrl: "/images/reza-baghdadchi.jpg",
     category: "leadership",
-    linkedInUrl: "https://www.linkedin.com/in/reza-baghdadchi",
+    linkedInUrl: "https://www.linkedin.com/in/reza-baghdadchi-8028b07a",
     email: "r.baghdadchi@kkm-intl.org",
     phone: "+98 21 9103 0834",
     sipExtension: "105",
@@ -110,7 +129,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Project Financing", "Capital Structuring", "Commercial Contracts", "Executive Board"],
     imageUrl: "/images/ashkan-tofangchiha.jpg",
     category: "leadership",
-    linkedInUrl: "https://www.linkedin.com/in/ashkan-tofangchiha",
+    linkedInUrl: "https://www.linkedin.com/in/ashkantofangchiha",
     email: "a.tofangchiha@kkm-intl.org",
     phone: "+98 21 9103 0835",
     sipExtension: "106",
@@ -137,7 +156,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Ph.D. Economics & Finance", "IFRS Clean Tech Compliance", "Executive Committee"],
     imageUrl: "/images/pedram-abdarzadeh.jpg",
     category: "leadership",
-    linkedInUrl: "https://www.linkedin.com/in/pedram-abdarzadeh",
+    linkedInUrl: "https://www.linkedin.com/in/pedram-abdarzadeh-64515689",
     email: "p.abdarzadeh@kkm-intl.org",
     phone: "+98 21 9103 0834",
     sipExtension: "105",
@@ -163,7 +182,7 @@ const LEADERSHIP: Member[] = [
     initials: "FI",
     credentials: ["Infrastructure Financing", "Capital Syndication", "Asset Valuation"],
     category: "leadership",
-    linkedInUrl: "https://www.linkedin.com/in/farid-imani",
+    linkedInUrl: "https://www.linkedin.com/in/farid-imani-0aaa0313",
     email: "f.imani@kkm-intl.org",
     phone: "+98 21 9103 0833",
     sipExtension: "104",
@@ -193,7 +212,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Ph.D. Computer Science / AI", "PINN Specialist", "Telemetry Fellow"],
     imageUrl: "/images/reza-asakereh.jpg",
     category: "engineering",
-    linkedInUrl: "https://www.linkedin.com/in/reza-asakereh",
+    linkedInUrl: "https://www.linkedin.com/in/canada-reza-asakereh",
     email: "r.asakereh@kkm-intl.org",
     phone: "+98 21 9103 0831",
     sipExtension: "102",
@@ -220,7 +239,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Ph.D. Environmental Engineering", "ZLD Desalination Expert", "ISO 14001 Auditor", "Nexus Architecture"],
     imageUrl: "/images/khosro-jarrahian.jpg",
     category: "engineering",
-    linkedInUrl: "https://www.linkedin.com/in/khosro-jarrahian",
+    linkedInUrl: "https://www.linkedin.com/in/khosro-jarrahian-phd-7a83b641",
     email: "k.jarrahian@kkm-intl.org",
     phone: "+98 21 9103 0832",
     sipExtension: "103",
@@ -247,7 +266,7 @@ const LEADERSHIP: Member[] = [
     credentials: ["Energy Systems Modeling", "Clean Tech Prototyping", "R&D Associate"],
     imageUrl: "/images/sina-ayyoubian.jpg",
     category: "engineering",
-    linkedInUrl: "https://www.linkedin.com/in/sina-ayyoubian",
+    linkedInUrl: "https://www.linkedin.com/in/sina-a-6a4426157",
     email: "s.ayyoubian@kkm-intl.org",
     phone: "+98 21 9103 0848",
     sipExtension: "208",
@@ -259,6 +278,22 @@ const LEADERSHIP: Member[] = [
       "Advanced Sensor Validation",
       "Innovation System Integration"
     ]
+  },
+  {
+    id: "mostafa-sharifi",
+    name: "Mostafa Sharifi",
+    nameFa: "مصطفی شریفی",
+    title: "Senior Engineering Specialist",
+    titleFa: "کارشناس ارشد مهندسی",
+    department: "Engineering & Technical Office",
+    departmentFa: "دفتر فنی و مهندسی",
+    bio: "Senior engineering specialist supporting project design, technical documentation, and delivery coordination across KKM's energy and industrial infrastructure programs.",
+    bioFa: "کارشناس ارشد مهندسی، پشتیبان طراحی پروژه، مستندات فنی و هماهنگی اجرا در برنامه‌های انرژی و زیرساخت صنعتی KKM.",
+    initials: "MS",
+    credentials: ["Project Engineering", "Technical Documentation"],
+    category: "engineering",
+    linkedInUrl: "https://www.linkedin.com/in/mostafa-sharifi-0686a284",
+    engineeringDomains: ["Project Design Support", "Technical Documentation", "Delivery Coordination"]
   },
   {
     id: "benyamin-rezaei",
@@ -370,7 +405,7 @@ const LEADERSHIP: Member[] = [
     initials: "HY",
     credentials: ["Turnkey Rig Procurement", "EPC Mobilization", "Zero-Accident HSE"],
     category: "support",
-    linkedInUrl: "https://www.linkedin.com/in/heidar-yarveicy",
+    linkedInUrl: "https://www.linkedin.com/in/heidar-yarveicy-ab4420179",
     email: "h.yarveicy@kkm-intl.org",
     phone: "+98 21 9103 0835",
     sipExtension: "106",
@@ -671,7 +706,13 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
             </button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <motion.div
+            key={`${selectedCategory}-${searchQuery}`}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto"
+          >
             {filteredMembers.map((member) => {
               const badge = getCategoryBadge(member.category);
               return (
@@ -790,7 +831,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                 </div>
               );
             })}
-          </div>
+          </motion.div>
         )}
 
         {/* CTA Banner */}
@@ -971,6 +1012,20 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                       {isFa ? selectedMember.bio : selectedMember.bioFa}
                     </div>
                   </div>
+                </div>
+
+                <div className="space-y-2.5">
+                  <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    {isFa ? 'خلاصه تجربه و سمت رسمی' : 'Experience Summary & Official Title'}
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+                    {buildExperienceSummary(selectedMember, isFa)}
+                  </p>
+                  {parseLinkedInHandle(selectedMember.linkedInUrl) && (
+                    <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                      linkedin.com/in/{parseLinkedInHandle(selectedMember.linkedInUrl)}
+                    </div>
+                  )}
                 </div>
 
                 {/* Engineering Domains & Specializations */}
