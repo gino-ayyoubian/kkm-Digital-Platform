@@ -20,7 +20,7 @@ const createCompressedAssetsPlugin = (): Plugin => ({
           ? Buffer.from(typeof output.source === 'string' ? output.source : output.source ?? '')
           : Buffer.from(output.code ?? '');
 
-      if (sourceBuffer.length < 1024) {
+      if (sourceBuffer.length < 256) {
         continue;
       }
 
