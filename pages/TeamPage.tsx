@@ -2,7 +2,7 @@ import * as React from 'react';
 import PageHeader from '../components/PageHeader';
 import { useLanguage } from '../LanguageContext';
 import { Page } from '../types';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { 
   Award, ShieldCheck, Briefcase, Sparkles, Cpu, Users, 
   ExternalLink, X, Mail, Phone, Copy, Check, ChevronRight, 
@@ -30,6 +30,7 @@ export interface Member {
   imageUrl?: string;
   category: TeamCategory;
   linkedInUrl?: string;
+  verificationStatus?: 'pending';
   email?: string;
   phone?: string;
   sipExtension?: string;
@@ -292,6 +293,7 @@ const LEADERSHIP: Member[] = [
     initials: "MS",
     credentials: ["Project Engineering", "Technical Documentation"],
     category: "engineering",
+    verificationStatus: "pending",
     linkedInUrl: "https://www.linkedin.com/in/mostafa-sharifi-0686a284",
     engineeringDomains: ["Project Design Support", "Technical Documentation", "Delivery Coordination"]
   },
@@ -470,6 +472,7 @@ const LEADERSHIP: Member[] = [
 
 export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
   const { direction, isFa } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
   const [selectedCategory, setSelectedCategory] = React.useState<'all' | TeamCategory>('all');
   const [searchQuery, setSearchQuery] = React.useState<string>('');
   const [selectedMember, setSelectedMember] = React.useState<Member | null>(null);
@@ -708,8 +711,8 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
         ) : (
           <motion.div
             key={`${selectedCategory}-${searchQuery}`}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+            animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
             className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto"
           >
@@ -722,11 +725,16 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                   className="group/card bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-md hover:shadow-2xl hover:border-amber-400/50 dark:hover:border-amber-400/40 transition-all duration-300 flex flex-col justify-between relative overflow-hidden cursor-pointer"
                 >
                   {/* Category Pill in Card Header */}
-                  <div className="absolute top-4 right-4 rtl:right-auto rtl:left-4 z-10">
+                  <div className="absolute top-4 right-4 rtl:right-auto rtl:left-4 z-10 flex flex-col items-end gap-1">
                     <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider border shadow-xs ${badge.color}`}>
                       {badge.icon}
                       <span>{badge.label}</span>
                     </span>
+                    {member.verificationStatus === 'pending' && (
+                      <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 text-[9px] font-bold border border-amber-500/30">
+                        {isFa ? 'در انتظار تأیید' : 'Pending verification'}
+                      </span>
+                    )}
                   </div>
 
                   <div>
@@ -755,12 +763,14 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                         )}
 
                         {/* Verified Badge Checkmark */}
-                        <div 
-                          className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] shadow-md border-2 border-white dark:border-slate-900 z-10" 
-                          title="Verified KKM Executive Identity"
-                        >
-                          ✓
-                        </div>
+                        {member.verificationStatus !== 'pending' && (
+                          <div
+                            className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] shadow-md border-2 border-white dark:border-slate-900 z-10"
+                            title="Verified KKM Executive Identity"
+                          >
+                            ✓
+                          </div>
+                        )}
                       </div>
 
                       {/* Header Text */}
@@ -896,9 +906,11 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
               {/* Drawer Header */}
               <div className="p-6 border-b border-slate-200/80 dark:border-slate-800 flex items-center justify-between bg-slate-50/80 dark:bg-slate-900/90 backdrop-blur-xs">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-amber-500" />
+                  {selectedMember.verificationStatus !== 'pending' && <ShieldCheck className="w-5 h-5 text-amber-500" />}
                   <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                    {isFa ? 'مشخصات تأییدشده عضو KKM' : 'Verified Member Dossier'}
+                    {selectedMember.verificationStatus === 'pending'
+                      ? (isFa ? 'در انتظار تأیید' : 'Pending Verification')
+                      : (isFa ? 'مشخصات تأییدشده عضو KKM' : 'Verified Member Dossier')}
                   </span>
                 </div>
                 <button
@@ -929,9 +941,11 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                         {selectedMember.initials}
                       </div>
                     )}
-                    <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white dark:border-slate-900">
-                      ✓
-                    </div>
+                    {selectedMember.verificationStatus !== 'pending' && (
+                      <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white dark:border-slate-900">
+                        ✓
+                      </div>
+                    )}
                   </div>
 
                   {/* Name and Designation */}
@@ -979,7 +993,9 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                         {isFa ? 'صفحه حرفه‌ای لینکدین' : 'Official LinkedIn Profile'}
                       </div>
                       <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                        {isFa ? 'مشاهده سوابق و تجربیات حرفه‌ای' : 'Verified credentials & network'}
+                        {selectedMember.verificationStatus === 'pending'
+                          ? (isFa ? 'اطلاعات پروفایل هنوز تأیید نشده است' : 'Profile details have not been verified')
+                          : (isFa ? 'مشاهده سوابق و تجربیات حرفه‌ای' : 'Verified credentials & network')}
                       </div>
                     </div>
                   </div>
@@ -998,7 +1014,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                 {/* Professional Biography Section */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                    <CheckCircle2 className="w-4 h-4 text-primary dark:text-secondary" />
+                    {selectedMember.verificationStatus !== 'pending' && <CheckCircle2 className="w-4 h-4 text-primary dark:text-secondary" />}
                     <span>{isFa ? 'شرح تجربیات و بیوگرافی حرفه‌ای' : 'Professional Biography'}</span>
                   </div>
 
@@ -1014,19 +1030,21 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                   </div>
                 </div>
 
-                <div className="space-y-2.5">
-                  <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                    {isFa ? 'خلاصه تجربه و سمت رسمی' : 'Experience Summary & Official Title'}
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
-                    {buildExperienceSummary(selectedMember, isFa)}
-                  </p>
-                  {parseLinkedInHandle(selectedMember.linkedInUrl) && (
-                    <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
-                      linkedin.com/in/{parseLinkedInHandle(selectedMember.linkedInUrl)}
+                {selectedMember.verificationStatus !== 'pending' && (
+                  <div className="space-y-2.5">
+                    <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                      {isFa ? 'خلاصه تجربه و سمت رسمی' : 'Experience Summary & Official Title'}
                     </div>
-                  )}
-                </div>
+                    <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+                      {buildExperienceSummary(selectedMember, isFa)}
+                    </p>
+                    {parseLinkedInHandle(selectedMember.linkedInUrl) && (
+                      <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                        linkedin.com/in/{parseLinkedInHandle(selectedMember.linkedInUrl)}
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Engineering Domains & Specializations */}
                 {selectedMember.engineeringDomains && selectedMember.engineeringDomains.length > 0 && (
