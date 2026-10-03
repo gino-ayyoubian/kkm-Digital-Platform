@@ -10,6 +10,23 @@ import { setupBackendRoutes } from './backend/server.ts';
 
 let sentryInitialized = false;
 
+function collectDistFiles(rootDir: string, currentDir = ''): string[] {
+  const absoluteDir = path.join(rootDir, currentDir);
+  const entries = fs.readdirSync(absoluteDir, { withFileTypes: true });
+  const files: string[] = [];
+
+  for (const entry of entries) {
+    const entryRelativePath = path.posix.join(currentDir.replace(/\\/g, '/'), entry.name);
+    if (entry.isDirectory()) {
+      files.push(...collectDistFiles(rootDir, entryRelativePath));
+    } else if (entry.isFile()) {
+      files.push(`/${entryRelativePath}`);
+    }
+  }
+
+  return files;
+}
+
 async function ensureSentry() {
   if (sentryInitialized) return;
   const dsn = process.env.SENTRY_DSN;
@@ -187,6 +204,7 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
     } else {
       const distPath = path.join(process.cwd(), 'dist');
       const compressibleAssetRegex = /\.(?:css|js|mjs|json|svg|xml|txt|html)$/i;
+      const distFiles = new Set(collectDistFiles(distPath));
 
       app.use(staticAssetLimiter, (req, res, next) => {
         if (!['GET', 'HEAD'].includes(req.method)) return next();
@@ -196,24 +214,22 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
         const normalizedPath = path.posix.normalize(decodedPath);
         if (normalizedPath.includes('\0') || normalizedPath.startsWith('..')) return next();
 
-        const fullPath = path.resolve(distPath, `.${normalizedPath.startsWith('/') ? normalizedPath : `/${normalizedPath}`}`);
-        if (!fullPath.startsWith(`${distPath}${path.sep}`)) return next();
-        if (!fs.existsSync(fullPath)) return next();
-
         const acceptEncoding = String(req.headers['accept-encoding'] || '');
-        const shouldUseBrotli = acceptEncoding.includes('br') && fs.existsSync(`${fullPath}.br`);
-        const shouldUseGzip = !shouldUseBrotli && acceptEncoding.includes('gzip') && fs.existsSync(`${fullPath}.gz`);
+        const brotliPath = `${normalizedPath}.br`;
+        const gzipPath = `${normalizedPath}.gz`;
+        const shouldUseBrotli = acceptEncoding.includes('br') && distFiles.has(brotliPath);
+        const shouldUseGzip = !shouldUseBrotli && acceptEncoding.includes('gzip') && distFiles.has(gzipPath);
 
         if (!shouldUseBrotli && !shouldUseGzip) return next();
 
         const [pathname, query = ''] = req.url.split('?');
         req.url = shouldUseBrotli
-          ? `${pathname}.br${query ? `?${query}` : ''}`
-          : `${pathname}.gz${query ? `?${query}` : ''}`;
+          ? `${brotliPath}${query ? `?${query}` : ''}`
+          : `${gzipPath}${query ? `?${query}` : ''}`;
 
         res.setHeader('Vary', 'Accept-Encoding');
         res.setHeader('Content-Encoding', shouldUseBrotli ? 'br' : 'gzip');
-        res.type(path.extname(fullPath));
+        res.type(path.extname(normalizedPath));
         next();
       });
 
