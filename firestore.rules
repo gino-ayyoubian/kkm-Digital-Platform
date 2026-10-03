@@ -78,6 +78,11 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    match /gmelTelemetry/{nodeId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
     match /sustainabilityAlerts/{alertId} {
       allow read: if isSignedIn();
       allow write: if isAdmin();

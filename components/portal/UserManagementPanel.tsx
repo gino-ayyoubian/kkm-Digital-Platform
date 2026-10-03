@@ -258,10 +258,10 @@ export const UserManagementPanel: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-slate-700/60">
-              {filteredUsers.map((member) => {
+              {filteredUsers.map((member, idx) => {
                 const isCurrentUser = member.uid === userProfile?.uid;
                 return (
-                  <tr key={member.uid} className={`hover:bg-gray-50/80 dark:hover:bg-slate-700/40 transition-colors ${
+                  <tr key={`user-row-${member.uid}-${idx}`} className={`hover:bg-gray-50/80 dark:hover:bg-slate-700/40 transition-colors ${
                     isCurrentUser ? 'bg-primary/5 dark:bg-secondary/5' : ''
                   }`}>
                     {/* Member & Title */}

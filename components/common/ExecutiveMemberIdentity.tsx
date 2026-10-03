@@ -85,9 +85,29 @@ const getTheme = (role: string, name: string) => {
   };
 };
 
+const getAuthenticMemberPhoto = (name: string, nameFa?: string, photoUrl?: string): string | undefined => {
+  if (photoUrl && photoUrl.trim() !== '' && !photoUrl.includes('unsplash.com') && !photoUrl.includes('pravatar.cc')) {
+    return photoUrl;
+  }
+  const n = (name || '').toLowerCase();
+  const nFa = (nameFa || '');
+
+  // Exact mapping for the 8 leadership and executive members with verified authentic portraits
+  if (n.includes('gino') || nFa.includes('ژینو')) return '/images/gino-ayyoubian.jpg';
+  if (n.includes('sina') || nFa.includes('سینا')) return '/images/sina-ayyoubian.jpg';
+  if (n.includes('baghdadchi') || nFa.includes('بغدادچی')) return '/images/reza-baghdadchi.jpg';
+  if (n.includes('tofangchiha') || nFa.includes('تفنگچی')) return '/images/ashkan-tofangchiha.jpg';
+  if (n.includes('asakereh') || nFa.includes('عساکره')) return '/images/reza-asakereh.jpg';
+  if (n.includes('jarrahian') || nFa.includes('جراحیان')) return '/images/khosro-jarrahian.jpg';
+  if (n.includes('abdarzadeh') || nFa.includes('آبدارزاده')) return '/images/pedram-abdarzadeh.jpg';
+  if (n.includes('zatajam') || nFa.includes('ذات‌عجم') || nFa.includes('ذات عجم')) return '/images/hamed-zatajam.jpg';
+
+  return photoUrl;
+};
+
 /**
  * Authentic Corporate Executive Identity Component
- * Displays either a verified genuine photograph (e.g. Gino Ayyoubian)
+ * Displays either a verified genuine photograph (e.g. Gino Ayyoubian, Reza Baghdadchi, Ashkan Tofangchiha, etc.)
  * OR an authoritative Executive Directorate Monogram & Heraldic Seal.
  * Absolutely eliminates fake, misleading stock photos of random models.
  */
@@ -104,13 +124,9 @@ export const ExecutiveMemberIdentity: React.FC<ExecutiveMemberIdentityProps> = (
   const initials = getInitials(name);
   const theme = getTheme(role, name);
 
-  // Check if this is Gino Ayyoubian to guarantee his authentic portrait is displayed
-  const isGino = name.toLowerCase().includes('gino') || name.toLowerCase().includes('ayyoubian') || Boolean(nameFa && nameFa.includes('ژینو'));
-  const effectivePhotoUrl = isGino 
-    ? (photoUrl && (photoUrl.includes('gino-ayyoubian.jpg') || photoUrl.includes('gino_ayyoubian')) ? photoUrl : '/images/gino-ayyoubian.jpg')
-    : photoUrl;
+  const effectivePhotoUrl = getAuthenticMemberPhoto(name, nameFa, photoUrl);
 
-  // Check if photo is a real verified photo (e.g. Gino Ayyoubian or uploaded authentic image, NOT fake unsplash/pravatar)
+  // Check if photo is a real verified photo (authentic local portrait, NOT fake unsplash/pravatar)
   const isVerifiedPhoto = Boolean(
     effectivePhotoUrl && 
     effectivePhotoUrl.trim() !== '' && 

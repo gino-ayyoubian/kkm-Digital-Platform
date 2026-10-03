@@ -60,11 +60,13 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
     { id: 'dms', labelEn: 'DMS & Policies', labelFa: 'مرکز اسناد و بخشنامه‌ها' },
     { id: 'attendance', labelEn: 'Attendance & Telemetry', labelFa: 'ثبت تردد و دورکاری' },
     ...(userProfile?.permissions.canManageUsers || isAdmin ? [
+      { id: 'adminControl', labelEn: 'GMEL Telemetry & CMS', labelFa: 'کنترل پنل تله‌متری GMEL و CMS' },
       { id: 'users', labelEn: 'Users & RBAC', labelFa: 'مدیریت کاربران و دسترسی‌ها' }
     ] : []),
     { id: 'orgchart', labelEn: 'Org Directory', labelFa: 'ارکان و چارت سازمانی' },
     { id: 'ivr', labelEn: 'IVR & VoIP Telephony', labelFa: 'تلفن گویا و ارتباطات VoIP' },
   ];
+
 
   return (
     <header className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 shadow-sm sticky top-0 z-30 transition-colors">
@@ -135,9 +137,9 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
                         {isFa ? 'شبیه‌ساز و ممیزی نقش‌ها (ویژه مدیران)' : 'Audit & Persona Switch (Admins)'}
                       </div>
                       <div className="max-h-64 overflow-y-auto divide-y divide-gray-50 dark:divide-slate-700/50">
-                        {allUsers.map((member) => (
+                        {allUsers.map((member, idx) => (
                           <button
-                            key={member.uid}
+                            key={`persona-${member.uid}-${idx}`}
                             onClick={() => {
                               switchPersona(member.uid);
                               setShowPersonaMenu(false);

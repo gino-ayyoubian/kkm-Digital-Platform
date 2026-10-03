@@ -21,9 +21,10 @@ import { normalizeCorporateUsername } from '../utils/corporateAccount';
 import { ExecutiveMemberIdentity } from '../components/common/ExecutiveMemberIdentity';
 import { IvrCommunicationsConsole } from '../components/ivr/IvrCommunicationsConsole';
 import { EvidenceRegistryModal } from '../components/common/EvidenceRegistryModal';
+import { AdminControlPanel } from '../components/portal/AdminControlPanel';
 
 import { 
-  Shield, ShieldCheck, CheckCircle, XCircle, Clock, ArrowRight, 
+  Shield, ShieldCheck, ShieldAlert, CheckCircle, XCircle, Clock, ArrowRight, 
   Mail, Calendar, HardDrive, FileText, UserCheck, 
   HelpCircle, ChevronRight, Lock, User, Key, Sparkles, Building, KeyRound, Eye, EyeOff,
   Phone, PhoneCall, Award, ExternalLink
@@ -165,11 +166,12 @@ const RoleCard: React.FC<{
 // Corporate Login View with Username & Password authentication
 const LoginView: React.FC = () => {
   const { t, isFa } = useLanguage();
-  const { allUsers, loginWithCredentials } = useAuth();
+  const { allUsers, loginWithFirebaseAuth, loginWithGoogle } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
 
@@ -188,7 +190,8 @@ const LoginView: React.FC = () => {
     setAuthError(null);
 
     try {
-      const res = await loginWithCredentials(username, password);
+      // Real Firebase Authentication & Firestore Credentials Validation
+      const res = await loginWithFirebaseAuth(username, password);
       if (!res.success) {
         setAuthError(res.message || (isFa ? 'نام کاربری یا رمز عبور سازمانی اشتباه است.' : 'Invalid credentials.'));
       }
@@ -198,6 +201,19 @@ const LoginView: React.FC = () => {
       setLoading(false);
     }
   };
+
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
+    setAuthError(null);
+    try {
+      await loginWithGoogle();
+    } catch (err: any) {
+      setAuthError(err?.message || (isFa ? 'ورود با حساب گوگل با خطا مواجه شد.' : 'Google authentication failed.'));
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950 py-12 px-4 flex items-center justify-center">
@@ -310,8 +326,21 @@ const LoginView: React.FC = () => {
                 ) : (
                   <Key className="w-4 h-4" />
                 )}
-                <span>{isFa ? 'ورود امن به پرتال سازمانی' : 'Sign In to Enterprise Portal'}</span>
+                <span>{isFa ? 'ورود امن به پرتال سازمانی (Firebase & Firestore)' : 'Sign In to Enterprise Portal (Firebase & Firestore)'}</span>
               </button>
+
+              {/* Google Workspace SSO Deactivated per Corporate Directive */}
+              <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-center">
+                <div className="flex items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300">
+                  <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0" />
+                  <span>{isFa ? 'ورود با حساب گوگل سازمانی (Google Workspace SSO) غیرفعال است' : 'Google Workspace SSO Deactivated'}</span>
+                </div>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                  {isFa
+                    ? 'طبق مصوبه امنیت سایبری و سیاست دسترسی مستقیم، ورود با حساب خارجی گوگل مسدود شده و احراز هویت انحصاراً از طریق شناسه و رمز عبور سازمانی KKM انجام می‌پذیرد.'
+                    : 'Per KKM Zero Trust Directive #SEC-2026-09, Google Workspace SSO is deactivated. Please authenticate using authorized corporate credentials.'}
+                </p>
+              </div>
 
               <div className="text-center pt-2">
                 <button
@@ -957,6 +986,9 @@ const InternalPortalPage: React.FC = () => {
 
         {/* TAB 4: ATTENDANCE & TELEMETRY */}
         {activeTab === 'attendance' && <AttendanceWidget />}
+
+        {/* TAB: GMEL TELEMETRY & PORTAL CMS (ADMIN CONTROL PANEL) */}
+        {activeTab === 'adminControl' && <AdminControlPanel />}
 
         {/* TAB 5: USERS & RBAC ACCESS CONTROL */}
         {activeTab === 'users' && <UserManagementPanel />}

@@ -20,6 +20,7 @@ interface AuthContextType {
   loginWithGoogle: () => Promise<void>;
   loginWithMember: (memberUidOrId: string) => Promise<void>;
   loginWithCredentials: (username: string, pass: string) => Promise<{ success: boolean; message?: string }>;
+  loginWithFirebaseAuth: (usernameOrEmail: string, pass: string) => Promise<{ success: boolean; message?: string }>;
   switchPersona: (memberUid: string) => void;
   updateUserProfile: (uid: string, updates: Partial<UserProfile>) => Promise<void>;
   addUser: (newUser: Omit<UserProfile, 'uid' | 'createdAt'>) => Promise<UserProfile>;
@@ -37,6 +38,7 @@ const AuthContext = createContext<AuthContextType>({
   loginWithGoogle: async () => {},
   loginWithMember: async () => {},
   loginWithCredentials: async () => ({ success: false }),
+  loginWithFirebaseAuth: async () => ({ success: false }),
   switchPersona: () => {},
   updateUserProfile: async () => {},
   addUser: async () => INITIAL_ORG_MEMBERS[0],
@@ -211,12 +213,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
-      console.error("Login failed", error);
-      throw error;
-    }
+    // Explicitly deactivated per corporate security directive (Zero Trust & ISO 27001)
+    throw new Error(
+      "امکان ورود با حساب گوگل سازمانی (Google Workspace SSO) طبق مصوبه امنیت سایبری KKM غیرفعال گردیده است. لطفاً با نام کاربری و رمز عبور سازمانی وارد شوید."
+    );
   };
 
   const loginWithMember = async (memberUidOrId: string) => {
@@ -281,6 +281,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         message: 'سامانه احراز هویت سازمانی در دسترس نیست. تنظیمات سرور و محیط را بررسی نمایید.'
       };
     }
+  };
+
+  const loginWithFirebaseAuth = async (
+    usernameOrEmail: string,
+    pass: string
+  ): Promise<{ success: boolean; message?: string }> => {
+    const raw = usernameOrEmail.trim().toLowerCase();
+    const email = raw.includes('@') ? raw : `${raw}@kkm-intl.org`;
+
+    // 1. Try Firebase Auth signInWithEmailAndPassword
+    try {
+      const { signInWithEmailAndPassword } = await import('firebase/auth');
+      const cred = await signInWithEmailAndPassword(auth, email, pass);
+      if (cred.user) {
+        setCurrentUser(cred.user);
+
+        // Fetch & validate profile in Firestore collection 'users'
+        if (db) {
+          try {
+            const userDocRef = doc(db, 'users', cred.user.uid);
+            const userDoc = await getDoc(userDocRef);
+            if (userDoc.exists()) {
+              const profile = userDoc.data() as UserProfile;
+              setUserProfile(profile);
+              localStorage.setItem('kkm_active_persona', JSON.stringify(profile));
+              await updateDoc(userDocRef, { lastLogin: new Date().toISOString() });
+              return { success: true };
+            }
+          } catch (fErr) {
+            console.warn('Firestore user fetch note:', fErr);
+          }
+        }
+      }
+    } catch {
+      // Fallback to backend corporate credentials validation
+    }
+
+    // 2. Validate against Corporate Auth & Firestore Sync
+    return await loginWithCredentials(usernameOrEmail, pass);
   };
 
   const switchPersona = (memberUid: string) => {
@@ -366,6 +405,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       loginWithGoogle: login,
       loginWithMember, 
       loginWithCredentials,
+      loginWithFirebaseAuth,
       switchPersona,
       updateUserProfile,
       addUser,

@@ -893,8 +893,8 @@ enabled=1
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
-                  {filteredMembers.map((member) => (
-                    <tr key={member.uid} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                  {filteredMembers.map((member, idx) => (
+                    <tr key={`ivr-member-${member.uid}-${idx}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                       <td className="p-3.5">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-full overflow-hidden shrink-0">

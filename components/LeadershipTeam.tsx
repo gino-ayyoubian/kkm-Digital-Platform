@@ -40,9 +40,13 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
     setSelectedEvidenceMember(member);
   };
 
-  // Filtered list of members
+  // Filtered list of members (strictly deduplicated by unique uid)
   const filteredMembers = React.useMemo(() => {
+    const seenUids = new Set<string>();
     return INITIAL_ORG_MEMBERS.filter(member => {
+      if (seenUids.has(member.uid)) return false;
+      seenUids.add(member.uid);
+
       // Category filter
       let matchesFilter = true;
       if (activeFilter === 'executive') {
@@ -74,6 +78,7 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
       return matchesFilter && matchesSearch;
     });
   }, [activeFilter, searchQuery]);
+
 
   return (
     <section className="py-20 bg-slate-50 dark:bg-slate-950 transition-colors" dir={isFa ? 'rtl' : 'ltr'}>
@@ -149,9 +154,9 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
 
         {/* Team Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredMembers.map((member) => (
+          {filteredMembers.map((member, index) => (
             <TeamCard
-              key={`${member.uid}-${member.employeeId}`}
+              key={`leadership-card-${member.uid}-${index}`}
               member={member}
               onVerifyClick={handleVerifyMember}
               onCallClick={handleCallMember}
