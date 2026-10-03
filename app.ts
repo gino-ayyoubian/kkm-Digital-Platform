@@ -42,6 +42,11 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
     maxRequests: 20,
     message: 'AI analysis request limit reached. Please wait a minute before retrying.',
   });
+  const staticAssetLimiter = createInMemoryRateLimit({
+    windowMs: 60_000,
+    maxRequests: 1200,
+    message: 'Too many static asset requests. Please slow down and try again shortly.',
+  });
 
   app.use(compression());
   app.use(express.json({ limit: '32kb' }));
@@ -183,12 +188,16 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
       const distPath = path.join(process.cwd(), 'dist');
       const compressibleAssetRegex = /\.(?:css|js|mjs|json|svg|xml|txt|html)$/i;
 
-      app.use((req, res, next) => {
+      app.use(staticAssetLimiter, (req, res, next) => {
         if (!['GET', 'HEAD'].includes(req.method)) return next();
         if (!compressibleAssetRegex.test(req.path)) return next();
 
-        const relativeFilePath = req.path.replace(/^\/+/, '');
-        const fullPath = path.join(distPath, relativeFilePath);
+        const decodedPath = decodeURIComponent(req.path);
+        const normalizedPath = path.posix.normalize(decodedPath);
+        if (normalizedPath.includes('\0') || normalizedPath.startsWith('..')) return next();
+
+        const fullPath = path.resolve(distPath, `.${normalizedPath.startsWith('/') ? normalizedPath : `/${normalizedPath}`}`);
+        if (!fullPath.startsWith(`${distPath}${path.sep}`)) return next();
         if (!fs.existsSync(fullPath)) return next();
 
         const acceptEncoding = String(req.headers['accept-encoding'] || '');
