@@ -436,6 +436,12 @@ export function setupBackendRoutes(app: express.Application) {
       sameSite: "lax",
       maxAge: 12 * 60 * 60 * 1000 // 12 hours
     });
+    res.cookie("kkm_session_hint", "1", {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 12 * 60 * 60 * 1000
+    });
 
     logger.info(`Corporate login successful for ${member.email} [${member.role}]`);
 
@@ -470,6 +476,7 @@ export function setupBackendRoutes(app: express.Application) {
    */
   app.post("/api/auth/logout", (req: Request, res: Response) => {
     res.clearCookie("kkm_session_token");
+    res.clearCookie("kkm_session_hint");
     return res.json({ success: true, message: "خروج موفقیت‌آمیز از پرتال سازمانی" });
   });
 

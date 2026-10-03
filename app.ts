@@ -1,4 +1,5 @@
 import express from 'express';
+import fs from 'fs';
 import path from 'path';
 import compression from 'compression';
 import morgan from 'morgan';
@@ -180,13 +181,41 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
       app.use(vite.middlewares);
     } else {
       const distPath = path.join(process.cwd(), 'dist');
+      const compressibleAssetRegex = /\.(?:css|js|mjs|json|svg|xml|txt|html)$/i;
+
+      app.use((req, res, next) => {
+        if (!['GET', 'HEAD'].includes(req.method)) return next();
+        if (!compressibleAssetRegex.test(req.path)) return next();
+
+        const relativeFilePath = req.path.replace(/^\/+/, '');
+        const fullPath = path.join(distPath, relativeFilePath);
+        if (!fs.existsSync(fullPath)) return next();
+
+        const acceptEncoding = String(req.headers['accept-encoding'] || '');
+        const shouldUseBrotli = acceptEncoding.includes('br') && fs.existsSync(`${fullPath}.br`);
+        const shouldUseGzip = !shouldUseBrotli && acceptEncoding.includes('gzip') && fs.existsSync(`${fullPath}.gz`);
+
+        if (!shouldUseBrotli && !shouldUseGzip) return next();
+
+        const [pathname, query = ''] = req.url.split('?');
+        req.url = shouldUseBrotli
+          ? `${pathname}.br${query ? `?${query}` : ''}`
+          : `${pathname}.gz${query ? `?${query}` : ''}`;
+
+        res.setHeader('Vary', 'Accept-Encoding');
+        res.setHeader('Content-Encoding', shouldUseBrotli ? 'br' : 'gzip');
+        res.type(path.extname(fullPath));
+        next();
+      });
 
       app.use(
         express.static(distPath, {
           setHeaders: (res, filePath) => {
-            if (filePath.endsWith('.html')) {
+            const normalizedFilePath = filePath.replace(/\.(br|gz)$/i, '');
+
+            if (normalizedFilePath.endsWith('.html')) {
               res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
-            } else if (filePath.match(/\.(js|css|webp|avif|png|jpg|svg|woff2)$/)) {
+            } else if (normalizedFilePath.match(/\.(js|mjs|css|webp|avif|png|jpg|svg|woff2)$/)) {
               res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
             }
           },
