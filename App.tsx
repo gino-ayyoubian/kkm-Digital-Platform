@@ -17,23 +17,23 @@ import { trackLazyLoad } from './trackLazyLoad';
 import { trackPageView, parseUTMParams } from './lib/analytics';
 import { Analytics } from '@vercel/analytics/react';
 
-import ExhibitionPage from './pages/ExhibitionPage';
-import DownloadsPage from './pages/DownloadsPage';
 import HomePage from './pages/HomePage';
-import AboutUsPage from './pages/AboutUsPage';
-import CoreTechnologiesPage from './pages/CoreTechnologiesPage';
-import ProjectsPage from './pages/ProjectsPage';
-import NewsPage from './pages/NewsPage';
-import NewsArticlePage from './pages/NewsArticlePage';
-import ContactPage from './pages/ContactPage';
-import EvidenceRegistryPage from './pages/EvidenceRegistryPage';
-import RuralDevelopmentPage from './pages/RuralDevelopmentPage';
-import NotFoundPage from './pages/NotFoundPage';
 import { pathToPage, pageToPath, CANONICAL_HOST } from './lib/routes';
 import { findArticleBySlug, getArticleSlug, getArticleSlugFromPath } from './lib/news';
 import { PageTemplateSkeleton } from './components/ShimmerSkeleton';
 // Lazy load specialized portal and secondary tools wrapped with Firebase Perf tracing
 
+const ExhibitionPage = React.lazy(trackLazyLoad('ExhibitionPage', () => import('./pages/ExhibitionPage')));
+const DownloadsPage = React.lazy(trackLazyLoad('DownloadsPage', () => import('./pages/DownloadsPage')));
+const AboutUsPage = React.lazy(trackLazyLoad('AboutUsPage', () => import('./pages/AboutUsPage')));
+const CoreTechnologiesPage = React.lazy(trackLazyLoad('CoreTechnologiesPage', () => import('./pages/CoreTechnologiesPage')));
+const ProjectsPage = React.lazy(trackLazyLoad('ProjectsPage', () => import('./pages/ProjectsPage')));
+const NewsPage = React.lazy(trackLazyLoad('NewsPage', () => import('./pages/NewsPage')));
+const NewsArticlePage = React.lazy(trackLazyLoad('NewsArticlePage', () => import('./pages/NewsArticlePage')));
+const ContactPage = React.lazy(trackLazyLoad('ContactPage', () => import('./pages/ContactPage')));
+const EvidenceRegistryPage = React.lazy(trackLazyLoad('EvidenceRegistryPage', () => import('./pages/EvidenceRegistryPage')));
+const RuralDevelopmentPage = React.lazy(trackLazyLoad('RuralDevelopmentPage', () => import('./pages/RuralDevelopmentPage')));
+const NotFoundPage = React.lazy(trackLazyLoad('NotFoundPage', () => import('./pages/NotFoundPage')));
 const ClaimRegistryPage = React.lazy(trackLazyLoad('ClaimRegistryPage', () => import('./pages/ClaimRegistryPage')));
 const ESGDashboard = React.lazy(trackLazyLoad('ESGDashboard', () => import('./components/ESGDashboard')));
 const InvestmentPortalPage = React.lazy(trackLazyLoad('InvestmentPortalPage', () => import('./pages/InvestmentPortalPage')));

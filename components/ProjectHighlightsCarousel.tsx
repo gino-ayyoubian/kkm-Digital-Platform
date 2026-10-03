@@ -537,6 +537,8 @@ const ProjectHighlightsCarousel: React.FC<ProjectHighlightsCarouselProps> = ({
               <img
                 src={currentProject.image}
                 alt={isFa ? currentProject.nameFa : currentProject.nameEn}
+                width={1200}
+                height={800}
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover object-center transform scale-105 hover:scale-100 transition-transform duration-1000 ease-out"
                 loading="eager"
