@@ -6,7 +6,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { 
   Award, ShieldCheck, Briefcase, Sparkles, Cpu, Users, 
   ExternalLink, X, Mail, Phone, Copy, Check, ChevronRight, 
-  Building2, Search, CheckCircle2 
+  Building2, Search, CheckCircle2, LayoutGrid, Network 
 } from 'lucide-react';
 
 interface TeamPageProps {
@@ -474,6 +474,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
   const { direction, isFa } = useLanguage();
   const shouldReduceMotion = useReducedMotion();
   const [selectedCategory, setSelectedCategory] = React.useState<'all' | TeamCategory>('all');
+  const [viewMode, setViewMode] = React.useState<'grid' | 'orgChart'>('grid');
   const [searchQuery, setSearchQuery] = React.useState<string>('');
   const [selectedMember, setSelectedMember] = React.useState<Member | null>(null);
   const [copiedEmail, setCopiedEmail] = React.useState<string | null>(null);
@@ -573,8 +574,38 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
           </p>
         </div>
 
-        {/* Filter & Search Bar */}
-        <div className="max-w-4xl mx-auto mb-10 space-y-4">
+        {/* View Mode Switcher: Cards vs. Org Chart */}
+        <div className="flex items-center justify-center mb-8">
+          <div className="p-1 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs inline-flex items-center gap-1">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`px-4 sm:px-5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                viewMode === 'grid'
+                  ? 'bg-primary text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-secondary'
+              }`}
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span>{isFa ? 'نمای فهرست پرسنل' : 'Card Directory'}</span>
+            </button>
+            <button
+              onClick={() => setViewMode('orgChart')}
+              className={`px-4 sm:px-5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                viewMode === 'orgChart'
+                  ? 'bg-primary text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-secondary'
+              }`}
+            >
+              <Network className="w-3.5 h-3.5" />
+              <span>{isFa ? 'چارت سلسله‌مراتب سازمانی' : 'Organizational Chart'}</span>
+            </button>
+          </div>
+        </div>
+
+        {viewMode === 'grid' ? (
+          <>
+            {/* Filter & Search Bar */}
+            <div className="max-w-4xl mx-auto mb-10 space-y-4">
           {/* Category Tabs */}
           <div 
             role="tablist"
@@ -842,6 +873,220 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
               );
             })}
           </motion.div>
+        )}
+          </>
+        ) : (
+          /* ========================================================= */
+          /* INTERACTIVE ORGANIZATIONAL CHART VIEW                     */
+          /* ========================================================= */
+          <div className="max-w-6xl mx-auto space-y-12">
+            {/* Tier 1: Executive Board */}
+            <div className="relative">
+              <div className="text-center mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 font-mono text-[10px] font-bold uppercase tracking-wider border border-amber-500/20">
+                  <Award className="w-3 h-3 text-amber-500" />
+                  <span>{isFa ? 'سطح اول: مجمع عالی و هیئت مدیره' : 'Tier 1: Executive Board & Strategic Governance'}</span>
+                </span>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-5">
+                {LEADERSHIP.filter(m => m.id === 'gino-ayyoubian' || m.id === 'reza-baghdadchi' || m.id === 'ashkan-tofangchiha').map(member => (
+                  <div
+                    key={member.id}
+                    onClick={() => setSelectedMember(member)}
+                    className="p-4 rounded-3xl bg-white dark:bg-slate-900 border-2 border-amber-400/40 hover:border-amber-400 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer flex items-center gap-4 group text-start min-w-[280px] max-w-sm"
+                  >
+                    <div className="relative shrink-0">
+                      {member.imageUrl ? (
+                        <img
+                          src={member.imageUrl}
+                          alt={isFa ? member.nameFa : member.name}
+                          className="w-14 h-14 rounded-2xl object-cover shadow-md border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform"
+                        />
+                      ) : (
+                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-700 text-white font-mono font-bold text-lg flex items-center justify-center shadow">
+                          {member.initials}
+                        </div>
+                      )}
+                      <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] shadow-xs">
+                        ✓
+                      </div>
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-primary dark:group-hover:text-secondary transition-colors">
+                        {isFa ? member.nameFa : member.name}
+                      </h4>
+                      <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 truncate mt-0.5">
+                        {isFa ? member.titleFa : member.title}
+                      </p>
+                      <p className="text-[10px] text-slate-400 truncate mt-0.5">
+                        {isFa ? member.departmentFa : member.department}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Connecting Vertical Stem */}
+            <div className="w-px h-8 bg-slate-300 dark:bg-slate-700 mx-auto" />
+
+            {/* Tier 2: C-Suite Executive Directorate */}
+            <div className="relative">
+              <div className="text-center mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 font-mono text-[10px] font-bold uppercase tracking-wider border border-cyan-500/20">
+                  <Briefcase className="w-3 h-3 text-cyan-500" />
+                  <span>{isFa ? 'سطح دوم: شورای مدیران ارشد اجرایی' : 'Tier 2: C-Level Executive Directorate'}</span>
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {LEADERSHIP.filter(m => m.id === 'reza-asakereh' || m.id === 'khosro-jarrahian' || m.id === 'pedram-abdarzadeh' || m.id === 'farid-imani' || m.id === 'heidar-yarveicy').map(member => (
+                  <div
+                    key={member.id}
+                    onClick={() => setSelectedMember(member)}
+                    className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-cyan-400 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center gap-3.5 group text-start"
+                  >
+                    <div className="relative shrink-0">
+                      {member.imageUrl ? (
+                        <img
+                          src={member.imageUrl}
+                          alt={isFa ? member.nameFa : member.name}
+                          className="w-12 h-12 rounded-xl object-cover shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 text-white font-mono font-bold text-sm flex items-center justify-center shadow">
+                          {member.initials}
+                        </div>
+                      )}
+                      <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] shadow-xs">
+                        ✓
+                      </div>
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-xs font-bold text-slate-900 dark:text-white truncate group-hover:text-primary dark:group-hover:text-secondary transition-colors">
+                        {isFa ? member.nameFa : member.name}
+                      </h4>
+                      <p className="text-[11px] font-semibold text-cyan-600 dark:text-cyan-400 truncate mt-0.5">
+                        {isFa ? member.titleFa : member.title}
+                      </p>
+                      <p className="text-[10px] text-slate-400 truncate mt-0.5">
+                        {isFa ? member.departmentFa : member.department}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Connecting Vertical Stem */}
+            <div className="w-px h-8 bg-slate-300 dark:bg-slate-700 mx-auto" />
+
+            {/* Tier 3: Divisional Practice Leads & Governance */}
+            <div className="relative">
+              <div className="text-center mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-mono text-[10px] font-bold uppercase tracking-wider border border-emerald-500/20">
+                  <ShieldCheck className="w-3 h-3 text-emerald-500" />
+                  <span>{isFa ? 'سطح سوم: دپارتمان‌های تخصصی و مدیریت‌های عملیاتی' : 'Tier 3: Divisional Practice Leads & Operations'}</span>
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {LEADERSHIP.filter(m => m.id === 'hamed-zatajam' || m.id === 'masoumeh-moshar' || m.id === 'benyamin-rezaei' || m.id === 'ali-rezaei' || m.id === 'farzad-kazemi').map(member => (
+                  <div
+                    key={member.id}
+                    onClick={() => setSelectedMember(member)}
+                    className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-400 dark:hover:border-emerald-400 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center gap-3.5 group text-start"
+                  >
+                    <div className="relative shrink-0">
+                      {member.imageUrl ? (
+                        <img
+                          src={member.imageUrl}
+                          alt={isFa ? member.nameFa : member.name}
+                          className="w-12 h-12 rounded-xl object-cover shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-700 text-white font-mono font-bold text-sm flex items-center justify-center shadow">
+                          {member.initials}
+                        </div>
+                      )}
+                      <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] shadow-xs">
+                        ✓
+                      </div>
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-xs font-bold text-slate-900 dark:text-white truncate group-hover:text-primary dark:group-hover:text-secondary transition-colors">
+                        {isFa ? member.nameFa : member.name}
+                      </h4>
+                      <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 truncate mt-0.5">
+                        {isFa ? member.titleFa : member.title}
+                      </p>
+                      <p className="text-[10px] text-slate-400 truncate mt-0.5">
+                        {isFa ? member.departmentFa : member.department}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Connecting Vertical Stem */}
+            <div className="w-px h-8 bg-slate-300 dark:bg-slate-700 mx-auto" />
+
+            {/* Tier 4: Technical Vanguard & Field Operations */}
+            <div className="relative">
+              <div className="text-center mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 text-purple-700 dark:text-purple-400 font-mono text-[10px] font-bold uppercase tracking-wider border border-purple-500/20">
+                  <Sparkles className="w-3 h-3 text-purple-500" />
+                  <span>{isFa ? 'سطح چهارم: کانون نخبگان مهندسی و دفاتر تخصصی' : 'Tier 4: Technical Vanguard & Operations Specialists'}</span>
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {LEADERSHIP.filter(m => m.id === 'sina-ayyoubian' || m.id === 'mostafa-sharifi' || m.id === 'maryam-bahrami').map(member => (
+                  <div
+                    key={member.id}
+                    onClick={() => setSelectedMember(member)}
+                    className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-purple-400 dark:hover:border-purple-400 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center gap-3.5 group text-start"
+                  >
+                    <div className="relative shrink-0">
+                      {member.imageUrl ? (
+                        <img
+                          src={member.imageUrl}
+                          alt={isFa ? member.nameFa : member.name}
+                          className="w-12 h-12 rounded-xl object-cover shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-purple-500 to-indigo-600 text-white font-mono font-bold text-sm flex items-center justify-center shadow">
+                          {member.initials}
+                        </div>
+                      )}
+                      {member.verificationStatus !== 'pending' && (
+                        <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] shadow-xs">
+                          ✓
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-xs font-bold text-slate-900 dark:text-white truncate group-hover:text-primary dark:group-hover:text-secondary transition-colors">
+                        {isFa ? member.nameFa : member.name}
+                      </h4>
+                      <p className="text-[11px] font-semibold text-purple-600 dark:text-purple-400 truncate mt-0.5">
+                        {isFa ? member.titleFa : member.title}
+                      </p>
+                      <p className="text-[10px] text-slate-400 truncate mt-0.5">
+                        {isFa ? member.departmentFa : member.department}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         )}
 
         {/* CTA Banner */}

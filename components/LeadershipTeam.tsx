@@ -6,9 +6,10 @@ import { INITIAL_ORG_MEMBERS } from '../data/orgMembers';
 import { TeamCard } from './TeamCard';
 import { EvidenceRegistryModal } from './common/EvidenceRegistryModal';
 import { IvrCommunicationsConsole } from './ivr/IvrCommunicationsConsole';
+import { D3OrganizationalTree } from './about/D3OrganizationalTree';
 import { 
   Award, ShieldCheck, Phone, Search, Filter, 
-  ExternalLink, Sparkles, Building2, CheckCircle2 
+  ExternalLink, Sparkles, Building2, CheckCircle2, Network, LayoutGrid 
 } from 'lucide-react';
 
 interface LeadershipTeamProps {
@@ -17,6 +18,9 @@ interface LeadershipTeamProps {
 
 export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) => {
   const { isFa } = useLanguage();
+  
+  // View Mode: Grid Cards or D3 Interactive Hierarchy Tree
+  const [viewMode, setViewMode] = React.useState<'grid' | 'tree'>('grid');
   
   // State for Modals
   const [selectedEvidenceMember, setSelectedEvidenceMember] = React.useState<OrgMemberProfile | null>(null);
@@ -149,38 +153,78 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
               <Phone className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">{isFa ? 'تلفن گویا و داخلی‌ها' : 'IVR Softphone'}</span>
             </button>
+
+            {/* View Mode Toggle: Grid vs D3 Collapsible Tree */}
+            <div className="flex items-center bg-white dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shrink-0">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  viewMode === 'grid'
+                    ? 'bg-primary text-white shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                }`}
+                title={isFa ? 'نمای کارت‌های پرسنلی' : 'Grid View'}
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">{isFa ? 'کارت‌ها' : 'Cards'}</span>
+              </button>
+
+              <button
+                onClick={() => setViewMode('tree')}
+                className={`p-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  viewMode === 'tree'
+                    ? 'bg-primary text-white shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                }`}
+                title={isFa ? 'چارت درختی تعاملی D3.js' : 'Interactive D3 Tree'}
+              >
+                <Network className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">{isFa ? 'چارت درختی D3' : 'D3 Tree'}</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Team Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredMembers.map((member, index) => (
-            <TeamCard
-              key={`leadership-card-${member.uid}-${index}`}
-              member={member}
-              onVerifyClick={handleVerifyMember}
-              onCallClick={handleCallMember}
-            />
-          ))}
-        </div>
-
-        {/* Empty state */}
-        {filteredMembers.length === 0 && (
-          <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
-            <ShieldCheck className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-            <p className="text-sm font-bold text-slate-700 dark:text-slate-300">
-              {isFa ? 'عضوی با مشخصات جستجویافته یافت نشد.' : 'No team member matched your query.'}
-            </p>
-            <button
-              onClick={() => {
-                setActiveFilter('all');
-                setSearchQuery('');
-              }}
-              className="mt-3 text-xs text-primary dark:text-secondary font-bold hover:underline"
-            >
-              {isFa ? 'نمایش مجدد همه اعضا' : 'Reset filters'}
-            </button>
+        {/* View Mode 1: D3 Interactive Tree */}
+        {viewMode === 'tree' && (
+          <div className="mb-12">
+            <D3OrganizationalTree onSelectMember={handleVerifyMember} />
           </div>
+        )}
+
+        {/* View Mode 2: Team Cards Grid */}
+        {viewMode === 'grid' && (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredMembers.map((member, index) => (
+                <TeamCard
+                  key={`leadership-card-${member.uid}-${index}`}
+                  member={member}
+                  onVerifyClick={handleVerifyMember}
+                  onCallClick={handleCallMember}
+                />
+              ))}
+            </div>
+
+            {/* Empty state */}
+            {filteredMembers.length === 0 && (
+              <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
+                <ShieldCheck className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                <p className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                  {isFa ? 'عضوی با مشخصات جستجویافته یافت نشد.' : 'No team member matched your query.'}
+                </p>
+                <button
+                  onClick={() => {
+                    setActiveFilter('all');
+                    setSearchQuery('');
+                  }}
+                  className="mt-3 text-xs text-primary dark:text-secondary font-bold hover:underline"
+                >
+                  {isFa ? 'نمایش مجدد همه اعضا' : 'Reset filters'}
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
 

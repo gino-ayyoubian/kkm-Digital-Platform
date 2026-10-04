@@ -370,5 +370,37 @@
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
     
+    <!-- Dartamas (درتماس - دفتر شما) Web Call & Chat Widget -->
+    <script>
+      (function () {
+        function loadChatWidget() {
+          if (document.getElementById('61be6882-8824-4c31-8903-aaf074248aa5')) {
+            return;
+          }
+          var script = document.createElement('script');
+
+          script.id = '61be6882-8824-4c31-8903-aaf074248aa5';
+          script.src =
+            'https://my.dartamas.com/chatButtonModule.js?t=' + Date.now();
+
+          script.setAttribute('data-url', 'sipOnline');
+
+          script.setAttribute('data-no-minify', '1');
+          script.setAttribute('data-nowprocket', '1');
+          script.setAttribute('data-no-defer', '1');
+          script.setAttribute('data-cfasync', 'false');
+          script.setAttribute('data-noptimize', '1');
+          script.setAttribute('data-pagespeed-no-defer', '');
+
+          document.body.appendChild(script);
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', loadChatWidget, { once: true });
+        } else {
+          loadChatWidget();
+        }
+      })();
+    </script>
   </body>
 </html>

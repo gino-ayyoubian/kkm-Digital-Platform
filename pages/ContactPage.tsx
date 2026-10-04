@@ -6,7 +6,7 @@ import { useLanguage } from '../LanguageContext';
 import PageHeader from '../components/PageHeader';
 import Accordion from '../components/Accordion';
 import { motion, AnimatePresence } from 'motion/react';
-import { MapPin, PhoneCall } from 'lucide-react';
+import { MapPin, PhoneCall, Globe } from 'lucide-react';
 import { IvrCommunicationsConsole } from '../components/ivr/IvrCommunicationsConsole';
 
 import { trackFormSubmission, parseUTMParams } from '../lib/analytics';
@@ -573,13 +573,27 @@ const ContactPage: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    <button
-                                        onClick={() => setIsIvrConsoleOpen(true)}
-                                        className="mt-3 w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-sm"
-                                    >
-                                        <PhoneCall className="w-3.5 h-3.5" />
-                                        <span>تلفن گویا، سافت‌فون تحت وب و خطوط داخلی (IVR)</span>
-                                    </button>
+                                    <div className="flex flex-col sm:flex-row gap-2 mt-3">
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsIvrConsoleOpen(true)}
+                                            className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                        >
+                                            <PhoneCall className="w-3.5 h-3.5" />
+                                            <span>{t('IVRLabel') || 'تلفن گویا و سافت‌فون (IVR)'}</span>
+                                        </button>
+
+                                        <a
+                                            href="https://my.dartamas.com/directLink/61be6882-8824-4c31-8903-aaf074248aa5"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-sm"
+                                            title="تماس رایگان اینترنتی از طریق پلتفرم درتماس (دفتر شما)"
+                                        >
+                                            <Globe className="w-3.5 h-3.5" />
+                                            <span>تماس اینترنتی درتماس</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

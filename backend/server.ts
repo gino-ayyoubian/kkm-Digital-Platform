@@ -11,6 +11,7 @@ import { INITIAL_ORG_MEMBERS } from "../data/orgMembers.ts";
 import { getCorporateAuthSetupMessage, isCorporateAuthConfigured, verifyCorporatePassword } from "./corporateAuth.ts";
 import { createInMemoryRateLimit } from "./rateLimit.ts";
 import { secretsManager, requireApiSecurity } from "./secretsManager.ts";
+import { telephonyService } from "./telephonyService.ts";
 
 export interface AuthenticatedUserPayload {
   uid: string;
@@ -1417,6 +1418,156 @@ export function setupBackendRoutes(app: express.Application) {
       success: true,
       message: "محتوا با موفقیت ذخیره و به‌روزرسانی شد.",
       messageEn: "Content successfully updated and synced across portal."
+    });
+  });
+
+  // ==========================================
+  // DAFTARE SHOMA CLOUD PBX & TELEPHONY ROUTES
+  // Active Account Line: +98 21 9103 0830
+  // ==========================================
+
+  // 1. Telephony Status & Live Trunk Metrics
+  app.get("/api/telephony/status", (_req: Request, res: Response) => {
+    const status = telephonyService.getStatus();
+    return res.status(200).json({
+      success: true,
+      data: status
+    });
+  });
+
+  // 2. Extensions Directory
+  app.get("/api/telephony/extensions", (_req: Request, res: Response) => {
+    const extensions = telephonyService.getExtensions();
+    return res.status(200).json({
+      success: true,
+      data: extensions
+    });
+  });
+
+  // 3. Toggle Extension Forwarding (e.g. forward to mobile)
+  app.post("/api/telephony/extensions/:ext/toggle-forward", requireCorporateAuth, (req: Request, res: Response) => {
+    const ext = Array.isArray(req.params.ext) ? req.params.ext[0] : req.params.ext;
+    const updated = telephonyService.toggleExtensionForward(ext);
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        message: "شماره داخلی یافت نشد."
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      data: updated,
+      message: `انتقال تماس داخلی ${ext} ${updated.forwardEnabled ? "فعال" : "غیرفعال"} شد.`
+    });
+  });
+
+  // 4. Update Extension Settings (Mobile forward number, ring strategy)
+  app.put("/api/telephony/extensions/:ext", requireCorporateAuth, (req: Request, res: Response) => {
+    const ext = Array.isArray(req.params.ext) ? req.params.ext[0] : req.params.ext;
+    const updates = req.body;
+    const updated = telephonyService.updateExtension(ext, updates);
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        message: "شماره داخلی یافت نشد."
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      data: updated,
+      message: `تنظیمات داخلی ${ext} با موفقیت به‌روزرسانی شد.`
+    });
+  });
+
+  // 5. Corporate Voicemail Box
+  app.get("/api/telephony/voicemails", (_req: Request, res: Response) => {
+    const voicemails = telephonyService.getVoicemails();
+    return res.status(200).json({
+      success: true,
+      data: voicemails
+    });
+  });
+
+  // 6. Mark Voicemail as Read/Unread
+  app.post("/api/telephony/voicemails/:id/mark-read", requireCorporateAuth, (req: Request, res: Response) => {
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const { isRead = true } = req.body;
+    const updated = telephonyService.markVoicemailRead(id, isRead);
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        message: "پیام صوتی یافت نشد."
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      data: updated
+    });
+  });
+
+  // 7. Delete Voicemail
+  app.delete("/api/telephony/voicemails/:id", requireCorporateAuth, (req: Request, res: Response) => {
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const deleted = telephonyService.deleteVoicemail(id);
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: "پیام صوتی یافت نشد."
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "پیام صوتی از صندوق حذف شد."
+    });
+  });
+
+  // 8. Call Logs & Telemetry History
+  app.get("/api/telephony/call-logs", (_req: Request, res: Response) => {
+    const logs = telephonyService.getCallLogs();
+    return res.status(200).json({
+      success: true,
+      data: logs
+    });
+  });
+
+  // 9. Daftare Shoma Webhook Receiver
+  app.post("/api/telephony/webhook", (req: Request, res: Response) => {
+    const event = req.body;
+    logger.info("Received Daftare Shoma webhook event", { event });
+    const log = telephonyService.recordIncomingCallEvent(event);
+    return res.status(200).json({
+      success: true,
+      eventId: log.id,
+      message: "Webhook processed successfully"
+    });
+  });
+
+  // 10. Generate / Download Daftare Shoma Full Import Package
+  app.get("/api/telephony/export-config", (_req: Request, res: Response) => {
+    const exportConfig = telephonyService.generateDaftareShomaExportConfig();
+    return res.status(200).json({
+      success: true,
+      data: exportConfig
+    });
+  });
+
+  // 11. Click-to-call / WebRTC Handshake Dispatch
+  app.post("/api/telephony/call", requireCorporateAuth, (req: Request, res: Response) => {
+    const { destination, extension } = req.body;
+    const callLog = telephonyService.recordIncomingCallEvent({
+      callType: "outbound",
+      callerNumber: "+98 21 9103 0830",
+      destination: destination || extension || "101",
+      agentName: req.user?.displayName || "Corporate Staff",
+      status: "completed",
+      durationSeconds: 15
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: `تماس با ${destination} از طریق ترانک ext.daftareshoma.com ارسال شد.`,
+      callId: callLog.id,
+      gateway: "wss://ext.daftareshoma.com:4443"
     });
   });
 

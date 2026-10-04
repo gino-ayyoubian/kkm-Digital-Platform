@@ -64,6 +64,7 @@ class SecretsManager {
       { uid: 'kkm-user-015', email: 'm.moshar@kkm-intl.org', username: 'm.moshar', pass: 'kkm!MasoumehMoshar2026' },
       { uid: 'kkm-user-016', email: 'h.zatajam@kkm-intl.org', username: 'h.zatajam', pass: 'kkm!HamedZatajam2026' },
       { uid: 'kkm-user-018', email: 's.ayyoubian@kkm-intl.org', username: 's.ayyoubian', pass: 'kkm!SinaAyyoubian2026' },
+      { uid: 'kkm-user-019', email: 'm.sharifi@kkm-intl.org', username: 'm.sharifi', pass: 'kkm!MostafaSharifi2026' },
       { uid: 'kkm-user-042', email: 'a.rezaei@kkm-intl.org', username: 'a.rezaei', pass: 'kkm!AliRezaei2026' },
       { uid: 'kkm-user-043', email: 'm.bahrami@kkm-intl.org', username: 'm.bahrami', pass: 'kkm!MaryamBahrami2026' },
     ];

@@ -22,6 +22,8 @@ import { ExecutiveMemberIdentity } from '../components/common/ExecutiveMemberIde
 import { IvrCommunicationsConsole } from '../components/ivr/IvrCommunicationsConsole';
 import { EvidenceRegistryModal } from '../components/common/EvidenceRegistryModal';
 import { AdminControlPanel } from '../components/portal/AdminControlPanel';
+import { InternalDirectoryTab } from '../components/portal/InternalDirectoryTab';
+import { InternalCommunicationTab } from '../components/portal/InternalCommunicationTab';
 
 import { 
   Shield, ShieldCheck, ShieldAlert, CheckCircle, XCircle, Clock, ArrowRight, 
@@ -718,7 +720,7 @@ const InternalPortalPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-12 transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-20 sm:pb-12 transition-colors">
       {/* Universal Top Header with Persona Switcher & Tab Navigation */}
       <PortalHeader
         activeTab={activeTab}
@@ -726,7 +728,7 @@ const InternalPortalPage: React.FC = () => {
         pendingCount={pendingInboxCount}
       />
 
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
         {/* TAB 1: DASHBOARD & WORKSTATION */}
         {activeTab === 'dashboard' && (
           <div className="space-y-6">
@@ -1049,6 +1051,24 @@ const InternalPortalPage: React.FC = () => {
               </AnimatePresence>
             </div>
           </div>
+        )}
+
+        {/* TAB: INTERNAL DIRECTORY */}
+        {activeTab === 'internalDirectory' && (
+          <InternalDirectoryTab
+            onCallMember={handleCallMember}
+            onVerifyMember={setSelectedEvidenceMember}
+          />
+        )}
+
+        {/* TAB: INTERNAL COMMUNICATION & IVR ARCHITECTURE */}
+        {activeTab === 'internalCommunication' && (
+          <InternalCommunicationTab
+            onOpenSoftphone={(ext) => {
+              setIvrExtension(ext || '101');
+              setIsIvrModalOpen(true);
+            }}
+          />
         )}
 
         {/* TAB 7: IVR & SOFTPHONE COMMUNICATIONS */}
