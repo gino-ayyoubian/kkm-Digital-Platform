@@ -3,7 +3,6 @@ import { motion } from 'motion/react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useLanguage } from '../LanguageContext';
 import { Page } from '../types';
-import SustainabilityAlertsPanel from '../components/SustainabilityAlertsPanel';
 import { useAuth } from '../AuthContext';
 import { db } from '../firebase';
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
@@ -64,7 +63,7 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
           <div>
             <h2 className="text-3xl font-display font-bold text-primary-dark dark:text-white">Secure Access Required</h2>
             <p className="mt-2 text-sm text-text-light dark:text-slate-400">
-              Please sign in to personalize your Digital Twin ecosystem and view real-time sustainability alerts.
+              Please sign in to personalize your Digital Twin ecosystem and view simulation previews.
             </p>
           </div>
           <button
@@ -179,9 +178,6 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
             </ResponsiveContainer>
           </div>
         </motion.div>
-
-        {/* Live Sustainability Alerts */}
-        <SustainabilityAlertsPanel />
 
         {/* Ecosystem Sub-Twins Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
