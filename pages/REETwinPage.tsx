@@ -32,12 +32,12 @@ const REETwinPage: React.FC = () => {
         <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 border border-gray-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6">
           <div>
             <h1 className="text-3xl font-display font-bold text-primary-dark dark:text-white">River Energy Ecosystem (REE)</h1>
-            <p className="text-text-light dark:text-slate-400 mt-2">Hydrokinetic Turbine Digital Twin - Live Simulation</p>
+            <p className="text-text-light dark:text-slate-400 mt-2">Hydrokinetic turbine simulation preview — not connected to live telemetry</p>
           </div>
           <div className="flex gap-4">
             <div className={`px-4 py-2 rounded-lg border flex items-center gap-2 ${turbineActive ? 'bg-green-50 border-green-200 text-green-700 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400' : 'bg-red-50 border-red-200 text-red-700 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400'}`}>
                <div className={`w-3 h-3 rounded-full ${turbineActive ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></div>
-               <span className="font-bold">{turbineActive ? 'TURBINE ONLINE' : 'TURBINE OFFLINE'}</span>
+               <span className="font-bold">{turbineActive ? 'SIMULATION ACTIVE' : 'SIMULATION PAUSED'}</span>
             </div>
           </div>
         </div>
@@ -70,7 +70,7 @@ const REETwinPage: React.FC = () => {
                   onClick={() => setTurbineActive(!turbineActive)}
                   className={`w-full py-3 rounded-xl font-bold transition-all ${turbineActive ? 'bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/30' : 'bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/30'}`}
                 >
-                  {turbineActive ? 'Emergency Shutdown' : 'Initialize Turbine'}
+                  {turbineActive ? 'Pause Simulation' : 'Resume Simulation'}
                 </button>
               </div>
             </div>
@@ -78,7 +78,7 @@ const REETwinPage: React.FC = () => {
 
           {/* Telemetry Output */}
           <div className="lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm">
-            <h2 className="text-xl font-bold border-b border-gray-100 dark:border-slate-700 pb-2 mb-4 text-primary-dark dark:text-white">Power Generation Telemetry</h2>
+            <h2 className="text-xl font-bold border-b border-gray-100 dark:border-slate-700 pb-2 mb-4 text-primary-dark dark:text-white">Simulated Power Output</h2>
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={timeSeriesData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>

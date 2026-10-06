@@ -120,13 +120,13 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-100 dark:border-slate-800 shadow-sm">
                     <h3 className="font-bold text-lg mb-2 text-primary dark:text-secondary">System Productivity</h3>
                     <p className="text-sm text-text-light dark:text-slate-400">
-                        Cross-referencing GMEL thermal output with REE hydrodynamic models suggests a potential 12% increase in overall energy storage efficiency if combined via our SmartGrid AI. Recommendation: Initiate cross-platform simulation.
+                        Cross-platform efficiency has not been measured. Treat any combined GMEL and REE performance gains as a hypothesis until validated against approved operating data.
                     </p>
                 </div>
                 <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-gray-100 dark:border-slate-800 shadow-sm">
                     <h3 className="font-bold text-lg mb-2 text-primary dark:text-secondary">Predictive Maintenance</h3>
                     <p className="text-sm text-text-light dark:text-slate-400">
-                        Pattern analysis across the River Energy Ecosystem indicates optimal maintenance windows alignment with low-tide seasonal variations in Q3. Recommendation: Schedule preventive inspection for REE turbines.
+                        This preview is not connected to validated REE operating history or river conditions. Confirm maintenance timing with asset operators and current site data.
                     </p>
                 </div>
             </div>
@@ -141,13 +141,16 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
         >
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-display font-bold text-primary-dark dark:text-white">
-              Real-Time Sustainability Metrics
+              Simulation Preview Metrics
             </h2>
             <span className="px-3 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold uppercase rounded-full flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-              Live Sync
+              Simulated Data
             </span>
           </div>
+          <p className="mb-4 text-sm text-amber-800 dark:text-amber-300">
+            Illustrative values are generated in this browser and are not live telemetry, verified sustainability results, or operational alerts.
+          </p>
 
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -201,7 +204,7 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
                         GMEL Technology Ecosystem
                     </h3>
                     <p className="text-text-light dark:text-slate-400">
-                        Closed-loop geothermal thermodynamic simulation platform. Monitor subsurface thermal gradients, flow rates, and electrical generation metrics in real-time.
+                        Closed-loop geothermal simulation preview for exploring subsurface thermal gradients, flow rates, and electrical generation scenarios.
                     </p>
                     <div className="pt-4 border-t border-gray-100 dark:border-slate-700 flex justify-between items-center">
                         <div className="text-xs font-mono text-slate-500 dark:text-slate-400">Subdomain: gmel.kkm-intl.org</div>
@@ -237,7 +240,7 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
                         River Energy Ecosystem (REE)
                     </h3>
                     <p className="text-text-light dark:text-slate-400">
-                        Hydrokinetic energy simulation platform. Monitor river flow dynamics, turbine RPM, and continuous clean power generation.
+                        Hydrokinetic energy simulation preview for exploring river flow dynamics, turbine RPM, and clean power scenarios.
                     </p>
                     <div className="pt-4 border-t border-gray-100 dark:border-slate-700 flex justify-between items-center">
                         <div className="text-xs font-mono text-slate-500 dark:text-slate-400">Subdomain: ree.kkm-intl.org</div>
