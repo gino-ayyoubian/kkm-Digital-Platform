@@ -296,6 +296,13 @@ export interface OrgMemberProfile {
   updatedAt?: string;
 }
 
+export interface InternalDirectoryEntry {
+  profile: OrgMemberProfile;
+  extension: string | null;
+  deskPhone: string | null;
+  deskAvailability: 'active' | 'busy' | 'away' | 'unknown';
+}
+
 export type AutomationRequestType = 'leave' | 'purchase' | 'mission' | 'technical_review' | 'it_access' | 'memo';
 export type AutomationPriority = 'low' | 'medium' | 'high' | 'urgent';
 export type AutomationStatus = 'pending_manager' | 'pending_finance' | 'pending_ceo' | 'approved' | 'rejected' | 'draft';
