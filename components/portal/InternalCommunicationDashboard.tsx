@@ -10,7 +10,6 @@ interface TelephonyStatus {
   maxChannels: number;
   latencyMs: number;
   lastSyncAt: string;
-  unheardVoicemails: number;
   dayScheduleActive: boolean;
 }
 
@@ -18,10 +17,6 @@ interface ExtensionSnapshot {
   extension: string;
   name: string;
   status: 'available' | 'busy' | 'away';
-}
-
-interface VoicemailSnapshot {
-  isRead: boolean;
 }
 
 interface RoutingSnapshot {
@@ -32,49 +27,40 @@ interface RoutingSnapshot {
   }>;
 }
 
+interface CommunicationSnapshot {
+  status: TelephonyStatus;
+  extensions: ExtensionSnapshot[];
+  voicemails: {
+    total: number;
+    unread: number;
+  };
+  routing: RoutingSnapshot['ivrTree'];
+}
+
 const REFRESH_INTERVAL_MS = 30_000;
 
 const InternalCommunicationDashboard: React.FC = () => {
   const { isFa } = useLanguage();
-  const [status, setStatus] = React.useState<TelephonyStatus | null>(null);
-  const [extensions, setExtensions] = React.useState<ExtensionSnapshot[]>([]);
-  const [voicemails, setVoicemails] = React.useState<VoicemailSnapshot[]>([]);
-  const [routing, setRouting] = React.useState<RoutingSnapshot['ivrTree']>([]);
+  const [snapshot, setSnapshot] = React.useState<CommunicationSnapshot | null>(null);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [lastRefresh, setLastRefresh] = React.useState<string | null>(null);
   const [syncError, setSyncError] = React.useState(false);
 
   const refresh = React.useCallback(async () => {
     setIsRefreshing(true);
-    const fetchData = async <T,>(url: string): Promise<T> => {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`Failed to load ${url}`);
+    try {
+      const response = await fetch('/api/telephony/dashboard');
+      if (!response.ok) throw new Error('Failed to load communication status');
       const payload = await response.json();
-      if (!payload?.success) throw new Error(`Invalid response from ${url}`);
-      return payload.data as T;
-    };
-
-    const [statusResult, extensionsResult, voicemailsResult, routingResult] = await Promise.allSettled([
-      fetchData<TelephonyStatus>('/api/telephony/status'),
-      fetchData<ExtensionSnapshot[]>('/api/telephony/extensions'),
-      fetchData<VoicemailSnapshot[]>('/api/telephony/voicemails'),
-      fetchData<RoutingSnapshot>('/api/telephony/export-config'),
-    ]);
-
-    const hasFailure = [statusResult, extensionsResult, voicemailsResult, routingResult].some(result => result.status === 'rejected');
-    if (statusResult.status === 'fulfilled') setStatus(statusResult.value);
-    if (extensionsResult.status === 'fulfilled' && Array.isArray(extensionsResult.value)) {
-      setExtensions(extensionsResult.value);
+      if (!payload?.success) throw new Error('Invalid communication status response');
+      setSnapshot(payload.data as CommunicationSnapshot);
+      setSyncError(false);
+      setLastRefresh(new Date().toISOString());
+    } catch {
+      setSyncError(true);
+    } finally {
+      setIsRefreshing(false);
     }
-    if (voicemailsResult.status === 'fulfilled' && Array.isArray(voicemailsResult.value)) {
-      setVoicemails(voicemailsResult.value);
-    }
-    if (routingResult.status === 'fulfilled' && Array.isArray(routingResult.value?.ivrTree)) {
-      setRouting(routingResult.value.ivrTree);
-    }
-    setSyncError(hasFailure);
-    setLastRefresh(new Date().toISOString());
-    setIsRefreshing(false);
   }, []);
 
   React.useEffect(() => {
@@ -83,10 +69,14 @@ const InternalCommunicationDashboard: React.FC = () => {
     return () => window.clearInterval(interval);
   }, [refresh]);
 
+  const status = snapshot?.status ?? null;
+  const extensions = snapshot?.extensions ?? [];
+  const routing = snapshot?.routing ?? [];
   const availableCount = extensions.filter(extension => extension.status === 'available').length;
   const busyCount = extensions.filter(extension => extension.status === 'busy').length;
   const awayCount = extensions.filter(extension => extension.status === 'away').length;
-  const unreadCount = voicemails.filter(voicemail => !voicemail.isRead).length;
+  const unreadCount = snapshot?.voicemails.unread ?? 0;
+  const voicemailCount = snapshot?.voicemails.total ?? 0;
   const isConnected = status?.connected === true && !syncError;
 
   return (
@@ -130,7 +120,7 @@ const InternalCommunicationDashboard: React.FC = () => {
         <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-900/60">
           <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400"><Voicemail className="h-4 w-4" />{isFa ? 'صندوق صوتی' : 'Voicemail'}</div>
           <p className="text-xl font-black text-slate-900 dark:text-white">{unreadCount} <span className="text-xs font-semibold">{isFa ? 'خوانده‌نشده' : 'unread'}</span></p>
-          <p className="mt-1 text-[10px] text-slate-500">{voicemails.length} {isFa ? 'پیام ثبت‌شده' : 'messages total'}</p>
+          <p className="mt-1 text-[10px] text-slate-500">{voicemailCount} {isFa ? 'پیام ثبت‌شده' : 'messages total'}</p>
         </div>
         <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-900/60">
           <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400"><Phone className="h-4 w-4" />{isFa ? 'مسیریابی فعال' : 'Active routing'}</div>

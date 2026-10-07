@@ -1426,8 +1426,16 @@ export function setupBackendRoutes(app: express.Application) {
   // Active Account Line: +98 21 9103 0830
   // ==========================================
 
+  // Dashboard-safe telephony summary
+  app.get("/api/telephony/dashboard", requireCorporateAuth, (_req: Request, res: Response) => {
+    return res.status(200).json({
+      success: true,
+      data: telephonyService.getDashboardSnapshot()
+    });
+  });
+
   // 1. Telephony Status & Live Trunk Metrics
-  app.get("/api/telephony/status", (_req: Request, res: Response) => {
+  app.get("/api/telephony/status", requireCorporateAuth, (_req: Request, res: Response) => {
     const status = telephonyService.getStatus();
     return res.status(200).json({
       success: true,
@@ -1436,7 +1444,7 @@ export function setupBackendRoutes(app: express.Application) {
   });
 
   // 2. Extensions Directory
-  app.get("/api/telephony/extensions", (_req: Request, res: Response) => {
+  app.get("/api/telephony/extensions", requireCorporateAuth, (_req: Request, res: Response) => {
     const extensions = telephonyService.getExtensions();
     return res.status(200).json({
       success: true,
@@ -1480,7 +1488,7 @@ export function setupBackendRoutes(app: express.Application) {
   });
 
   // 5. Corporate Voicemail Box
-  app.get("/api/telephony/voicemails", (_req: Request, res: Response) => {
+  app.get("/api/telephony/voicemails", requireCorporateAuth, (_req: Request, res: Response) => {
     const voicemails = telephonyService.getVoicemails();
     return res.status(200).json({
       success: true,
@@ -1522,7 +1530,7 @@ export function setupBackendRoutes(app: express.Application) {
   });
 
   // 8. Call Logs & Telemetry History
-  app.get("/api/telephony/call-logs", (_req: Request, res: Response) => {
+  app.get("/api/telephony/call-logs", requireCorporateAuth, (_req: Request, res: Response) => {
     const logs = telephonyService.getCallLogs();
     return res.status(200).json({
       success: true,
@@ -1543,7 +1551,7 @@ export function setupBackendRoutes(app: express.Application) {
   });
 
   // 10. Generate / Download Daftare Shoma Full Import Package
-  app.get("/api/telephony/export-config", (_req: Request, res: Response) => {
+  app.get("/api/telephony/export-config", requireCorporateAuth, (_req: Request, res: Response) => {
     const exportConfig = telephonyService.generateDaftareShomaExportConfig();
     return res.status(200).json({
       success: true,

@@ -74,6 +74,20 @@ export interface CallLogRecord {
   recordingAvailable: boolean;
 }
 
+export interface TelephonyDashboardSnapshot {
+  status: Pick<TelephonyStatus, 'connected' | 'provider' | 'activeLine' | 'activeChannels' | 'maxChannels' | 'latencyMs' | 'lastSyncAt' | 'dayScheduleActive'>;
+  extensions: Array<Pick<ExtensionRecord, 'extension' | 'name' | 'status'>>;
+  voicemails: {
+    total: number;
+    unread: number;
+  };
+  routing: Array<{
+    digit: string;
+    destination: string;
+    title: string;
+  }>;
+}
+
 // In-Memory Storage for Telephony Service
 const DEFAULT_EXTENSIONS: ExtensionRecord[] = [
   {
@@ -445,6 +459,38 @@ class TelephonyService {
       unheardVoicemails: unheardCount,
       totalCallsToday: this.callLogs.length + 12,
       dayScheduleActive: true
+    };
+  }
+
+  public getDashboardSnapshot(): TelephonyDashboardSnapshot {
+    const {
+      connected,
+      provider,
+      activeLine,
+      activeChannels,
+      maxChannels,
+      latencyMs,
+      lastSyncAt,
+      dayScheduleActive
+    } = this.getStatus();
+    const { ivrTree } = this.generateDaftareShomaExportConfig();
+    return {
+      status: {
+        connected,
+        provider,
+        activeLine,
+        activeChannels,
+        maxChannels,
+        latencyMs,
+        lastSyncAt,
+        dayScheduleActive
+      },
+      extensions: this.extensions.map(({ extension, name, status }) => ({ extension, name, status })),
+      voicemails: {
+        total: this.voicemails.length,
+        unread: this.voicemails.filter(voicemail => !voicemail.isRead).length
+      },
+      routing: ivrTree.map(({ digit, destination, title }) => ({ digit, destination, title }))
     };
   }
 
