@@ -16,6 +16,8 @@ import type { TranslationKey } from '../translations';
 import GlobalCTA from '../components/GlobalCTA';
 import { ArrowRight, Layers, Sprout } from 'lucide-react';
 import { trackLazyLoad } from '../trackLazyLoad';
+import BlurUpImage from '../components/BlurUpImage';
+import { DEFAULT_IMAGE_PLACEHOLDER } from '../utils/imagePlaceholder';
 // Lazy load modal
 const ProjectDetailModal = React.lazy(trackLazyLoad('ProjectDetailModal', () => import('./ProjectDetailModal')));
 
@@ -307,7 +309,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
                                 <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg hover:shadow-xl dark:shadow-none transition-shadow duration-300 overflow-hidden">
                                     {!isDetailsExpanded && (
                                         <div className="relative group overflow-hidden">
-                                            <img src={activeProjectForMap.image} alt={t(activeProjectForMap.name as TranslationKey)} loading="lazy" className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105" />
+                                            <BlurUpImage src={activeProjectForMap.thumbnail || activeProjectForMap.image} placeholder={activeProjectForMap.placeholder || DEFAULT_IMAGE_PLACEHOLDER} alt={t(activeProjectForMap.name as TranslationKey)} className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105" />
                                             <button 
                                                 className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-300 cursor-pointer w-full h-full border-0" 
                                                 onClick={handleViewDetails}

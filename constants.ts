@@ -1,6 +1,7 @@
 
 import { Page } from './types';
 import type { Project, NavLink, NewsItem, Video, JobOpening, Innovation } from './types';
+import { DEFAULT_IMAGE_PLACEHOLDER } from './utils/imagePlaceholder';
 
 export const RECENT_INNOVATIONS: Innovation[] = [
     {
@@ -178,7 +179,7 @@ export const OTHER_CORE_AREAS = [
     { name: "RuralStudies_Name", description: "RuralStudies_Desc" },
 ];
 
-export const PROJECTS: Project[] = [
+const PROJECTS_DATA: Project[] = [
     { 
         name: "Project_Qeshm_Name",
         client: 'Qeshm Free Zone Organization & Energy Consortium',
@@ -349,7 +350,13 @@ export const PROJECTS: Project[] = [
     }
 ];
 
-export const NEWS_ITEMS: NewsItem[] = [
+export const PROJECTS: Project[] = PROJECTS_DATA.map(project => ({
+    ...project,
+    thumbnail: project.image,
+    placeholder: DEFAULT_IMAGE_PLACEHOLDER,
+}));
+
+const NEWS_ITEMS_DATA: NewsItem[] = [
     {
         title: "KKM Unveils Verified Evidence Registry for Engineering & ESG Integrity",
         date: "2026-09-15",
@@ -424,6 +431,12 @@ export const NEWS_ITEMS: NewsItem[] = [
         category: 'Archive'
     }
 ];
+
+export const NEWS_ITEMS: NewsItem[] = NEWS_ITEMS_DATA.map(item => ({
+    ...item,
+    thumbnail: item.image,
+    placeholder: DEFAULT_IMAGE_PLACEHOLDER,
+}));
 
 export const VIDEOS: Video[] = [
     {
