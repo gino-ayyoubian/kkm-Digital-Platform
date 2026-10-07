@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { DAFTARE_SHOMA_CONFIG, IVR_DIAL_TREE } from '../ivr/IvrCommunicationsConsole';
 import { INITIAL_ORG_MEMBERS } from '../../data/orgMembers';
+import InternalCommunicationDashboard from './InternalCommunicationDashboard';
 
 interface InternalCommunicationTabProps {
   onOpenSoftphone?: (extension?: string) => void;
@@ -93,6 +94,7 @@ export const InternalCommunicationTab: React.FC<InternalCommunicationTabProps> =
 
   return (
     <div className="space-y-6">
+      <InternalCommunicationDashboard />
       {/* Top Banner: Conceptual Architecture Summary & Direct Portal Link */}
       <div className="bg-slate-900 text-white rounded-3xl p-6 border border-slate-800 shadow-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />

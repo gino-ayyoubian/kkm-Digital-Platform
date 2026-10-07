@@ -4,6 +4,8 @@ import { useLanguage } from '../LanguageContext';
 import { NEWS_ITEMS } from '../constants';
 import { motion } from 'motion/react';
 import { sanitizeHtml } from '../utils/sanitizeHtml';
+import BlurUpImage from '../components/BlurUpImage';
+import { DEFAULT_IMAGE_PLACEHOLDER } from '../utils/imagePlaceholder';
 
 interface NewsArticlePageProps {
     article: NewsItem;
@@ -56,13 +58,13 @@ const NewsArticlePage: React.FC<NewsArticlePageProps> = ({ article, onBack, onSe
                     </h1>
 
                     <div className="mt-8 overflow-hidden rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800">
-                        <img 
-                            src={article.image} 
+                        <BlurUpImage
+                            src={article.thumbnail || article.image}
+                            placeholder={article.placeholder || DEFAULT_IMAGE_PLACEHOLDER}
                             alt={article.title} 
                             width={1600}
                             height={900}
-                            loading="lazy" 
-                            className="w-full h-80 sm:h-[450px] object-cover" 
+                            className="w-full h-80 sm:h-[450px] object-cover"
                         />
                     </div>
 
@@ -104,12 +106,12 @@ const NewsArticlePage: React.FC<NewsArticlePageProps> = ({ article, onBack, onSe
                                 >
                                     <div>
                                         <div className="relative h-48 overflow-hidden">
-                                            <img
-                                                src={relItem.image}
+                                            <BlurUpImage
+                                                src={relItem.thumbnail || relItem.image}
+                                                placeholder={relItem.placeholder || DEFAULT_IMAGE_PLACEHOLDER}
                                                 alt={relItem.title}
                                                 width={1200}
                                                 height={675}
-                                                loading="lazy"
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                             />
                                             <div className="absolute top-3 left-3">

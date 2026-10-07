@@ -4,6 +4,7 @@ import { useLanguage } from '../../LanguageContext';
 import { OrgMemberProfile } from '../../types';
 import { INITIAL_ORG_MEMBERS } from '../../data/orgMembers';
 import { ExecutiveMemberIdentity } from '../common/ExecutiveMemberIdentity';
+import { buildInternalDirectory, type ExtensionAvailability } from '../../data/internalDirectory';
 import { 
   Search, Phone, Mail, Copy, Check, PhoneForwarded, 
   Building2, ShieldCheck, Download, Filter, UserCheck, 
@@ -27,9 +28,48 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
   const [selectedDept, setSelectedDept] = React.useState<string>('all');
   const [copiedKey, setCopiedKey] = React.useState<string | null>(null);
   const [viewLayout, setViewLayout] = React.useState<'table' | 'cards'>('table');
+  const [extensions, setExtensions] = React.useState<ExtensionAvailability[]>([]);
+  const [isExtensionStatusSynced, setIsExtensionStatusSynced] = React.useState(false);
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
   const isRtl = direction === 'rtl';
+
+  React.useEffect(() => {
+    let isMounted = true;
+    const syncExtensions = async () => {
+      try {
+        const response = await fetch('/api/telephony/extensions');
+        if (!response.ok) throw new Error('Unable to fetch extension statuses');
+        const payload = await response.json();
+        if (!Array.isArray(payload?.data)) throw new Error('Invalid extension status response');
+        if (isMounted) {
+          setExtensions(payload.data);
+          setIsExtensionStatusSynced(true);
+        }
+      } catch {
+        if (isMounted) {
+          setExtensions([]);
+          setIsExtensionStatusSynced(false);
+        }
+      }
+    };
+
+    void syncExtensions();
+    const interval = window.setInterval(() => void syncExtensions(), 30_000);
+    return () => {
+      isMounted = false;
+      window.clearInterval(interval);
+    };
+  }, []);
+
+  const directoryEntries = React.useMemo(
+    () => buildInternalDirectory(INITIAL_ORG_MEMBERS, extensions),
+    [extensions],
+  );
+  const directoryEntryByUid = React.useMemo(
+    () => new Map(directoryEntries.map(entry => [entry.profile.uid, entry])),
+    [directoryEntries],
+  );
 
   // Copy to clipboard helper
   const copyToClipboard = (text: string, key: string) => {
@@ -51,7 +91,7 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
   // Filtered members list with mode-specific filtering
   const filteredMembers = React.useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
-    return INITIAL_ORG_MEMBERS.filter(member => {
+    return directoryEntries.filter(({ profile: member }) => {
       // 1. Department filter
       if (selectedDept !== 'all') {
         const d = member.departmentFa || member.department;
@@ -98,8 +138,8 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
         (member.departmentFa && member.departmentFa.toLowerCase().includes(q)) ||
         member.department.toLowerCase().includes(q)
       );
-    });
-  }, [searchQuery, filterMode, selectedDept]);
+    }).map(entry => entry.profile);
+  }, [directoryEntries, searchQuery, filterMode, selectedDept]);
 
   // Substring highlight helper
   const renderHighlighted = (text?: string) => {
@@ -121,6 +161,35 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
       ) : (
         part
       )
+    );
+  };
+
+  const renderAvailability = (memberUid: string) => {
+    const availability = directoryEntryByUid.get(memberUid)?.deskAvailability || 'unknown';
+    const labels = {
+      active: isFa ? 'فعال' : 'Available',
+      busy: isFa ? 'مشغول' : 'Busy',
+      away: isFa ? 'دور' : 'Away',
+      unknown: isFa ? 'نامشخص' : 'Unknown',
+    };
+    const colors = {
+      active: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300',
+      busy: 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300',
+      away: 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300',
+      unknown: 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300',
+    };
+    const dots = {
+      active: 'bg-emerald-500',
+      busy: 'bg-rose-500',
+      away: 'bg-amber-500',
+      unknown: 'bg-slate-400',
+    };
+
+    return (
+      <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[10px] font-bold ${colors[availability]}`} title={isFa ? 'وضعیت همگام‌سازی‌شده داخلی' : 'Synced extension availability'}>
+        <span className={`h-1.5 w-1.5 rounded-full ${dots[availability]}`} />
+        {labels[availability]}
+      </span>
     );
   };
 
@@ -153,6 +222,9 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
             </span>
             <span className="text-xs font-mono text-slate-400">
               Active Line: +98 21 9103 0830
+            </span>
+            <span className={`text-[10px] font-semibold ${isExtensionStatusSynced ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'}`}>
+              {isExtensionStatusSynced ? (isFa ? 'وضعیت داخلی‌ها همگام است' : 'Extension status synced') : (isFa ? 'وضعیت داخلی‌ها همگام نیست' : 'Extension status unavailable')}
             </span>
           </div>
 
@@ -428,20 +500,23 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
 
                   {/* Extension with Copy and Dial Action */}
                   <td className="p-4">
-                    <div className="flex items-center gap-2">
-                      <span className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 font-mono font-black text-xs border border-emerald-200 dark:border-emerald-800">
-                        {renderHighlighted(member.sipExtension || 'N/A')}
-                      </span>
-                      {member.sipExtension && (
-                        <button
-                          type="button"
-                          onClick={() => copyToClipboard(member.sipExtension || '', `ext-${member.uid}`)}
-                          className="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 transition-colors min-h-[32px] min-w-[32px] flex items-center justify-center"
-                          title={isFa ? 'کپی شماره داخلی' : 'Copy extension number'}
-                        >
-                          {copiedKey === `ext-${member.uid}` ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                        </button>
-                      )}
+                    <div className="flex flex-col items-start gap-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 font-mono font-black text-xs border border-emerald-200 dark:border-emerald-800">
+                          {renderHighlighted(member.sipExtension || 'N/A')}
+                        </span>
+                        {member.sipExtension && (
+                          <button
+                            type="button"
+                            onClick={() => copyToClipboard(member.sipExtension || '', `ext-${member.uid}`)}
+                            className="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 transition-colors min-h-[32px] min-w-[32px] flex items-center justify-center"
+                            title={isFa ? 'کپی شماره داخلی' : 'Copy extension number'}
+                          >
+                            {copiedKey === `ext-${member.uid}` ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                          </button>
+                        )}
+                      </div>
+                      {renderAvailability(member.uid)}
                     </div>
                   </td>
 
@@ -559,6 +634,7 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
                   {isFa && member.departmentFa ? member.departmentFa : member.department}
                 </p>
+                <div className="mt-2">{renderAvailability(member.uid)}</div>
 
                 {/* Contact Badges */}
                 <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 space-y-2 text-xs font-mono">

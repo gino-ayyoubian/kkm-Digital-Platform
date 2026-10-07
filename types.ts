@@ -69,6 +69,8 @@ export interface Project {
     nextPhase?: string;
     description: string;
     image: string;
+    thumbnail?: string;
+    placeholder?: string;
     tags: string[];
     coordinates: { lat: number; lng: number };
     googleMapsLink?: string;
@@ -99,6 +101,8 @@ export interface NewsItem {
     date: string;
     excerpt: string;
     image: string;
+    thumbnail?: string;
+    placeholder?: string;
     content: string;
     category: 'Technology' | 'Projects' | 'Corporate' | 'Archive' | 'Research' | 'Reports' | 'News' | 'Technical' | 'Sustainability' | 'Events';
 }
@@ -290,6 +294,13 @@ export interface OrgMemberProfile {
   lastLogin?: string;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface InternalDirectoryEntry {
+  profile: OrgMemberProfile;
+  extension: string | null;
+  deskPhone: string | null;
+  deskAvailability: 'active' | 'busy' | 'away' | 'unknown';
 }
 
 export type AutomationRequestType = 'leave' | 'purchase' | 'mission' | 'technical_review' | 'it_access' | 'memo';

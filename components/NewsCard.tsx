@@ -1,6 +1,8 @@
 import * as React from 'react';
 import type { NewsItem } from '../types';
 import { useLanguage } from '../LanguageContext';
+import BlurUpImage from './BlurUpImage';
+import { DEFAULT_IMAGE_PLACEHOLDER } from '../utils/imagePlaceholder';
 
 interface NewsCardProps {
     item: NewsItem;
@@ -19,7 +21,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ item, onSelectArticle, imageHeight 
     return (
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col group transform hover:-translate-y-1 transition-all duration-300">
             <div className="overflow-hidden rounded-t-lg relative">
-                <img src={item.image} alt={displayTitle} width={1200} height={675} loading="lazy" className={`w-full ${imageHeight} object-cover transition-transform duration-300 group-hover:scale-105`} />
+                <BlurUpImage src={item.thumbnail || item.image} placeholder={item.placeholder || DEFAULT_IMAGE_PLACEHOLDER} alt={displayTitle} width={1200} height={675} className={`w-full ${imageHeight} object-cover transition-transform duration-300 group-hover:scale-105`} />
                 {showCategory && <span className="absolute top-4 right-4 text-xs font-semibold uppercase tracking-wider text-text-dark bg-secondary px-2 py-1 rounded-full">{item.category}</span>}
             </div>
             <div className="p-6 flex flex-col flex-grow">
