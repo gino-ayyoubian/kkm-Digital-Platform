@@ -45,28 +45,41 @@ const InternalCommunicationDashboard: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [lastRefresh, setLastRefresh] = React.useState<string | null>(null);
   const [syncError, setSyncError] = React.useState(false);
+  const inFlightRefresh = React.useRef<AbortController | null>(null);
 
   const refresh = React.useCallback(async () => {
+    if (inFlightRefresh.current) return;
+
+    const controller = new AbortController();
+    inFlightRefresh.current = controller;
     setIsRefreshing(true);
     try {
-      const response = await fetch('/api/telephony/dashboard');
+      const response = await fetch('/api/telephony/dashboard', { signal: controller.signal });
       if (!response.ok) throw new Error('Failed to load communication status');
       const payload = await response.json();
       if (!payload?.success) throw new Error('Invalid communication status response');
+      if (controller.signal.aborted) return;
       setSnapshot(payload.data as CommunicationSnapshot);
       setSyncError(false);
       setLastRefresh(new Date().toISOString());
     } catch {
-      setSyncError(true);
+      if (!controller.signal.aborted) setSyncError(true);
     } finally {
-      setIsRefreshing(false);
+      if (inFlightRefresh.current === controller) {
+        inFlightRefresh.current = null;
+        setIsRefreshing(false);
+      }
     }
   }, []);
 
   React.useEffect(() => {
     void refresh();
     const interval = window.setInterval(() => void refresh(), REFRESH_INTERVAL_MS);
-    return () => window.clearInterval(interval);
+    return () => {
+      window.clearInterval(interval);
+      inFlightRefresh.current?.abort();
+      inFlightRefresh.current = null;
+    };
   }, [refresh]);
 
   const status = snapshot?.status ?? null;

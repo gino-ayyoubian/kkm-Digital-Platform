@@ -20,4 +20,25 @@ describe('buildInternalDirectory', () => {
 
     expect(entry.deskAvailability).toBe('unknown');
   });
+
+  it('matches Reza Baghdadchi and Ashkan Tofangchiha to their PBX lines', () => {
+    const members = INITIAL_ORG_MEMBERS.filter(member =>
+      ['kkm-user-007', 'kkm-user-008'].includes(member.uid),
+    );
+    const entries = buildInternalDirectory(members, [
+      { extension: '105', status: 'busy' },
+      { extension: '106', status: 'away' },
+      { extension: '107', status: 'busy' },
+      { extension: '108', status: 'away' },
+    ]);
+
+    expect(entries.map(({ extension, deskPhone, deskAvailability }) => ({
+      extension,
+      deskPhone,
+      deskAvailability,
+    }))).toEqual([
+      { extension: '107', deskPhone: '+98 21 9103 0836', deskAvailability: 'busy' },
+      { extension: '108', deskPhone: '+98 21 9103 0837', deskAvailability: 'away' },
+    ]);
+  });
 });
