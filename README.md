@@ -120,3 +120,8 @@ Use focused branches and pull requests, explain user-facing changes, and include
 - [Official website (`www`)](https://www.kkm-intl.org)
 - [Repository](https://github.com/gino-ayyoubian/kkm-Digital-Platform)
 - [Issue tracker](https://github.com/gino-ayyoubian/kkm-Digital-Platform/issues)
+
+
+## Member images
+
+See [docs/MEMBER_IMAGES.md](docs/MEMBER_IMAGES.md) for how to add or replace member photos.
