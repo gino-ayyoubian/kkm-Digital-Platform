@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Activity, Clock3, Phone, RefreshCw, Server, Voicemail } from 'lucide-react';
 import { useLanguage } from '../../LanguageContext';
-import { IVR_DIAL_TREE } from '../ivr/IvrCommunicationsConsole';
 
 interface TelephonyStatus {
   connected: boolean;
@@ -25,6 +24,14 @@ interface VoicemailSnapshot {
   isRead: boolean;
 }
 
+interface RoutingSnapshot {
+  ivrTree: Array<{
+    digit: string;
+    destination: string;
+    title: string;
+  }>;
+}
+
 const REFRESH_INTERVAL_MS = 30_000;
 
 const InternalCommunicationDashboard: React.FC = () => {
@@ -32,6 +39,7 @@ const InternalCommunicationDashboard: React.FC = () => {
   const [status, setStatus] = React.useState<TelephonyStatus | null>(null);
   const [extensions, setExtensions] = React.useState<ExtensionSnapshot[]>([]);
   const [voicemails, setVoicemails] = React.useState<VoicemailSnapshot[]>([]);
+  const [routing, setRouting] = React.useState<RoutingSnapshot['ivrTree']>([]);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [lastRefresh, setLastRefresh] = React.useState<string | null>(null);
   const [syncError, setSyncError] = React.useState(false);
@@ -46,19 +54,23 @@ const InternalCommunicationDashboard: React.FC = () => {
       return payload.data as T;
     };
 
-    const [statusResult, extensionsResult, voicemailsResult] = await Promise.allSettled([
+    const [statusResult, extensionsResult, voicemailsResult, routingResult] = await Promise.allSettled([
       fetchData<TelephonyStatus>('/api/telephony/status'),
       fetchData<ExtensionSnapshot[]>('/api/telephony/extensions'),
       fetchData<VoicemailSnapshot[]>('/api/telephony/voicemails'),
+      fetchData<RoutingSnapshot>('/api/telephony/export-config'),
     ]);
 
-    const hasFailure = [statusResult, extensionsResult, voicemailsResult].some(result => result.status === 'rejected');
+    const hasFailure = [statusResult, extensionsResult, voicemailsResult, routingResult].some(result => result.status === 'rejected');
     if (statusResult.status === 'fulfilled') setStatus(statusResult.value);
     if (extensionsResult.status === 'fulfilled' && Array.isArray(extensionsResult.value)) {
       setExtensions(extensionsResult.value);
     }
     if (voicemailsResult.status === 'fulfilled' && Array.isArray(voicemailsResult.value)) {
       setVoicemails(voicemailsResult.value);
+    }
+    if (routingResult.status === 'fulfilled' && Array.isArray(routingResult.value?.ivrTree)) {
+      setRouting(routingResult.value.ivrTree);
     }
     setSyncError(hasFailure);
     setLastRefresh(new Date().toISOString());
@@ -122,7 +134,7 @@ const InternalCommunicationDashboard: React.FC = () => {
         </div>
         <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-900/60">
           <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400"><Phone className="h-4 w-4" />{isFa ? 'مسیریابی فعال' : 'Active routing'}</div>
-          <p className="text-xl font-black text-slate-900 dark:text-white">{IVR_DIAL_TREE.length} <span className="text-xs font-semibold">{isFa ? 'مسیر' : 'routes'}</span></p>
+          <p className="text-xl font-black text-slate-900 dark:text-white">{routing.length} <span className="text-xs font-semibold">{isFa ? 'مسیر' : 'routes'}</span></p>
           <p className="mt-1 text-[10px] text-slate-500">{status?.dayScheduleActive ? (isFa ? 'برنامه روزانه' : 'Day schedule') : (isFa ? 'برنامه خارج از ساعات' : 'After-hours schedule')}</p>
         </div>
         <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-900/60">
@@ -133,9 +145,9 @@ const InternalCommunicationDashboard: React.FC = () => {
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2" aria-label={isFa ? 'تنظیمات مسیریابی' : 'Routing configurations'}>
-        {IVR_DIAL_TREE.map(route => (
-          <span key={`${route.key}-${route.targetExtension}`} className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-[10px] text-slate-600 dark:border-slate-700 dark:text-slate-300">
-            {isFa ? `کلید ${route.key} ← داخلی ${route.targetExtension}` : `Key ${route.key} → Ext ${route.targetExtension}`}
+        {routing.map(route => (
+          <span key={`${route.digit}-${route.destination}`} className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-[10px] text-slate-600 dark:border-slate-700 dark:text-slate-300">
+            {isFa ? `کلید ${route.digit} ← ${route.destination}` : `Key ${route.digit} → ${route.destination}`}
           </span>
         ))}
       </div>
