@@ -44,12 +44,22 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
     setSelectedEvidenceMember(member);
   };
 
-  // Filtered list of members (strictly deduplicated by unique uid)
+  // Filtered list of members, deduplicated by uid and profile identity
   const filteredMembers = React.useMemo(() => {
     const seenUids = new Set<string>();
+    const seenNames = new Set<string>();
+    const seenEmails = new Set<string>();
     return INITIAL_ORG_MEMBERS.filter(member => {
-      if (seenUids.has(member.uid)) return false;
+      const normalizedName = member.displayName.normalize('NFKC').trim().replace(/\s+/g, ' ').toLowerCase();
+      const normalizedEmail = (member.email || '').trim().toLowerCase();
+      if (
+        seenUids.has(member.uid) ||
+        seenNames.has(normalizedName) ||
+        (normalizedEmail && seenEmails.has(normalizedEmail))
+      ) return false;
       seenUids.add(member.uid);
+      seenNames.add(normalizedName);
+      if (normalizedEmail) seenEmails.add(normalizedEmail);
 
       // Category filter
       let matchesFilter = true;
