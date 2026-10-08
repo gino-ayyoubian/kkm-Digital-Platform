@@ -79,15 +79,34 @@ const MemberImageWithFallback: React.FC<{
   fallbackGradient = 'from-primary to-secondary' 
 }) => {
   const [error, setError] = React.useState(false);
+  const [loaded, setLoaded] = React.useState(false);
+  const imgRef = React.useRef<HTMLImageElement>(null);
 
   React.useEffect(() => {
     setError(false);
+    setLoaded(false);
+  }, [src]);
+
+  React.useEffect(() => {
+    const img = imgRef.current;
+    if (img && img.complete) {
+      if (img.naturalWidth > 0) setLoaded(true);
+      else setError(true);
+    }
   }, [src]);
 
   if (!src || error) {
     return (
-      <div className={`w-full h-full bg-gradient-to-tr ${fallbackGradient} flex items-center justify-center text-white font-mono font-bold ${fallbackClass}`}>
-        {initials}
+      <div
+        role="img"
+        aria-label={alt}
+        className={`w-full h-full aspect-square bg-gradient-to-tr ${fallbackGradient} flex items-end justify-center overflow-hidden text-white/80 ${fallbackClass}`}
+      >
+        <svg viewBox="0 0 100 100" className="w-full h-full" aria-hidden="true" focusable="false">
+          <circle cx="50" cy="38" r="18" fill="currentColor" opacity="0.85" />
+          <path d="M14 100c0-22 16-36 36-36s36 14 36 36z" fill="currentColor" opacity="0.85" />
+          <text x="50" y="95" textAnchor="middle" fontSize="9" fontWeight="700" fill="#0f172a" fontFamily="monospace">{initials}</text>
+        </svg>
       </div>
     );
   }
@@ -95,14 +114,23 @@ const MemberImageWithFallback: React.FC<{
   const computedPosition = objectPosition || getMemberPhotoObjectPosition(src || alt);
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      loading="lazy"
-      onError={() => setError(true)}
-      className={className}
-      style={{ objectPosition: computedPosition, ...style }}
-    />
+    <div className="relative w-full h-full aspect-square overflow-hidden bg-slate-800">
+      <div
+        aria-hidden="true"
+        className={`absolute inset-0 bg-gradient-to-tr ${fallbackGradient} animate-pulse transition-opacity duration-700 ${loaded ? 'opacity-0' : 'opacity-60'}`}
+      />
+      <img
+        ref={imgRef}
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
+        className={`${className} w-full h-full object-cover transition-[filter,opacity,transform] duration-700 ${loaded ? 'blur-0 opacity-100' : 'blur-xl opacity-0 scale-110'}`}
+        style={{ objectPosition: computedPosition, ...style }}
+      />
+    </div>
   );
 };
 
@@ -333,12 +361,12 @@ const LEADERSHIP: Member[] = [
     id: "mostafa-sharifi",
     name: "Mostafa Sharifi",
     nameFa: "مصطفی شریفی",
-    title: "Senior Engineering Specialist",
-    titleFa: "کارشناس ارشد مهندسی",
-    department: "Engineering & Technical Office",
-    departmentFa: "دفتر فنی و مهندسی",
-    bio: "Senior engineering specialist supporting project design, technical documentation, and delivery coordination across KKM's energy and industrial infrastructure programs.",
-    bioFa: "کارشناس ارشد مهندسی، پشتیبان طراحی پروژه، مستندات فنی و هماهنگی اجرا در برنامه‌های انرژی و زیرساخت صنعتی KKM.",
+    title: "Operational Excellence Manager (OpEx)",
+    titleFa: "مدیر تعالی عملیاتی و بهبود مستمر",
+    department: "Operational Excellence & Continuous Improvement",
+    departmentFa: "تعالی عملیاتی و بهبود مستمر",
+    bio: "Senior Management (Level 2) leading process optimization, Lean and Six Sigma programs across the 10-stage project lifecycle, reducing production cost and raising operational efficiency on platforms such as GMEL; direct liaison between engineering teams, QA/QC and the COO.",
+    bioFa: "مدیر ارشد سطح ۲، هدایت‌کننده بهینه‌سازی فرآیند، متدولوژی‌های ناب (Lean) و شش‌سیگما در چرخه ۱۰ مرحله‌ای پروژه‌ها، کاهش هزینه تولید و ارتقای کارایی عملیاتی در پلتفرم‌هایی نظیر GMEL؛ رابط مستقیم تیم‌های مهندسی، QA/QC و COO.",
     initials: "MS",
     imageUrl: "/images/mostafa-sharifi.jpg",
     credentials: ["Project Engineering", "Technical Documentation"],
