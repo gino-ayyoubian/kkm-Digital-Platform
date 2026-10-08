@@ -8,7 +8,6 @@ import {
   ExternalLink, X, Mail, Phone, Copy, Check, ChevronRight, 
   Building2, Search, CheckCircle2, LayoutGrid, Network, Maximize2 
 } from 'lucide-react';
-import { getMemberPhotoObjectPosition } from '../components/common/ExecutiveMemberIdentity';
 
 interface TeamPageProps {
   setPage?: (page: Page) => void;
@@ -111,7 +110,7 @@ const MemberImageWithFallback: React.FC<{
     );
   }
 
-  const computedPosition = objectPosition || getMemberPhotoObjectPosition(src || alt);
+  const computedPosition = objectPosition || 'center';
 
   return (
     <div className="relative w-full h-full aspect-square overflow-hidden bg-slate-800">
@@ -127,8 +126,8 @@ const MemberImageWithFallback: React.FC<{
         decoding="async"
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
-        className={`${className} w-full h-full object-cover transition-[filter,opacity,transform] duration-700 ${loaded ? 'blur-0 opacity-100' : 'blur-xl opacity-0 scale-110'}`}
-        style={{ objectPosition: computedPosition, ...style }}
+        className={`${className} w-full h-full object-contain object-center transition-[filter,opacity] duration-700 ${loaded ? 'blur-0 opacity-100' : 'blur-xl opacity-0'}`}
+        style={{ objectPosition: computedPosition, ...style, objectFit: 'contain' }}
       />
     </div>
   );
@@ -857,7 +856,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                             alt={isFa ? member.nameFa : member.name}
                             initials={member.initials}
                             fallbackClass="text-2xl"
-                            className="w-full h-full object-cover object-center transition-all duration-700 ease-out transform group-hover/card:scale-110 group-hover/photo:scale-115"
+                            className="w-full h-full object-contain object-center transition-opacity duration-300"
                           />
                           {/* Hover overlay hint */}
                           <div className="absolute inset-0 bg-slate-950/20 group-hover/card:bg-transparent transition-colors pointer-events-none" />
@@ -974,7 +973,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                           initials={member.initials}
                           fallbackGradient="from-amber-500 to-amber-700"
                           fallbackClass="text-lg"
-                          className="w-full h-full object-cover"
+                          className="w-full h-full"
                         />
                       </div>
                       <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] shadow-xs">
@@ -1025,7 +1024,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                           initials={member.initials}
                           fallbackGradient="from-cyan-500 to-blue-600"
                           fallbackClass="text-sm"
-                          className="w-full h-full object-cover"
+                          className="w-full h-full"
                         />
                       </div>
                       <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] shadow-xs">

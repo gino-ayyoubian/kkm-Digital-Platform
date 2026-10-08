@@ -197,8 +197,8 @@ export const ExecutiveMemberIdentity: React.FC<ExecutiveMemberIdentityProps> = (
           <img
             src={effectivePhotoUrl}
             alt={name}
-            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-            style={{ objectPosition: focalPosition }}
+            className="w-full h-full object-contain object-center"
+            style={{ objectPosition: 'center' }}
             loading="lazy"
             onError={() => setImgError(true)}
           />

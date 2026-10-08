@@ -49,7 +49,7 @@ export const TeamCard: React.FC<TeamCardProps> = ({
           photoUrl={member.avatarUrl}
           size="card"
           showBadge={false}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full"
         />
 
         {/* Ambient Gradient Overlay */}
