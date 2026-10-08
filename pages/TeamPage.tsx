@@ -105,7 +105,7 @@ const MemberImageWithFallback: React.FC<{
         <svg viewBox="0 0 100 100" className="w-full h-full" aria-hidden="true" focusable="false">
           <circle cx="50" cy="38" r="18" fill="currentColor" opacity="0.85" />
           <path d="M14 100c0-22 16-36 36-36s36 14 36 36z" fill="currentColor" opacity="0.85" />
-          <text x="50" y="95" textAnchor="middle" fontSize="9" fontWeight="700" fill="#0f172a" fontFamily="monospace">{initials}</text>
+          <text x="50" y="95" textAnchor="middle" fontSize="1em" fontWeight="700" fill="#0f172a" fontFamily="monospace">{initials}</text>
         </svg>
       </div>
     );
