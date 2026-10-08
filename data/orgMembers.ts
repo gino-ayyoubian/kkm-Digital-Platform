@@ -218,6 +218,7 @@ export const INITIAL_ORG_MEMBERS: OrgMemberProfile[] = [
     department: 'Finance & Investments',
     departmentFa: 'سرمایه‌گذاری، تامین مالی و دارایی‌های سرمایه‌ای',
     employeeId: 'KKM-004',
+    avatarUrl: '/images/farid-imani.jpg',
     phone: '+98 21 9103 0833',
     sipExtension: '104',
     sipUsername: '206965',
@@ -584,7 +585,8 @@ export const INITIAL_ORG_MEMBERS: OrgMemberProfile[] = [
     phone: '+98 21 9103 0849',
     sipExtension: '209',
     sipUsername: '206979',
-    isVerifiedMember: false,
+    avatarUrl: '/images/mostafa-sharifi.jpg',
+    isVerifiedMember: true,
     evidenceRegistryId: 'KKM-EVID-2026-ENG-019',
     linkedInUrl: 'https://www.linkedin.com/in/mostafa-sharifi-0686a284',
     engineeringDomains: [

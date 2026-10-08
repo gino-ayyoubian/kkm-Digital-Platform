@@ -49,10 +49,107 @@
           } catch (_) {}
         }
 
+        // Safe Vite HMR WebSocket shim per environment constraint: "HMR: Disabled. Ignore WebSocket errors."
+        try {
+          if (typeof window.WebSocket !== 'undefined') {
+            var OrigWebSocket = window.WebSocket;
+            var MockWebSocket = function(url, protocols) {
+              var isViteHmr = (typeof protocols === 'string' && (protocols === 'vite-hmr' || protocols === 'vite-ping')) ||
+                              (Array.isArray(protocols) && (protocols.indexOf('vite-hmr') !== -1 || protocols.indexOf('vite-ping') !== -1)) ||
+                              (typeof url === 'string' && (url.indexOf('token=') !== -1 || url.indexOf('vite-ping') !== -1 || url.indexOf('vite-hmr') !== -1 || url.indexOf('vite') !== -1));
+              if (isViteHmr) {
+                var listeners = {};
+                var dummy = {
+                  url: String(url),
+                  readyState: 1,
+                  CONNECTING: 0,
+                  OPEN: 1,
+                  CLOSING: 2,
+                  CLOSED: 3,
+                  protocol: typeof protocols === 'string' ? protocols : 'vite-hmr',
+                  extensions: '',
+                  bufferedAmount: 0,
+                  binaryType: 'blob',
+                  send: function() {},
+                  close: function() {
+                    dummy.readyState = 3;
+                    var evt = { type: 'close', target: dummy };
+                    var list = listeners['close'] || [];
+                    for (var i = 0; i < list.length; i++) {
+                      try { list[i].call(dummy, evt); } catch(_) {}
+                    }
+                    if (typeof dummy.onclose === 'function') {
+                      try { dummy.onclose(evt); } catch(_) {}
+                    }
+                  },
+                  addEventListener: function(type, listener) {
+                    if (typeof listener !== 'function') return;
+                    if (!listeners[type]) listeners[type] = [];
+                    listeners[type].push(listener);
+                    if (type === 'open') {
+                      setTimeout(function() {
+                        try { listener.call(dummy, { type: 'open', target: dummy }); } catch (_) {}
+                      }, 0);
+                    }
+                  },
+                  removeEventListener: function(type, listener) {
+                    if (!listeners[type]) return;
+                    listeners[type] = listeners[type].filter(function(l) { return l !== listener; });
+                  },
+                  dispatchEvent: function() { return true; },
+                  onopen: null,
+                  onclose: null,
+                  onerror: null,
+                  onmessage: null
+                };
+                setTimeout(function() {
+                  if (typeof dummy.onopen === 'function') {
+                    try { dummy.onopen({ type: 'open', target: dummy }); } catch(_) {}
+                  }
+                }, 0);
+                return dummy;
+              }
+              return new OrigWebSocket(url, protocols);
+            };
+            MockWebSocket.prototype = OrigWebSocket.prototype;
+            MockWebSocket.CONNECTING = 0;
+            MockWebSocket.OPEN = 1;
+            MockWebSocket.CLOSING = 2;
+            MockWebSocket.CLOSED = 3;
+            window.WebSocket = MockWebSocket;
+          }
+        } catch (_) {}
+
+        function isIgnoredError(msg, url, error) {
+          var str = String(msg || '') + (error && error.message ? ' ' + String(error.message) : '') + (error && error.stack ? ' ' + String(error.stack) : '');
+          var urlStr = String(url || '');
+          return (
+            str.toLowerCase().indexOf('insecure') !== -1 ||
+            str.indexOf('WebSocket') !== -1 ||
+            str.indexOf('@vite/client') !== -1 ||
+            str.indexOf('failed to connect to websocket') !== -1 ||
+            str.indexOf('vite:ws') !== -1 ||
+            urlStr.indexOf('@vite/client') !== -1 ||
+            (error && error.name === 'SecurityError')
+          );
+        }
+
+        var origConsoleError = console.error;
+        console.error = function() {
+          var combined = '';
+          for (var i = 0; i < arguments.length; i++) {
+            var arg = arguments[i];
+            combined += (arg && arg.stack ? ' ' + arg.stack : ' ' + String(arg));
+          }
+          if (isIgnoredError(combined, '', null)) {
+            return;
+          }
+          if (origConsoleError) return origConsoleError.apply(console, arguments);
+        };
+
         var origOnError = window.onerror;
         window.onerror = function(msg, url, lineNo, columnNo, error) {
-          var str = String(msg || '') + (error && error.message ? String(error.message) : '');
-          if (str.toLowerCase().indexOf('insecure') !== -1 || (error && error.name === 'SecurityError')) {
+          if (isIgnoredError(msg, url, error)) {
             return true;
           }
           if (origOnError) return origOnError.apply(this, arguments);
@@ -61,9 +158,13 @@
 
         window.addEventListener('error', function(e) {
           var msg = e && (e.message || (e.error && e.error.message)) || '';
-          if (typeof msg === 'string' && (msg.toLowerCase().includes('insecure') || (e.error && e.error.name === 'SecurityError'))) {
+          var filename = e && e.filename || '';
+          if (isIgnoredError(msg, filename, e.error)) {
             e.preventDefault();
             e.stopPropagation();
+            if (typeof e.stopImmediatePropagation === 'function') {
+              e.stopImmediatePropagation();
+            }
             return true;
           }
         }, true);
@@ -71,9 +172,13 @@
         window.addEventListener('unhandledrejection', function(e) {
           var reason = e && e.reason;
           var msg = (reason && (reason.message || String(reason))) || '';
-          if (typeof msg === 'string' && (msg.toLowerCase().includes('insecure') || (reason && reason.name === 'SecurityError'))) {
+          if (isIgnoredError(msg, '', reason)) {
             e.preventDefault();
             e.stopPropagation();
+            if (typeof e.stopImmediatePropagation === 'function') {
+              e.stopImmediatePropagation();
+            }
+            return true;
           }
         }, true);
 
@@ -101,9 +206,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     
     <!-- Primary Meta Tags -->
-    <title>KKM International | Technology &amp; Engineering</title>
-    <meta name="title" content="KKM International | Technology &amp; Engineering" />
-    <meta name="description" content="KKM International delivers integrated engineering solutions across geothermal energy, water-energy systems, rural microgrids, and resilient infrastructure." />
+    <title>KKM International Group</title>
+    <meta name="title" content="KKM International Group" />
+    <meta name="description" content="Technology. Engineering. Infrastructure. Innovation. From Evidence to Technology, Projects, and Scalable Impact." />
     <meta name="keywords" content="KKM International, Technology, Engineering, Infrastructure, Innovation, Geothermal Energy, EPCI, Rural Development, Water Energy Nexus" />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
@@ -116,8 +221,8 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.kkm-intl.org/" />
-    <meta property="og:title" content="KKM International | Technology &amp; Engineering" />
-    <meta property="og:description" content="KKM International delivers integrated engineering solutions across geothermal energy, water-energy systems, rural microgrids, and resilient infrastructure." />
+    <meta property="og:title" content="KKM International Group" />
+    <meta property="og:description" content="Technology. Engineering. Infrastructure. Innovation. From Evidence to Technology, Projects, and Scalable Impact." />
     <meta property="og:image" content="https://www.kkm-intl.org/og-image.png" />
     <meta property="og:image:secure_url" content="https://www.kkm-intl.org/og-image.png" />
     <meta property="og:image:type" content="image/png" />
@@ -131,8 +236,8 @@
     <meta name="twitter:site" content="@kkm_intl_co" />
     <meta name="twitter:creator" content="@kkm_intl_co" />
     <meta property="twitter:url" content="https://www.kkm-intl.org/" />
-    <meta property="twitter:title" content="KKM International | Technology &amp; Engineering" />
-    <meta property="twitter:description" content="KKM International delivers integrated engineering solutions across geothermal energy, water-energy systems, rural microgrids, and resilient infrastructure." />
+    <meta property="twitter:title" content="KKM International Group" />
+    <meta property="twitter:description" content="Technology. Engineering. Infrastructure. Innovation. From Evidence to Technology, Projects, and Scalable Impact." />
     <meta property="twitter:image" content="https://www.kkm-intl.org/og-image.png" />
     <meta property="twitter:image:alt" content="KKM International Group — Technology. Engineering. Infrastructure. Innovation." />
 
@@ -161,19 +266,41 @@
         theme: {
           extend: {
             colors: {
-              primary: '#0A92EF',       // Primary Blue
-              'primary-dark': '#00529B', // Accessible Dark Blue for text on white
-              secondary: '#89CFF0',     // Light Blue
-              'accent-yellow': '#FFC107', // Accent Yellow
-              'accent-dark': '#B45309',  // Accessible Dark Orange/Amber for text on white
-              'light-yellow': '#FFF9C4', 
-              background: '#F8F9FA',
-              'text-dark': '#002D56',   
-              'text-light': '#5a646a',
+              kkm: {
+                jetBlack: '#020617',     // RGB: 2, 6, 23 (Official Brand Book)
+                azureBlue: '#0A92EF',    // RGB: 10, 146, 239 (Official Brand Book)
+                babyBlue: '#89CFF0',     // RGB: 137, 207, 240 (Official Brand Book)
+                pureWhite: '#FFFFFF',    // RGB: 255, 255, 255 (Official Brand Book)
+                sunGold: '#F59E0B',      // Golden-amber core
+                deepBlue: '#020617',
+                skyBlue: '#0A92EF',
+                corporateGray: '#333333',
+                lightGray: '#A0A0A0',
+              },
+              'jet-black': '#020617',
+              'azure-blue': '#0A92EF',
+              'baby-blue': '#89CFF0',
+              'pure-white': '#FFFFFF',
+              primary: '#0A92EF',          // Azure Blue (#0A92EF / RGB: 10, 146, 239 - Brand Book)
+              'primary-dark': '#020617',   // Jet Black (#020617 - Brand Book)
+              'primary-light': '#89CFF0',  // Baby Blue (#89CFF0 - Brand Book)
+              secondary: '#0A92EF',        // Azure Blue
+              'accent-gold': '#F59E0B',     // Golden-amber planetary core
+              'accent-yellow': '#F59E0B',   // Harmonized
+              'corporate-gray': '#333333',
+              'light-gray': '#A0A0A0',
+              'accent-dark': '#D97706',
+              'light-yellow': '#FEF3C7',
+              background: '#F8FAFC',
+              'text-dark': '#020617',
+              'text-light': '#475569',
             },
             fontFamily: {
-              sans: ['Vazirmatn', 'Open Sans', 'Noto Kufi Arabic', 'system-ui', 'sans-serif'],
-              display: ['Montserrat', 'Vazirmatn', 'Noto Kufi Arabic', 'sans-serif'],
+              montserrat: ['Montserrat', 'sans-serif'],
+              vazirmatn: ['Vazirmatn', 'sans-serif'],
+              poppins: ['Montserrat', 'Poppins', 'sans-serif'],
+              sans: ['Montserrat', 'Vazirmatn', 'Poppins', 'system-ui', 'sans-serif'],
+              display: ['Montserrat', 'Vazirmatn', 'Poppins', 'sans-serif'],
             },
           },
         },
@@ -182,9 +309,9 @@
     <script defer src="https://cdn.tailwindcss.com?plugins=typography" onload="window.tailwind.config = window.tailwindConfig"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=optional" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=optional" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=optional" rel="stylesheet"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Vazirmatn:wght@300;400;500;600;700;800;900&display=optional" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Vazirmatn:wght@300;400;500;600;700;800;900&display=optional" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Vazirmatn:wght@300;400;500;600;700;800;900&display=optional" rel="stylesheet"></noscript>
     <style>
       :root {
         --bg-grad-1: #F8F9FA;

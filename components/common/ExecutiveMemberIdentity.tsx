@@ -8,9 +8,49 @@ interface ExecutiveMemberIdentityProps {
   department?: string;
   photoUrl?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'card';
+  shape?: 'circle' | 'rounded' | 'square';
   showBadge?: boolean;
   className?: string;
 }
+
+// Calibrated focal point (object-position) for each member portrait to guarantee
+// heads, eyes, and hair are never cropped off, following golden-ratio portrait composition.
+export const getMemberPhotoObjectPosition = (nameOrUrl: string = ''): string => {
+  const s = (nameOrUrl || '').toLowerCase();
+  
+  // Gino Ayyoubian: Head starts ~12% from top, eyes ~20%
+  if (s.includes('gino') || s.includes('ژینو')) return '50% 18%';
+  
+  // Sina Ayyoubian: Head starts ~5% from top, eyes ~15%
+  if (s.includes('sina') || s.includes('سینا')) return '50% 12%';
+  
+  // Ashkan Tofangchiha: Head starts at top edge (0-5%), eyes ~12%
+  if (s.includes('ashkan') || s.includes('اشکان') || s.includes('tofangchiha') || s.includes('تفنگچی')) return '50% 10%';
+  
+  // Dr. Khosro Jarrahian: Head at top (5%), eyes ~14%
+  if (s.includes('khosro') || s.includes('خسرو') || s.includes('jarrahian') || s.includes('جراحیان')) return '50% 12%';
+  
+  // Dr. Reza Asakereh: Head ~8%, eyes ~16%
+  if (s.includes('asakereh') || s.includes('عساکره')) return '50% 12%';
+  
+  // Mostafa Sharifi: Head ~8%, eyes ~16%
+  if (s.includes('sharifi') || s.includes('شریفی') || s.includes('mostafa') || s.includes('مصطفی')) return '50% 12%';
+  
+  // Farid Imani: Aspect ratio 4:5, head starts ~10%, eyes ~20%
+  if (s.includes('farid') || s.includes('فرید') || s.includes('imani') || s.includes('ایمانی')) return '50% 18%';
+  
+  // Dr. Pedram Abdarzadeh: Aspect ratio 4:5, head ~12%, eyes ~22%
+  if (s.includes('pedram') || s.includes('پدرام') || s.includes('abdarzadeh') || s.includes('آبدارزاده')) return '50% 18%';
+  
+  // Hamed Zatajam: Aspect ratio 4:5, head ~10%, eyes ~18%
+  if (s.includes('hamed') || s.includes('حامد') || s.includes('zatajam') || s.includes('ذات‌عجم') || s.includes('ذات عجم')) return '50% 16%';
+  
+  // Reza Baghdadchi: Square aspect ratio (0.96), face centered at ~22%
+  if (s.includes('baghdadchi') || s.includes('بغدادچی')) return '50% 22%';
+  
+  // Default rule-of-thirds upper-third focal point for executive vertical portraits
+  return '50% 15%';
+};
 
 // Generate deterministic initials from full name
 export const getInitials = (name: string): string => {
@@ -92,15 +132,17 @@ const getAuthenticMemberPhoto = (name: string, nameFa?: string, photoUrl?: strin
   const n = (name || '').toLowerCase();
   const nFa = (nameFa || '');
 
-  // Exact mapping for the 8 leadership and executive members with verified authentic portraits
+  // Exact mapping for the leadership and executive members with verified authentic portraits
   if (n.includes('gino') || nFa.includes('ژینو')) return '/images/gino-ayyoubian.jpg';
   if (n.includes('sina') || nFa.includes('سینا')) return '/images/sina-ayyoubian.jpg';
+  if (n.includes('farid') || nFa.includes('فرید') || n.includes('imani') || nFa.includes('ایمانی')) return '/images/farid-imani.jpg';
   if (n.includes('baghdadchi') || nFa.includes('بغدادچی')) return '/images/reza-baghdadchi.jpg';
   if (n.includes('tofangchiha') || nFa.includes('تفنگچی')) return '/images/ashkan-tofangchiha.jpg';
   if (n.includes('asakereh') || nFa.includes('عساکره')) return '/images/reza-asakereh.jpg';
   if (n.includes('jarrahian') || nFa.includes('جراحیان')) return '/images/khosro-jarrahian.jpg';
   if (n.includes('abdarzadeh') || nFa.includes('آبدارزاده')) return '/images/pedram-abdarzadeh.jpg';
   if (n.includes('zatajam') || nFa.includes('ذات‌عجم') || nFa.includes('ذات عجم')) return '/images/hamed-zatajam.jpg';
+  if (n.includes('sharifi') || nFa.includes('شریفی') || n.includes('mostafa') || nFa.includes('مصطفی')) return '/images/mostafa-sharifi.jpg';
 
   return photoUrl;
 };
@@ -118,9 +160,11 @@ export const ExecutiveMemberIdentity: React.FC<ExecutiveMemberIdentityProps> = (
   department,
   photoUrl,
   size = 'md',
+  shape = 'circle',
   showBadge = true,
   className = '',
 }) => {
+  const [imgError, setImgError] = React.useState(false);
   const initials = getInitials(name);
   const theme = getTheme(role, name);
 
@@ -128,6 +172,7 @@ export const ExecutiveMemberIdentity: React.FC<ExecutiveMemberIdentityProps> = (
 
   // Check if photo is a real verified photo (authentic local portrait, NOT fake unsplash/pravatar)
   const isVerifiedPhoto = Boolean(
+    !imgError &&
     effectivePhotoUrl && 
     effectivePhotoUrl.trim() !== '' && 
     !effectivePhotoUrl.includes('unsplash.com') && 
@@ -146,13 +191,16 @@ export const ExecutiveMemberIdentity: React.FC<ExecutiveMemberIdentityProps> = (
   // If used inside full card view (e.g. LeadershipTeam card)
   if (size === 'card') {
     if (isVerifiedPhoto && effectivePhotoUrl) {
+      const focalPosition = getMemberPhotoObjectPosition(effectivePhotoUrl || name);
       return (
-        <div className={`relative w-full h-full overflow-hidden ${className}`}>
+        <div className={`relative w-full h-full overflow-hidden bg-slate-950 ${className}`}>
           <img
             src={effectivePhotoUrl}
             alt={name}
-            className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
+            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+            style={{ objectPosition: focalPosition }}
             loading="lazy"
+            onError={() => setImgError(true)}
           />
           {/* Subtle vignette gradient */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
@@ -218,14 +266,21 @@ export const ExecutiveMemberIdentity: React.FC<ExecutiveMemberIdentityProps> = (
     );
   }
 
-  // Circular avatar mode (for tables, headers, profile views)
+  // Avatar mode (for tables, headers, profile views, directory cards)
+  const focalPosition = getMemberPhotoObjectPosition(effectivePhotoUrl || name);
+  const isFill = className.includes('w-full') || className.includes('h-full');
+  const radiusClass = shape === 'rounded' ? 'rounded-2xl' : shape === 'square' ? 'rounded-none' : 'rounded-full';
+  const dimensionClass = isFill ? 'w-full h-full' : sizeClasses;
+
   if (isVerifiedPhoto && effectivePhotoUrl) {
     return (
-      <div className={`relative inline-block ${className}`}>
+      <div className={`relative inline-block ${isFill ? 'w-full h-full' : ''} ${className}`}>
         <img
           src={effectivePhotoUrl}
           alt={name}
-          className={`${sizeClasses} rounded-full object-cover ring-2 ${theme.ring} shadow-sm`}
+          className={`${dimensionClass} ${radiusClass} object-cover ${shape === 'circle' ? `ring-2 ${theme.ring}` : ''} shadow-sm`}
+          style={{ objectPosition: focalPosition }}
+          onError={() => setImgError(true)}
         />
         {showBadge && (
           <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900" title="Verified Identity" />
@@ -234,9 +289,9 @@ export const ExecutiveMemberIdentity: React.FC<ExecutiveMemberIdentityProps> = (
     );
   }
 
-  // Monogram circle
+  // Monogram circle/box fallback
   return (
-    <div className={`relative inline-flex items-center justify-center rounded-full bg-gradient-to-br ${theme.gradient} text-white font-bold font-display border ${theme.border} shadow-xs ${sizeClasses} ${className}`}>
+    <div className={`relative inline-flex items-center justify-center ${radiusClass} bg-gradient-to-br ${theme.gradient} text-white font-bold font-display border ${theme.border} shadow-xs ${dimensionClass} ${className}`}>
       <span>{initials}</span>
       {showBadge && (
         <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-1.5 ring-white dark:ring-slate-900" title="Verified Executive" />

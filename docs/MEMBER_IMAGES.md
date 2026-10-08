@@ -16,6 +16,8 @@ Static member portraits are stored in `public/images/` and served at `/images/<f
 | `pedram-abdarzadeh.jpg` | Pedram Abdarzadeh / پدرام آبدارزاده |
 | `hamed-zatajam.jpg` | Hamed Zatajam / حامد ذات‌عجم |
 | `sina-ayyoubian.jpg` | Sina Ayyoubian / سینا ایوبیان |
+| `farid-imani.jpeg` / `farid-imani.jpg` | Farid Imani / فرید ایمانی |
+| `mostafa-sharifi.jpg` | Mostafa Sharifi / مصطفی شریفی |
 
 Other images may also be present in this folder. Recommended portrait format: JPG or WebP, square or 4:5, at least 400×400 px, under 300 KB, and a lowercase kebab-case filename such as `first-last.jpg`.
 

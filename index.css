@@ -1,1 +1,50 @@
 @import "tailwindcss";
+
+@theme {
+  --color-kkm-deepBlue: #1E3A8A;
+  --color-kkm-skyBlue: #4C9AFE;
+  --color-kkm-sunGold: #F9A826;
+  --color-kkm-corporateGray: #333333;
+  --color-kkm-lightGray: #A0A0A0;
+  --font-poppins: 'Poppins', sans-serif;
+}
+
+/* Custom CSS for Node Connectors & Logo Micro-Interactions */
+.node-connector {
+  stroke: #4C9AFE;
+  stroke-width: 1.5px;
+  transition: stroke-dashoffset 0.4s ease-in-out, stroke 0.3s ease;
+}
+
+.node-connector:hover {
+  stroke: #F9A826; /* Highlights on scroll/interaction */
+}
+
+/* Upward Flow Layout Standard Utility */
+.upward-flow {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+}
+
+/* Droplet wave pattern animation */
+@keyframes dropletWavePulse {
+  0% {
+    stroke-dashoffset: 60;
+    opacity: 0.3;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+    filter: drop-shadow(0 0 4px #4C9AFE);
+  }
+  100% {
+    stroke-dashoffset: -60;
+    opacity: 0.3;
+  }
+}
+
+.animate-droplet-wave {
+  stroke-dasharray: 20, 10;
+  animation: dropletWavePulse 2.4s ease-in-out infinite;
+}

@@ -18,6 +18,8 @@ async function retryImport<T>(
       errorMsg.includes('importing a module script failed') ||
       errorMsg.includes('failed to fetch dynamically imported module') ||
       errorMsg.includes('error loading dynamically imported module') ||
+      errorMsg.includes('mime type') ||
+      errorMsg.includes('text/html') ||
       errorMsg.includes('load failed') ||
       error?.name === 'TypeError';
 

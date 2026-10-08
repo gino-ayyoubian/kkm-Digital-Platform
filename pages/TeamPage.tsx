@@ -6,8 +6,9 @@ import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { 
   Award, ShieldCheck, Briefcase, Sparkles, Cpu, Users, 
   ExternalLink, X, Mail, Phone, Copy, Check, ChevronRight, 
-  Building2, Search, CheckCircle2, LayoutGrid, Network 
+  Building2, Search, CheckCircle2, LayoutGrid, Network, Maximize2 
 } from 'lucide-react';
+import { getMemberPhotoObjectPosition } from '../components/common/ExecutiveMemberIdentity';
 
 interface TeamPageProps {
   setPage?: (page: Page) => void;
@@ -30,7 +31,7 @@ export interface Member {
   imageUrl?: string;
   category: TeamCategory;
   linkedInUrl?: string;
-  verificationStatus?: 'pending';
+  verificationStatus?: 'pending' | 'verified';
   email?: string;
   phone?: string;
   sipExtension?: string;
@@ -56,6 +57,53 @@ const buildExperienceSummary = (m: Member, isFa: boolean): string => {
   return isFa
     ? `${m.titleFa} در ${m.departmentFa}؛ تجربه در: ${areas}.`
     : `${m.title} in ${m.department}; experience across: ${areas}.`;
+};
+
+const MemberImageWithFallback: React.FC<{
+  src?: string;
+  alt: string;
+  initials: string;
+  className?: string;
+  style?: React.CSSProperties;
+  objectPosition?: string;
+  fallbackClass?: string;
+  fallbackGradient?: string;
+}> = ({ 
+  src, 
+  alt, 
+  initials, 
+  className = '', 
+  style, 
+  objectPosition, 
+  fallbackClass = '', 
+  fallbackGradient = 'from-primary to-secondary' 
+}) => {
+  const [error, setError] = React.useState(false);
+
+  React.useEffect(() => {
+    setError(false);
+  }, [src]);
+
+  if (!src || error) {
+    return (
+      <div className={`w-full h-full bg-gradient-to-tr ${fallbackGradient} flex items-center justify-center text-white font-mono font-bold ${fallbackClass}`}>
+        {initials}
+      </div>
+    );
+  }
+
+  const computedPosition = objectPosition || getMemberPhotoObjectPosition(src || alt);
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      onError={() => setError(true)}
+      className={className}
+      style={{ objectPosition: computedPosition, ...style }}
+    />
+  );
 };
 
 const LEADERSHIP: Member[] = [
@@ -182,6 +230,7 @@ const LEADERSHIP: Member[] = [
     bioFa: "مدیر ارشد سرمایه‌گذاری؛ هدایت‌کننده جذب و تخصیص سرمایه در مگاپروژه‌های انرژی پاک و دارایی‌های بدون کربن.",
     initials: "FI",
     credentials: ["Infrastructure Financing", "Capital Syndication", "Asset Valuation"],
+    imageUrl: "/images/farid-imani.jpg",
     category: "leadership",
     linkedInUrl: "https://www.linkedin.com/in/farid-imani-0aaa0313",
     email: "f.imani@kkm-intl.org",
@@ -291,9 +340,10 @@ const LEADERSHIP: Member[] = [
     bio: "Senior engineering specialist supporting project design, technical documentation, and delivery coordination across KKM's energy and industrial infrastructure programs.",
     bioFa: "کارشناس ارشد مهندسی، پشتیبان طراحی پروژه، مستندات فنی و هماهنگی اجرا در برنامه‌های انرژی و زیرساخت صنعتی KKM.",
     initials: "MS",
+    imageUrl: "/images/mostafa-sharifi.jpg",
     credentials: ["Project Engineering", "Technical Documentation"],
     category: "engineering",
-    verificationStatus: "pending",
+    verificationStatus: "verified",
     linkedInUrl: "https://www.linkedin.com/in/mostafa-sharifi-0686a284",
     engineeringDomains: ["Project Design Support", "Technical Documentation", "Delivery Coordination"]
   },
@@ -773,25 +823,17 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                     <div className="flex items-start gap-4 sm:gap-5 mb-5">
                       {/* Photo Container with subtle 'lift and zoom' animation */}
                       <div className="relative shrink-0 group/photo">
-                        {member.imageUrl ? (
-                          <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shadow-md group-hover/card:shadow-2xl border-2 border-primary/20 dark:border-secondary/20 group-hover/card:border-amber-400 dark:group-hover/card:border-amber-400 bg-slate-900 transition-all duration-500 ease-out transform group-hover/card:-translate-y-2 group-hover/photo:-translate-y-2.5">
-                            <img
-                              src={member.imageUrl}
-                              alt={isFa ? member.nameFa : member.name}
-                              width={96}
-                              height={96}
-                              loading="lazy"
-                              referrerPolicy="no-referrer"
-                              className="w-full h-full object-cover object-center transition-all duration-700 ease-out transform group-hover/card:scale-110 group-hover/photo:scale-115"
-                            />
-                            {/* Hover overlay hint */}
-                            <div className="absolute inset-0 bg-slate-950/20 group-hover/card:bg-transparent transition-colors pointer-events-none" />
-                          </div>
-                        ) : (
-                          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white font-mono font-bold text-2xl shadow-md group-hover/card:shadow-2xl transition-all duration-500 ease-out transform group-hover/card:-translate-y-2">
-                            {member.initials}
-                          </div>
-                        )}
+                        <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shadow-md group-hover/card:shadow-2xl border-2 border-primary/20 dark:border-secondary/20 group-hover/card:border-amber-400 dark:group-hover/card:border-amber-400 bg-slate-900 transition-all duration-500 ease-out transform group-hover/card:-translate-y-2 group-hover/photo:-translate-y-2.5">
+                          <MemberImageWithFallback
+                            src={member.imageUrl}
+                            alt={isFa ? member.nameFa : member.name}
+                            initials={member.initials}
+                            fallbackClass="text-2xl"
+                            className="w-full h-full object-cover object-center transition-all duration-700 ease-out transform group-hover/card:scale-110 group-hover/photo:scale-115"
+                          />
+                          {/* Hover overlay hint */}
+                          <div className="absolute inset-0 bg-slate-950/20 group-hover/card:bg-transparent transition-colors pointer-events-none" />
+                        </div>
 
                         {/* Verified Badge Checkmark */}
                         {member.verificationStatus !== 'pending' && (
@@ -897,17 +939,16 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                     className="p-4 rounded-3xl bg-white dark:bg-slate-900 border-2 border-amber-400/40 hover:border-amber-400 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer flex items-center gap-4 group text-start min-w-[280px] max-w-sm"
                   >
                     <div className="relative shrink-0">
-                      {member.imageUrl ? (
-                        <img
+                      <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform">
+                        <MemberImageWithFallback
                           src={member.imageUrl}
                           alt={isFa ? member.nameFa : member.name}
-                          className="w-14 h-14 rounded-2xl object-cover shadow-md border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform"
+                          initials={member.initials}
+                          fallbackGradient="from-amber-500 to-amber-700"
+                          fallbackClass="text-lg"
+                          className="w-full h-full object-cover"
                         />
-                      ) : (
-                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-700 text-white font-mono font-bold text-lg flex items-center justify-center shadow">
-                          {member.initials}
-                        </div>
-                      )}
+                      </div>
                       <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] shadow-xs">
                         ✓
                       </div>
@@ -949,17 +990,16 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                     className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-cyan-400 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center gap-3.5 group text-start"
                   >
                     <div className="relative shrink-0">
-                      {member.imageUrl ? (
-                        <img
+                      <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform">
+                        <MemberImageWithFallback
                           src={member.imageUrl}
                           alt={isFa ? member.nameFa : member.name}
-                          className="w-12 h-12 rounded-xl object-cover shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform"
+                          initials={member.initials}
+                          fallbackGradient="from-cyan-500 to-blue-600"
+                          fallbackClass="text-sm"
+                          className="w-full h-full object-cover"
                         />
-                      ) : (
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 text-white font-mono font-bold text-sm flex items-center justify-center shadow">
-                          {member.initials}
-                        </div>
-                      )}
+                      </div>
                       <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] shadow-xs">
                         ✓
                       </div>
@@ -1001,17 +1041,16 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                     className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-400 dark:hover:border-emerald-400 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center gap-3.5 group text-start"
                   >
                     <div className="relative shrink-0">
-                      {member.imageUrl ? (
-                        <img
+                      <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform">
+                        <MemberImageWithFallback
                           src={member.imageUrl}
                           alt={isFa ? member.nameFa : member.name}
-                          className="w-12 h-12 rounded-xl object-cover shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform"
+                          initials={member.initials}
+                          fallbackGradient="from-emerald-500 to-teal-700"
+                          fallbackClass="text-sm"
+                          className="w-full h-full object-cover"
                         />
-                      ) : (
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-700 text-white font-mono font-bold text-sm flex items-center justify-center shadow">
-                          {member.initials}
-                        </div>
-                      )}
+                      </div>
                       <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] shadow-xs">
                         ✓
                       </div>
@@ -1053,17 +1092,16 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                     className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-purple-400 dark:hover:border-purple-400 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center gap-3.5 group text-start"
                   >
                     <div className="relative shrink-0">
-                      {member.imageUrl ? (
-                        <img
+                      <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform">
+                        <MemberImageWithFallback
                           src={member.imageUrl}
                           alt={isFa ? member.nameFa : member.name}
-                          className="w-12 h-12 rounded-xl object-cover shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform"
+                          initials={member.initials}
+                          fallbackGradient="from-purple-500 to-indigo-600"
+                          fallbackClass="text-sm"
+                          className="w-full h-full object-cover"
                         />
-                      ) : (
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-purple-500 to-indigo-600 text-white font-mono font-bold text-sm flex items-center justify-center shadow">
-                          {member.initials}
-                        </div>
-                      )}
+                      </div>
                       {member.verificationStatus !== 'pending' && (
                         <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] shadow-xs">
                           ✓
@@ -1173,19 +1211,15 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
                   {/* Photo with Lift & Zoom */}
                   <div className="relative shrink-0 group/drawer-photo">
-                    {selectedMember.imageUrl ? (
-                      <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl overflow-hidden shadow-xl border-2 border-primary/20 dark:border-secondary/20 bg-slate-900 transform transition-transform duration-500 group-hover/drawer-photo:scale-105">
-                        <img
-                          src={selectedMember.imageUrl}
-                          alt={isFa ? selectedMember.nameFa : selectedMember.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white font-mono font-bold text-3xl shadow-xl">
-                        {selectedMember.initials}
-                      </div>
-                    )}
+                    <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl overflow-hidden shadow-xl border-2 border-primary/20 dark:border-secondary/20 bg-slate-900 transform transition-transform duration-500 group-hover/drawer-photo:scale-105">
+                      <MemberImageWithFallback
+                        src={selectedMember.imageUrl}
+                        alt={isFa ? selectedMember.nameFa : selectedMember.name}
+                        initials={selectedMember.initials}
+                        fallbackClass="text-3xl"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                     {selectedMember.verificationStatus !== 'pending' && (
                       <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white dark:border-slate-900">
                         ✓

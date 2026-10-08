@@ -7,6 +7,7 @@ import PageHeader from '../components/PageHeader';
 import { useLanguage } from '../LanguageContext';
 import NewsCard from '../components/NewsCard';
 import { motion, AnimatePresence } from 'motion/react';
+import { getPlaceholderForImage } from '../lib/imagePlaceholders';
 import type { TranslationKey } from '../translations';
 
 interface NewsPageProps {
@@ -97,13 +98,19 @@ const NewsPage: React.FC<NewsPageProps> = ({ onSelectArticle }) => {
         setVisibleCount(prevCount => prevCount + BATCH_SIZE);
     };
 
-    // Create a wrapper article object that has translated content for the card
-    const getTranslatedArticle = (item: NewsItem) => ({
-        ...item,
-        title: t(item.title as TranslationKey),
-        excerpt: t(item.excerpt as TranslationKey),
-        content: t(item.content as TranslationKey),
-    });
+    // Create a wrapper article object mapping thumbnail to high-res source and providing base64 blur-up placeholder
+    const getTranslatedArticle = (item: NewsItem): NewsItem => {
+        const highResSource = item.image;
+        const base64Placeholder = item.placeholder || getPlaceholderForImage(highResSource, 'news');
+        return {
+            ...item,
+            thumbnail: highResSource,
+            placeholder: base64Placeholder,
+            title: t(item.title as TranslationKey),
+            excerpt: t(item.excerpt as TranslationKey),
+            content: t(item.content as TranslationKey),
+        };
+    };
 
     return (
         <div>

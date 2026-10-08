@@ -5,7 +5,7 @@ import {
   Shield, UserCheck, LogOut, ChevronDown, Bell, Building2, Lock, Users,
   LayoutDashboard, Inbox, FileText, Clock, PhoneCall, GitBranch, Network,
   Sliders, Menu, X, Search, Sparkles, Layers, ChevronRight, ChevronLeft,
-  Phone, ArrowRight, Check, Eye
+  Phone, ArrowRight, Check, Eye, FolderGit2
 } from 'lucide-react';
 import { OrgRole } from '../../types';
 import { ExecutiveMemberIdentity } from '../common/ExecutiveMemberIdentity';
@@ -178,6 +178,17 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
       descEn: 'ISO standards, official circulars, contracts & policies',
       category: 'operations',
       icon: FileText,
+    },
+    {
+      id: 'teamOps',
+      labelEn: 'Cohort Operations & GitHub Oversight',
+      labelFa: 'میز کار عملیات اجرایی و گیت‌هاب',
+      shortLabelFa: 'عملیات و گیت‌هاب',
+      shortLabelEn: 'Cohort & GitHub',
+      descFa: 'پیگیری چابک پروژه‌ها، نظارت بر مخازن گیت‌هاب و پایپ‌لاین پتنت‌ها (ویژه تیم ۱۵-۲۰ نفره)',
+      descEn: 'Rapid project tracking, GitHub repository health & patent pipeline (15-20 core cohort)',
+      category: 'operations',
+      icon: FolderGit2,
     },
 
     // 2. TELEPHONY & COMMUNICATIONS (Daftare Shoma Cloud PBX & IVR)
@@ -726,13 +737,14 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
       {/* ========================================================================= */}
       {/* MOBILE BOTTOM DOCK BAR (FOR EFFORTLESS ONE-THUMB NAVIGATION)              */}
       {/* ========================================================================= */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 px-2 py-1 flex items-center justify-around shadow-lg">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 px-1 py-1 flex items-center justify-around shadow-lg">
         <button
           type="button"
           onClick={() => setActiveTab('dashboard')}
-          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-lg text-[10px] font-bold transition-colors min-h-[44px] justify-center ${
+          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-[10px] font-bold transition-all active:scale-95 min-h-[48px] min-w-[48px] justify-center ${
             activeTab === 'dashboard' ? 'text-primary dark:text-secondary' : 'text-gray-500 dark:text-slate-400'
           }`}
+          aria-label={isFa ? 'میز کار' : 'Dashboard'}
         >
           <LayoutDashboard className="w-4 h-4" />
           <span>{isFa ? 'میز کار' : 'Desk'}</span>
@@ -741,14 +753,15 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
         <button
           type="button"
           onClick={() => setActiveTab('cartable')}
-          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-lg text-[10px] font-bold transition-colors relative min-h-[44px] justify-center ${
+          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-[10px] font-bold transition-all active:scale-95 relative min-h-[48px] min-w-[48px] justify-center ${
             activeTab === 'cartable' ? 'text-primary dark:text-secondary' : 'text-gray-500 dark:text-slate-400'
           }`}
+          aria-label={isFa ? 'کارتابل' : 'Cartable'}
         >
           <Inbox className="w-4 h-4" />
           <span>{isFa ? 'کارتابل' : 'Cartable'}</span>
           {pendingCount > 0 && (
-            <span className="absolute top-0 right-1 px-1 py-0.2 rounded-full text-[9px] font-bold bg-red-500 text-white">
+            <span className="absolute top-1 right-2 px-1 py-0.2 rounded-full text-[9px] font-bold bg-red-500 text-white">
               {pendingCount}
             </span>
           )}
@@ -757,9 +770,10 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
         <button
           type="button"
           onClick={() => setActiveTab('ivr')}
-          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-lg text-[10px] font-bold transition-colors min-h-[44px] justify-center ${
+          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-[10px] font-bold transition-all active:scale-95 min-h-[48px] min-w-[48px] justify-center ${
             activeTab === 'ivr' ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-500 dark:text-slate-400'
           }`}
+          aria-label={isFa ? 'تلفن ابری' : 'PBX'}
         >
           <PhoneCall className="w-4 h-4" />
           <span>{isFa ? 'تلفن ابری' : 'PBX'}</span>
@@ -768,9 +782,10 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
         <button
           type="button"
           onClick={() => setActiveTab('internalDirectory')}
-          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-lg text-[10px] font-bold transition-colors min-h-[44px] justify-center ${
+          className={`flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-[10px] font-bold transition-all active:scale-95 min-h-[48px] min-w-[48px] justify-center ${
             activeTab === 'internalDirectory' ? 'text-primary dark:text-secondary' : 'text-gray-500 dark:text-slate-400'
           }`}
+          aria-label={isFa ? 'داخلی‌ها' : 'Directory'}
         >
           <Users className="w-4 h-4" />
           <span>{isFa ? 'داخلی‌ها' : 'Directory'}</span>
@@ -779,7 +794,8 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
         <button
           type="button"
           onClick={() => setIsMobileMenuOpen(true)}
-          className="flex flex-col items-center gap-0.5 py-1 px-2 rounded-lg text-[10px] font-bold text-gray-500 dark:text-slate-400 hover:text-primary transition-colors min-h-[44px] justify-center"
+          className="flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-[10px] font-bold text-gray-500 dark:text-slate-400 hover:text-primary transition-all active:scale-95 min-h-[48px] min-w-[48px] justify-center"
+          aria-label={isFa ? 'همه بخش‌ها' : 'More Modules'}
         >
           <Menu className="w-4 h-4" />
           <span>{isFa ? 'همه بخش‌ها' : 'More'}</span>

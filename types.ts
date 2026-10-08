@@ -296,11 +296,36 @@ export interface OrgMemberProfile {
   updatedAt?: string;
 }
 
+export enum StaffExtensionStatus {
+  Active = 'Active',
+  Busy = 'Busy',
+  Away = 'Away',
+}
+
+export interface StaffExtension {
+  id: string;
+  name: string;
+  nameFa?: string;
+  extensionNumber: string;
+  department: string;
+  departmentFa?: string;
+  status: StaffExtensionStatus;
+  role?: string;
+  roleFa?: string;
+  directPhone?: string;
+  mobileForward?: string;
+  forwardEnabled?: boolean;
+  avatarUrl?: string;
+  email?: string;
+  lastStatusChange?: string;
+}
+
 export interface InternalDirectoryEntry {
   profile: OrgMemberProfile;
   extension: string | null;
   deskPhone: string | null;
   deskAvailability: 'active' | 'busy' | 'away' | 'unknown';
+  staffExtension?: StaffExtension;
 }
 
 export type AutomationRequestType = 'leave' | 'purchase' | 'mission' | 'technical_review' | 'it_access' | 'memo';

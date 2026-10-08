@@ -110,7 +110,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
                 role="radio"
                 aria-checked={isSelected}
                 onClick={() => handleSelectLanguage(langItem.code)}
-                className={`py-2 px-1 rounded-xl text-xs font-bold transition-all text-center min-h-[44px] flex flex-col items-center justify-center border ${
+                className={`py-2 px-1 rounded-xl text-xs font-bold transition-all text-center min-h-[48px] active:scale-95 flex flex-col items-center justify-center border ${
                   isSelected
                     ? 'bg-primary text-white border-primary shadow-md shadow-primary/25 scale-[1.02]'
                     : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700/80'

@@ -59,6 +59,7 @@ export default defineConfig(() => {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        hmr: false,
       },
       plugins: [
         react(),
@@ -94,6 +95,7 @@ export default defineConfig(() => {
           },
           workbox: {
             globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+            maximumFileSizeToCacheInBytes: 15 * 1024 * 1024,
           },
           devOptions: {
             enabled: false,

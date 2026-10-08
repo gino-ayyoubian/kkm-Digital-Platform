@@ -9,6 +9,8 @@ import {
   ExternalLink, Sparkles, AlertCircle
 } from 'lucide-react';
 import ProjectHighlightsCarousel from '../components/ProjectHighlightsCarousel';
+import { CinematicIPStoryVisualizer } from '../components/CinematicIPStoryVisualizer';
+import { AcademicPublicationsSection } from '../components/AcademicPublicationsSection';
 
 interface HomePageProps {
   setPage: (page: Page) => void;
@@ -483,6 +485,29 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
             </button>
           </div>
 
+        </div>
+      </section>
+
+      {/* 8.6 & 8.7 CINEMATIC IP VISUAL STORY & PEER-REVIEWED ACADEMIC REPOSITORY */}
+      <section className="py-20 bg-slate-100/80 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Multi-Layered Patent Visual Story & Financial Model */}
+          <CinematicIPStoryVisualizer />
+
+          {/* Academic Q1 Scientific Publications Repository */}
+          <div className="mt-16 pt-12 border-t border-slate-200 dark:border-slate-800">
+            <AcademicPublicationsSection limit={4} />
+            <div className="mt-8 text-center">
+              <button
+                type="button"
+                onClick={() => setPage(Page.IPCenter)}
+                className="px-6 py-3 rounded-full bg-primary hover:bg-primary-dark text-white font-bold text-xs transition-all inline-flex items-center gap-2 shadow-sm"
+              >
+                <span>{isFa ? 'مشاهده تمامی مقالات و مرکز مالکیت فکری' : 'View Full Academic & IP Center'}</span>
+                <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 

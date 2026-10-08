@@ -24,6 +24,10 @@ import { EvidenceRegistryModal } from '../components/common/EvidenceRegistryModa
 import { AdminControlPanel } from '../components/portal/AdminControlPanel';
 import { InternalDirectoryTab } from '../components/portal/InternalDirectoryTab';
 import { InternalCommunicationTab } from '../components/portal/InternalCommunicationTab';
+import { CommunicationStatusDashboard } from '../components/portal/CommunicationStatusDashboard';
+import { TeamOperationsConsole } from '../components/portal/TeamOperationsConsole';
+import { PortalBreadcrumb } from '../components/portal/PortalBreadcrumb';
+import { getPortalModules } from '../data/portalModules';
 
 import { 
   Shield, ShieldCheck, ShieldAlert, CheckCircle, XCircle, Clock, ArrowRight, 
@@ -686,6 +690,11 @@ const InternalPortalPage: React.FC = () => {
       (isSuperAdmin || isAdmin || r.department === userProfile?.department)
   ).length;
 
+  // Portal modules list for breadcrumbs & tracking
+  const portalModules = React.useMemo(() => {
+    return getPortalModules(pendingInboxCount, userProfile?.permissions.canManageUsers, isAdmin);
+  }, [pendingInboxCount, userProfile?.permissions.canManageUsers, isAdmin]);
+
   // Directory Tabs data
   const [activeOrgTab, setActiveOrgTab] = useState('ExecutiveLeadership');
   const executiveLeadership: OrgMemberCard[] = [
@@ -729,6 +738,13 @@ const InternalPortalPage: React.FC = () => {
       />
 
       <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
+        {/* Dynamic Context Breadcrumb */}
+        <PortalBreadcrumb
+          activeTab={activeTab}
+          onNavigateTab={setActiveTab}
+          modules={portalModules}
+        />
+
         {/* TAB 1: DASHBOARD & WORKSTATION */}
         {activeTab === 'dashboard' && (
           <div className="space-y-6">
@@ -947,6 +963,14 @@ const InternalPortalPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Dedicated Real-Time Communication Status Dashboard (Daftar-e-Shoma Cloud PBX) */}
+            <CommunicationStatusDashboard
+              onDialExtension={(ext) => {
+                setIvrExtension(ext || '101');
+                setIsIvrModalOpen(true);
+              }}
+            />
+
             {/* Operational Workflows & Governance Directives Accordion */}
             <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 p-6">
               <h3 className="font-display font-bold text-base sm:text-lg text-primary-dark dark:text-secondary mb-4 border-b dark:border-slate-700 pb-3">
@@ -1059,6 +1083,11 @@ const InternalPortalPage: React.FC = () => {
             onCallMember={handleCallMember}
             onVerifyMember={setSelectedEvidenceMember}
           />
+        )}
+
+        {/* TAB: TEAM OPERATIONS & GITHUB OVERSIGHT */}
+        {activeTab === 'teamOps' && (
+          <TeamOperationsConsole />
         )}
 
         {/* TAB: INTERNAL COMMUNICATION & IVR ARCHITECTURE */}

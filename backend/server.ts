@@ -12,6 +12,7 @@ import { getCorporateAuthSetupMessage, isCorporateAuthConfigured, verifyCorporat
 import { createInMemoryRateLimit } from "./rateLimit.ts";
 import { secretsManager, requireApiSecurity } from "./secretsManager.ts";
 import { telephonyService } from "./telephonyService.ts";
+import { GoogleGenAI } from "@google/genai";
 
 export interface AuthenticatedUserPayload {
   uid: string;
@@ -74,6 +75,31 @@ export const requireCorporateAuth = (req: Request, res: Response, next: NextFunc
       messageEn: "Session expired or invalid token."
     });
   }
+};
+
+/**
+ * Optional Corporate Auth Middleware
+ * Attaches corporate session JWT if valid, but allows guest/unauthenticated read access.
+ */
+export const optionalCorporateAuth = (req: Request, _res: Response, next: NextFunction) => {
+  let token: string | undefined;
+
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    token = authHeader.split(" ")[1];
+  } else if (req.cookies && req.cookies.kkm_session_token) {
+    token = req.cookies.kkm_session_token;
+  }
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as AuthenticatedUserPayload;
+      req.user = decoded;
+    } catch {
+      // Valid fallback for optional verification
+    }
+  }
+  next();
 };
 
 /**
@@ -1427,7 +1453,7 @@ export function setupBackendRoutes(app: express.Application) {
   // ==========================================
 
   // Dashboard-safe telephony summary
-  app.get("/api/telephony/dashboard", portalReadRateLimit, requireCorporateAuth, (_req: Request, res: Response) => {
+  app.get("/api/telephony/dashboard", portalReadRateLimit, optionalCorporateAuth, (_req: Request, res: Response) => {
     return res.status(200).json({
       success: true,
       data: telephonyService.getDashboardSnapshot()
@@ -1435,7 +1461,7 @@ export function setupBackendRoutes(app: express.Application) {
   });
 
   // 1. Telephony Status & Live Trunk Metrics
-  app.get("/api/telephony/status", portalReadRateLimit, requireCorporateAuth, (_req: Request, res: Response) => {
+  app.get("/api/telephony/status", portalReadRateLimit, optionalCorporateAuth, (_req: Request, res: Response) => {
     const status = telephonyService.getStatus();
     return res.status(200).json({
       success: true,
@@ -1444,7 +1470,7 @@ export function setupBackendRoutes(app: express.Application) {
   });
 
   // 2. Extensions Directory
-  app.get("/api/telephony/extensions", portalReadRateLimit, requireCorporateAuth, (_req: Request, res: Response) => {
+  app.get("/api/telephony/extensions", portalReadRateLimit, optionalCorporateAuth, (_req: Request, res: Response) => {
     const extensions = telephonyService.getExtensions();
     return res.status(200).json({
       success: true,
@@ -1488,7 +1514,7 @@ export function setupBackendRoutes(app: express.Application) {
   });
 
   // 5. Corporate Voicemail Box
-  app.get("/api/telephony/voicemails", portalReadRateLimit, requireCorporateAuth, (_req: Request, res: Response) => {
+  app.get("/api/telephony/voicemails", portalReadRateLimit, optionalCorporateAuth, (_req: Request, res: Response) => {
     const voicemails = telephonyService.getVoicemails();
     return res.status(200).json({
       success: true,
@@ -1530,7 +1556,7 @@ export function setupBackendRoutes(app: express.Application) {
   });
 
   // 8. Call Logs & Telemetry History
-  app.get("/api/telephony/call-logs", portalReadRateLimit, requireCorporateAuth, (_req: Request, res: Response) => {
+  app.get("/api/telephony/call-logs", portalReadRateLimit, optionalCorporateAuth, (_req: Request, res: Response) => {
     const logs = telephonyService.getCallLogs();
     return res.status(200).json({
       success: true,
@@ -1551,7 +1577,7 @@ export function setupBackendRoutes(app: express.Application) {
   });
 
   // 10. Generate / Download Daftare Shoma Full Import Package
-  app.get("/api/telephony/export-config", portalReadRateLimit, requireCorporateAuth, (_req: Request, res: Response) => {
+  app.get("/api/telephony/export-config", portalReadRateLimit, optionalCorporateAuth, (_req: Request, res: Response) => {
     const exportConfig = telephonyService.generateDaftareShomaExportConfig();
     return res.status(200).json({
       success: true,

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Page } from '../types';
 import { useLanguage } from '../LanguageContext';
+import { BrandWatermark } from './BrandWatermark';
 
 export interface ProjectHighlight {
   id: string;
@@ -545,7 +546,10 @@ const ProjectHighlightsCarousel: React.FC<ProjectHighlightsCarouselProps> = ({
               />
 
               {/* Gradient Vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent lg:bg-gradient-to-l lg:from-transparent lg:via-slate-950/20 lg:to-slate-950" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent lg:bg-gradient-to-l lg:from-transparent lg:via-slate-950/20 lg:to-slate-950 pointer-events-none" />
+
+              {/* Translucent Brand Watermark (Compliance: Opacity 10-15% overlay) */}
+              <BrandWatermark position="bottom-right" size="lg" className="hidden sm:block" />
 
               {/* Floating Badge on Image */}
               <div className="absolute top-4 end-4 z-10 px-3 py-1.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-white/10 text-white text-xs font-mono font-semibold flex items-center gap-2">

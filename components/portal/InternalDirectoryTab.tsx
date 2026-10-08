@@ -5,6 +5,9 @@ import { OrgMemberProfile } from '../../types';
 import { INITIAL_ORG_MEMBERS } from '../../data/orgMembers';
 import { ExecutiveMemberIdentity } from '../common/ExecutiveMemberIdentity';
 import { buildInternalDirectory, type ExtensionAvailability } from '../../data/internalDirectory';
+import { daftareShomaMockService } from '../../data/staffExtensions';
+import { StaffExtensionStatus } from '../../types';
+import { CommunicationStatusLegend } from './CommunicationStatusLegend';
 import { 
   Search, Phone, Mail, Copy, Check, PhoneForwarded, 
   Building2, ShieldCheck, Download, Filter, UserCheck, 
@@ -26,6 +29,7 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
   const [searchQuery, setSearchQuery] = React.useState<string>('');
   const [filterMode, setFilterMode] = React.useState<SearchFilterMode>('all');
   const [selectedDept, setSelectedDept] = React.useState<string>('all');
+  const [availabilityFilter, setAvailabilityFilter] = React.useState<'ALL' | StaffExtensionStatus>('ALL');
   const [copiedKey, setCopiedKey] = React.useState<string | null>(null);
   const [viewLayout, setViewLayout] = React.useState<'table' | 'cards'>('table');
   const [extensions, setExtensions] = React.useState<ExtensionAvailability[]>([]);
@@ -48,16 +52,40 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
         }
       } catch {
         if (isMounted) {
-          setExtensions([]);
-          setIsExtensionStatusSynced(false);
+          try {
+            const mockData = await daftareShomaMockService.getStaffExtensions();
+            setExtensions(mockData.data.map(e => ({
+              extension: e.extensionNumber,
+              status: e.status === StaffExtensionStatus.Active ? 'available' :
+                      e.status === StaffExtensionStatus.Busy ? 'busy' : 'away',
+            })));
+            setIsExtensionStatusSynced(true);
+          } catch {
+            setExtensions([]);
+            setIsExtensionStatusSynced(false);
+          }
         }
       }
     };
 
     void syncExtensions();
+
+    // Subscribe to real-time mock service updates
+    const unsubscribe = daftareShomaMockService.subscribe((updated) => {
+      if (isMounted) {
+        setExtensions(updated.map(e => ({
+          extension: e.extensionNumber,
+          status: e.status === StaffExtensionStatus.Active ? 'available' :
+                  e.status === StaffExtensionStatus.Busy ? 'busy' : 'away',
+        })));
+        setIsExtensionStatusSynced(true);
+      }
+    });
+
     const interval = window.setInterval(() => void syncExtensions(), 30_000);
     return () => {
       isMounted = false;
+      unsubscribe();
       window.clearInterval(interval);
     };
   }, []);
@@ -98,7 +126,15 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
         if (d !== selectedDept) return false;
       }
 
-      // 2. Search query filter based on filterMode
+      // 2. Desk Status / Availability Filter from PBX telemetry
+      if (availabilityFilter !== 'ALL') {
+        const expected = availabilityFilter === StaffExtensionStatus.Active ? 'active' :
+                         availabilityFilter === StaffExtensionStatus.Busy ? 'busy' : 'away';
+        const entry = directoryEntryByUid.get(member.uid);
+        if (entry?.deskAvailability !== expected) return false;
+      }
+
+      // 3. Search query filter based on filterMode
       if (!q) return true;
 
       // Mode: Name only
@@ -139,7 +175,7 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
         member.department.toLowerCase().includes(q)
       );
     }).map(entry => entry.profile);
-  }, [directoryEntries, searchQuery, filterMode, selectedDept]);
+  }, [directoryEntries, searchQuery, filterMode, selectedDept, availabilityFilter, directoryEntryByUid]);
 
   // Substring highlight helper
   const renderHighlighted = (text?: string) => {
@@ -165,18 +201,19 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
   };
 
   const renderAvailability = (memberUid: string) => {
-    const availability = directoryEntryByUid.get(memberUid)?.deskAvailability || 'unknown';
+    const entry = directoryEntryByUid.get(memberUid);
+    const availability = entry?.deskAvailability || 'unknown';
     const labels = {
-      active: isFa ? 'فعال' : 'Available',
-      busy: isFa ? 'مشغول' : 'Busy',
-      away: isFa ? 'دور' : 'Away',
+      active: isFa ? 'فعال (Active)' : 'Active',
+      busy: isFa ? 'مشغول (Busy)' : 'Busy',
+      away: isFa ? 'دور از میز (Away)' : 'Away',
       unknown: isFa ? 'نامشخص' : 'Unknown',
     };
     const colors = {
-      active: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300',
-      busy: 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300',
-      away: 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300',
-      unknown: 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300',
+      active: 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800',
+      busy: 'bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800',
+      away: 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800',
+      unknown: 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600',
     };
     const dots = {
       active: 'bg-emerald-500',
@@ -186,9 +223,17 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
     };
 
     return (
-      <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[10px] font-bold ${colors[availability]}`} title={isFa ? 'وضعیت همگام‌سازی‌شده داخلی' : 'Synced extension availability'}>
-        <span className={`h-1.5 w-1.5 rounded-full ${dots[availability]}`} />
-        {labels[availability]}
+      <span 
+        className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${colors[availability]}`} 
+        title={isFa ? 'وضعیت بلادرنگ همگام‌سازی‌شده با سانترال ابری دفتر شما' : 'Real-time status synced with Daftar-e-Shoma Cloud PBX'}
+      >
+        <span className="relative flex h-2 w-2">
+          {availability === 'active' && (
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+          )}
+          <span className={`relative inline-flex h-2 w-2 rounded-full ${dots[availability]}`} />
+        </span>
+        <span>{labels[availability]}</span>
       </span>
     );
   };
@@ -249,6 +294,13 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
           <span>{isFa ? 'خروجی اکسل / CSV' : 'Export Directory'}</span>
         </button>
       </div>
+
+      {/* Extension Status Legend with Interactive Filter Support */}
+      <CommunicationStatusLegend 
+        compact={true} 
+        activeFilter={availabilityFilter}
+        onSelectStatus={(st) => setAvailabilityFilter(prev => prev === st ? 'ALL' : st)}
+      />
 
       {/* ========================================================================= */}
       {/* REAL-TIME FILTERABLE SEARCH BAR & CONTROLS                                */}
@@ -399,8 +451,19 @@ export const InternalDirectoryTab: React.FC<InternalDirectoryTabProps> = ({
             </button>
           </div>
 
-          {/* Matches Counter Badge */}
+          {/* Matches Counter Badge & Active Status Filter Pill */}
           <div className="flex items-center gap-2">
+            {availabilityFilter !== 'ALL' && (
+              <button
+                type="button"
+                onClick={() => setAvailabilityFilter('ALL')}
+                className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-primary/10 text-primary dark:text-secondary flex items-center gap-1 hover:bg-primary/20 transition-colors border border-primary/20"
+                title={isFa ? 'حذف فیلتر وضعیت' : 'Clear status filter'}
+              >
+                <span>{isFa ? `وضعیت: ${availabilityFilter}` : `Status: ${availabilityFilter}`}</span>
+                <X className="w-3 h-3" />
+              </button>
+            )}
             <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold">
               {isFa ? `${filteredMembers.length} از ${INITIAL_ORG_MEMBERS.length} همکار` : `${filteredMembers.length} of ${INITIAL_ORG_MEMBERS.length} staff`}
             </span>

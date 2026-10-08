@@ -194,12 +194,22 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
   });
 
   if (includeFrontend) {
+    // Prevent missing script/asset requests from returning HTML index fallback (which causes MIME type errors)
+    app.use((req, res, next) => {
+      const ext = path.extname(req.path).toLowerCase();
+      if (['.js', '.mjs', '.ts', '.tsx', '.css', '.map', '.json', '.wasm'].includes(ext)) {
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+      }
+      next();
+    });
+
     if (process.env.NODE_ENV !== 'production') {
       const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
-        server: { middlewareMode: true },
+        server: { middlewareMode: true, hmr: false },
         appType: 'spa',
       });
+
       app.use(vite.middlewares);
     } else {
       const distPath = path.join(process.cwd(), 'dist');

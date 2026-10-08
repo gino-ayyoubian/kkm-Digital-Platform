@@ -61,6 +61,8 @@ const InternalPortalPage = React.lazy(trackLazyLoad('InternalPortalPage', () => 
 const GoogleKeepPage = React.lazy(trackLazyLoad('GoogleKeepPage', () => import('./pages/GoogleKeepPage')));
 const OfflinePage = React.lazy(trackLazyLoad('OfflinePage', () => import('./pages/OfflinePage')));
 import CookieConsent from './components/CookieConsent';
+import { KKMAlgorithmicAdvisorModal } from './components/KKMAlgorithmicAdvisorModal';
+import { Sparkles } from 'lucide-react';
 
 interface PageErrorBoundaryProps {
   children?: React.ReactNode;
@@ -87,6 +89,8 @@ class PageErrorBoundary extends Component<PageErrorBoundaryProps, PageErrorBound
       errorMsg.includes('importing a module script failed') ||
       errorMsg.includes('failed to fetch dynamically imported module') ||
       errorMsg.includes('error loading dynamically imported module') ||
+      errorMsg.includes('mime type') ||
+      errorMsg.includes('text/html') ||
       error?.name === 'TypeError';
     return { hasError: true, isChunkError: isChunk, countdown: 4 };
   }
@@ -98,6 +102,8 @@ class PageErrorBoundary extends Component<PageErrorBoundaryProps, PageErrorBound
       errorMsg.includes('importing a module script failed') ||
       errorMsg.includes('failed to fetch dynamically imported module') ||
       errorMsg.includes('error loading dynamically imported module') ||
+      errorMsg.includes('mime type') ||
+      errorMsg.includes('text/html') ||
       error?.name === 'TypeError';
 
     if (isChunk && typeof window !== 'undefined') {
@@ -240,6 +246,7 @@ const App: React.FC = () => {
   });
   const [searchResults, setSearchResults] = React.useState<GeminiSearchResult | null>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [isAdvisorOpen, setIsAdvisorOpen] = React.useState(false);
   const [isOnline, setIsOnline] = React.useState<boolean>(() => typeof navigator !== 'undefined' ? navigator.onLine : true);
   const { direction, language, t } = useLanguage();
   const shouldReduceMotion = useReducedMotion();
@@ -915,6 +922,38 @@ const App: React.FC = () => {
 
       <Footer setPage={setCurrentPage} onSelectArticle={handleSelectArticle} showNewsTicker={currentPage === Page.Home} />
       <BackToTopButton />
+
+      {/* Floating KKM Enterprise AI Algorithmic Advisor Trigger */}
+      <div className="fixed bottom-6 left-6 z-40">
+        <button
+          onClick={() => setIsAdvisorOpen(true)}
+          className="group flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-primary to-slate-900 text-white rounded-2xl shadow-xl hover:shadow-2xl border border-secondary/30 transition-all active:scale-95 min-h-[48px] min-w-[48px]"
+          title="KKM Algorithmic AI Advisor"
+          aria-label="Open KKM Enterprise AI Algorithmic Advisor"
+        >
+          <div className="w-7 h-7 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary border border-secondary/40 group-hover:rotate-12 transition-transform">
+            <Sparkles className="w-4 h-4" />
+          </div>
+          <div className="text-left hidden sm:block">
+            <div className="text-[11px] font-bold tracking-tight text-white flex items-center gap-1.5">
+              <span>KKM AI Advisor</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
+            <div className="text-[9px] text-slate-300 font-mono">Algorithmic & IP Engine</div>
+          </div>
+        </button>
+      </div>
+
+      {/* Embedded LLM-driven AI Advisor Modal */}
+      <KKMAlgorithmicAdvisorModal
+        isOpen={isAdvisorOpen}
+        onClose={() => setIsAdvisorOpen(false)}
+        onNavigate={(page) => {
+          setCurrentPage(page);
+          setIsAdvisorOpen(false);
+        }}
+      />
+
       <A11yDebugOverlay />
       <CookieConsent />
       <Analytics />

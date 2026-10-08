@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { BrandWatermark } from './BrandWatermark';
 
 interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
   alt: string;
   rootMargin?: string;
+  watermark?: boolean;
 }
 
 const LazyImage: React.FC<LazyImageProps> = ({
@@ -11,6 +13,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
   alt,
   rootMargin = '100px',
   className = '',
+  watermark = true,
   ...props
 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -75,18 +78,23 @@ const LazyImage: React.FC<LazyImageProps> = ({
       }}
     >
       {isVisible && (
-        <img
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          loading={loading ?? 'lazy'}
-          decoding={decoding ?? 'async'}
-          className={`${className} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-all`}
-          style={style}
-          onLoad={() => setIsLoaded(true)}
-          {...imgProps}
-        />
+        <>
+          <img
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+            loading={loading ?? 'lazy'}
+            decoding={decoding ?? 'async'}
+            className={`${className} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-all`}
+            style={style}
+            onLoad={() => setIsLoaded(true)}
+            {...imgProps}
+          />
+          {watermark && isLoaded && (
+            <BrandWatermark size="sm" position="bottom-right" />
+          )}
+        </>
       )}
     </div>
   );
