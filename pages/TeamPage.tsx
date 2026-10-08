@@ -127,7 +127,7 @@ const MemberImageWithFallback: React.FC<{
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
         className={`${className} w-full h-full object-contain object-center transition-[filter,opacity] duration-700 ${loaded ? 'blur-0 opacity-100' : 'blur-xl opacity-0'}`}
-        style={{ objectPosition: computedPosition, ...style }}
+        style={{ objectPosition: computedPosition, ...style, objectFit: 'contain' }}
       />
     </div>
   );
