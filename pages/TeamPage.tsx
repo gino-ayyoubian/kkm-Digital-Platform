@@ -297,7 +297,7 @@ const LEADERSHIP: Member[] = [
     bioFa: "معمار زیرساخت دوقلوهای دیجیتال و یکپارچه‌سازی شبکه‌های عصبی مبتنی بر فیزیک با داده‌های تله‌متری مخزن و سیستم‌های کنترل ترمودینامیکی خودکار.",
     initials: "RA",
     credentials: ["Ph.D. Computer Science / AI", "PINN Specialist", "Telemetry Fellow"],
-    imageUrl: "/images/reza-asakereh.jpg",
+    imageUrl: "/DCB4BC5A-B9EE-4C50-8C99-F3303C779DE5.png",
     category: "engineering",
     linkedInUrl: "https://www.linkedin.com/in/canada-reza-asakereh",
     email: "r.asakereh@kkm-intl.org",

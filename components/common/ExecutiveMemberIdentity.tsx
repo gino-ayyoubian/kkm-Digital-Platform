@@ -31,7 +31,7 @@ export const getMemberPhotoObjectPosition = (nameOrUrl: string = ''): string => 
   if (s.includes('khosro') || s.includes('خسرو') || s.includes('jarrahian') || s.includes('جراحیان')) return '50% 12%';
   
   // Dr. Reza Asakereh: Head ~8%, eyes ~16%
-  if (s.includes('asakereh') || s.includes('عساکره')) return '50% 12%';
+  if (s.includes('asakereh') || s.includes('عساکره') || s.includes('dcb4bc5a')) return '50% 12%';
   
   // Mostafa Sharifi: Head ~8%, eyes ~16%
   if (s.includes('sharifi') || s.includes('شریفی') || s.includes('mostafa') || s.includes('مصطفی')) return '50% 12%';
@@ -138,7 +138,7 @@ const getAuthenticMemberPhoto = (name: string, nameFa?: string, photoUrl?: strin
   if (n.includes('farid') || nFa.includes('فرید') || n.includes('imani') || nFa.includes('ایمانی')) return '/images/farid-imani.jpg';
   if (n.includes('baghdadchi') || nFa.includes('بغدادچی')) return '/images/reza-baghdadchi.jpg';
   if (n.includes('tofangchiha') || nFa.includes('تفنگچی')) return '/images/ashkan-tofangchiha.jpg';
-  if (n.includes('asakereh') || nFa.includes('عساکره')) return '/images/reza-asakereh.jpg';
+  if (n.includes('asakereh') || nFa.includes('عساکره')) return '/DCB4BC5A-B9EE-4C50-8C99-F3303C779DE5.png';
   if (n.includes('jarrahian') || nFa.includes('جراحیان')) return '/images/khosro-jarrahian.jpg';
   if (n.includes('abdarzadeh') || nFa.includes('آبدارزاده')) return '/images/pedram-abdarzadeh.jpg';
   if (n.includes('zatajam') || nFa.includes('ذات‌عجم') || nFa.includes('ذات عجم')) return '/images/hamed-zatajam.jpg';

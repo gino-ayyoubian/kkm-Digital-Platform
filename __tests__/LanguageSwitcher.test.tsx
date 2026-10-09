@@ -95,4 +95,80 @@ describe('LanguageSwitcher Component', () => {
     expect(screen.getByTestId('current-lang')).toHaveTextContent('FA');
     expect(screen.getByTestId('translated-home')).toHaveTextContent('خانه');
   });
+
+  it('correctly translates and sets attributes for Russian (RU) and Kurdish (KU)', () => {
+    render(
+      <LanguageProvider>
+        <LanguageTestHarness variant="header" />
+      </LanguageProvider>
+    );
+
+    const dropdownBtn = screen.getByRole('button', { name: /Language selector:/i });
+    act(() => {
+      fireEvent.click(dropdownBtn);
+    });
+
+    const ruOption = screen.getByRole('option', { name: /Русский/i });
+    expect(ruOption).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(ruOption);
+    });
+
+    expect(screen.getByTestId('current-lang')).toHaveTextContent('RU');
+    expect(screen.getByTestId('current-dir')).toHaveTextContent('ltr');
+    expect(screen.getByTestId('translated-home')).toHaveTextContent('Главная');
+    expect(screen.getByTestId('translated-about')).toHaveTextContent('О нас');
+    expect(document.documentElement.dir).toBe('ltr');
+    expect(document.documentElement.lang).toBe('ru');
+
+    // Now switch to Kurdish
+    act(() => {
+      fireEvent.click(dropdownBtn);
+    });
+
+    const kuOption = screen.getByRole('option', { name: /کوردی/i });
+    expect(kuOption).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(kuOption);
+    });
+
+    expect(screen.getByTestId('current-lang')).toHaveTextContent('KU');
+    expect(screen.getByTestId('current-dir')).toHaveTextContent('rtl');
+    expect(screen.getByTestId('translated-home')).toHaveTextContent('ماڵەوە');
+    expect(screen.getByTestId('translated-about')).toHaveTextContent('دەربارەی ئێمە');
+    expect(document.documentElement.dir).toBe('rtl');
+    expect(document.documentElement.lang).toBe('ku');
+  });
+
+  it('renders mobile bottom sheet on small screens and allows selecting language', () => {
+    // Simulate mobile viewport width
+    window.innerWidth = 375;
+    window.dispatchEvent(new Event('resize'));
+
+    render(
+      <LanguageProvider>
+        <LanguageTestHarness variant="header" />
+      </LanguageProvider>
+    );
+
+    const mobileBtn = screen.getByRole('button', { name: /Language selector:/i });
+    act(() => {
+      fireEvent.click(mobileBtn);
+    });
+
+    // Mobile sheet dialog should be visible
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+    const faOption = screen.getByRole('option', { name: /فارسی/i });
+    expect(faOption).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(faOption);
+    });
+
+    expect(screen.getByTestId('current-lang')).toHaveTextContent('FA');
+    expect(screen.getByTestId('translated-home')).toHaveTextContent('خانه');
+  });
 });
