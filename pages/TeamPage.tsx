@@ -8,6 +8,7 @@ import {
   ExternalLink, X, Mail, Phone, Copy, Check, ChevronRight, 
   Building2, Search, CheckCircle2, LayoutGrid, Network, Maximize2 
 } from 'lucide-react';
+import { getMemberPhotoObjectPosition } from '../components/common/ExecutiveMemberIdentity';
 
 interface TeamPageProps {
   setPage?: (page: Page) => void;
@@ -110,14 +111,23 @@ const MemberImageWithFallback: React.FC<{
     );
   }
 
-  const computedPosition = objectPosition || 'center';
+  const computedPosition = objectPosition || getMemberPhotoObjectPosition(src || alt);
 
   return (
-    <div className="relative w-full h-full aspect-square overflow-hidden bg-slate-800">
+    <div className="relative w-full h-full overflow-hidden bg-slate-950">
+      {/* Ambient background tone matching */}
+      <img
+        src={src}
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover blur-xl opacity-35 scale-110 pointer-events-none select-none"
+      />
+      {/* Loading pulse indicator */}
       <div
         aria-hidden="true"
-        className={`absolute inset-0 bg-gradient-to-tr ${fallbackGradient} animate-pulse transition-opacity duration-700 ${loaded ? 'opacity-0' : 'opacity-60'}`}
+        className={`absolute inset-0 bg-gradient-to-tr ${fallbackGradient} animate-pulse transition-opacity duration-500 ${loaded ? 'opacity-0 pointer-events-none' : 'opacity-60'}`}
       />
+      {/* Crisp foreground portrait with calibrated golden-ratio focal position */}
       <img
         ref={imgRef}
         src={src}
@@ -126,8 +136,8 @@ const MemberImageWithFallback: React.FC<{
         decoding="async"
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
-        className={`${className} w-full h-full object-contain object-center transition-[filter,opacity] duration-700 ${loaded ? 'blur-0 opacity-100' : 'blur-xl opacity-0'}`}
-        style={{ objectPosition: computedPosition, ...style, objectFit: 'contain' }}
+        className={`relative z-1 w-full h-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+        style={{ objectPosition: computedPosition, ...style }}
       />
     </div>
   );
@@ -555,12 +565,17 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
   const [searchQuery, setSearchQuery] = React.useState<string>('');
   const [selectedMember, setSelectedMember] = React.useState<Member | null>(null);
   const [copiedEmail, setCopiedEmail] = React.useState<string | null>(null);
+  const [lightboxPhoto, setLightboxPhoto] = React.useState<{ url: string; name: string; title: string; initials: string } | null>(null);
 
   // Close modal with Escape key
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setSelectedMember(null);
+        if (lightboxPhoto) {
+          setLightboxPhoto(null);
+        } else {
+          setSelectedMember(null);
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -850,16 +865,16 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                     <div className="flex items-start gap-4 sm:gap-5 mb-5">
                       {/* Photo Container with subtle 'lift and zoom' animation */}
                       <div className="relative shrink-0 group/photo">
-                        <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shadow-md group-hover/card:shadow-2xl border-2 border-primary/20 dark:border-secondary/20 group-hover/card:border-amber-400 dark:group-hover/card:border-amber-400 bg-slate-900 transition-all duration-500 ease-out transform group-hover/card:-translate-y-2 group-hover/photo:-translate-y-2.5">
+                        <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden shadow-md group-hover/card:shadow-2xl border-2 border-primary/20 dark:border-secondary/20 group-hover/card:border-amber-400 dark:group-hover/card:border-amber-400 bg-slate-900 transition-all duration-500 ease-out transform group-hover/card:-translate-y-1.5 group-hover/photo:-translate-y-2">
                           <MemberImageWithFallback
                             src={member.imageUrl}
                             alt={isFa ? member.nameFa : member.name}
                             initials={member.initials}
                             fallbackClass="text-2xl"
-                            className="w-full h-full object-contain object-center transition-opacity duration-300"
+                            className="w-full h-full transition-transform duration-500 ease-out group-hover/card:scale-105"
                           />
                           {/* Hover overlay hint */}
-                          <div className="absolute inset-0 bg-slate-950/20 group-hover/card:bg-transparent transition-colors pointer-events-none" />
+                          <div className="absolute inset-0 bg-slate-950/15 group-hover/card:bg-transparent transition-colors pointer-events-none z-2" />
                         </div>
 
                         {/* Verified Badge Checkmark */}
@@ -966,7 +981,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                     className="p-4 rounded-3xl bg-white dark:bg-slate-900 border-2 border-amber-400/40 hover:border-amber-400 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer flex items-center gap-4 group text-start min-w-[280px] max-w-sm"
                   >
                     <div className="relative shrink-0">
-                      <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform">
+                      <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform">
                         <MemberImageWithFallback
                           src={member.imageUrl}
                           alt={isFa ? member.nameFa : member.name}
@@ -1017,7 +1032,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                     className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-cyan-400 dark:hover:border-cyan-400 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center gap-3.5 group text-start"
                   >
                     <div className="relative shrink-0">
-                      <div className="w-12 h-12 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform">
+                      <div className="w-14 h-14 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform">
                         <MemberImageWithFallback
                           src={member.imageUrl}
                           alt={isFa ? member.nameFa : member.name}
@@ -1238,17 +1253,39 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
                   {/* Photo with Lift & Zoom */}
                   <div className="relative shrink-0 group/drawer-photo">
-                    <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl overflow-hidden shadow-xl border-2 border-primary/20 dark:border-secondary/20 bg-slate-900 transform transition-transform duration-500 group-hover/drawer-photo:scale-105">
+                    <div className="relative w-32 h-36 sm:w-36 sm:h-44 rounded-3xl overflow-hidden shadow-xl border-2 border-primary/20 dark:border-secondary/20 group-hover/drawer-photo:border-amber-400 bg-slate-900 transform transition-all duration-500 group-hover/drawer-photo:scale-102">
                       <MemberImageWithFallback
                         src={selectedMember.imageUrl}
                         alt={isFa ? selectedMember.nameFa : selectedMember.name}
                         initials={selectedMember.initials}
                         fallbackClass="text-3xl"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full"
                       />
+                      {/* Full-res lightbox zoom button overlay */}
+                      {selectedMember.imageUrl && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLightboxPhoto({
+                              url: selectedMember.imageUrl || '',
+                              name: isFa ? selectedMember.nameFa : selectedMember.name,
+                              title: isFa ? selectedMember.titleFa : selectedMember.title,
+                              initials: selectedMember.initials
+                            });
+                          }}
+                          className="absolute inset-0 bg-slate-950/0 hover:bg-slate-950/45 transition-colors flex items-center justify-center opacity-0 group-hover/drawer-photo:opacity-100 z-10 text-white cursor-pointer"
+                          title={isFa ? 'مشاهده پرتره رسمی با وضوح و ابعاد کامل' : 'View full-resolution official portrait'}
+                        >
+                          <div className="px-3 py-1.5 rounded-xl bg-slate-900/85 backdrop-blur-md border border-white/20 flex items-center gap-1.5 text-xs font-semibold text-amber-300 shadow-xl">
+                            <Maximize2 className="w-3.5 h-3.5" />
+                            <span>{isFa ? 'پرتره کامل' : 'Full Portrait'}</span>
+                          </div>
+                        </button>
+                      )}
                     </div>
                     {selectedMember.verificationStatus !== 'pending' && (
-                      <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white dark:border-slate-900">
+                      <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white dark:border-slate-900 z-10">
                         ✓
                       </div>
                     )}
@@ -1463,6 +1500,64 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* High-Resolution Official Portrait Lightbox Modal */}
+      {lightboxPhoto && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/90 backdrop-blur-xl animate-fade-in"
+          onClick={() => setLightboxPhoto(null)}
+        >
+          <div 
+            className="relative max-w-2xl max-h-[90vh] bg-slate-900 rounded-3xl border border-slate-700/80 shadow-2xl overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Lightbox Header Bar */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/70 backdrop-blur-md">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-white font-display">
+                    {lightboxPhoto.name}
+                  </h4>
+                  <p className="text-[11px] text-slate-400 font-mono">
+                    {lightboxPhoto.title}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setLightboxPhoto(null)}
+                className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                title={isFa ? 'بستن' : 'Close'}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Pristine high-resolution image container */}
+            <div className="relative flex-1 p-5 overflow-auto flex items-center justify-center bg-slate-950/60 min-h-[360px] max-h-[70vh]">
+              <img
+                src={lightboxPhoto.url}
+                alt={lightboxPhoto.name}
+                className="max-h-[65vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl border border-slate-800/80"
+              />
+            </div>
+
+            {/* Verification Footer Banner */}
+            <div className="px-6 py-3 bg-slate-950/90 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span className="flex items-center gap-1.5 text-emerald-400">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>{isFa ? 'پرتره رسمی ممهور و تأییدشده KKM — کیفیت اصلی' : 'Official Verified KKM Portrait — High-Resolution Master'}</span>
+              </span>
+              <span className="text-slate-500 hidden sm:inline">
+                KKM DIRECTORY
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

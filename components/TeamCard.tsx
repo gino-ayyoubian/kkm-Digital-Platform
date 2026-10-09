@@ -41,7 +41,7 @@ export const TeamCard: React.FC<TeamCardProps> = ({
       dir={isFa ? 'rtl' : 'ltr'}
     >
       {/* Top Media / Photo Section */}
-      <div className="relative w-full h-72 overflow-hidden bg-slate-950">
+      <div className="relative w-full h-80 sm:h-84 overflow-hidden bg-slate-950">
         <ExecutiveMemberIdentity
           name={member.displayName}
           nameFa={member.displayNameFa}

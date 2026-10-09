@@ -113,6 +113,7 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ setPage }) => {
                                     height={128}
                                     loading="lazy"
                                     className="w-32 h-32 rounded-full border-4 border-accent-yellow shadow-lg object-cover mb-4"
+                                    style={{ objectPosition: '50% 18%' }}
                                     onError={(e) => {
                                         (e.currentTarget as HTMLImageElement).src = '/gino-ayyoubian.jpg';
                                     }}

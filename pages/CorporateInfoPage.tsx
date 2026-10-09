@@ -3,6 +3,7 @@ import { Page } from '../types';
 import { useLanguage } from '../LanguageContext';
 import { motion } from 'motion/react';
 import { Building2, FileCheck, MapPin, Phone, Globe, Briefcase, Mail, ShieldAlert, ArrowRight, Download } from 'lucide-react';
+import { getMemberPhotoObjectPosition } from '../components/common/ExecutiveMemberIdentity';
 
 interface CorporateInfoPageProps {
   setPage: (page: Page) => void;
@@ -132,6 +133,7 @@ const CorporateInfoPage: React.FC<CorporateInfoPageProps> = ({ setPage }) => {
                     loading="lazy"
                     referrerPolicy="no-referrer"
                     className="w-16 h-16 rounded-xl object-cover shadow-sm mb-3 border border-slate-200 dark:border-slate-700 group-hover:scale-105 transition-transform"
+                    style={{ objectPosition: getMemberPhotoObjectPosition(leader.image || leader.name) }}
                   />
                   <h4 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-primary transition-colors">
                     {isFa ? leader.nameFa : leader.name}

@@ -637,7 +637,9 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 statusEn: "Development Phase",
                 statusFa: "مرحله توسعه و امکان‌سنجی",
                 descEn: "Integrated closed-loop energy and marine biotechnology complex supporting sustainable island infrastructure.",
-                descFa: "مجتمع یکپارچه انرژی پاک و زیست‌فناوری دریایی با هدف تأمین پایدار آب شیرین و برق بدون کربن جزیره."
+                descFa: "مجتمع یکپارچه انرژی پاک و زیست‌فناوری دریایی با هدف تأمین پایدار آب شیرین و برق بدون کربن جزیره.",
+                image: "/images/smart-microgrid.jpg",
+                tag: "Microgrid & Desal"
               },
               {
                 nameEn: "ICOFC Sarakhs Subsurface Testbed",
@@ -651,7 +653,9 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 statusEn: "Pilot Testing (TRL 7)",
                 statusFa: "پایلوت میدانی (TRL 7)",
                 descEn: "Conversion of depleted gas reservoirs into closed-loop geothermal power and thermal energy storage.",
-                descFa: "تبدیل مخازن بازنشسته گازی به سامانه تولید برق و حرارت زمین‌گرمایی حلقه بسته بدون خروج سیال."
+                descFa: "تبدیل مخازن بازنشسته گازی به سامانه تولید برق و حرارت زمین‌گرمایی حلقه بسته بدون خروج سیال.",
+                image: "/images/geothermal-closed-loop.jpg",
+                tag: "GMEL Closed-Loop"
               },
               {
                 nameEn: "Tehran Advanced Life Sciences Center",
@@ -665,30 +669,55 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 statusEn: "Engineering Design",
                 statusFa: "طراحی مهندسی و تجاری‌سازی",
                 descEn: "Advanced laboratory and processing infrastructure bridging university biomedical breakthroughs with production.",
-                descFa: "تأسیسات آزمایشگاهی و فرآوری تخصصی جهت تسریع انتقال فناوری‌های زیستی به فاز صنعتی."
+                descFa: "تأسیسات آزمایشگاهی و فرآوری تخصصی جهت تسریع انتقال فناوری‌های زیستی به فاز صنعتی.",
+                image: "/images/biomed-gallery1.svg",
+                tag: "Bio-Cleanroom"
               }
             ].map((p, i) => (
               <div 
                 key={i} 
-                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden flex flex-col shadow-xs hover:shadow-md transition-shadow"
+                className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl overflow-hidden flex flex-col shadow-sm hover:shadow-xl hover:border-primary/40 dark:hover:border-secondary/30 transition-all duration-300 group"
               >
+                {/* Real Project Imagery Header */}
+                <div className="relative w-full h-48 sm:h-52 overflow-hidden bg-slate-950">
+                  <img
+                    src={p.image}
+                    alt={isFa ? p.nameFa : p.nameEn}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                    onError={(e) => {
+                      // Graceful fallback to svg
+                      (e.currentTarget as HTMLImageElement).src = '/images/qeshm-oilfield.svg';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+                  
+                  {/* Floating Top Badges */}
+                  <div className="absolute top-4 start-4 end-4 flex items-center justify-between gap-2 pointer-events-none">
+                    <span className="text-[11px] font-bold px-3 py-1 bg-slate-900/80 backdrop-blur-md text-cyan-300 border border-cyan-500/30 rounded-full shadow-sm">
+                      {isFa ? p.statusFa : p.statusEn}
+                    </span>
+                    <span className="text-[10px] font-mono font-bold px-2.5 py-1 bg-white/15 backdrop-blur-md text-white rounded-full">
+                      {p.tag}
+                    </span>
+                  </div>
+
+                  {/* Location badge on bottom of photo */}
+                  <div className="absolute bottom-3 start-4 flex items-center text-xs font-semibold text-slate-200 pointer-events-none drop-shadow">
+                    <MapPin className="w-3.5 h-3.5 mr-1 text-cyan-400 shrink-0" />
+                    <span>{isFa ? p.locationFa : p.locationEn}</span>
+                  </div>
+                </div>
+
                 <div className="p-6 flex-1 flex flex-col justify-between border-b border-slate-100 dark:border-slate-800">
                   <div>
-                    <div className="flex justify-between items-start mb-3">
-                      <span className="text-[11px] font-bold px-3 py-1 bg-primary/10 text-primary-dark dark:text-secondary rounded-full">
-                        {isFa ? p.statusFa : p.statusEn}
-                      </span>
-                      <span className="text-[11px] text-slate-500 font-medium">
-                        {isFa ? p.sectorFa : p.sectorEn}
-                      </span>
+                    <div className="text-[11px] text-primary dark:text-secondary font-bold tracking-wide uppercase mb-1.5">
+                      {isFa ? p.sectorFa : p.sectorEn}
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 leading-snug group-hover:text-primary dark:group-hover:text-secondary transition-colors">
                       {isFa ? p.nameFa : p.nameEn}
                     </h3>
-                    <div className="flex items-center text-xs text-slate-500 mb-3">
-                      <MapPin className="w-3.5 h-3.5 mr-1 text-primary" />
-                      <span>{isFa ? p.locationFa : p.locationEn}</span>
-                    </div>
                     <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
                       {isFa ? p.descFa : p.descEn}
                     </p>
@@ -700,18 +729,19 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 divide-x rtl:divide-x-reverse divide-slate-100 dark:divide-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+                <div className="grid grid-cols-2 divide-x rtl:divide-x-reverse divide-slate-100 dark:divide-slate-800 bg-slate-50/70 dark:bg-slate-900/70">
                   <button 
                     onClick={() => setPage(Page.ProjectTemplate)} 
-                    className="py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-primary transition-colors"
+                    className="py-3.5 text-center text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                   >
                     {isFa ? 'برگ مشخصات پروژه' : 'View Spec Sheet'}
                   </button>
                   <button 
                     onClick={() => setPage(Page.Projects)} 
-                    className="py-3 text-center text-xs font-bold text-primary dark:text-secondary hover:underline transition-colors"
+                    className="py-3.5 text-center text-xs font-bold text-primary dark:text-secondary hover:bg-primary/5 dark:hover:bg-secondary/10 transition-colors flex items-center justify-center gap-1"
                   >
-                    {isFa ? 'کاوش پروژه' : 'Explore Project'}
+                    <span>{isFa ? 'کاوش پروژه' : 'Explore Project'}</span>
+                    <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
                   </button>
                 </div>
               </div>

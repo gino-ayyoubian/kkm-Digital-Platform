@@ -139,8 +139,10 @@ STATUS: PERMANENTLY ATTESTED ON KKM GOVERNANCE REGISTER
                   nameFa={member.displayNameFa}
                   role={member.role}
                   photoUrl={member.avatarUrl}
-                  size="card"
+                  size="lg"
+                  shape="rounded"
                   showBadge={false}
+                  className="w-full h-full"
                 />
               </div>
 

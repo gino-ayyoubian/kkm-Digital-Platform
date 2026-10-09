@@ -194,16 +194,25 @@ export const ExecutiveMemberIdentity: React.FC<ExecutiveMemberIdentityProps> = (
       const focalPosition = getMemberPhotoObjectPosition(effectivePhotoUrl || name);
       return (
         <div className={`relative w-full h-full overflow-hidden bg-slate-950 ${className}`}>
+          {/* Ambient blurred backdrop for tone matching and depth */}
+          <img
+            src={effectivePhotoUrl}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover blur-xl opacity-35 scale-110 pointer-events-none select-none"
+          />
+          {/* Crisp foreground portrait with golden-ratio calibrated focal position */}
           <img
             src={effectivePhotoUrl}
             alt={name}
-            className="w-full h-full object-contain object-center"
-            style={{ objectPosition: 'center' }}
+            className="relative z-1 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            style={{ objectPosition: focalPosition }}
             loading="lazy"
+            decoding="async"
             onError={() => setImgError(true)}
           />
-          {/* Subtle vignette gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
+          {/* Subtle vignette gradient for text contrast */}
+          <div className="absolute inset-0 z-2 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
           
           {/* Verified Official Seal Ribbon */}
           {showBadge && (

@@ -10,6 +10,7 @@ import {
   Search, X, ChevronDown, Check, User, ArrowRight,
   Building2, StickyNote, Bot, Moon, Sun, Sparkles
 } from 'lucide-react';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface MobileNavigationDrawerProps {
   isOpen: boolean;
@@ -398,6 +399,9 @@ export const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                     <span className="truncate">{isRtl ? 'دستیار هوش مصنوعی' : 'AI Advisor'}</span>
                   </button>
                 </div>
+
+                {/* Mobile PWA Install Card */}
+                <PWAInstallButton variant="drawer" className="mt-3" />
               </div>
 
             </div>

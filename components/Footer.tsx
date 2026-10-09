@@ -8,6 +8,7 @@ import { motion } from 'motion/react';
 import type { TranslationKey } from '../translations';
 import { useTheme } from '../ThemeContext';
 import KKMLogo from './KKMLogo';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface FooterProps {
     setPage: (page: Page) => void;
@@ -330,6 +331,7 @@ const Footer: React.FC<FooterProps> = ({ setPage, onSelectArticle, showNewsTicke
                          <button onClick={() => setPage(Page.Legal)} className="text-gray-400 hover:text-white text-xs transition-colors">{t('PrivacyPolicy')}</button>
                          <button onClick={() => setPage(Page.Legal)} className="text-gray-400 hover:text-white text-xs transition-colors">{t('TermsOfUse')}</button>
                          <button onClick={() => setPage(Page.Contact)} className="text-gray-400 hover:text-white text-xs transition-colors">{t('Contact')}</button>
+                         <PWAInstallButton variant="footer" />
                          <button 
                            onClick={() => setPage(Page.Offline)} 
                            className="text-gray-400 hover:text-emerald-400 text-xs transition-colors flex items-center gap-1.5"
