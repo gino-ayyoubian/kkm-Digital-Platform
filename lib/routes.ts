@@ -130,6 +130,11 @@ export function pathToPage(pathname: string): Page {
     case '/digital-twin':
       return Page.DigitalTwinHub;
 
+    case '/ree':
+    case '/kkm-ree':
+    case '/digital-twin-ree':
+      return Page.DigitalTwinREE;
+
     case '/internal-portal':
     case '/portal':
       return Page.InternalPortal;
@@ -239,8 +244,10 @@ export function pageToPath(page: Page): string {
 
     case Page.DigitalTwinHub:
     case Page.DigitalTwinGMEL:
-    case Page.DigitalTwinREE:
       return '/digital-twins';
+
+    case Page.DigitalTwinREE:
+      return '/ree';
 
     case Page.InternalPortal:
       return '/internal-portal';

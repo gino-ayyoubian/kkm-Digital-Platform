@@ -86,6 +86,7 @@ export const NAV_LINKS: NavLink[] = [
     name: Page.Ecosystems,
     subLinks: [
       { name: "GMEL", id: "gmel", page: Page.GMELHub },
+      { name: "KKM-REE (River Energy)", id: "kkm-ree", page: Page.DigitalTwinREE },
       { name: "KKM-IEH", id: "kkm-ieh" },
       { name: "GILT", id: "gilt" },
       { name: "GNOVA", id: "gnova" },

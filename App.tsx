@@ -96,7 +96,6 @@ class PageErrorBoundary extends Component<PageErrorBoundaryProps, PageErrorBound
   }
 
   componentDidCatch(error: any, errorInfo: any) {
-    console.error("Page Loading Error caught by boundary:", error, errorInfo);
     const errorMsg = String(error?.message || error || '').toLowerCase();
     const isChunk =
       errorMsg.includes('importing a module script failed') ||
@@ -105,6 +104,12 @@ class PageErrorBoundary extends Component<PageErrorBoundaryProps, PageErrorBound
       errorMsg.includes('mime type') ||
       errorMsg.includes('text/html') ||
       error?.name === 'TypeError';
+
+    if (isChunk) {
+      console.warn("Module synchronization:", error?.message || error);
+    } else {
+      console.error("Page Loading Error caught by boundary:", error, errorInfo);
+    }
 
     if (isChunk && typeof window !== 'undefined') {
       try {
@@ -581,7 +586,18 @@ const App: React.FC = () => {
            "description": description,
            "url": canonicalUrl
          };
-     } else if (currentPage === Page.DigitalTwinHub || currentPage === Page.DigitalTwinGMEL || currentPage === Page.DigitalTwinREE) {
+     } else if (currentPage === Page.DigitalTwinREE) {
+         title = "KKM-REE River Energy Ecosystem | Patented Inventions & Digital Twin | Gino Ayyoubain";
+         description = "Modular & adaptive vortex-hydrokinetic river energy conversion system invented by Gino Ayyoubain (سید ژینو ایوبیان). Interactive 3-regime CFD digital twin, self-cleaning sediment apparatus, and AI MPC control.";
+         canonicalUrl = `${CANONICAL_HOST}/ree`;
+         jsonLdSchema = {
+           "@context": "https://schema.org",
+           "@type": "TechArticle",
+           "name": title,
+           "description": description,
+           "url": canonicalUrl
+         };
+     } else if (currentPage === Page.DigitalTwinHub || currentPage === Page.DigitalTwinGMEL) {
          title = "Digital Twin Platform & Subsurface Telemetry Hub | KKM";
          description = "Next-generation enterprise digital twin platform for thermodynamic simulation, geothermal well telemetry, and real-time sustainability optimization.";
          canonicalUrl = `${CANONICAL_HOST}/digital-twins`;
@@ -812,7 +828,7 @@ const App: React.FC = () => {
         pageComponent = <GMELTwinPage />;
         break;
       case Page.DigitalTwinREE:
-        pageComponent = <REETwinPage />;
+        pageComponent = <REETwinPage setPage={setCurrentPage} />;
         break;
       case Page.Projects:
         pageComponent = <ProjectsPage setPage={setCurrentPage} />;

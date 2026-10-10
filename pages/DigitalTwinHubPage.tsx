@@ -227,24 +227,30 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
                 <div className="h-64 bg-slate-100 dark:bg-slate-900 overflow-hidden relative">
                     <div className="absolute inset-0 bg-secondary/10 group-hover:bg-transparent transition-colors z-10"></div>
                     <img src="/src/assets/images/ree_3d_icon_1788774020718.jpg" alt="River Energy Ecosystem" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute bottom-4 left-4 z-20">
-                        <span className="px-3 py-1 bg-secondary text-white text-xs font-bold uppercase rounded-full">Beta</span>
+                    <div className="absolute bottom-4 left-4 z-20 flex gap-2">
+                        <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-bold uppercase rounded-full shadow">TRL 6-7 Validated</span>
+                        <span className="px-3 py-1 bg-secondary text-white text-xs font-bold uppercase rounded-full shadow">3 Regimes</span>
                     </div>
                 </div>
                 <div className="p-6 md:p-8 space-y-4">
+                    <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                            Patented Inventions • Gino Ayyoubain (سیدژینو ایوبیان)
+                        </span>
+                    </div>
                     <h3 className="text-2xl font-display font-bold text-primary-dark dark:text-white">
-                        River Energy Ecosystem (REE)
+                        KKM-REE (River Energy Ecosystem)
                     </h3>
-                    <p className="text-text-light dark:text-slate-400">
-                        Hydrokinetic energy simulation preview for exploring river flow dynamics, turbine RPM, and clean power scenarios.
+                    <p className="text-text-light dark:text-slate-400 text-sm leading-relaxed">
+                        Modular & adaptive vortex-hydrokinetic conversion system with flow reconfiguration, self-cleaning sediment apparatus, and AI-driven MPC digital twin.
                     </p>
                     <div className="pt-4 border-t border-gray-100 dark:border-slate-700 flex justify-between items-center">
                         <div className="text-xs font-mono text-slate-500 dark:text-slate-400">Subdomain: ree.kkm-intl.org</div>
                         <button 
                             onClick={() => setPage(Page.DigitalTwinREE)}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-secondary text-white font-bold rounded-lg hover:bg-blue-600 transition-colors"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-md transition-colors"
                         >
-                            Access REE Twin
+                            Launch REE Twin & Simulator
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
                             </svg>

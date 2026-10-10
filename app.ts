@@ -207,10 +207,38 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
       const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
         server: { middlewareMode: true, hmr: false },
-        appType: 'spa',
+        appType: 'custom',
       });
 
       app.use(vite.middlewares);
+
+      // In development mode, intercept missing asset/module requests before HTML index fallback
+      app.use((req, res, next) => {
+        const ext = path.extname(req.path).toLowerCase();
+        const isAsset =
+          ['.js', '.mjs', '.ts', '.tsx', '.jsx', '.css', '.map', '.json', '.wasm', '.png', '.jpg', '.jpeg', '.svg', '.webp', '.avif', '.woff', '.woff2'].includes(ext) ||
+          req.path.startsWith('/assets/') ||
+          req.path.startsWith('/node_modules/') ||
+          req.path.startsWith('/@');
+
+        if (isAsset) {
+          return res.status(404).type('text/plain').send('Asset not found');
+        }
+        next();
+      });
+
+      // Serve index.html with Vite transformation for all client-side page navigation routes
+      app.get('*all', pageRequestLimiter, async (req, res, next) => {
+        try {
+          const url = req.originalUrl || req.url;
+          const template = fs.readFileSync(path.join(process.cwd(), 'index.html'), 'utf-8');
+          const html = await vite.transformIndexHtml(url, template);
+          res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+        } catch (e) {
+          vite.ssrFixStacktrace(e as Error);
+          next(e);
+        }
+      });
     } else {
       const distPath = path.join(process.cwd(), 'dist');
       const compressibleAssetRegex = /\.(?:css|js|mjs|json|svg|xml|txt|html)$/i;
@@ -269,6 +297,21 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
         })
       );
 
+      // In production mode, intercept missing asset/module requests before HTML index fallback
+      app.use((req, res, next) => {
+        const ext = path.extname(req.path).toLowerCase();
+        const isAsset =
+          ['.js', '.mjs', '.ts', '.tsx', '.jsx', '.css', '.map', '.json', '.wasm', '.png', '.jpg', '.jpeg', '.svg', '.webp', '.avif', '.woff', '.woff2'].includes(ext) ||
+          req.path.startsWith('/assets/') ||
+          req.path.startsWith('/node_modules/') ||
+          req.path.startsWith('/@');
+
+        if (isAsset) {
+          return res.status(404).type('text/plain').send('Asset not found');
+        }
+        next();
+      });
+
       app.get('*all', pageRequestLimiter, (_req, res) => {
         res.sendFile(path.join(distPath, 'index.html'));
       });
@@ -289,6 +332,18 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
         timestamp: new Date().toISOString(),
       });
     }
+
+    const ext = path.extname(req.path).toLowerCase();
+    const isAsset =
+      ['.js', '.mjs', '.ts', '.tsx', '.jsx', '.css', '.map', '.json', '.wasm', '.png', '.jpg', '.jpeg', '.svg', '.webp', '.avif', '.woff', '.woff2'].includes(ext) ||
+      req.path.startsWith('/assets/') ||
+      req.path.startsWith('/node_modules/') ||
+      req.path.startsWith('/@');
+
+    if (isAsset) {
+      return res.status(500).type('text/plain').send(`Error loading asset: ${err?.message || 'Server Error'}`);
+    }
+
     return res
       .status(500)
       .send(

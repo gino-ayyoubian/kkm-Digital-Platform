@@ -18,6 +18,51 @@ const IPCenterPage: React.FC<IPCenterPageProps> = ({ setPage }) => {
 
   const ipData = [
     { 
+      tech: 'KKM-REE Modular Adaptive Vortex-Hydrokinetic Energy System', 
+      techFa: 'سامانه تبدیل انرژی رودخانه‌ای گردابه‌ای–هیدروکینتیکی ماژولار و تطبیقی KKM-REE',
+      inventor: 'Gino Ayyoubain (سیدژینو ایوبیان)', 
+      owner: 'Gino Ayyoubain / KKM International Group', 
+      jurisdiction: 'Global PCT / Priority Secured', 
+      appNumber: 'PCT/IB2025/081944', 
+      date: '2025-05-14', 
+      status: 'Priority Secured', 
+      area: 'Hydrokinetic & River Energy', 
+      category: 'ENERGY',
+      commStatus: 'Pilot & Digital Twin Active',
+      evidenceTag: 'TRL 6 [CFD & Flume Validated]',
+      claimsGated: 'Adaptive 3-regime flow reconfiguration (Vortex / Hydrokinetic / Hybrid), 6 sub-systems (S1-S6), variable-diameter telescopic orifice, bypass divider.'
+    },
+    { 
+      tech: 'KKM-REE Self-Cleaning Sediment & Debris Management Apparatus', 
+      techFa: 'تجهیزات مدیریت خودتمیزشوندهٔ رسوب و آشغال برای سامانه‌های انرژی رودخانه‌ای KKM-REE',
+      inventor: 'Gino Ayyoubain (سیدژینو ایوبیان)', 
+      owner: 'Gino Ayyoubain / KKM International Group', 
+      jurisdiction: 'Global PCT / National Entry', 
+      appNumber: 'PCT/IB2025/081945', 
+      date: '2025-06-22', 
+      status: 'Priority Secured', 
+      area: 'Hydraulic Sediment Engineering', 
+      category: 'INFRASTRUCTURE',
+      commStatus: 'Basin Retrofit Kit Available',
+      evidenceTag: 'TRL 6 [Sedimentation Basin Validated]',
+      claimsGated: 'Bedload spiral groove ring (3°–8° slope), hydraulically self-actuating rotary inlet screen, floating surface weir, turbidity-triggered purge.'
+    },
+    { 
+      tech: 'KKM-REE AI-Driven Predictive Flow Control & Digital Twin System', 
+      techFa: 'سامانهٔ کنترل تطبیقی جریانِ پیش‌بین مبتنی بر هوش مصنوعی و دوقلوی دیجیتال KKM-REE',
+      inventor: 'Gino Ayyoubain (سیدژینو ایوبیان)', 
+      owner: 'Gino Ayyoubain / KKM International Group', 
+      jurisdiction: 'Global PCT / Software Escrow', 
+      appNumber: 'PCT/IB2025/081946', 
+      date: '2025-08-10', 
+      status: 'Protected Asset', 
+      area: 'AI & Digital Twin Systems', 
+      category: 'DIGITAL',
+      commStatus: 'Active VPP & Cloud-Edge Beta',
+      evidenceTag: 'TRL 7 [GNN & ROM In-the-Loop]',
+      claimsGated: 'Graph neural network hydrological streamflow forecasting, CFD-calibrated ROM, Kalman filter online state correction, MPC/RL fleet coordination.'
+    },
+    { 
       tech: 'GMEL-CLG (Closed-Loop Geothermal)', 
       techFa: 'سامانه زمین‌گرمایی حلقه بسته GMEL-CLG',
       inventor: 'KKM Engineering Core', 
@@ -266,13 +311,25 @@ const IPCenterPage: React.FC<IPCenterPageProps> = ({ setPage }) => {
                           </td>
                           <td className="p-5 text-slate-700 dark:text-slate-300 text-xs font-semibold">{ip.commStatus}</td>
                           <td className="p-5">
-                            <button 
-                              onClick={() => setPage(Page.TechnologyTemplate)} 
-                              className="px-3 py-1.5 bg-primary/10 hover:bg-primary text-primary hover:text-white dark:text-secondary rounded-lg font-bold flex items-center gap-1 text-xs transition-colors"
-                            >
-                              <FileText className="w-3.5 h-3.5" /> 
-                              {isFa ? 'برگ مشخصات' : 'Specs Dossier'}
-                            </button>
+                            <div className="flex items-center gap-1.5">
+                              {ip.tech.includes('KKM-REE') && (
+                                <button 
+                                  onClick={() => setPage(Page.DigitalTwinREE)} 
+                                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold flex items-center gap-1 text-xs transition-colors shadow-sm"
+                                  title={isFa ? 'ورود به دوقلوی دیجیتال و شبیه‌ساز KKM-REE' : 'Launch KKM-REE Digital Twin Simulator'}
+                                >
+                                  <Layers className="w-3.5 h-3.5" /> 
+                                  {isFa ? 'دوقلوی دیجیتال' : 'Digital Twin'}
+                                </button>
+                              )}
+                              <button 
+                                onClick={() => setPage(Page.TechnologyTemplate)} 
+                                className="px-3 py-1.5 bg-primary/10 hover:bg-primary text-primary hover:text-white dark:text-secondary rounded-lg font-bold flex items-center gap-1 text-xs transition-colors"
+                              >
+                                <FileText className="w-3.5 h-3.5" /> 
+                                {isFa ? 'برگ مشخصات' : 'Specs Dossier'}
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))

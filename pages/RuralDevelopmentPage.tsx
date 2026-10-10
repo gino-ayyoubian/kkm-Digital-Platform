@@ -11,6 +11,7 @@ import { InvestmentGovernanceSection } from '../components/rural/InvestmentGover
 import { PilotIntakeForm } from '../components/rural/PilotIntakeForm';
 import { RuralProjectExplorer } from '../components/rural/RuralProjectExplorer';
 import { ExhibitionDossierSection } from '../components/rural/ExhibitionDossierSection';
+import { RuralTransformationIntelligenceSection } from '../components/rural/RuralTransformationIntelligenceSection';
 
 interface RuralDevelopmentPageProps {
   setPage: (page: Page) => void;
@@ -59,6 +60,12 @@ const RuralDevelopmentPage: React.FC<RuralDevelopmentPageProps> = ({ setPage }) 
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3 shrink-0 overflow-x-auto py-1">
+            <button
+              onClick={() => scrollToSection('rural-transformation-intelligence')}
+              className="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/30 transition-colors whitespace-nowrap cursor-pointer font-bold"
+            >
+              {isFa ? 'رصدخانه و آینده‌پژوهی روستایی' : 'Foresight & 4 Pillars'}
+            </button>
             <button
               onClick={() => scrollToSection('integrated-model')}
               className="px-2.5 py-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors whitespace-nowrap cursor-pointer"
@@ -131,6 +138,9 @@ const RuralDevelopmentPage: React.FC<RuralDevelopmentPageProps> = ({ setPage }) 
 
       {/* 1. Hero Section (Architecture Specification 10.1, 10.2, 10.3) */}
       <RuralHero setPage={setPage} onScrollTo={scrollToSection} />
+
+      {/* 1.5. Deep-Search Rural Transformation & Foresight Intelligence Observatory (4 Core Pillars & Scenario Simulation) */}
+      <RuralTransformationIntelligenceSection />
 
       {/* 2. Integrated Rural Development Model (10-Stage Diagram 10.4, 10.5) */}
       <RuralModelDiagram />
