@@ -27,7 +27,8 @@ import {
   Calendar,
   Building2,
   Cpu,
-  Layers
+  Layers,
+  Lock
 } from 'lucide-react';
 
 interface ClaimRegistryProps {
@@ -465,9 +466,16 @@ export const ClaimRegistry: React.FC<ClaimRegistryProps> = ({ setPage, defaultDo
                           <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${levelCfg.bgLight} ${levelCfg.bgDark} ${levelCfg.color} ${levelCfg.borderLight} ${levelCfg.borderDark}`}>
                             Level {claim.evidenceLevel}
                           </span>
-                          <div className="text-[10px] font-mono text-primary dark:text-secondary truncate max-w-[140px]" title={claim.evidenceFile || claim.evidenceRefId}>
-                            {claim.evidenceFile || claim.evidenceRefId}
-                          </div>
+                          {claim.status === 'Verified' ? (
+                            <div className="text-[10px] font-mono text-primary dark:text-secondary truncate max-w-[140px]" title={claim.evidenceFile || claim.evidenceRefId}>
+                              {claim.evidenceFile || claim.evidenceRefId}
+                            </div>
+                          ) : (
+                            <div className="text-[10px] font-mono text-amber-600 dark:text-amber-400 flex items-center gap-1 font-semibold">
+                              <Lock className="w-2.5 h-2.5" />
+                              <span>{isFa ? 'پرتال داخلی' : 'Internal Vault'}</span>
+                            </div>
+                          )}
                         </div>
                       </td>
 

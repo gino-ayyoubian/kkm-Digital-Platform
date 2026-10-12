@@ -14,6 +14,7 @@ import {
   EvidenceClaim 
 } from '../data/evidenceRegistry';
 import { ClaimRegistry } from '../components/ClaimRegistry';
+import { useAuth } from '../AuthContext';
 
 interface EvidenceRegistryPageProps {
   setPage: (page: Page) => void;
@@ -32,6 +33,9 @@ const CATEGORIES: ClaimCategory[] = [
 
 export const EvidenceRegistryPage: React.FC<EvidenceRegistryPageProps> = ({ setPage }) => {
   const { isFa, direction } = useLanguage();
+  const { userProfile, currentUser } = useAuth();
+  const isAuthenticated = Boolean(userProfile || currentUser);
+
   const [activeMainTab, setActiveMainTab] = React.useState<'evidenceRecords' | 'claimsGovernance'>('evidenceRecords');
   const [selectedCategory, setSelectedCategory] = React.useState<ClaimCategory | 'All'>('All');
   const [selectedLevel, setSelectedLevel] = React.useState<VerificationLevel | 'All'>('All');
@@ -359,16 +363,28 @@ export const EvidenceRegistryPage: React.FC<EvidenceRegistryPageProps> = ({ setP
                     </div>
                     <div className="flex justify-between items-center gap-4">
                       <span className="font-semibold text-slate-500 shrink-0">{isFa ? 'فایل شواهد:' : 'Evidence Ref:'}</span>
-                      <a
-                        href={`/api/evidence/${claim.evidenceFile || claim.id}/download`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-mono text-primary dark:text-secondary text-[11px] bg-primary/5 dark:bg-secondary/5 px-2 py-0.5 rounded hover:underline inline-flex items-center gap-1 group"
-                        title={isFa ? 'دانلود سند تأییدیه رسمی (PDF)' : 'Download official certified PDF artifact'}
-                      >
-                        <span>{claim.evidenceFile}</span>
-                        <Download className="w-3 h-3 opacity-70 group-hover:opacity-100 group-hover:translate-y-0.5 transition-transform" />
-                      </a>
+                      {['A', 'B'].includes(claim.verificationLevel) || isAuthenticated ? (
+                        <a
+                          href={`/api/evidence/${claim.evidenceFile || claim.id}/download`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-mono text-primary dark:text-secondary text-[11px] bg-primary/5 dark:bg-secondary/5 px-2 py-0.5 rounded hover:underline inline-flex items-center gap-1 group"
+                          title={isFa ? 'دانلود سند تأییدیه رسمی (PDF)' : 'Download official certified PDF artifact'}
+                        >
+                          <span>{claim.evidenceFile}</span>
+                          <Download className="w-3 h-3 opacity-70 group-hover:opacity-100 group-hover:translate-y-0.5 transition-transform" />
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setPage(Page.InternalPortal)}
+                          className="font-mono text-amber-600 dark:text-amber-400 text-[10px] bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800/60 inline-flex items-center gap-1 hover:bg-amber-100 dark:hover:bg-amber-900/60 cursor-pointer transition-colors"
+                          title={isFa ? 'دسترسی به فایل کامل در پرتال داخلی سازمانی' : 'Access full file in Corporate Portal'}
+                        >
+                          <Lock className="w-3 h-3 text-amber-500" />
+                          <span>{isFa ? 'سند محرمانه پرتال (ورود پرسنل)' : 'Portal Protected (Staff Access)'}</span>
+                        </button>
+                      )}
                     </div>
                     <div className="flex justify-between items-start gap-4">
                       <span className="font-semibold text-slate-500 shrink-0">{isFa ? 'روش اندازه‌گیری:' : 'Method:'}</span>

@@ -47,7 +47,7 @@ const Card: React.FC<CardProps> = ({ title, description, icon, imageUrl, actionT
     >
       {imageUrl && (
         <div className="overflow-hidden rounded-t-lg">
-          <img src={imageUrl} alt={typeof title === 'string' ? title : 'Card Image'} loading="lazy" className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
+          <img src={imageUrl} alt={typeof title === 'string' ? title : 'Card Image'} loading="lazy" referrerPolicy="no-referrer" className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" />
         </div>
       )}
       <div className="p-6 flex flex-col flex-grow">

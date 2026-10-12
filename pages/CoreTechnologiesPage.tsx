@@ -12,6 +12,7 @@ import D3ImpactChart from '../components/D3ImpactChart';
 import GmelInteractiveDiagram from '../components/GmelInteractiveDiagram';
 import InteractiveTechMap from '../components/InteractiveTechMap';
 import IPBadge, { IPStatus } from '../components/IPBadge';
+import { Zap, Droplets, Network, ArrowRight, Sparkles } from 'lucide-react';
 
 import GlobalCTA from '../components/GlobalCTA';
 // Icon Definitions
@@ -172,6 +173,169 @@ const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
             <PageHeader title={t(Page.CoreTechnologies)} subtitle={t('CoreTechPageSubtitle')}/>
             
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 my-16">
+                
+                {/* Core Technologies Navigation Cards */}
+                <section className="mb-20">
+                    <div className="text-center max-w-3xl mx-auto mb-12">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 text-primary dark:bg-secondary/10 dark:text-secondary text-xs font-mono font-bold uppercase tracking-wider mb-3">
+                            <Sparkles className="w-3.5 h-3.5" />
+                            <span>Core Technology Domains</span>
+                        </div>
+                        <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-primary dark:text-white mb-4">
+                            Strategic Technology Pillars
+                        </h2>
+                        <p className="text-base text-text-light dark:text-slate-300">
+                            Explore KKM's foundational engineering platforms across closed-loop geothermal baseload generation, circular water-energy thermodynamics, and resilient rural microgrids.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {/* Card 1: Geothermal Domain */}
+                        <div className="bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-xl hover:shadow-2xl hover:border-secondary transition-all flex flex-col group">
+                            <div className="relative h-56 overflow-hidden bg-slate-950 flex items-center justify-center">
+                                <img 
+                                    src="/src/assets/images/geothermal_icon_1791765115317.jpg" 
+                                    alt="Geothermal Energy Domain Icon" 
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer"
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                />
+                                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md text-[11px] font-mono font-bold text-amber-400 border border-amber-500/30 flex items-center gap-1.5">
+                                    <Zap className="w-3 h-3 text-amber-400" />
+                                    <span>Geothermal Domain</span>
+                                </div>
+                            </div>
+                            <div className="p-6 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary dark:group-hover:text-secondary transition-colors">
+                                        Deep Geothermal & GMEL-CLG
+                                    </h3>
+                                    <p className="text-xs sm:text-sm text-text-light dark:text-slate-300 leading-relaxed mb-4">
+                                        Supercritical closed-loop thermodynamic heat extraction utilizing legacy or greenfield deep wellbores. Delivers continuous, zero-emission baseload power without hydraulic fracturing or surface fluid loss.
+                                    </p>
+                                    <div className="flex flex-wrap gap-1.5 mb-6 text-[11px] font-mono">
+                                        <span className="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                                            50 MW+ Scalable Baseload
+                                        </span>
+                                        <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                                            TRL-6 Verified
+                                        </span>
+                                        <span className="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                                            0 ppm Surface Venting
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                    <button
+                                        onClick={() => setPage ? setPage(Page.GMELHub) : handleScrollToApps()}
+                                        className="inline-flex items-center gap-1.5 text-xs font-bold text-primary dark:text-secondary hover:underline cursor-pointer"
+                                    >
+                                        <span>Explore GMEL Architecture</span>
+                                        <ArrowRight className="w-3.5 h-3.5" />
+                                    </button>
+                                    <span className="text-[11px] font-mono text-slate-400">GMEL-01</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Card 2: Water-Energy Nexus Domain */}
+                        <div className="bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-xl hover:shadow-2xl hover:border-secondary transition-all flex flex-col group">
+                            <div className="relative h-56 overflow-hidden bg-slate-950 flex items-center justify-center">
+                                <img 
+                                    src="/src/assets/images/water_nexus_icon_1791765125654.jpg" 
+                                    alt="Water-Energy Nexus Domain Icon" 
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer"
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                />
+                                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md text-[11px] font-mono font-bold text-cyan-400 border border-cyan-500/30 flex items-center gap-1.5">
+                                    <Droplets className="w-3 h-3 text-cyan-400" />
+                                    <span>Water-Energy Nexus</span>
+                                </div>
+                            </div>
+                            <div className="p-6 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary dark:group-hover:text-secondary transition-colors">
+                                        Water-Energy Nexus & Desalination
+                                    </h3>
+                                    <p className="text-xs sm:text-sm text-text-light dark:text-slate-300 leading-relaxed mb-4">
+                                        Circular thermal co-generation desalination coupled with geothermal and solar waste-heat. Purifies hyper-saline feedstocks with zero chemical runoff, preserving agricultural aquifers in hyper-arid zones.
+                                    </p>
+                                    <div className="flex flex-wrap gap-1.5 mb-6 text-[11px] font-mono">
+                                        <span className="px-2 py-0.5 rounded bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800">
+                                            38k–42k ppm TDS Feed
+                                        </span>
+                                        <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                                            45°C–85°C Reject Heat
+                                        </span>
+                                        <span className="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                                            Zero-Liquid Discharge
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                    <button
+                                        onClick={() => handleScrollToApps()}
+                                        className="inline-flex items-center gap-1.5 text-xs font-bold text-primary dark:text-secondary hover:underline cursor-pointer"
+                                    >
+                                        <span>Explore Desalination Loops</span>
+                                        <ArrowRight className="w-3.5 h-3.5" />
+                                    </button>
+                                    <span className="text-[11px] font-mono text-slate-400">NEXUS-02</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Card 3: Rural Microgrids Domain */}
+                        <div className="bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-xl hover:shadow-2xl hover:border-secondary transition-all flex flex-col group">
+                            <div className="relative h-56 overflow-hidden bg-slate-950 flex items-center justify-center">
+                                <img 
+                                    src="/src/assets/images/microgrid_icon_1791765136698.jpg" 
+                                    alt="Rural Microgrids Domain Icon" 
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer"
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                />
+                                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md text-[11px] font-mono font-bold text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+                                    <Network className="w-3 h-3 text-emerald-400" />
+                                    <span>Rural Microgrids</span>
+                                </div>
+                            </div>
+                            <div className="p-6 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary dark:group-hover:text-secondary transition-colors">
+                                        Modular Rural Microgrids
+                                    </h3>
+                                    <p className="text-xs sm:text-sm text-text-light dark:text-slate-300 leading-relaxed mb-4">
+                                        Autonomous clean power nodes, modular battery storage meshes, and agro-industrial distribution units structured around the "One Village, One Integrated System" territorial empowerment paradigm.
+                                    </p>
+                                    <div className="flex flex-wrap gap-1.5 mb-6 text-[11px] font-mono">
+                                        <span className="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                                            25 Target Settlements
+                                        </span>
+                                        <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                                            10-Stage Model
+                                        </span>
+                                        <span className="px-2 py-0.5 rounded bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+                                            Zero Diesel Outages
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                    <button
+                                        onClick={() => setPage ? setPage(Page.RuralStudies) : handleScrollToApps()}
+                                        className="inline-flex items-center gap-1.5 text-xs font-bold text-primary dark:text-secondary hover:underline cursor-pointer"
+                                    >
+                                        <span>Explore Rural Systems</span>
+                                        <ArrowRight className="w-3.5 h-3.5" />
+                                    </button>
+                                    <span className="text-[11px] font-mono text-slate-400">MICRO-03</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <h2 className="text-3xl font-display font-bold text-primary dark:text-white mb-8 text-center">{t('GmelEcosystem')}</h2>
                 <p className="text-center text-text-light dark:text-slate-300 max-w-3xl mx-auto mb-16">
                     {t('GmelEcosystemSubtitle')}

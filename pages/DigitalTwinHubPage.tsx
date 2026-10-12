@@ -56,32 +56,31 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
     );
   }
 
-  if (!currentUser) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8 bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 text-center">
-          <div>
-            <h2 className="text-3xl font-display font-bold text-primary-dark dark:text-white">Secure Access Required</h2>
-            <p className="mt-2 text-sm text-text-light dark:text-slate-400">
-              Please sign in to personalize your Digital Twin ecosystem and view simulation previews.
-            </p>
-          </div>
-          <button
-            onClick={login}
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
-          >
-            Sign in with KKM Account
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const isAuthenticated = Boolean(currentUser || userProfile);
+  const operatorName = userProfile?.displayName || currentUser?.displayName || 'Authorized Engineer';
+  const clearanceLevel = userProfile?.clearanceLevel || 'Operational Telemetry';
 
   return (
     <div className="bg-white dark:bg-slate-900 min-h-screen pt-8 pb-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Header Section */}
         <div className="text-center space-y-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-sm">
+            <span className={`w-2 h-2 rounded-full ${isAuthenticated ? 'bg-emerald-500 animate-pulse' : 'bg-blue-500'}`} />
+            {isAuthenticated 
+              ? `Operator: ${operatorName} • Clearance: ${clearanceLevel}`
+              : 'Public Telemetry & Multi-Regime Preview Mode'
+            }
+            {!isAuthenticated && (
+              <button 
+                onClick={login}
+                className="ml-2 underline text-primary dark:text-secondary hover:opacity-80 font-bold"
+              >
+                Sign In
+              </button>
+            )}
+          </div>
+
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

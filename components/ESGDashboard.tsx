@@ -8,6 +8,7 @@ import {
 import { Page, ClaimStatus } from '../types';
 import { ClaimRegistry } from './ClaimRegistry';
 import { CLAIM_STATUS_CONFIG } from '../data/claimsRegistryData';
+import { ProjectMilestoneProgressChart } from './ProjectMilestoneProgressChart';
 
 interface ESGDashboardProps {
   setPage?: (page: Page) => void;
@@ -15,7 +16,7 @@ interface ESGDashboardProps {
 
 export const ESGDashboard: React.FC<ESGDashboardProps> = ({ setPage }) => {
   const [activeTab, setActiveTab] = React.useState<
-    'approach' | 'environmental' | 'social' | 'governance' | 'claims' | 'demonstration' | 'methodology' | 'disclosures' | 'reports'
+    'approach' | 'milestones' | 'environmental' | 'social' | 'governance' | 'claims' | 'demonstration' | 'methodology' | 'disclosures' | 'reports'
   >('approach');
 
   const [categoryFilter, setCategoryFilter] = React.useState<ClaimStatus | 'All'>('All');
@@ -146,14 +147,15 @@ export const ESGDashboard: React.FC<ESGDashboardProps> = ({ setPage }) => {
       <div className="flex items-center gap-2 overflow-x-auto pb-3 my-6 border-b border-slate-200 dark:border-slate-800 scrollbar-thin">
         {[
           { id: 'approach', label: '1. Sustainability Approach' },
-          { id: 'environmental', label: '2. Environmental Performance' },
-          { id: 'social', label: '3. Social Responsibility' },
-          { id: 'governance', label: '4. Corporate Governance' },
-          { id: 'claims', label: '5. Structured Claim Registry (P0-13)' },
-          { id: 'demonstration', label: '6. Demonstration Data Lab (P0-02)' },
-          { id: 'methodology', label: '7. Accounting Methodology' },
-          { id: 'disclosures', label: '8. Evidence & Disclosures' },
-          { id: 'reports', label: '9. Reports & Certifications' },
+          { id: 'milestones', label: '2. Project Milestone Completion (12 Mo)' },
+          { id: 'environmental', label: '3. Environmental Performance' },
+          { id: 'social', label: '4. Social Responsibility' },
+          { id: 'governance', label: '5. Corporate Governance' },
+          { id: 'claims', label: '6. Structured Claim Registry (P0-13)' },
+          { id: 'demonstration', label: '7. Demonstration Data Lab (P0-02)' },
+          { id: 'methodology', label: '8. Accounting Methodology' },
+          { id: 'disclosures', label: '9. Evidence & Disclosures' },
+          { id: 'reports', label: '10. Reports & Certifications' },
         ].map(tab => (
           <button
             key={tab.id}
@@ -269,6 +271,18 @@ export const ESGDashboard: React.FC<ESGDashboardProps> = ({ setPage }) => {
             </span>
             KKM International Group policies require that numeric ESG maturity scores are not published without certified, third-party audit reports attached to the KKM Evidence Registry. All claims below are categorized with their respective engineering verification levels.
           </div>
+
+          {/* Visualization: Project Milestone Completion Progress Over Last 12 Months */}
+          <div className="pt-4">
+            <ProjectMilestoneProgressChart setPage={setPage} />
+          </div>
+        </div>
+      )}
+
+      {/* Tab 2: Project Milestone Completion (Dedicated View) */}
+      {activeTab === 'milestones' && (
+        <div className="space-y-6">
+          <ProjectMilestoneProgressChart setPage={setPage} />
         </div>
       )}
 

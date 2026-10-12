@@ -14,6 +14,7 @@ import { PortalHeader } from '../components/portal/PortalHeader';
 import { AutomationCartable } from '../components/portal/AutomationCartable';
 import { UserManagementPanel } from '../components/portal/UserManagementPanel';
 import { DmsExplorer } from '../components/portal/DmsExplorer';
+import { EngineeringVaultTab } from '../components/portal/EngineeringVaultTab';
 import { AttendanceWidget } from '../components/portal/AttendanceWidget';
 import { ElectronicDeskModal } from '../components/portal/ElectronicDeskModal';
 import { ForgotPasswordModal } from '../components/portal/ForgotPasswordModal';
@@ -1009,6 +1010,9 @@ const InternalPortalPage: React.FC = () => {
 
         {/* TAB 3: DMS & POLICIES */}
         {activeTab === 'dms' && <DmsExplorer />}
+
+        {/* TAB: ENGINEERING VAULT & INTERNAL CLAIMS (P0-13 RESTRICTED) */}
+        {activeTab === 'engineeringVault' && <EngineeringVaultTab />}
 
         {/* TAB 4: ATTENDANCE & TELEMETRY */}
         {activeTab === 'attendance' && <AttendanceWidget />}

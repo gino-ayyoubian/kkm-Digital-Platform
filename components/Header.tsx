@@ -11,9 +11,10 @@ import { MobileNavigationDrawer } from './MobileNavigationDrawer';
 import { KKMAlgorithmicAdvisorModal } from './KKMAlgorithmicAdvisorModal';
 import { HeaderFluidAnimation } from './HeaderFluidAnimation';
 import { useUnifiedNavigation } from '../hooks/useUnifiedNavigation';
+import { useAuth } from '../AuthContext';
 import {
   Search, Sun, Moon, Menu, X, ChevronDown,
-  User, StickyNote, Bot
+  User, StickyNote, Bot, Lock, ShieldCheck
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -23,8 +24,9 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
-  const { direction, t } = useLanguage();
+  const { direction, t, isFa } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const { userProfile, currentUser } = useAuth();
   const headerRef = React.useRef<HTMLElement>(null);
   const isRtl = direction === 'rtl';
 
@@ -266,16 +268,30 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
                 <span className="hidden md:inline font-mono">AI Advisor</span>
               </button>
 
-              {/* Internal / Employee Portal Quick Access (hidden on small mobile to avoid header crowding) */}
+              {/* Internal / Employee Portal Quick Access */}
               <button
                 id="header-portal-btn"
                 type="button"
                 onClick={() => setPage(Page.InternalPortal)}
-                className="p-2 sm:p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary hidden sm:inline-flex"
+                className={`p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary hidden sm:inline-flex items-center gap-1.5 text-xs font-bold border ${
+                  userProfile
+                    ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border-transparent'
+                }`}
                 aria-label={t(Page.InternalPortal)}
-                title={t(Page.InternalPortal)}
+                title={userProfile ? (isFa ? `پرتال سازمانی (${userProfile.displayName})` : `Internal Portal (${userProfile.displayName})`) : (isFa ? 'ورود به پرتال داخلی سازمان' : 'Staff Portal Login')}
               >
-                <User className="w-5 h-5" />
+                {userProfile ? (
+                  <>
+                    <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                    <span className="hidden lg:inline font-mono truncate max-w-[100px]">{userProfile.displayName}</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-3.5 h-3.5 text-slate-400" />
+                    <span className="hidden lg:inline">{isFa ? 'پرتال داخلی' : 'Staff Portal'}</span>
+                  </>
+                )}
               </button>
 
               {/* Language Switcher Component */}

@@ -273,7 +273,8 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 descEn: 'Closed-loop geothermal extraction, multi-energy hybrid microgrids, and baseload thermal power conversion.', 
                 descFa: 'استخراج زمین‌گرمایی مداربسته (GMEL-CLG)، ریزشبکه‌های هیبریدی تجدیدپذیر و تولید بار پایه برق.',
                 icon: Zap,
-                page: Page.GMELHub
+                page: Page.GMELHub,
+                imageUrl: '/src/assets/images/geothermal_icon_1791765115317.jpg'
               },
               { 
                 titleEn: 'Water & Closed Cycles', 
@@ -281,7 +282,8 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 descEn: 'Thermal desalination, brackish water treatment, smart storage, and integrated water-energy corridors.', 
                 descFa: 'نمک‌زدایی حرارتی آب شور، تصفیه پساب‌های معدنی، ذخیره‌سازی هوشمند و همبست آب-انرژی.',
                 icon: Droplets,
-                page: Page.CoreTechnologies
+                page: Page.CoreTechnologies,
+                imageUrl: '/src/assets/images/water_nexus_icon_1791765125654.jpg'
               },
               { 
                 titleEn: 'Resilient Infrastructure', 
@@ -308,12 +310,13 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 page: Page.DigitalTwinHub
               },
               { 
-                titleEn: 'Productive Agriculture & Value Chains', 
-                titleFa: 'کشاورزی ارزش‌آفرین و زنجیره‌های فرآوری',
-                descEn: 'Greenhouse thermal conditioning, cold-chain storage, smart irrigation, and rural processing units.', 
-                descFa: 'تأمین گرمایش گلخانه‌ها با ژئوترمال، سردخانه‌های خورشیدی و احداث صنایع تبدیلی روستایی.',
+                titleEn: 'Rural Microgrids & Value Chains', 
+                titleFa: 'ریزشبکه‌های روستایی و زنجیره‌های ارزش',
+                descEn: 'Modular hybrid microgrids, agricultural cold-chain conditioning, smart irrigation, and rural processing units.', 
+                descFa: 'تأمین گرمایش گلخانه‌ها با ژئوترمال، ریزشبکه‌های خورشیدی و احداث صنایع تبدیلی روستایی.',
                 icon: Leaf,
-                page: Page.RuralStudies
+                page: Page.RuralStudies,
+                imageUrl: '/src/assets/images/microgrid_icon_1791765136698.jpg'
               }
             ].map((domain, i) => (
               <div 
@@ -322,8 +325,21 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 className="p-8 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/50 transition-all cursor-pointer group flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary-dark dark:text-secondary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <domain.icon className="w-6 h-6" />
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary-dark dark:text-secondary flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <domain.icon className="w-6 h-6" />
+                    </div>
+                    {domain.imageUrl && (
+                      <div className="w-14 h-14 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm bg-slate-950">
+                        <img 
+                          src={domain.imageUrl} 
+                          alt={domain.titleEn} 
+                          loading="lazy" 
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" 
+                        />
+                      </div>
+                    )}
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
                     {isFa ? domain.titleFa : domain.titleEn}

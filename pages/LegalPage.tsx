@@ -222,6 +222,16 @@ const LegalPage: React.FC<LegalPageProps> = ({ initialTab = 'corporate' }) => {
                 <h4 className="font-bold text-base text-slate-900 dark:text-white mb-2">3. Incident Response and Breach Notification</h4>
                 <p>In accordance with our DevSecOps charter, any confirmed security anomaly affecting client telemetry will trigger formal notice within 48 hours to the designated client contact point.</p>
               </div>
+              <div className="pt-2 border-t border-slate-100 dark:border-slate-700">
+                <h4 className="font-bold text-base text-slate-900 dark:text-white mb-2">
+                  {isFa ? '۴. سیاست تفکیک داده‌های عمومی از اسناد داخلی سازمان (P0-13)' : '4. Public vs. Internal Data Segregation (P0-13 Information Governance)'}
+                </h4>
+                <p>
+                  {isFa 
+                    ? 'طبق بخشنامه P0-13 حاکمیت داده KKM، کلیه داده‌های عمومی (شواهد سطوح A و B، شناسنامه ثبتی و گزارش‌های پایداری) برای بازدیدکنندگان تارنما در دسترس است. کلیه اسناد تست‌بد، محاسبات عددی مخزن، پرونده‌های گردش کار و اطلاعات پرسنلی در دسته داده‌های محرمانه سازمان قرار داشته و صرفاً از طریق پرتال داخلی سازمانی با احراز هویت RBAC و کلیدهای رمزنگاری دسترسی‌پذیر هستند.'
+                    : 'Pursuant to KKM P0-13 Data Governance Directives, public visitor presentations are strictly limited to verified, audited claims (Levels A and B) and official statutory records. Proprietary engineering simulations, testbed logs, operational cartable workflows, and employee telemetry are classified as internal organizational assets strictly restricted behind the authenticated Internal Portal with Role-Based Access Control.'}
+                </p>
+              </div>
             </div>
           </Section>
         )}

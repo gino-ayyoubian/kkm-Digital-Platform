@@ -192,6 +192,33 @@ const CorporateInfoPage: React.FC<CorporateInfoPageProps> = ({ setPage }) => {
             </div>
           </div>
 
+          {/* Information Classification & Content Separation Standard */}
+          <div className="mb-8 p-6 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl">
+            <div className="flex items-center gap-2 mb-3">
+              <ShieldAlert className="w-5 h-5 text-amber-500" />
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                {isFa ? 'سیاست تفکیک محتوای عمومی از اسناد داخلی و پایگاه داده سازمانی' : 'Information Classification & Public vs. Internal Disclosure Governance'}
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              {isFa
+                ? 'گروه بین‌المللی کیمیا کاران ماد کلیه محتواها، اسناد و داده‌های خود را بر اساس استاندارد حاکمیت اطلاعات به دو دسته مجزا تفکیک می‌نماید: ۱) محتوای عمومی و شواهد ممیزی‌شده (سطوح A و B) که برای عموم بازدیدکنندگان، سهامداران و پژوهشگران قابل دسترس است. ۲) اسناد فنی درون‌سازمانی، آزمون‌های تست‌بد، محاسبات عددی مخزن و داده‌های پرسنلی که صرفاً در بستر پرتال داخلی (Enterprise Portal) و تحت کنترل دسترسی مبتنی بر نقش (RBAC) قرار دارند.'
+                : 'KKM International Group strictly classifies all organizational content and records into two segregated domains: 1) Public presentation assets and audited operational proof (Levels A & B) accessible to visitors and external stakeholders. 2) Proprietary engineering models, lab testbed logs, internal cartables, and employee telemetry exclusively managed behind the authenticated Internal Portal with Role-Based Access Control (RBAC).'}
+            </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-200 dark:border-slate-800 text-xs">
+              <span className="text-slate-500">
+                {isFa ? 'برای دسترسی پرسنل و مدیران به اسناد محرمانه:' : 'For authorized personnel access to internal records:'}
+              </span>
+              <button
+                onClick={() => setPage(Page.InternalPortal)}
+                className="inline-flex items-center gap-1.5 font-bold text-primary dark:text-secondary hover:underline cursor-pointer"
+              >
+                <span>{isFa ? 'ورود به پرتال داخلی سازمان (EAOS)' : 'Access KKM Internal Portal (EAOS)'}</span>
+                <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
+              </button>
+            </div>
+          </div>
+
           {/* Due Diligence Dossier Request Block */}
           <div className="p-6 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>

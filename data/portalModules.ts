@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { 
   LayoutDashboard, Inbox, FileText, Clock, PhoneCall, 
-  GitBranch, Network, Sliders, Users, UserCheck, FolderGit2 
+  GitBranch, Network, Sliders, Users, UserCheck, FolderGit2, Database 
 } from 'lucide-react';
 import type { NavModuleItem } from '../components/portal/PortalHeader';
 
@@ -55,6 +55,17 @@ export const getPortalModules = (
     descEn: 'ISO standards, official circulars, contracts & policies',
     category: 'operations',
     icon: FileText,
+  },
+  {
+    id: 'engineeringVault',
+    labelEn: 'Engineering Vault & Internal Claims',
+    labelFa: 'مخزن اسناد مهندسی و ادعاهای فنی',
+    shortLabelFa: 'مخزن فنی و ادعاها',
+    shortLabelEn: 'Engineering Vault',
+    descFa: 'اسناد فنی محرمانه، مدل‌های شبیه‌سازی عددی، سطوح C تا F و پیوست‌های آزمایشگاهی',
+    descEn: 'Confidential engineering records, reservoir numerical models, Level C-F claims & lab dossiers',
+    category: 'operations',
+    icon: Database,
   },
   {
     id: 'teamOps',

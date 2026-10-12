@@ -1,194 +1,130 @@
-# برنامه اجرایی و سند معماری مهندسی اکوسیستم انرژی رودخانه‌ای KKM-REE
-## سامانهٔ جامع نوآوری، ثبت اختراعات و دوقلوی دیجیتال هیدروکینتیکی گروه بین‌المللی کیمیا کاران ماد
-### مالکیت و اختراع: سیدژینو ایوبیان (Gino Ayyoubain)
-### کلاسه سازمانی: KKM-REE Enterprise Architecture Specification (EAOS-REE-2026)
+# Comprehensive Content Audit, Public-Internal Separation & Platform Architecture Plan
+
+A comprehensive architectural blueprint and auditing methodology for evaluating all public and internal assets across the KKM International Group web platform, cleanly segregating public visitor presentations from sensitive organizational data, structuring the authenticated Internal Portal with Role-Based Access Control (RBAC), and consolidating overlapping platform sections into a unified corporate and technological presence.
 
 ---
 
-### ۱. چکیده مدیریتی (Executive Summary)
-اکوسیستم انرژی رودخانه‌ای **KKM-REE (kkm-River Energy Ecosystem)** مجموعه‌ای از سه اختراع پیوسته و هم‌افزا در حوزه تبدیل انرژی رودخانه‌ای کم‌ارتفاع (Very Low-Head: 0.5–3.0m) و هیدروکینتیک جریان آزاد (Free-Stream Hydrokinetic) است که توسط **سیدژینو ایوبیان** ابداع و مالکیت فکری آن به ثبت رسیده است. 
+## User Review & Critical Decisions
 
-این نوآوری با شکستن محدودیت‌های توربین‌های گردابه‌ای گرانشی سنتی (مانند طرح‌های اولیه فرانتس زوتلوترر) و توربین‌های هیدروکینتیکی متداول، چالش‌های بنیادین «نوسانات فصلی شدید دبی»، «انسداد ناشی از رسوبات بار بستر و زباله‌های شناور»، و «راندمان پایین در رژیم‌های هیدرولیکی متغیر» را از طریق سه نوآوری بنیادین حل می‌کند:
-1. **سامانه تبدیل انرژی رودخانه‌ای گردابه‌ای–هیدروکینتیکی ماژولار و تطبیقی با پیکربندی مجدد جریان در چند حالت** (شامل ۶ زیرسامانه S-1 تا S-6 و رژیم‌های سه‌گانه گردابه‌ای، جریان آزاد و هیبریدی).
-2. **تجهیزات مدیریت خودتمیزشونده رسوب و آشغال برای سامانه‌های انرژی رودخانه‌ای گردابه‌ای و هیدروکینتیکی با ارتفاع کم** (شامل شیارهای مارپیچ ۳–۸ درجه با رانش گرانشی-گردابه‌ای، صفحه دوار هیدرولیکی غیرفعال و سرریز شناور).
-3. **سامانه کنترل تطبیقی جریانِ پیش‌بین مبتنی بر هوش مصنوعی و دوقلوی دیجیتال برای تأسیسات توزیع‌شده انرژی رودخانه‌ای** (شامل پیش‌بینی دبی با گراف نوترونی فضا-زمان، دوقلوی دیجیتال مرتبه-کاسته کالیبره با CFD، بهینه‌سازی MPC/RL و هماهنگی ناوگان در قالب نیروگاه مجازی VPP).
+> [!IMPORTANT]
+> Based on your guidance in the clarification phase, the project is structured in two distinct, sequential phases:
+> 1. **Phase A (Deep Audit & Mapping)**: A granular audit of every public page, section, claim, evidence record, and operational asset to identify internal vs. public classification.
+> 2. **Phase B (Architecture, Consolidation & Access Enforcement)**: Migrating internal documents, raw engineering models, unverified claims, and sensitive organizational workflows behind the authenticated Internal Portal with RBAC, while streamlining public pages for investor and visitor clarity.
 
-این سند، معماری جامع فنی، ماتریس آزمون آزمایشگاهی، استانداردهای بین‌المللی، و برنامه پیاده‌سازی ماژول فوق‌پیشرفته و تعاملی KKM-REE را در پلتفرم بین‌المللی کیمیا کاران ماد تدوین می‌نماید.
-
----
-
-### ۲. اهداف راهبردی و مأموریت مهندسی پلتفرم KKM-REE
-
-1. **استقرار ماژول اختصاصی و مهندسی KKM-REE** با رابط کاربری در تراز صنعتی و عاری از کلیشه‌های سطحی، مجهز به شبیه‌ساز دینامیک سیالات تعاملی و دوقلوی دیجیتال بلادرنگ.
-2. **پیاده‌سازی دقیق شبیه‌ساز ۳ رژیم جریان هیدرولیکی:**
-   - **رژیم الف (گردابه‌ای - Gravitational Water Vortex):** برای دبی‌های کم تا متوسط ($Q_{low}$ تا $Q_{med}$)، ایجاد ورتکس آزاد پایدار با کنترل ارتفاع مؤثر و هندسه آستین تلسکوپی.
-   - **رژیم ب (هیدروکینتیکی جریان آزاد - Free-Stream Hydrokinetic):** برای دوره‌های سیلابی و دبی‌های بالا ($Q_{flood}$)، باز شدن کامل کف پنلی و عبور مستقیم با روتور اولیه و حداکثر نرخ توان جنبشی.
-   - **رژیم ج (هیبریدی دو مرحله‌ای - Dual-Stage Hybrid Vortex-Hydrokinetic):** فعال‌سازی همزمان روتور اولیه و روتور ثانویه جمع‌شونده در پایین‌دست برای بازیافت گردابه‌های پسا (Wake Swirl Energy Recovery).
-3. **شبیه‌سازی دینامیک خودتمیزشوندگی رسوبات و عبور آشغال:**
-   - نمایش تفکیک بار بستر از طریق گرادیان فشار شعاعی حوضچه و شیارهای حلزونی مارپیچ ۳ تا ۸ درجه.
-   - مانیتورینگ اختلاف فشار ($\Delta P$) و سنسورهای کدورت (Turbidity) جهت چرخه شست‌وشوی اتوماتیک با حفظ تراز انرژی.
-4. **کنسول کنترل پیش‌بین و دوقلوی دیجیتال (Digital Twin & AI MPC Console):**
-   - پیش‌بینی جریان هیدرولوژیک تا ۷۲ ساعت آینده با مدل گراف فضا-زمان (Spatio-Temporal GNN).
-   - کنترل بهینه زوایای پره راهنما ($0^\circ - 90^\circ$)، قطر خروجی حوضچه، و موقعیت روتورها تحت قیود دبی زیست‌محیطی (E-Flows) و حفظ فون رودخانه و گذر ایمن ماهیان (Fish-Friendly Passage).
-   - تجمیع ناوگان سایت‌های حوضه آبریز در یک نیروگاه مجازی (Virtual Power Plant - VPP).
-5. **ارائه مستندات استنادی، تحلیل‌های ثبت اختراع (PCT) و ماتریس آزمون آزمایشگاهی (Experimental Matrix):**
-   - ارائه ادعانامه‌های تفکیکی اختراعات ثبت‌شده توسط سیدژینو ایوبیان.
-   - طراحی پروتکل‌های آزمون فلوم هیدرولیکی (Flume Testing)، تست‌های تونل کاویتاسیون، و اعتبارسنجی TRL (سطح بلوغ فناوری) از ۳ تا ۸.
+- **Confirmed Decision 1 (Scope of Separation)**: Internal engineering documentation, unverified claims (Levels C, D, E, F), internal financial/budget figures, operational cartable workflows, and employee records will be restricted behind the authenticated Internal Portal.
+- **Confirmed Decision 2 (Access Governance)**: Role-Based Access Control (RBAC) with secure multi-tenant roles (`SuperAdmin`, `Admin`, `Director`, `DepartmentHead`, `Staff`, `Investor`) governing document permissions, cartable approvals, and database access.
+- **Confirmed Decision 3 (Public Strategy)**: Public pages will present audited, verified executive summaries, high-level technology overviews, and compliance disclosures, with clear authentication gates prompting verified personnel to access deep engineering archives in the Internal Portal.
 
 ---
 
-### ۳. تحلیل مهندسی و بنچمارک در مقایسه با پیشینه دانش جهانی (State of the Art)
+## 1. Comprehensive Platform Content & Data Audit
 
-| ویژگی فنی / شاخص | سامانه‌های گردابه‌ای سنتی (مانند Zotlöterer) | توربین‌های هیدروکینتیکی رایج | نوآوری KKM-REE (سیدژینو ایوبیان) |
-|---|---|---|---|
-| **پاسخ به نوسانات فصلی دبی** | قفل‌شدگی یا غرقاب در سیلاب؛ خاموشی در دبی کم | حساس به کاهش سرعت جریان؛ ناتوان در دبی کم | **تطبیق پویا در ۳ رژیم پیوسته با ضریب ظرفیت > ۷۰٪** |
-| **هندسه حوضچه و خروجی** | ثابت با قطر خروجی و کف غیرقابل تغییر | فاقد حوضچه متمرکزکننده | **کف پنلی تطبیقی + آستین تلسکوپی قطر-متغیر** |
-| **مدیریت رسوب بار بستر** | تجمع ماسه در مرکز و سایش سریع روتور | برخورد مستقیم رسوبات به پره‌ها | **حلقه مارپیچ شیب‌دار (۳–۸°) با تخلیه ثقلی پیوسته** |
-| **مدیریت آشغال‌های شناور** | گرفتگی سریع توری و افت راندمان | آسیب پره‌ها بر اثر برخورد تنه درختان | **صفحه دوار هیدرولیکی خودفعال + سرریز سطحی شناور** |
-| **بازیابی انرژی پسا (Wake)** | اتلاف کامل چرخش گردابه در خروجی | تلفات القایی گریز از مرکز | **روتور ثانویه پایین‌دست جمع‌شونده (بازیابی تا ۱۸٪)** |
-| **کنترل و دوقلوی دیجیتال** | کنترل محلی دستی یا تناسبی ساده | سیستم کنترل سرعت زاویه‌ای ساده | **دوقلوی ROM کالیبره CFD + کنترل پیش‌بین MPC/RL + پیش‌بینی GNN** |
-| **سازگاری زیست‌محیطی آبزیان** | ریسک برش ماهی در خروجی باریک | آسیب در اثر سرعت دورانی بالا | **مسیر عبور بدون شوک فشاری، سرعت کم، و رژیم اکولوژیک** |
+### A. Public Layer vs. Internal Organizational Layer Mapping
 
----
+| Platform Dimension | Public Presentation Layer (Visitors & External Stakeholders) | Internal Organizational Layer (Authenticated Portal & Database) | Action Required |
+| :--- | :--- | :--- | :--- |
+| **Corporate Identity & Legal** | Official registration numbers (384054 / 10320351200), executive leadership bios, board structure, company vision, and contact channels. | Internal corporate resolutions, legal filings, tax dossier archives, internal executive extensions, and shareholder meeting minutes. | Move raw PDFs and internal legal notes to Portal DMS; keep formal certificates on public page. |
+| **Core Technologies & GMEL** | High-level thermodynamic cycle descriptions, conceptual 3D diagrams, TRL milestones, interactive system stages, and patent summaries. | Proprietary downhole casing CAD blueprints, unreleased nanofluid chemical formulas (GMEL-TF-002 vault), and thermodynamic simulations. | Seal trade secrets and raw engineering dossiers behind Level A/B authenticated portal storage. |
+| **Claims & Evidence Registry** | Formally verified claims (Level A & B: Official Gazette, published patents, provincial ratifications) and qualified ESG disclosures. | Internal test results (Level C), engineering model forecasts (Level D), development targets (Level E), and demonstration telemetry (Level F). | Public view displays verified claims only; internal portal unlocks full technical validation records. |
+| **Projects & Field Assets** | High-level project scopes, locations, completed phases, public client acknowledgments (e.g. Qeshm Phase 1, Sarakhs pilot scope). | Detailed CAPEX/OPEX budgets, contractor bid documents, EPC procurement contracts, hydro-testing raw telemetry logs. | Consolidate project templates into unified showcase; move contractual files to Internal Project Cartable. |
+| **Sustainability & ESG** | Public ESG strategy, verified carbon avoidance methodology, ISO readiness targets, and 12-month milestone progress chart. | Detailed GHG Scope 3 audit spreadsheets, supplier compliance questionnaires, internal EHS incident logs, and ISO audit findings. | Provide public dashboard visualization; house raw auditing workpapers in internal compliance archive. |
+| **Operations & Communications** | General inquiry form, pilot demonstration request form, careers application portal, and press releases. | Internal automation cartable, executive desk, internal IVR phone routing console, employee attendance, and directory. | Restrict Cartable, DMS Explorer, and IVR Console strictly to authenticated corporate sessions. |
 
-### ۴. معماری تفصیلی ۶ زیرسامانه KKM-REE و تجهیزات جانبی
+### B. Page-by-Page Audit & Reorganization Matrix
 
 ```
-+----------------------------------------------------------------------------------------------------+
-|                                    KKM-REE ARCHITECTURE TOPOLOGY                                    |
-+----------------------------------------------------------------------------------------------------+
-                                      [ ورود جریان رودخانه ]
-                                                |
-               +--------------------------------+--------------------------------+
-               |                                                                 |
-     [ مسیر تولید توان ]                                                  [ مسیر انحراف Bypass ]
-               |                                                                 |
-     [ S-1: تقسیم‌کننده جریان با دریچه‌های سرووموتوری ] <------------------------+
-               |
-     [ مدیریت رسوب و آشغال: صفحه ورودی دوار خودفعال + سرریز شناور ]
-               |
-     [ S-2: کانال ورودی مماسی با پره‌های راهنمای ۰ تا ۹۰ درجه ]
-               |
-     +---------+-------------------------------------------------+
-     | S-3: حوضچه تطبیقی با کف پنلی متحرک                        |
-     |      - حلقه جمع‌آوری بار بستر با شیارهای حلزونی ۳–۸ درجه     |
-     |      - خروجی قطر-متغیر با آستین تلسکوپی هیدرولیکی         |
-     +---------+-------------------------------------------------+
-               |
-     [ S-4: روتور عمودی اولیه + ژنراتور آهنربای دائم (PMG) متصل-مستقیم ]
-               |
-     [ خروجی جریان و گردابه پسا ]
-               |
-     [ S-5: روتور ثانویه جمع‌شونده پایین‌دست (فعال در رژیم هیبریدی) ]
-               |
-     [ تخلیه آرامش‌یافته به بستر رودخانه پایین‌دست ]
-               ^
-               | (سیگنال‌های حسگر و اقدامات کنترلی)
-     +---------+-------------------------------------------------+
-     | S-6: سامانه کنترل پیش‌بین مدل (MPC) و دوقلوی دیجیتال هوشمند |
-     |      - پیش‌بینی دبی هیدرولوژیک با Spatio-Temporal GNN       |
-     |      - کالیبراسیون برخط با فیلتر کالمن گسترش‌یافته (EKF)   |
-     |      - فرمان خودکار به پره‌ها، آستین تلسکوپی، روتورها و VPP |
-     +-----------------------------------------------------------+
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                 KKM UNIFIED APPLICATION ARCHITECTURE                                   │
+└───────────────────────────────────┬────────────────────────────────────────────────────────────────────┘
+                                    │
+           ┌────────────────────────┴────────────────────────┐
+           ▼                                                 ▼
+┌──────────────────────────────────────┐  ┌──────────────────────────────────────┐
+│        PUBLIC VISITOR SPHERE         │  │     AUTHENTICATED INTERNAL PORTAL    │
+│  (Marketing, Tech Showcase & ESG)    │  │  (Data Storage, Cartable & RBAC)     │
+├──────────────────────────────────────┤  ├──────────────────────────────────────┤
+│ • Home Page (Core Hub)               │  │ • Electronic Desk & Cartable         │
+│ • Core Technologies & GMEL Ecosystem │  │ • Document Management System (DMS)   │
+│ • Projects & Global Presence         │  │ • Engineering Blueprint Vault        │
+│ • Rural & Nomadic Development        │  │ • Claims & Audit Working Papers      │
+│ • Verified Evidence & Disclosures    │  │ • Internal Personnel Directory       │
+│ • ESG & Sustainability Dashboard     │  │ • Attendance & Operational Widgets   │
+│ • Corporate Leadership & Team        │  │ • User Management & Access Matrix    │
+│ • News, Insights & Downloads         │  │ • Role-Based Data Query Console      │
+│ • Pilot Request & Contact            │  │ • IVR Internal Communications Console│
+└──────────────────────────────────────┘  └──────────────────────────────────────┘
 ```
 
-#### تفکیک دقیق زیرسامانه‌ها:
-- **S-1 (Flow Divider):** دریچه‌های سروو-موتوری با کنترل پیوسته جهت تخصیص بهینه دبی ورودی بین مجرای اصلی تولید توان و کانال انحراف، متناسب با دبی پایه، دبی محیط‌زیستی و سناریوهای سیلابی.
-- **S-2 (Tangential Guide Vanes):** آرایه پره‌های راهنمای ورودی مماسی با زاویه چرخش پیوسته $0^\circ \le \theta \le 90^\circ$ برای کنترل شار تکانه زاویه‌ای ($L = r \times mv$) متناسب با دبی ورودی جهت شکل‌دهی بهینه‌ترین هسته گردابه.
-- **S-3 (Adaptive Basin & Variable Orifice):** حوضچه تطبیقی مجهز به پنل‌های شیب‌بندی متحرک کف و آستین تلسکوپی در منفذ خروجی؛ با تغییر قطر خروجی ($d_{exit}$)، عدد فاز گردابه و عمق گردابه کنترل شده و از پدیده خفگی (Choking) یا ناپایداری هسته هوا جلوگیری می‌شود.
-- **S-4 (Primary Rotor & Direct-Drive PMG):** روتور عمودی بهینه‌سازی‌شده برای جریان‌های دورانی مماسی با راندمان بالا در سرعت‌های کم، بدون نیاز به گیربکس مکانیکی پراتلاف، کوپل مستقیم با ژنراتور مغناطیس دائم آب‌بندی‌شده.
-- **S-5 (Retractable Secondary Rotor):** روتور هیدروکینتیکی با مکانیزم جمع‌شونده اتوماتیک مستقر در کانال تخلیه پایین‌دست؛ با چرخش در جهت عکس یا هم‌جهت با جریان چرخشی باقی‌مانده، انرژی گردابه‌های ثانویه را مهار کرده و راندمان کل سامانه را تا ۱۸٪ ارتقا می‌دهد.
-- **S-6 (AI Predictive Controller & Digital Twin):** مغز محاسباتی سامانه شامل شبیه‌ساز ROM برای پیش‌بینی دینامیک سیال در کسری از ثانیه و اعمال فرامین بهینه به تمام محرک‌ها.
+---
+
+## 2. Structural Consolidation & Integration Plan
+
+### A. Consolidation of Overlapping & Redundant Sections
+1. **Technology & GMEL Pages Consolidation**:
+   - *Current State*: `TechnologyTemplatePage`, `GMELHubPage`, `CoreTechnologiesPage`, and `DigitalTwinHubPage` have overlapping subsystem descriptions and duplicate diagrams.
+   - *Plan*: Unify into a cohesive 3-tier technology hierarchy:
+     1. High-Level Core Technology Domains (`CoreTechnologiesPage` with Geothermal, Water-Energy Nexus, Rural Microgrids).
+     2. In-Depth Subsystem Deep Dive (`GMELHubPage` covering closed-loop extraction, nanofluids, ORC, and desalination).
+     3. Physics & Predictive Analytics (`DigitalTwinHubPage` for simulation models).
+2. **Projects & Developments Consolidation**:
+   - *Current State*: `ProjectsPage`, `ProjectDevelopmentPage`, and `ProjectTemplatePage` have fragmented project data.
+   - *Plan*: Unify all project portfolios under an enhanced `ProjectsPage` featuring an interactive modal (`ProjectDetailModal`) and filtering by operational stage, sector, and verified evidence dossiers.
+3. **Evidence, Claims & Governance Integration**:
+   - *Current State*: `ClaimRegistryPage`, `EvidenceRegistryPage`, and `SustainabilityImpact` display overlapping claim records.
+   - *Plan*: Consolidate public presentation into `ESGDashboard` and `EvidenceRegistryPage` with a unified qualification badge system (P0-13 / P0-02), while routing all unverified engineering test data to the Internal Portal DMS.
 
 ---
 
-### ۵. تجهیزات خودتمیزشونده رسوب و آشغال (اختراع دوم)
+## 3. Role-Based Access Control (RBAC) & Portal Architecture
 
-1. **حلقه بار بستر پیرامونی (Bedload Helical Extraction Ring):**
-   - بر خلاف سامانه‌های سنتی که رسوبات ماسه و قلوه‌سنگ‌ها در مرکز حوضچه محبوس شده و روتور را مستهلک می‌کنند، این اختراع از شیارهای حلزونی با شیب بهینه‌سازی‌شده **۳ تا ۸ درجه** در کف و پیرامون حوضچه بهره می‌برد.
-   - ذرات تحت تأثیر گردابه گرانشی و بردار شتاب جانب‌مرکز به سمت شیارهای محیطی رانده شده و از طریق مجرای تخلیه ثقلی بدون پمپاز به بیرون هدایت می‌شوند.
-2. **صفحه ورودی چرخان خودفعال‌شونده هیدرولیکی (Passive Rotary Screen):**
-   - بدون نیاز به موتور الکتریکی یا مصرف انرژی خارجی، از نیروی هیدرودینامیکی خود آب عبوری برای چرخش صفحه مشبک و پاکسازی پیوسته شاخه‌ها و علف‌های آبی استفاده می‌کند.
-3. **سرریز سطحی شناور (Floating Debris Weir):**
-   - سازوکار هدایت آشغال‌های شناور سطحی (پلاستیک‌ها، تنه درختان، زباله‌های معلق) به کانال بای‌پس پیش از ورود به حوضچه گردابه.
-4. **سیستم شست‌وشوی اتوماتیک هوشمند:**
-   - سنجش پیوسته اختلاف فشار دو سوی صفحه ($\Delta P$) و سنسورهای کدورت (Turbidity NTU)؛ در لحظات آغازین دبی‌های بالا یا ورود موج رسوبی، دریچه تخلیه در زمان محاسبه‌شده به مدت محدود باز شده و رسوبات را با کمترین اتلاف دبی تخلیه می‌کند.
-5. **کیت ارتقا (Retrofit Kit):**
-   - قابلیت نصب ماژولار بر روی حوضچه‌های گردابه‌ای سنتی موجود در جهان با ابعاد متغیر، جهت افزایش طول عمر روتورها تا ۳۰۰٪.
+### A. Role Hierarchy & Permission Matrix
 
----
+```
+┌──────────────────────┬──────────────────────┬──────────────────────┬──────────────────────┐
+│ ROLE                 │ PUBLIC ACCESS        │ PORTAL OPERATIONAL   │ CLOUD DATA & ADMIN   │
+├──────────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
+│ SuperAdmin / CEO     │ Full Public Views    │ Full Cartable & DMS  │ Full Database & RBAC │
+│ Engineering Director │ Full Public Views    │ Tech Vault, CAD, EVD │ Subsystem Telemetry  │
+│ Project Lead / PM    │ Full Public Views    │ Project Cartable/DMS │ Field Site Audits    │
+│ Corporate Staff      │ Full Public Views    │ Attendance, Desk, IVR│ Own Profile & Tasks  │
+│ External Investor    │ Public + Data Room   │ Financial Executive  │ Read-only Deal-room  │
+│ Public Visitor       │ Public Pages Only    │ Access Denied (Gate) │ None                 │
+└──────────────────────┴──────────────────────┴──────────────────────┴──────────────────────┘
+```
 
-### ۶. سامانه هوش مصنوعی، دوقلوی دیجیتال و نیروگاه مجازی (اختراع سوم)
-
-1. **پیش‌بینی هیدرولوژیک مبتنی بر Spatio-Temporal Graph Neural Networks (GNN):**
-   - ساخت توپولوژی هیدروگرافی شبکه بالادست، ایستگاه‌های باران‌سنجی راداری و سنجنده‌های ارتفاع آب.
-   - پیش‌بینی افق ۷۲ ساعته دبی رودخانه با خطای کمتر از ۶.۵٪.
-2. **دوقلوی دیجیتال مدل مرتبه-کاسته (Reduced Order Model - ROM):**
-   - فشرده‌سازی معادلات ناویه-استوکس سه‌بعدی آشفته (URANS / LES) با استفاده از روش Proper Orthogonal Decomposition (POD) و شبکه عصبی عملگر فوریه (FNO).
-   - اجرای دینامیک سیال با نرخ ۶۰ فریم بر ثانیه در مرورگر کاربر به صورت بلادرنگ.
-   - کالیبراسیون و انطباق برخط با سنسورهای سطح آب و فشارسنج‌ها توسط Extended Kalman Filter (EKF).
-3. **کنترل پیش‌بین مدل (Nonlinear Model Predictive Control - NMPC):**
-   - حل برخط مسئله بهینه‌سازی توان تحت قیود:
-     - حداکثر توان الکتریکی تولیدی ($P_{elec} \to \max$).
-     - حداقل سایش مکانیکی و جلوگیری از کاویتاسیون ($Cavitation Index \sigma > \sigma_{crit}$).
-     - رعایت دبی زیست‌محیطی پایین‌دست ($Q_{downstream} \ge Q_{env}$).
-     - عبور ایمن ماهیان و آبزیان ($Shear Stress \tau < 500 \, \text{Pa}$).
-4. **نیروگاه مجازی توزیع‌شده (Virtual Power Plant - VPP):**
-   - هماهنگی زنجیره‌ای از واحدهای KKM-REE در طول رودخانه جهت ارائه خدمات تثبیت فرکانس شبکه، جبران توان راکتیو، و پاسخگویی به تقاضا (Demand Response).
+### B. Security & Authentication Architecture
+- **Route Guard Middleware**: Enhance `App.tsx` and `AuthContext.tsx` to intercept any direct navigation or deep link to `Page.InternalPortal`, `Page.GoogleKeep`, or internal evidence documents.
+- **Corporate Login Challenge**: Redirect unauthorized requests to a high-security corporate authentication challenge modal with email/password and Firebase SSO credentials.
+- **Data Layer Isolation**: Partition Firebase Firestore collections into:
+  - `public_metadata`: Public news, project highlights, verified claims, general brochures.
+  - `internal_cartable`: Internal automation requests, task assignments, confidential engineering memos.
+  - `internal_dms`: Structured document library with download access gated by role.
+  - `user_profiles`: Employee accounts, titles, permissions, and department affiliations.
 
 ---
 
-### ۷. ماتریس آزمون آزمایشگاهی، پایلوت میدانی و استانداردهای بین‌المللی
+## 4. Phased Execution Roadmap
 
-#### الف) ماتریس آزمون‌های تجربی و فازهای اعتبارسنجی
-1. **فاز ۱: آزمون مدل هیدرولیکی فلوم مقیاس ۱:۵ (Flume Testing)**
-   - ابعاد فلوم: طول ۱۵ متر، عرض ۲.۵ متر، عمق ۱.۵ متر، دبی قابل تنظیم $۰.۱$ تا $۰.۸ \, \text{m}^3/\text{s}$.
-   - اندازه‌گیری سرعت برداری ۳ بعدی سیال با استفاده از سرعت‌سنج لیزری دوپلر (LDV) و سنسورهای PIV (Particle Image Velocimetry).
-   - ثبت منحنی گشتاور-سرعت ($T-\omega$) در زوایای پره $۰$ تا $۹۰$ درجه و تست آستین تلسکوپی خروجی.
-2. **فاز ۲: آزمون رسوب‌زدایی با رسوبات کالیبره‌شده (Sediment Flume Validation)**
-   - تزریق ماسه دانه‌بندی شده ($d_{50} = 0.2\text{mm} - 2.0\text{mm}$) با غلظت‌های ۱ تا ۱۵ گرم بر لیتر.
-   - محاسبه راندمان جداسازی بار بستر در شیارهای حلزونی ۳ تا ۸ درجه و نرخ تخلیه به مجرای جاذبه‌ای.
-3. **فاز ۳: پایلوت میدانی مقیاس کامل ۱:۱ (Full-Scale River Pilot)**
-   - استقرار در یک رودخانه فصلی با دبی متغیر $۱.۵$ تا $۱۲.۰ \, \text{m}^3/\text{s}$ و ارتفاع آبشار $۱.۲$ متر.
-   - مانیتورینگ عملکرد پیوسته فصلی طی ۱۲ ماه در شرایط یخبندان، سیلاب، خشکسالی و طغیان بهاره.
-   - آزمون بقا و عبور بدون جراحت بچه ماهیان (Fish Survival Rate Assessment).
+### Phase 1: Full Content Inventory & Classification Audit
+- Inspect all 38 page routes and 50+ components.
+- Tag every data point in `constants.ts`, `data/claimsRegistryData.ts`, `data/evidenceRegistry.ts`, and `data/orgMembers.ts` as either **Public** or **Internal**.
+- Create a clean Public Disclosure Policy statement in `LegalPage` and `CorporateInfoPage`.
 
-#### ب) انطباق با استانداردهای جهانی ثبت و اعتبارسنجی
-- **IEC 62600-100:** Marine energy - Wave, tidal and other water current converters - Electricity producing tidal energy converters - Power performance assessment.
-- **IEC 62600-200:** Electricity producing tidal energy converters - Power performance assessment for river and tidal hydrokinetics.
-- **IEC 61400-22:** Conformance testing and certification of small distributed energy converters.
-- **ISO 19011 & ISO/IEC 17025:** مدیریت کیفیت آزمون‌های آزمایشگاهی هیدرولیک.
+### Phase 2: Public Interface Streamlining & Consolidation
+- Cleanse public pages of raw internal codes, unverified internal test figures, and internal company bureaucracy.
+- Replace internal links on public pages with professional executive summaries and clear "Internal Portal Access Required" cues.
+- Merge fragmented technology and project templates into the streamlined Core Technologies, GMEL Hub, and Projects showcases.
 
----
+### Phase 3: Internal Portal Hardening & RBAC Enforcement
+- Restructure `InternalPortalPage.tsx` into modular enterprise tabs:
+  1. *Executive Cartable & Approvals*
+  2. *Document Management System (DMS) & Technical Vault*
+  3. *Internal Engineering Claims & Raw Telemetry*
+  4. *Team Operations & Attendance Widget*
+  5. *Corporate Governance & User RBAC Administration*
+- Enforce strict route guards ensuring no unauthenticated visitor can view internal cartables or raw engineering documents.
 
-### ۸. معماری رابط کاربری، شبیه‌ساز تعاملی و ماژول KKM-REE در پلتفرم
-
-مطابق با اصول **Universal Frontend Design Constitution** (حذف پیل‌های گرافیکی زائد، کنتراست WCAG AA، پنل شکسته دو منطقه‌ای Asymmetric Split Console، استفاده از فونت‌های مونو برای داده‌ها، و شبیه‌سازی واقعی فیزیک سیالات):
-
-1. **نوار ناوبری اختصاصی و نشانگر وضعیت مهندسی (Top Engineering Ribbon):**
-   - عنوان اختصاصی نوآوری با نام مخترع: **KKM-REE — اختراعات و فناوری‌های سیدژینو ایوبیان**.
-   - انتخابگر رژیم‌های کاری (رژیم ۱: گردابه‌ای، رژیم ۲: هیدروکینتیکی، رژیم ۳: هیبریدی دو مرحله‌ای).
-   - سوییچ بین دوقلوی دیجیتال، دیاگرام مهندسی ۶ زیرسامانه، سیستم رسوب‌زدایی، و اسناد رسمی ثبت اختراع.
-2. **شبیه‌ساز بصری و هیدرودینامیکی تعاملی (Interactive Multi-Regime Vortex & CFD Canvas):**
-   - رندر بلادرنگ خطوط جریان (Streamlines)، گردابه آزاد با پروفایل رنکین (Rankine Vortex)، حرکت ذرات رسوب در شیارهای حلزونی، و چرخش روتور اولیه و ثانویه بر روی بوم گرافیکی تعاملی با افکت‌های دینامیکی روان.
-   - نمایش سرعت جریان، فشار هیدرواستاتیک، پروفایل سرعت مماسی ($v_\theta(r)$)، و نرخ توان الکتریکی.
-3. **میز فرمان پارامترهای هیدرولیکی و عملگرهای کنترلی (Control & Actuator Deck):**
-   - اسلایدرهای با دقت بالا: دبی ورودی ($Q: 0.5 - 25.0 \, \text{m}^3/\text{s}$)، هد مؤثر ($H: 0.5 - 3.0 \, \text{m}$)، زاویه پره‌های راهنما ($0^\circ - 90^\circ$)، قطر خروجی آستین تلسکوپی ($0.4 - 1.8 \, \text{m}$)، و وضعیت روتور ثانویه جمع‌شونده.
-   - کلید شبیه‌سازی سیلاب، مود رسوب‌زدایی خودکار، و فعال‌سازی کنترل پیش‌بین مدل (MPC).
-4. **داشبورد تلمتری، بهره‌وری و پایش رسوب:**
-   - نمایش ارقام با فونت تک‌فاصله عددی (`font-mono tabular-nums`).
-   - محاسبات توان هیدرولیکی ($P_{hydro} = \rho g Q H$)، توان جنبشی جریان ($P_{kin} = \frac{1}{2}\rho A v^3$)، راندمان مبدل ($\eta$)، و توان خالص خروجی PMG.
-   - نمودار سری زمانی توان، تفکیک رسوب بار بستر، و شاخص ایمنی آبزیان.
-5. **بخش مستندات ثبت اختراع، دیاگرام‌های ۶ زیرسامانه و برنامه پایلوت بین‌المللی:**
-   - شرح کامل فنی هر یک از ۶ زیرسامانه S-1 تا S-6 با نمودارهای تخصصی.
-   - ماتریس آزمون آزمایشگاهی، پروتکل‌های استاندارد IEC، و فرم ثبت درخواست مشارکت پایلوت / لایسنسینگ.
-6. **پشتیبانی ۵ زبانه کامل (فارسی، انگلیسی، عربی، کردی، روسی) با جهت‌گیری RTL/LTR.**
-
----
-
-### ۹. اقدامات گام‌به‌گام پیاده‌سازی پس از تأیید
-
-1. **گام اول: ایجاد پایگاه داده و مدل ریاضی اختراعات KKM-REE** (`src/data/reeInventionsData.ts`).
-2. **گام دوم: بازطراحی و ارتقای صفحه اصلی KKM-REE Twin** (`pages/REETwinPage.tsx`) به یک اکوسیستم جامع مهندسی، تجاری‌سازی و شبیه‌ساز ۳ رژیم.
-3. **گام سوم: ادغام کامل در پلتفرم KKM** (`App.tsx`, `pages/IPCenterPage.tsx`, `pages/DigitalTwinHubPage.tsx`, `lib/routes.ts`, `translations.ts`).
-4. **گام چهارم: اعتبارسنجی با آزمون‌های Lint، تست‌های خودکار Vitest، و بیلد کامپایل پروژه.**
+### Phase 4: Database & State Integration
+- Wire the Internal Portal to persistent Firestore collections for cartable requests and DMS files.
+- Provide comprehensive Persian and English localization for all public and portal content.
+- Verify end-to-end user journeys for both public visitors and authenticated corporate members.
