@@ -5,9 +5,9 @@ import Footer from './Footer';
 import SkipToContent from './SkipToContent';
 import BackToTopButton from './BackToTopButton';
 import CookieConsent from './CookieConsent';
+import RouteSEO from './RouteSEO';
 import { PageTemplateSkeleton } from './ShimmerSkeleton';
 import { pathToPage } from '../lib/routes';
-import { Page } from '../types';
 import { useAppNavigate } from '../hooks/useAppNavigate';
 
 /**
@@ -36,6 +36,7 @@ const RootLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <RouteSEO />
       <SkipToContent />
 
       <Header
