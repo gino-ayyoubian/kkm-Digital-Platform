@@ -11,7 +11,6 @@ import RootLayout from '../components/RootLayout';
 import { PageTemplateSkeleton } from '../components/ShimmerSkeleton';
 import { findArticleBySlug, getArticleSlug } from './news';
 import { pathToPage, pageToPath } from './routes';
-import { withSetPage, withSelectArticle } from './withPageNav';
 import { Page } from '../types';
 import type { GeminiSearchResult, NewsItem, Project } from '../types';
 import { performDeepSearch } from '../searchEngine';
@@ -57,7 +56,7 @@ function withSuspense(node: React.ReactNode) {
   return <Suspense fallback={<PageTemplateSkeleton template="standard" />}>{node}</Suspense>;
 }
 
-/** Pages that require setPage — wrapped at module level after lazy resolution via element factories */
+/** Inject setPage into lazy page components that still require the prop. */
 function SetPageRoute({ children }: { children: React.ReactElement }) {
   const setPage = useAppNavigate();
   return React.cloneElement(children, { setPage } as never);
@@ -94,11 +93,7 @@ function NewsArticleRoute() {
   );
 
   if (!article) {
-    return withSuspense(
-      <SetPageRoute>
-        <NotFoundPage setPage={() => undefined} />
-      </SetPageRoute>
-    );
+    return <NotFoundRoute />;
   }
 
   return withSuspense(
@@ -284,7 +279,7 @@ export const routeObjects: RouteObject[] = [
       { path: 'futures', element: withSuspense(<FuturesPage />) },
       { path: 'offline', element: <OfflineRoute /> },
 
-      // Alias redirects
+      // Alias redirects → canonical paths
       { path: 'about-us', element: <Navigate to="/about" replace /> },
       { path: 'aboutus', element: <Navigate to="/about" replace /> },
       { path: 'technologies', element: <Navigate to="/technology" replace /> },
