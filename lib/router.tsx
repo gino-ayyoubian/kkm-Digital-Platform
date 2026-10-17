@@ -17,10 +17,6 @@ import { performDeepSearch } from '../searchEngine';
 import { useAppNavigate } from '../hooks/useAppNavigate';
 import { useLanguage } from '../LanguageContext';
 
-/**
- * Lazy page modules — keep the same code-splitting behavior already used in App.tsx.
- * trackLazyLoad wrappers can be re-applied here if analytics on chunk load is still required.
- */
 const HomePage = React.lazy(() => import('../pages/HomePage'));
 const AboutUsPage = React.lazy(() => import('../pages/AboutUsPage'));
 const CoreTechnologiesPage = React.lazy(() => import('../pages/CoreTechnologiesPage'));
@@ -209,9 +205,6 @@ function SearchResultsRoute() {
   );
 }
 
-/**
- * 404 page requires setPage for quick-link navigation.
- */
 function NotFoundRoute() {
   const navigateToPage = useAppNavigate();
   return withSuspense(<NotFoundPage setPage={navigateToPage} />);
@@ -230,10 +223,6 @@ function LegacyPageQueryRedirect() {
   return <Navigate to={pageToPath(match)} replace />;
 }
 
-/**
- * Canonical route table derived from lib/routes.ts.
- * Aliases are handled as redirects so only one canonical path remains indexed.
- */
 export const routeObjects: RouteObject[] = [
   {
     path: '/',
@@ -275,7 +264,7 @@ export const routeObjects: RouteObject[] = [
       { path: 'futures', element: withSuspense(<FuturesPage />) },
       { path: 'offline', element: <RoutedPage component={OfflinePage} /> },
 
-      // Alias redirects → canonical paths (SEO-safe)
+      // Alias redirects → canonical paths
       { path: 'about-us', element: <Navigate to="/about" replace /> },
       { path: 'aboutus', element: <Navigate to="/about" replace /> },
       { path: 'technologies', element: <Navigate to="/technology" replace /> },
@@ -313,10 +302,7 @@ export const routeObjects: RouteObject[] = [
       { path: 'portal', element: <Navigate to="/internal-portal" replace /> },
       { path: 'keep', element: <Navigate to="/google-keep" replace /> },
 
-      // Legacy query-string support: /?page=AboutUs
       { path: 'legacy-page', element: <LegacyPageQueryRedirect /> },
-
-      // Catch-all 404
       { path: '*', element: <NotFoundRoute /> },
     ],
   },
@@ -324,10 +310,6 @@ export const routeObjects: RouteObject[] = [
 
 export const router = createBrowserRouter(routeObjects);
 
-/**
- * Optional helper during migration:
- * derive Page enum from the active location for components that still expect Page values.
- */
 export function useCurrentPage(): Page {
   const locationPath = typeof window !== 'undefined' ? window.location.pathname : '/';
   return pathToPage(locationPath);
