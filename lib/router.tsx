@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useState, useCallback } from 'react';
 import {
   createBrowserRouter,
   Navigate,
+  useNavigate,
   useParams,
   useSearchParams,
   type RouteObject,
@@ -65,6 +66,7 @@ function withSuspense(node: React.ReactNode) {
  */
 function NewsArticleRoute() {
   const { slug = '' } = useParams();
+  const navigate = useNavigate();
   const navigateToPage = useAppNavigate();
   const article = findArticleBySlug(slug);
 
@@ -74,23 +76,10 @@ function NewsArticleRoute() {
 
   const handleSelectArticle = useCallback(
     (next: NewsItem) => {
-      navigateToPage(Page.News); // ensure news context
-      // Prefer direct path navigation for the new slug
-      window.history.pushState(null, '', `/news/${getArticleSlug(next.title)}`);
-      // Force re-resolution by full navigation when router is active
-      navigateToPage(Page.News);
-      // The path change above + re-render via navigate is handled by React Router when using navigate()
+      navigate(`/news/${getArticleSlug(next.title)}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
-    [navigateToPage]
-  );
-
-  // Prefer router navigate with explicit path for related articles
-  const handleSelectArticlePath = useCallback(
-    (next: NewsItem) => {
-      const path = `/news/${getArticleSlug(next.title)}`;
-      window.location.assign(path);
-    },
-    []
+    [navigate]
   );
 
   if (!article) {
@@ -101,7 +90,7 @@ function NewsArticleRoute() {
     <NewsArticlePage
       article={article}
       onBack={handleBack}
-      onSelectArticle={handleSelectArticlePath}
+      onSelectArticle={handleSelectArticle}
     />
   );
 }
@@ -113,6 +102,7 @@ function NewsArticleRoute() {
 function SearchResultsRoute() {
   const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? '';
+  const navigate = useNavigate();
   const navigateToPage = useAppNavigate();
   const { language } = useLanguage();
   const [result, setResult] = useState<GeminiSearchResult | null>(null);
@@ -163,9 +153,12 @@ function SearchResultsRoute() {
     [setParams]
   );
 
-  const handleSelectArticle = useCallback((article: NewsItem) => {
-    window.location.assign(`/news/${getArticleSlug(article.title)}`);
-  }, []);
+  const handleSelectArticle = useCallback(
+    (article: NewsItem) => {
+      navigate(`/news/${getArticleSlug(article.title)}`);
+    },
+    [navigate]
+  );
 
   const handleNavigatePage = useCallback(
     (page: Page) => {
@@ -174,9 +167,12 @@ function SearchResultsRoute() {
     [navigateToPage]
   );
 
-  const handleSelectProject = useCallback((_project: Project) => {
-    navigateToPage(Page.Projects);
-  }, [navigateToPage]);
+  const handleSelectProject = useCallback(
+    (_project: Project) => {
+      navigateToPage(Page.Projects);
+    },
+    [navigateToPage]
+  );
 
   return withSuspense(
     <SearchResultsPage
