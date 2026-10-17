@@ -7,8 +7,9 @@ import BackToTopButton from './BackToTopButton';
 import CookieConsent from './CookieConsent';
 import { PageTemplateSkeleton } from './ShimmerSkeleton';
 import { pathToPage } from '../lib/routes';
-import { Page } from '../types';
+import { Page, type NewsItem } from '../types';
 import { useAppNavigate } from '../hooks/useAppNavigate';
+import { getArticleSlug } from '../lib/news';
 
 /**
  * Application shell.
@@ -33,6 +34,12 @@ const RootLayout: React.FC = () => {
     },
     [navigate]
   );
+  const handleSelectArticle = React.useCallback(
+    (article: NewsItem) => {
+      navigate(`/news/${getArticleSlug(article.title)}`);
+    },
+    [navigate]
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -50,7 +57,11 @@ const RootLayout: React.FC = () => {
         </Suspense>
       </main>
 
-      <Footer />
+      <Footer
+        setPage={navigateToPage}
+        onSelectArticle={handleSelectArticle}
+        showNewsTicker={currentPage === Page.Home}
+      />
       <BackToTopButton />
       <CookieConsent />
     </div>

@@ -7,12 +7,12 @@
 
 import React from 'react';
 import { RouterProvider } from 'react-router';
-import { router } from './lib/router';
+import { router } from '../lib/router';
 
 // Existing providers remain exactly as they are today.
-import { ThemeProvider } from './ThemeContext';
-import { LanguageProvider } from './LanguageContext';
-import { AuthProvider } from './AuthContext';
+import { ThemeProvider } from '../ThemeContext';
+import { LanguageProvider } from '../LanguageContext';
+import { AuthProvider } from '../AuthContext';
 // import any other existing providers (Sentry, Analytics wrappers, etc.)
 
 /**
