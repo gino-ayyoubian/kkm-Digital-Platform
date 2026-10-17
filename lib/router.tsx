@@ -1,18 +1,21 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState, useCallback } from 'react';
 import {
   createBrowserRouter,
   Navigate,
+  useNavigate,
   useParams,
   useSearchParams,
-  useNavigate,
   type RouteObject,
 } from 'react-router';
 import RootLayout from '../components/RootLayout';
 import { PageTemplateSkeleton } from '../components/ShimmerSkeleton';
 import { findArticleBySlug, getArticleSlug } from './news';
 import { pathToPage, pageToPath } from './routes';
-import { Page, type NewsItem } from '../types';
+import { Page } from '../types';
+import type { GeminiSearchResult, NewsItem, Project } from '../types';
+import { performDeepSearch } from '../searchEngine';
 import { useAppNavigate } from '../hooks/useAppNavigate';
+import { useLanguage } from '../LanguageContext';
 
 /**
  * Lazy page modules — keep the same code-splitting behavior already used in App.tsx.
@@ -77,22 +80,35 @@ function useSelectArticle() {
 }
 
 /**
- * Thin wrappers for routes that previously depended on App-level state.
- * Keep these temporary until page components read router state directly.
+ * News article deep link: /news/:slug
+ * Matches NewsArticlePage props: article, onBack, onSelectArticle
  */
 function NewsArticleRoute() {
   const { slug = '' } = useParams();
   const navigate = useNavigate();
-  const onSelectArticle = useSelectArticle();
+  const navigateToPage = useAppNavigate();
   const article = findArticleBySlug(slug);
+
+  const handleBack = useCallback(() => {
+    navigateToPage(Page.News);
+  }, [navigateToPage]);
+
+  const handleSelectArticle = useCallback(
+    (next: NewsItem) => {
+      navigate(`/news/${getArticleSlug(next.title)}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    [navigate]
+  );
+
   if (!article) {
-    return <RoutedPage component={NotFoundPage} />;
+    return <NotFoundRoute />;
   }
   return withSuspense(
     <NewsArticlePage
       article={article}
-      onBack={() => navigate('/news')}
-      onSelectArticle={onSelectArticle}
+      onBack={handleBack}
+      onSelectArticle={handleSelectArticle}
     />
   );
 }
@@ -102,21 +118,103 @@ function NewsRoute() {
   return withSuspense(<NewsPage onSelectArticle={onSelectArticle} />);
 }
 
+/**
+ * Search results: /search?q=...
+ * Matches SearchResultsPage props and runs performDeepSearch.
+ */
 function SearchResultsRoute() {
-  const [params] = useSearchParams();
-  const navigate = useNavigate();
-  const setPage = useAppNavigate();
-  const onSelectArticle = useSelectArticle();
+  const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? '';
+  const navigate = useNavigate();
+  const navigateToPage = useAppNavigate();
+  const { language } = useLanguage();
+  const [result, setResult] = useState<GeminiSearchResult | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setResult(null);
+
+    if (!query.trim()) {
+      setResult({
+        summary: '',
+        sources: [],
+        matchedItems: [],
+        totalMatchesCount: 0,
+        sourceType: 'internal',
+      });
+      return;
+    }
+
+    (async () => {
+      try {
+        const data = await performDeepSearch(query, language);
+        if (!cancelled) setResult(data);
+      } catch {
+        if (!cancelled) {
+          setResult({
+            summary: 'Search temporarily unavailable.',
+            sources: [],
+            matchedItems: [],
+            totalMatchesCount: 0,
+            sourceType: 'internal',
+          });
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [query, language]);
+
+  const handleSearch = useCallback(
+    (nextQuery: string) => {
+      const q = nextQuery.trim();
+      if (!q) return;
+      setParams({ q });
+    },
+    [setParams]
+  );
+
+  const handleSelectArticle = useCallback(
+    (article: NewsItem) => {
+      navigate(`/news/${getArticleSlug(article.title)}`);
+    },
+    [navigate]
+  );
+
+  const handleNavigatePage = useCallback(
+    (page: Page) => {
+      navigateToPage(page);
+    },
+    [navigateToPage]
+  );
+
+  const handleSelectProject = useCallback(
+    (_project: Project) => {
+      navigateToPage(Page.Projects);
+    },
+    [navigateToPage]
+  );
+
   return withSuspense(
     <SearchResultsPage
-      result={null}
+      result={result}
       query={query}
-      onSearch={(nextQuery) => navigate(`/search?q=${encodeURIComponent(nextQuery)}`)}
-      onSelectArticle={onSelectArticle}
-      onNavigatePage={setPage}
+      onSearch={handleSearch}
+      onSelectArticle={handleSelectArticle}
+      onNavigatePage={handleNavigatePage}
+      onSelectProject={handleSelectProject}
     />
   );
+}
+
+/**
+ * 404 page requires setPage for quick-link navigation.
+ */
+function NotFoundRoute() {
+  const navigateToPage = useAppNavigate();
+  return withSuspense(<NotFoundPage setPage={navigateToPage} />);
 }
 
 function LegacyPageQueryRedirect() {
@@ -219,7 +317,7 @@ export const routeObjects: RouteObject[] = [
       { path: 'legacy-page', element: <LegacyPageQueryRedirect /> },
 
       // Catch-all 404
-      { path: '*', element: <RoutedPage component={NotFoundPage} /> },
+      { path: '*', element: <NotFoundRoute /> },
     ],
   },
 ];
