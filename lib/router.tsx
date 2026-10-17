@@ -1,0 +1,334 @@
+import React, { Suspense, useEffect, useState, useCallback } from 'react';
+import {
+  createBrowserRouter,
+  Navigate,
+  useNavigate,
+  useParams,
+  useSearchParams,
+  type RouteObject,
+} from 'react-router';
+import RootLayout from '../components/RootLayout';
+import { PageTemplateSkeleton } from '../components/ShimmerSkeleton';
+import { findArticleBySlug, getArticleSlug } from './news';
+import { pathToPage, pageToPath } from './routes';
+import { Page } from '../types';
+import type { GeminiSearchResult, NewsItem, Project } from '../types';
+import { performDeepSearch } from '../searchEngine';
+import { useAppNavigate } from '../hooks/useAppNavigate';
+import { useLanguage } from '../LanguageContext';
+
+/**
+ * Lazy page modules — keep the same code-splitting behavior already used in App.tsx.
+ * trackLazyLoad wrappers can be re-applied here if analytics on chunk load is still required.
+ */
+const HomePage = React.lazy(() => import('../pages/HomePage'));
+const AboutUsPage = React.lazy(() => import('../pages/AboutUsPage'));
+const CoreTechnologiesPage = React.lazy(() => import('../pages/CoreTechnologiesPage'));
+const ProjectsPage = React.lazy(() => import('../pages/ProjectsPage'));
+const NewsPage = React.lazy(() => import('../pages/NewsPage'));
+const NewsArticlePage = React.lazy(() => import('../pages/NewsArticlePage'));
+const ContactPage = React.lazy(() => import('../pages/ContactPage'));
+const DownloadsPage = React.lazy(() => import('../pages/DownloadsPage'));
+const RuralDevelopmentPage = React.lazy(() => import('../pages/RuralDevelopmentPage'));
+const ExhibitionPage = React.lazy(() => import('../pages/ExhibitionPage'));
+const EvidenceRegistryPage = React.lazy(() => import('../pages/EvidenceRegistryPage'));
+const ClaimRegistryPage = React.lazy(() => import('../pages/ClaimRegistryPage'));
+const InvestmentPortalPage = React.lazy(() => import('../pages/InvestmentPortalPage'));
+const PilotRequestPage = React.lazy(() => import('../pages/PilotRequestPage'));
+const ProjectDevelopmentPage = React.lazy(() => import('../pages/ProjectDevelopmentPage'));
+const GMELHubPage = React.lazy(() => import('../pages/GMELHubPage'));
+const CorporateInfoPage = React.lazy(() => import('../pages/CorporateInfoPage'));
+const IPCenterPage = React.lazy(() => import('../pages/IPCenterPage'));
+const InnovationHubPage = React.lazy(() => import('../pages/InnovationHubPage'));
+const CarbonCreditPage = React.lazy(() => import('../pages/CarbonCreditPage'));
+const LegalPage = React.lazy(() => import('../pages/LegalPage'));
+const SearchResultsPage = React.lazy(() => import('../pages/SearchResultsPage'));
+const FuturesPage = React.lazy(() => import('../pages/FuturesPage'));
+const DigitalTwinHubPage = React.lazy(() => import('../pages/DigitalTwinHubPage'));
+const REETwinPage = React.lazy(() => import('../pages/REETwinPage'));
+const CareersPage = React.lazy(() => import('../pages/CareersPage'));
+const TeamPage = React.lazy(() => import('../pages/TeamPage'));
+const FAQPage = React.lazy(() => import('../pages/FAQPage'));
+const DivisionsPage = React.lazy(() => import('../pages/DivisionsPage'));
+const InternalPortalPage = React.lazy(() => import('../pages/InternalPortalPage'));
+const GoogleKeepPage = React.lazy(() => import('../pages/GoogleKeepPage'));
+const OfflinePage = React.lazy(() => import('../pages/OfflinePage'));
+const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
+const ESGDashboard = React.lazy(() => import('../components/ESGDashboard'));
+
+function withSuspense(node: React.ReactNode) {
+  return <Suspense fallback={<PageTemplateSkeleton template="standard" />}>{node}</Suspense>;
+}
+
+function RoutedPage({
+  component: Component,
+}: {
+  component: React.ComponentType<{ setPage: (page: Page) => void }>;
+}) {
+  const setPage = useAppNavigate();
+  return withSuspense(<Component setPage={setPage} />);
+}
+
+function useSelectArticle() {
+  const navigate = useNavigate();
+  return React.useCallback(
+    (article: NewsItem) => {
+      navigate(`/news/${getArticleSlug(article.title)}`);
+    },
+    [navigate]
+  );
+}
+
+/**
+ * News article deep link: /news/:slug
+ * Matches NewsArticlePage props: article, onBack, onSelectArticle
+ */
+function NewsArticleRoute() {
+  const { slug = '' } = useParams();
+  const navigate = useNavigate();
+  const navigateToPage = useAppNavigate();
+  const article = findArticleBySlug(slug);
+
+  const handleBack = useCallback(() => {
+    navigateToPage(Page.News);
+  }, [navigateToPage]);
+
+  const handleSelectArticle = useCallback(
+    (next: NewsItem) => {
+      navigate(`/news/${getArticleSlug(next.title)}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    [navigate]
+  );
+
+  if (!article) {
+    return <NotFoundRoute />;
+  }
+  return withSuspense(
+    <NewsArticlePage
+      article={article}
+      onBack={handleBack}
+      onSelectArticle={handleSelectArticle}
+    />
+  );
+}
+
+function NewsRoute() {
+  const onSelectArticle = useSelectArticle();
+  return withSuspense(<NewsPage onSelectArticle={onSelectArticle} />);
+}
+
+/**
+ * Search results: /search?q=...
+ * Matches SearchResultsPage props and runs performDeepSearch.
+ */
+function SearchResultsRoute() {
+  const [params, setParams] = useSearchParams();
+  const query = params.get('q') ?? '';
+  const navigate = useNavigate();
+  const navigateToPage = useAppNavigate();
+  const { language } = useLanguage();
+  const [result, setResult] = useState<GeminiSearchResult | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setResult(null);
+
+    if (!query.trim()) {
+      setResult({
+        summary: '',
+        sources: [],
+        matchedItems: [],
+        totalMatchesCount: 0,
+        sourceType: 'internal',
+      });
+      return;
+    }
+
+    (async () => {
+      try {
+        const data = await performDeepSearch(query, language);
+        if (!cancelled) setResult(data);
+      } catch {
+        if (!cancelled) {
+          setResult({
+            summary: 'Search temporarily unavailable.',
+            sources: [],
+            matchedItems: [],
+            totalMatchesCount: 0,
+            sourceType: 'internal',
+          });
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [query, language]);
+
+  const handleSearch = useCallback(
+    (nextQuery: string) => {
+      const q = nextQuery.trim();
+      if (!q) return;
+      setParams({ q });
+    },
+    [setParams]
+  );
+
+  const handleSelectArticle = useCallback(
+    (article: NewsItem) => {
+      navigate(`/news/${getArticleSlug(article.title)}`);
+    },
+    [navigate]
+  );
+
+  const handleNavigatePage = useCallback(
+    (page: Page) => {
+      navigateToPage(page);
+    },
+    [navigateToPage]
+  );
+
+  const handleSelectProject = useCallback(
+    (_project: Project) => {
+      navigateToPage(Page.Projects);
+    },
+    [navigateToPage]
+  );
+
+  return withSuspense(
+    <SearchResultsPage
+      result={result}
+      query={query}
+      onSearch={handleSearch}
+      onSelectArticle={handleSelectArticle}
+      onNavigatePage={handleNavigatePage}
+      onSelectProject={handleSelectProject}
+    />
+  );
+}
+
+/**
+ * 404 page requires setPage for quick-link navigation.
+ */
+function NotFoundRoute() {
+  const navigateToPage = useAppNavigate();
+  return withSuspense(<NotFoundPage setPage={navigateToPage} />);
+}
+
+function LegacyPageQueryRedirect() {
+  const [params] = useSearchParams();
+  const legacy = params.get('page');
+  if (!legacy) return <Navigate to="/" replace />;
+
+  const match = Object.values(Page).find(
+    (p) => p.replace(/\s/g, '').toLowerCase() === legacy.toLowerCase()
+  );
+
+  if (!match) return <Navigate to="/" replace />;
+  return <Navigate to={pageToPath(match)} replace />;
+}
+
+/**
+ * Canonical route table derived from lib/routes.ts.
+ * Aliases are handled as redirects so only one canonical path remains indexed.
+ */
+export const routeObjects: RouteObject[] = [
+  {
+    path: '/',
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <RoutedPage component={HomePage} /> },
+
+      // Canonical pages
+      { path: 'about', element: <RoutedPage component={AboutUsPage} /> },
+      { path: 'technology', element: <RoutedPage component={CoreTechnologiesPage} /> },
+      { path: 'projects', element: <RoutedPage component={ProjectsPage} /> },
+      { path: 'news', element: <NewsRoute /> },
+      { path: 'news/:slug', element: <NewsArticleRoute /> },
+      { path: 'downloads', element: <RoutedPage component={DownloadsPage} /> },
+      { path: 'rural-development', element: <RoutedPage component={RuralDevelopmentPage} /> },
+      { path: 'exhibition/rural-1405', element: <RoutedPage component={ExhibitionPage} /> },
+      { path: 'evidence-registry', element: <RoutedPage component={EvidenceRegistryPage} /> },
+      { path: 'claims-registry', element: <RoutedPage component={ClaimRegistryPage} /> },
+      { path: 'invest', element: <RoutedPage component={InvestmentPortalPage} /> },
+      { path: 'team', element: withSuspense(<TeamPage />) },
+      { path: 'faq', element: withSuspense(<FAQPage />) },
+      { path: 'divisions', element: withSuspense(<DivisionsPage />) },
+      { path: 'innovation-hub', element: withSuspense(<InnovationHubPage />) },
+      { path: 'corporate-info', element: <RoutedPage component={CorporateInfoPage} /> },
+      { path: 'ip-center', element: <RoutedPage component={IPCenterPage} /> },
+      { path: 'gmel', element: <RoutedPage component={GMELHubPage} /> },
+      { path: 'pilot-request', element: <RoutedPage component={PilotRequestPage} /> },
+      { path: 'project-development', element: <RoutedPage component={ProjectDevelopmentPage} /> },
+      { path: 'sustainability', element: withSuspense(<ESGDashboard />) },
+      { path: 'carbon-credits', element: withSuspense(<CarbonCreditPage />) },
+      { path: 'legal', element: withSuspense(<LegalPage />) },
+      { path: 'careers', element: withSuspense(<CareersPage />) },
+      { path: 'contact', element: withSuspense(<ContactPage />) },
+      { path: 'digital-twins', element: <RoutedPage component={DigitalTwinHubPage} /> },
+      { path: 'ree', element: withSuspense(<REETwinPage />) },
+      { path: 'internal-portal', element: withSuspense(<InternalPortalPage />) },
+      { path: 'google-keep', element: <RoutedPage component={GoogleKeepPage} /> },
+      { path: 'search', element: <SearchResultsRoute /> },
+      { path: 'futures', element: withSuspense(<FuturesPage />) },
+      { path: 'offline', element: <RoutedPage component={OfflinePage} /> },
+
+      // Alias redirects → canonical paths (SEO-safe)
+      { path: 'about-us', element: <Navigate to="/about" replace /> },
+      { path: 'aboutus', element: <Navigate to="/about" replace /> },
+      { path: 'technologies', element: <Navigate to="/technology" replace /> },
+      { path: 'core-technologies', element: <Navigate to="/technology" replace /> },
+      { path: 'projects-and-pilots', element: <Navigate to="/projects" replace /> },
+      { path: 'project', element: <Navigate to="/projects" replace /> },
+      { path: 'news-and-insights', element: <Navigate to="/news" replace /> },
+      { path: 'insights', element: <Navigate to="/news" replace /> },
+      { path: 'whitepapers', element: <Navigate to="/downloads" replace /> },
+      { path: 'rural', element: <Navigate to="/rural-development" replace /> },
+      { path: 'exhibition', element: <Navigate to="/exhibition/rural-1405" replace /> },
+      { path: 'evidence', element: <Navigate to="/evidence-registry" replace /> },
+      { path: 'claims', element: <Navigate to="/claims-registry" replace /> },
+      { path: 'claim-registry', element: <Navigate to="/claims-registry" replace /> },
+      { path: 'investors', element: <Navigate to="/invest" replace /> },
+      { path: 'investment-portal', element: <Navigate to="/invest" replace /> },
+      { path: 'leadership', element: <Navigate to="/team" replace /> },
+      { path: 'board', element: <Navigate to="/team" replace /> },
+      { path: 'faqs', element: <Navigate to="/faq" replace /> },
+      { path: 'questions', element: <Navigate to="/faq" replace /> },
+      { path: 'business-units', element: <Navigate to="/divisions" replace /> },
+      { path: 'innovation', element: <Navigate to="/innovation-hub" replace /> },
+      { path: 'corporate', element: <Navigate to="/corporate-info" replace /> },
+      { path: 'ip', element: <Navigate to="/ip-center" replace /> },
+      { path: 'esg', element: <Navigate to="/sustainability" replace /> },
+      { path: 'carbon-credit', element: <Navigate to="/carbon-credits" replace /> },
+      { path: 'privacy', element: <Navigate to="/legal" replace /> },
+      { path: 'terms', element: <Navigate to="/legal" replace /> },
+      { path: 'cookies', element: <Navigate to="/legal" replace /> },
+      { path: 'dpa', element: <Navigate to="/legal" replace /> },
+      { path: 'contact-us', element: <Navigate to="/contact" replace /> },
+      { path: 'digital-twin', element: <Navigate to="/digital-twins" replace /> },
+      { path: 'kkm-ree', element: <Navigate to="/ree" replace /> },
+      { path: 'digital-twin-ree', element: <Navigate to="/ree" replace /> },
+      { path: 'portal', element: <Navigate to="/internal-portal" replace /> },
+      { path: 'keep', element: <Navigate to="/google-keep" replace /> },
+
+      // Legacy query-string support: /?page=AboutUs
+      { path: 'legacy-page', element: <LegacyPageQueryRedirect /> },
+
+      // Catch-all 404
+      { path: '*', element: <NotFoundRoute /> },
+    ],
+  },
+];
+
+export const router = createBrowserRouter(routeObjects);
+
+/**
+ * Optional helper during migration:
+ * derive Page enum from the active location for components that still expect Page values.
+ */
+export function useCurrentPage(): Page {
+  const locationPath = typeof window !== 'undefined' ? window.location.pathname : '/';
+  return pathToPage(locationPath);
+}
