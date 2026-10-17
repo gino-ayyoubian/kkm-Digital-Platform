@@ -11,16 +11,13 @@ import RootLayout from '../components/RootLayout';
 import { PageTemplateSkeleton } from '../components/ShimmerSkeleton';
 import { findArticleBySlug, getArticleSlug } from './news';
 import { pathToPage, pageToPath } from './routes';
+import { withSetPage, withSelectArticle } from './withPageNav';
 import { Page } from '../types';
 import type { GeminiSearchResult, NewsItem, Project } from '../types';
 import { performDeepSearch } from '../searchEngine';
 import { useAppNavigate } from '../hooks/useAppNavigate';
 import { useLanguage } from '../LanguageContext';
 
-/**
- * Lazy page modules — keep the same code-splitting behavior already used in App.tsx.
- * trackLazyLoad wrappers can be re-applied here if analytics on chunk load is still required.
- */
 const HomePage = React.lazy(() => import('../pages/HomePage'));
 const AboutUsPage = React.lazy(() => import('../pages/AboutUsPage'));
 const CoreTechnologiesPage = React.lazy(() => import('../pages/CoreTechnologiesPage'));
@@ -60,10 +57,24 @@ function withSuspense(node: React.ReactNode) {
   return <Suspense fallback={<PageTemplateSkeleton template="standard" />}>{node}</Suspense>;
 }
 
-/**
- * News article deep link: /news/:slug
- * Matches NewsArticlePage props: article, onBack, onSelectArticle
- */
+/** Pages that require setPage — wrapped at module level after lazy resolution via element factories */
+function SetPageRoute({ children }: { children: React.ReactElement }) {
+  const setPage = useAppNavigate();
+  return React.cloneElement(children, { setPage } as never);
+}
+
+function NewsPageRoute() {
+  const navigate = useNavigate();
+  const onSelectArticle = useCallback(
+    (article: NewsItem) => {
+      navigate(`/news/${getArticleSlug(article.title)}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    [navigate]
+  );
+  return withSuspense(<NewsPage onSelectArticle={onSelectArticle} />);
+}
+
 function NewsArticleRoute() {
   const { slug = '' } = useParams();
   const navigate = useNavigate();
@@ -83,7 +94,11 @@ function NewsArticleRoute() {
   );
 
   if (!article) {
-    return withSuspense(<NotFoundRoute />);
+    return withSuspense(
+      <SetPageRoute>
+        <NotFoundPage setPage={() => undefined} />
+      </SetPageRoute>
+    );
   }
 
   return withSuspense(
@@ -95,10 +110,6 @@ function NewsArticleRoute() {
   );
 }
 
-/**
- * Search results: /search?q=...
- * Matches SearchResultsPage props and runs performDeepSearch.
- */
 function SearchResultsRoute() {
   const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? '';
@@ -186,12 +197,27 @@ function SearchResultsRoute() {
   );
 }
 
-/**
- * 404 page requires setPage for quick-link navigation.
- */
 function NotFoundRoute() {
   const navigateToPage = useAppNavigate();
   return withSuspense(<NotFoundPage setPage={navigateToPage} />);
+}
+
+function OfflineRoute() {
+  const navigateToPage = useAppNavigate();
+  const navigate = useNavigate();
+  const onSelectArticle = useCallback(
+    (article: NewsItem) => {
+      navigate(`/news/${getArticleSlug(article.title)}`);
+    },
+    [navigate]
+  );
+  return withSuspense(
+    <OfflinePage
+      setPage={navigateToPage}
+      onSelectArticle={onSelectArticle}
+      onRetryConnection={() => window.location.reload()}
+    />
+  );
 }
 
 function LegacyPageQueryRedirect() {
@@ -207,52 +233,58 @@ function LegacyPageQueryRedirect() {
   return <Navigate to={pageToPath(match)} replace />;
 }
 
-/**
- * Canonical route table derived from lib/routes.ts.
- * Aliases are handled as redirects so only one canonical path remains indexed.
- */
+/** Factory: lazy page + setPage injection */
+function pageWithSetPage(
+  LazyPage: React.LazyExoticComponent<React.ComponentType<{ setPage: (page: Page) => void }>>
+) {
+  return withSuspense(
+    <SetPageRoute>
+      <LazyPage setPage={() => undefined} />
+    </SetPageRoute>
+  );
+}
+
 export const routeObjects: RouteObject[] = [
   {
     path: '/',
     element: <RootLayout />,
     children: [
-      { index: true, element: withSuspense(<HomePage />) },
+      { index: true, element: pageWithSetPage(HomePage) },
 
-      // Canonical pages
-      { path: 'about', element: withSuspense(<AboutUsPage />) },
+      { path: 'about', element: pageWithSetPage(AboutUsPage) },
       { path: 'technology', element: withSuspense(<CoreTechnologiesPage />) },
-      { path: 'projects', element: withSuspense(<ProjectsPage />) },
-      { path: 'news', element: withSuspense(<NewsPage />) },
+      { path: 'projects', element: pageWithSetPage(ProjectsPage) },
+      { path: 'news', element: <NewsPageRoute /> },
       { path: 'news/:slug', element: <NewsArticleRoute /> },
-      { path: 'downloads', element: withSuspense(<DownloadsPage />) },
-      { path: 'rural-development', element: withSuspense(<RuralDevelopmentPage />) },
-      { path: 'exhibition/rural-1405', element: withSuspense(<ExhibitionPage />) },
-      { path: 'evidence-registry', element: withSuspense(<EvidenceRegistryPage />) },
-      { path: 'claims-registry', element: withSuspense(<ClaimRegistryPage />) },
-      { path: 'invest', element: withSuspense(<InvestmentPortalPage />) },
+      { path: 'downloads', element: pageWithSetPage(DownloadsPage) },
+      { path: 'rural-development', element: pageWithSetPage(RuralDevelopmentPage) },
+      { path: 'exhibition/rural-1405', element: pageWithSetPage(ExhibitionPage) },
+      { path: 'evidence-registry', element: pageWithSetPage(EvidenceRegistryPage) },
+      { path: 'claims-registry', element: pageWithSetPage(ClaimRegistryPage) },
+      { path: 'invest', element: pageWithSetPage(InvestmentPortalPage) },
       { path: 'team', element: withSuspense(<TeamPage />) },
       { path: 'faq', element: withSuspense(<FAQPage />) },
       { path: 'divisions', element: withSuspense(<DivisionsPage />) },
       { path: 'innovation-hub', element: withSuspense(<InnovationHubPage />) },
-      { path: 'corporate-info', element: withSuspense(<CorporateInfoPage />) },
-      { path: 'ip-center', element: withSuspense(<IPCenterPage />) },
-      { path: 'gmel', element: withSuspense(<GMELHubPage />) },
-      { path: 'pilot-request', element: withSuspense(<PilotRequestPage />) },
-      { path: 'project-development', element: withSuspense(<ProjectDevelopmentPage />) },
+      { path: 'corporate-info', element: pageWithSetPage(CorporateInfoPage) },
+      { path: 'ip-center', element: pageWithSetPage(IPCenterPage) },
+      { path: 'gmel', element: pageWithSetPage(GMELHubPage) },
+      { path: 'pilot-request', element: pageWithSetPage(PilotRequestPage) },
+      { path: 'project-development', element: pageWithSetPage(ProjectDevelopmentPage) },
       { path: 'sustainability', element: withSuspense(<ESGDashboard />) },
       { path: 'carbon-credits', element: withSuspense(<CarbonCreditPage />) },
       { path: 'legal', element: withSuspense(<LegalPage />) },
       { path: 'careers', element: withSuspense(<CareersPage />) },
       { path: 'contact', element: withSuspense(<ContactPage />) },
-      { path: 'digital-twins', element: withSuspense(<DigitalTwinHubPage />) },
+      { path: 'digital-twins', element: pageWithSetPage(DigitalTwinHubPage) },
       { path: 'ree', element: withSuspense(<REETwinPage />) },
       { path: 'internal-portal', element: withSuspense(<InternalPortalPage />) },
-      { path: 'google-keep', element: withSuspense(<GoogleKeepPage />) },
+      { path: 'google-keep', element: pageWithSetPage(GoogleKeepPage) },
       { path: 'search', element: <SearchResultsRoute /> },
       { path: 'futures', element: withSuspense(<FuturesPage />) },
-      { path: 'offline', element: withSuspense(<OfflinePage />) },
+      { path: 'offline', element: <OfflineRoute /> },
 
-      // Alias redirects → canonical paths (SEO-safe)
+      // Alias redirects
       { path: 'about-us', element: <Navigate to="/about" replace /> },
       { path: 'aboutus', element: <Navigate to="/about" replace /> },
       { path: 'technologies', element: <Navigate to="/technology" replace /> },
@@ -290,10 +322,7 @@ export const routeObjects: RouteObject[] = [
       { path: 'portal', element: <Navigate to="/internal-portal" replace /> },
       { path: 'keep', element: <Navigate to="/google-keep" replace /> },
 
-      // Legacy query-string support: /?page=AboutUs
       { path: 'legacy-page', element: <LegacyPageQueryRedirect /> },
-
-      // Catch-all 404
       { path: '*', element: <NotFoundRoute /> },
     ],
   },
@@ -301,10 +330,6 @@ export const routeObjects: RouteObject[] = [
 
 export const router = createBrowserRouter(routeObjects);
 
-/**
- * Optional helper during migration:
- * derive Page enum from the active location for components that still expect Page values.
- */
 export function useCurrentPage(): Page {
   const locationPath = typeof window !== 'undefined' ? window.location.pathname : '/';
   return pathToPage(locationPath);
