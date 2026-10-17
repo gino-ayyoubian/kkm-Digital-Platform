@@ -56,24 +56,29 @@ function withSuspense(node: React.ReactNode) {
   return <Suspense fallback={<PageTemplateSkeleton template="standard" />}>{node}</Suspense>;
 }
 
-/** Inject setPage into lazy page components that still require the prop. */
-function SetPageRoute({ children }: { children: React.ReactElement }) {
+function RoutedPage({
+  component: Component,
+}: {
+  component: React.ComponentType<{ setPage: (page: Page) => void }>;
+}) {
   const setPage = useAppNavigate();
-  return React.cloneElement(children, { setPage } as never);
+  return withSuspense(<Component setPage={setPage} />);
 }
 
-function NewsPageRoute() {
+function useSelectArticle() {
   const navigate = useNavigate();
-  const onSelectArticle = useCallback(
+  return React.useCallback(
     (article: NewsItem) => {
       navigate(`/news/${getArticleSlug(article.title)}`);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     [navigate]
   );
-  return withSuspense(<NewsPage onSelectArticle={onSelectArticle} />);
 }
 
+/**
+ * News article deep link: /news/:slug
+ * Matches NewsArticlePage props: article, onBack, onSelectArticle
+ */
 function NewsArticleRoute() {
   const { slug = '' } = useParams();
   const navigate = useNavigate();
@@ -95,7 +100,6 @@ function NewsArticleRoute() {
   if (!article) {
     return <NotFoundRoute />;
   }
-
   return withSuspense(
     <NewsArticlePage
       article={article}
@@ -105,6 +109,15 @@ function NewsArticleRoute() {
   );
 }
 
+function NewsRoute() {
+  const onSelectArticle = useSelectArticle();
+  return withSuspense(<NewsPage onSelectArticle={onSelectArticle} />);
+}
+
+/**
+ * Search results: /search?q=...
+ * Matches SearchResultsPage props and runs performDeepSearch.
+ */
 function SearchResultsRoute() {
   const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? '';
@@ -197,24 +210,6 @@ function NotFoundRoute() {
   return withSuspense(<NotFoundPage setPage={navigateToPage} />);
 }
 
-function OfflineRoute() {
-  const navigateToPage = useAppNavigate();
-  const navigate = useNavigate();
-  const onSelectArticle = useCallback(
-    (article: NewsItem) => {
-      navigate(`/news/${getArticleSlug(article.title)}`);
-    },
-    [navigate]
-  );
-  return withSuspense(
-    <OfflinePage
-      setPage={navigateToPage}
-      onSelectArticle={onSelectArticle}
-      onRetryConnection={() => window.location.reload()}
-    />
-  );
-}
-
 function LegacyPageQueryRedirect() {
   const [params] = useSearchParams();
   const legacy = params.get('page');
@@ -228,56 +223,46 @@ function LegacyPageQueryRedirect() {
   return <Navigate to={pageToPath(match)} replace />;
 }
 
-/** Factory: lazy page + setPage injection */
-function pageWithSetPage(
-  LazyPage: React.LazyExoticComponent<React.ComponentType<{ setPage: (page: Page) => void }>>
-) {
-  return withSuspense(
-    <SetPageRoute>
-      <LazyPage setPage={() => undefined} />
-    </SetPageRoute>
-  );
-}
-
 export const routeObjects: RouteObject[] = [
   {
     path: '/',
     element: <RootLayout />,
     children: [
-      { index: true, element: pageWithSetPage(HomePage) },
+      { index: true, element: <RoutedPage component={HomePage} /> },
 
-      { path: 'about', element: pageWithSetPage(AboutUsPage) },
-      { path: 'technology', element: withSuspense(<CoreTechnologiesPage />) },
-      { path: 'projects', element: pageWithSetPage(ProjectsPage) },
-      { path: 'news', element: <NewsPageRoute /> },
+      // Canonical pages
+      { path: 'about', element: <RoutedPage component={AboutUsPage} /> },
+      { path: 'technology', element: <RoutedPage component={CoreTechnologiesPage} /> },
+      { path: 'projects', element: <RoutedPage component={ProjectsPage} /> },
+      { path: 'news', element: <NewsRoute /> },
       { path: 'news/:slug', element: <NewsArticleRoute /> },
-      { path: 'downloads', element: pageWithSetPage(DownloadsPage) },
-      { path: 'rural-development', element: pageWithSetPage(RuralDevelopmentPage) },
-      { path: 'exhibition/rural-1405', element: pageWithSetPage(ExhibitionPage) },
-      { path: 'evidence-registry', element: pageWithSetPage(EvidenceRegistryPage) },
-      { path: 'claims-registry', element: pageWithSetPage(ClaimRegistryPage) },
-      { path: 'invest', element: pageWithSetPage(InvestmentPortalPage) },
+      { path: 'downloads', element: <RoutedPage component={DownloadsPage} /> },
+      { path: 'rural-development', element: <RoutedPage component={RuralDevelopmentPage} /> },
+      { path: 'exhibition/rural-1405', element: <RoutedPage component={ExhibitionPage} /> },
+      { path: 'evidence-registry', element: <RoutedPage component={EvidenceRegistryPage} /> },
+      { path: 'claims-registry', element: <RoutedPage component={ClaimRegistryPage} /> },
+      { path: 'invest', element: <RoutedPage component={InvestmentPortalPage} /> },
       { path: 'team', element: withSuspense(<TeamPage />) },
       { path: 'faq', element: withSuspense(<FAQPage />) },
       { path: 'divisions', element: withSuspense(<DivisionsPage />) },
       { path: 'innovation-hub', element: withSuspense(<InnovationHubPage />) },
-      { path: 'corporate-info', element: pageWithSetPage(CorporateInfoPage) },
-      { path: 'ip-center', element: pageWithSetPage(IPCenterPage) },
-      { path: 'gmel', element: pageWithSetPage(GMELHubPage) },
-      { path: 'pilot-request', element: pageWithSetPage(PilotRequestPage) },
-      { path: 'project-development', element: pageWithSetPage(ProjectDevelopmentPage) },
+      { path: 'corporate-info', element: <RoutedPage component={CorporateInfoPage} /> },
+      { path: 'ip-center', element: <RoutedPage component={IPCenterPage} /> },
+      { path: 'gmel', element: <RoutedPage component={GMELHubPage} /> },
+      { path: 'pilot-request', element: <RoutedPage component={PilotRequestPage} /> },
+      { path: 'project-development', element: <RoutedPage component={ProjectDevelopmentPage} /> },
       { path: 'sustainability', element: withSuspense(<ESGDashboard />) },
       { path: 'carbon-credits', element: withSuspense(<CarbonCreditPage />) },
       { path: 'legal', element: withSuspense(<LegalPage />) },
       { path: 'careers', element: withSuspense(<CareersPage />) },
       { path: 'contact', element: withSuspense(<ContactPage />) },
-      { path: 'digital-twins', element: pageWithSetPage(DigitalTwinHubPage) },
+      { path: 'digital-twins', element: <RoutedPage component={DigitalTwinHubPage} /> },
       { path: 'ree', element: withSuspense(<REETwinPage />) },
       { path: 'internal-portal', element: withSuspense(<InternalPortalPage />) },
-      { path: 'google-keep', element: pageWithSetPage(GoogleKeepPage) },
+      { path: 'google-keep', element: <RoutedPage component={GoogleKeepPage} /> },
       { path: 'search', element: <SearchResultsRoute /> },
       { path: 'futures', element: withSuspense(<FuturesPage />) },
-      { path: 'offline', element: <OfflineRoute /> },
+      { path: 'offline', element: <RoutedPage component={OfflinePage} /> },
 
       // Alias redirects → canonical paths
       { path: 'about-us', element: <Navigate to="/about" replace /> },
