@@ -7,6 +7,10 @@ import { ThemeProvider } from '../ThemeContext';
 import Header from '../components/Header';
 import { Page } from '../types';
 
+vi.mock('../components/HeaderFluidAnimation', () => ({
+    HeaderFluidAnimation: () => null,
+}));
+
 describe('Header Integration', () => {
     it('renders the header and navigation links', () => {
         const mockSetPage = vi.fn();
