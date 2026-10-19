@@ -2,6 +2,7 @@ import path from 'path';
 import { brotliCompressSync, constants as zlibConstants, gzipSync } from 'node:zlib';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const createCompressedAssetsPlugin = (): Plugin => ({
@@ -62,6 +63,7 @@ export default defineConfig(() => {
         hmr: false,
       },
       plugins: [
+        tailwindcss(),
         react(),
         createCompressedAssetsPlugin(),
         VitePWA({
@@ -105,7 +107,21 @@ export default defineConfig(() => {
       resolve: {
         alias: {
           '@': path.resolve(import.meta.dirname, '.'),
-        }
+        },
+        dedupe: ['react', 'react-dom']
+      },
+      optimizeDeps: {
+        include: [
+          'react',
+          'react-dom',
+          'react-dom/client',
+          'react/jsx-runtime',
+          'react/jsx-dev-runtime',
+          'react-router',
+          'motion/react',
+          'lottie-react',
+          'lucide-react'
+        ]
       }
     };
 });

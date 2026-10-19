@@ -10,6 +10,9 @@ import {
 } from 'lucide-react';
 import { db } from '../../firebase';
 import { collection, getDocs, doc, updateDoc, setDoc } from 'firebase/firestore';
+import { ExecutiveGovernanceQueue } from './ExecutiveGovernanceQueue';
+import { WebAuthnChallengeModal } from './WebAuthnChallengeModal';
+import { KeyRotationSecurityPanel } from './KeyRotationSecurityPanel';
 
 interface TelemetryNode {
   nodeId: string;
@@ -79,7 +82,7 @@ export const AdminControlPanel: React.FC = () => {
   const { t, isFa } = useLanguage();
   const { userProfile, isSuperAdmin, isAdmin } = useAuth();
 
-  const [activeSubTab, setActiveSubTab] = useState<'telemetry' | 'cms_announcements' | 'cms_milestones' | 'cms_members'>('telemetry');
+  const [activeSubTab, setActiveSubTab] = useState<'telemetry' | 'cms_announcements' | 'cms_milestones' | 'cms_members' | 'principle4_governance'>('telemetry');
   
   // Telemetry State
   const [telemetryData, setTelemetryData] = useState<TelemetryResponse | null>(null);
@@ -134,21 +137,68 @@ export const AdminControlPanel: React.FC = () => {
     return () => clearInterval(interval);
   }, [telemetryAutoRefresh]);
 
-  // Handle SCADA Control Actions
-  const handleControlCommand = async (nodeId: string, command: string, parameterValue: any) => {
+  // WebAuthn Step-up State for SCADA Control
+  const [cachedStepUpToken, setCachedStepUpToken] = useState<string | null>(null);
+  const [pendingScadaDirective, setPendingScadaDirective] = useState<{
+    nodeId: string;
+    command: string;
+    parameterValue: any;
+    summary: string;
+    summaryFa: string;
+  } | null>(null);
+
+  // Handle SCADA Control Actions with WebAuthn Hardware 2FA Gating
+  const handleControlCommand = async (nodeId: string, command: string, parameterValue: any, tokenOverride?: string) => {
+    const token = tokenOverride || cachedStepUpToken;
+    const isTier3 = userProfile?.clearanceLevel?.includes('Top Secret') || userProfile?.clearanceLevel?.includes('Strategic') || isSuperAdmin;
+
+    if (isTier3 && !token) {
+      const commandNamesFa: Record<string, string> = {
+        SET_MASS_FLOW: `تنظیم دبی جرمی به ${parameterValue} kg/s روی ${nodeId}`,
+        TOGGLE_SECONDARY_EXCHANGER: `تغییر وضعیت مبدل ثانویه روی ${nodeId}`,
+        TOGGLE_EMERGENCY_BYPASS: `فعال/غیرفعال‌سازی بای‌پس اضطراری روی ${nodeId}`,
+        RECALIBRATE_SENSORS: `کالیبراسیون سنسورهای دوقلوی دیجیتال روی ${nodeId}`
+      };
+      setPendingScadaDirective({
+        nodeId,
+        command,
+        parameterValue,
+        summary: `SCADA Command Override: ${command} on ${nodeId}`,
+        summaryFa: commandNamesFa[command] || `دستور کنترلی SCADA روی ${nodeId}`
+      });
+      return;
+    }
+
     setIsLoadingTelemetry(true);
     try {
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['x-kkm-stepup-token'] = token;
+      }
+
       const res = await fetch('/api/admin/telemetry/control', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nodeId, command, parameterValue })
+        headers,
+        body: JSON.stringify({ nodeId, command, parameterValue, stepUpToken: token })
       });
       const data = await res.json();
+
+      if (res.status === 403 && data.code === 'REQUIRE_WEBAUTHN_STEPUP') {
+        setPendingScadaDirective({
+          nodeId,
+          command,
+          parameterValue,
+          summary: `SCADA Command Override: ${command} on ${nodeId}`,
+          summaryFa: `تغییر پارامتر کنترلی SCADA روی ${nodeId}`
+        });
+        return;
+      }
+
       if (res.ok && data.success) {
-        setActionMessage(isFa ? 'دستور عملیاتی با موفقیت به سامانه SCADA اعمال شد.' : 'Directive successfully dispatched to SCADA controller.');
+        setActionMessage(isFa ? 'دستور عملیاتی با تایید سخت‌افزاری به سامانه SCADA اعمال شد.' : 'Directive successfully dispatched to SCADA controller.');
         fetchTelemetry();
       } else {
-        setActionMessage(data.message || 'Operation failed');
+        setActionMessage(data.messageFa || data.message || 'Operation failed');
       }
     } catch (e: any) {
       setActionMessage(e.message || 'Error dispatching directive');
@@ -314,6 +364,7 @@ export const AdminControlPanel: React.FC = () => {
           { id: 'telemetry', labelFa: 'تله‌متری و فرماندهی چاه‌های ژرف GMEL', labelEn: 'GMEL Thermodynamic Telemetry', icon: Flame },
           { id: 'cms_announcements', labelFa: 'مدیریت بخشنامه‌ها و اطلاعیه‌ها', labelEn: 'Portal Announcements CMS', icon: FileText },
           { id: 'cms_milestones', labelFa: 'کنترل مایلستون‌های پروژه‌های کلان', labelEn: 'Project Milestones CMS', icon: BarChart3 },
+          { id: 'principle4_governance', labelFa: 'تاییدات راهبردی مدیرعامل (اصل ۴)', labelEn: 'Executive Governance (Principle 4)', icon: ShieldCheck },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeSubTab === tab.id;
@@ -764,6 +815,34 @@ export const AdminControlPanel: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* SUB-TAB 4: PRINCIPLE 4 EXECUTIVE PRODUCTION GOVERNANCE */}
+      {activeSubTab === 'principle4_governance' && (
+        <div className="pt-2">
+          <ExecutiveGovernanceQueue />
+        </div>
+      )}
+
+      {/* FIDO2 / WebAuthn Hardware 2FA Step-up Modal for SCADA Overrides */}
+      <WebAuthnChallengeModal
+        isOpen={Boolean(pendingScadaDirective)}
+        actionType="SCADA_OVERRIDE"
+        actionSummary={pendingScadaDirective?.summary || 'SCADA Directive Execution'}
+        actionSummaryFa={pendingScadaDirective?.summaryFa}
+        onClose={() => setPendingScadaDirective(null)}
+        onSuccess={(stepUpToken) => {
+          setCachedStepUpToken(stepUpToken);
+          if (pendingScadaDirective) {
+            handleControlCommand(
+              pendingScadaDirective.nodeId,
+              pendingScadaDirective.command,
+              pendingScadaDirective.parameterValue,
+              stepUpToken
+            );
+          }
+          setPendingScadaDirective(null);
+        }}
+      />
     </div>
   );
 };

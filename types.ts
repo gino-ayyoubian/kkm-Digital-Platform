@@ -27,7 +27,6 @@ export enum Page {
   Legal = 'Legal & Policies',
   SearchResults = 'Search Results',
   InternalPortal = 'Internal Portal',
-  GoogleKeep = 'Google Keep Workspace',
   Offline = 'Offline Mode',
 
 
@@ -328,9 +327,51 @@ export interface InternalDirectoryEntry {
   staffExtension?: StaffExtension;
 }
 
-export type AutomationRequestType = 'leave' | 'purchase' | 'mission' | 'technical_review' | 'it_access' | 'memo';
+export type AutomationRequestType = 'leave' | 'purchase' | 'mission' | 'technical_review' | 'it_access' | 'memo' | 'production_change';
 export type AutomationPriority = 'low' | 'medium' | 'high' | 'urgent';
-export type AutomationStatus = 'pending_manager' | 'pending_finance' | 'pending_ceo' | 'approved' | 'rejected' | 'draft';
+export type AutomationStatus = 'pending_manager' | 'pending_finance' | 'pending_ceo' | 'pending_executive_signoff' | 'approved' | 'rejected' | 'draft';
+
+export type ProductionChangeCategory = 'dns_modification' | 'telecom_trunk_routing' | 'cryptographic_key_rotation';
+
+export interface ProductionChangeMetadata {
+  category: ProductionChangeCategory;
+  categoryFa: string;
+  targetResource: string;
+  currentValue: string;
+  proposedValue: string;
+  riskLevel: 'critical' | 'high';
+  governanceClause: string;
+  signOffRequiredFrom: string[];
+  executionType: 'automated_on_signoff' | 'manual_verification_required';
+  sha256DiffDigest?: string;
+  signOffRecord?: ExecutiveSignOffRecord;
+}
+
+export interface ExecutiveSignOffRecord {
+  signerEmail: string;
+  signerName: string;
+  signerRole: string;
+  signedAt: string;
+  signatureToken: string;
+  cryptographicDigest: string;
+  notes?: string;
+  ipAddress?: string;
+}
+
+export interface ExecutiveAuditLogEntry {
+  id: string;
+  requestId: string;
+  timestamp: string;
+  actorEmail: string;
+  actorName: string;
+  action: 'PROPOSE' | 'EXECUTIVE_SIGNOFF' | 'REJECT' | 'REVOKE' | 'EXECUTE';
+  category: ProductionChangeCategory;
+  targetResource: string;
+  summary: string;
+  summaryFa: string;
+  status: 'PENDING' | 'EXECUTED' | 'REJECTED';
+  cryptographicHash: string;
+}
 
 export interface AutomationApprovalStep {
   step: string;
@@ -356,6 +397,7 @@ export interface AutomationRequest {
   startDate?: string;
   endDate?: string;
   destination?: string;
+  productionChange?: ProductionChangeMetadata;
   approvals: AutomationApprovalStep[];
   attachments?: string[];
   createdAt: string;

@@ -39,38 +39,38 @@ export interface ProjectHighlight {
 
 export const PROJECT_HIGHLIGHTS: ProjectHighlight[] = [
   {
-    id: 'qeshm-hub',
-    nameEn: 'Qeshm Green Energy & Marine Biotechnology Hub',
-    nameFa: 'هاب انرژی سبز و زیست‌فناوری دریایی قشم',
-    subtitleEn: 'Offshore Infrastructure & Closed-Loop Clean Desalination',
-    subtitleFa: 'زیرساخت فراساحلی و نمک‌زدایی پاک در چرخه بسته',
-    locationEn: 'Qeshm Free Zone, Persian Gulf',
-    locationFa: 'منطقه آزاد قشم، خلیج فارس',
-    sectorEn: 'Renewable Energy / Marine / Desalination',
-    sectorFa: 'انرژی پاک / صنایع دریایی / نمک‌زدایی',
-    statusEn: 'Active EPC & Deployment',
-    statusFa: 'عملیات فعال مهندسی و استقرار EPC',
-    trl: 'TRL 8',
-    descriptionEn: 'Integrated offshore/onshore energy infrastructure delivering zero-carbon electricity, 12,000 m³/day thermal desalination, and marine bio-refining facilities.',
-    descriptionFa: 'زیرساخت یکپارچه ساحلی و فراساحلی تأمین برق بدون کربن، نمک‌زدایی حرارتی آب دریا با ظرفیت ۱۲،۰۰۰ مترمکعب در روز و پالایشگاه زیستی دریایی.',
+    id: 'qeshm-oil-terminal',
+    nameEn: 'Qeshm Oil Terminal – Phase 1 (Onshore Infrastructure)',
+    nameFa: 'پایانه نفتی قشم – فاز ۱ (زیرساخت خشکی)',
+    subtitleEn: '3.24M-Barrel Storage Facility, Six API Tanks & ~22 km Pipelines',
+    subtitleFa: 'تاسیسات ذخیره‌سازی ۳.۲۴ میلیون بشکه‌ای، شش مخزن API و ۲۲ کیلومتر خط لوله',
+    locationEn: 'Qeshm Free Zone, Iran',
+    locationFa: 'منطقه آزاد قشم، ایران',
+    sectorEn: 'Storage Terminals / Pipeline Logistics / MEP Systems',
+    sectorFa: 'مخازن ذخیره‌سازی / خطوط لوله / تاسیسات مکانیکی و برقی (MEP)',
+    statusEn: 'Completed 2020 (Operational Handover)',
+    statusFa: 'تکمیل‌شده در شهریور ۱۳۹۹ (تحویل عملیاتی)',
+    trl: 'TRL 9',
+    descriptionEn: 'Delivered comprehensive EPC for 3.24M-barrel storage facility, earthworks, civil works for six API tanks, ~22 km pipelines (16″ crude, 8″ seawater), and sustainable MEP systems with on-time operational handover.',
+    descriptionFa: 'اجرای پروژه جامع مهندسی، تامین و ساخت (EPC) مخازن ۳.۲۴ میلیون بشکه‌ای، شش مخزن استاندارد API، حدود ۲۲ کیلومتر خط لوله ساحلی، تاسیسات MEP و سیستم‌های پایدار با تحویل به‌موقع در ۱۳۹۹.',
     image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80',
     metrics: [
-      { labelEn: 'Capital Scope', labelFa: 'حجم سرمایه‌گذاری', value: '$120M' },
-      { labelEn: 'Desalination Output', labelFa: 'ظرفیت نمک‌زدایی', value: '12k m³/d' },
-      { labelEn: 'Throughput Gain', labelFa: 'افزایش بازدهی', value: '+120%' }
+      { labelEn: 'Storage Capacity', labelFa: 'ظرفیت ذخیره‌سازی', value: '3.24M bbl' },
+      { labelEn: 'Pipeline Network', labelFa: 'شبکه خطوط لوله', value: '~22 km' },
+      { labelEn: 'API Tanks', labelFa: 'مخازن استاندارد API', value: '6 Tanks' }
     ],
     highlightsEn: [
-      'Subsea HDPE deep water intake & brine minimization',
-      'Hybrid solar-thermal & marine biotechnology integration',
-      'Advanced coastal control center with 24/7 telemetry'
+      'Comprehensive EPC for six API-grade tanks, earthworks and pump stations',
+      '22 km onshore pipelines (16″ crude oil, 8″ seawater) and utility corridors',
+      'Sustainable MEP systems: firefighting, stormwater & oil-water separators'
     ],
     highlightsFa: [
-      'خط انتقال آبگیری لوله‌ای HDPE در بستر دریا با کمینه‌سازی پساب',
-      'تلفیق هیبریدی خورشیدی-حرارتی با زیست‌فناوری ریزجلبک‌های دریایی',
-      'مرکز کنترل پیشرفته ساحلی با تله‌متری و پایش پیوسته ۲۴/۷'
+      'اجرای جامع EPC برای ساخت شش مخزن استاندارد API، عملیات خاکی و ایستگاه‌های پمپاژ',
+      'اجرای ۲۲ کیلومتر خطوط لوله خشکی (۱۶ اینچ نفت خام، ۸ اینچ آب دریا) و راهروهای تاسیساتی',
+      'سیستم‌های پایدار MEP شامل اطفاء حریق، مدیریت رواناب و جداکننده‌های آب و روغن'
     ],
-    roleEn: 'General Contractor (EPC) & Technology Developer',
-    roleFa: 'پیمانکار عمومی EPC و توسعه‌دهنده فناوری'
+    roleEn: 'KKM International Group (EPC Contractor & Key Supplier)',
+    roleFa: 'گروه بین‌المللی KKM (پیمانکار EPC و تأمین‌کننده کلیدی)'
   },
   {
     id: 'sarakhs-geothermal',
@@ -141,38 +141,72 @@ export const PROJECT_HIGHLIGHTS: ProjectHighlight[] = [
     roleFa: 'طراح مهندسی و شریک فناوری صنعتی'
   },
   {
-    id: 'bandar-abbas-powerwater',
-    nameEn: 'Bandar Abbas Integrated Power & Desalination Hub',
-    nameFa: 'مجتمع یکپارچه تولید همزمان برق و آب‌شیرین‌کن بندرعباس',
-    subtitleEn: 'Large-Scale Multi-Energy Cogeneration & Water Security',
-    subtitleFa: 'همبست مقیاس‌بزرگ تولید همزمان انرژی و امنیت پایدار آب',
-    locationEn: 'Bandar Abbas Coastal Industrial Zone, Hormozgan',
-    locationFa: 'منطقه ویژه صنعتی ساحلی بندرعباس، هرمزگان',
-    sectorEn: 'Hybrid Cogeneration / Municipal Desalination',
-    sectorFa: 'نیروگاه تولید همزمان / آب‌شیرین‌کن صنعتی',
-    statusEn: 'Operational & Phase II Expansion',
-    statusFa: 'بهره‌برداری کامل و اجرای فاز توسعه دوم',
+    id: 'qeshm-powerwater-mapna',
+    nameEn: 'Power and Water Cogeneration Plant',
+    nameFa: 'نیروگاه تولید همزمان برق و آب قشم',
+    subtitleEn: '50 MW Power & 18,000 m³/day MED Desalination (Zero Safety Incidents)',
+    subtitleFa: 'تاسیسات ۵۰ مگاوات برق و ۱۸،۰۰۰ مترمکعب آب‌شیرین‌کن با صفر حادثه ایمنی',
+    locationEn: 'Qeshm Island, Iran',
+    locationFa: 'جزیره قشم، ایران',
+    sectorEn: 'Power & Thermal Desalination (MED) / Co-generation',
+    sectorFa: 'تولید همزمان برق و آب‌شیرین‌کن حرارتی (MED)',
+    statusEn: 'Completed (13-Month EPC Contract)',
+    statusFa: 'تکمیل‌شده (قرارداد ۱۳ ماهه EPC)',
     trl: 'TRL 9',
-    descriptionEn: 'A strategic dual-purpose utility plant generating reliable electricity while utilizing recovered waste heat to produce high-purity drinking and industrial water.',
-    descriptionFa: 'تأسیسات استراتژیک دومنظوره که همزمان با تولید برق پایدار، از حرارت بازیافتی جهت تأمین آب شرب شهری و مصارف صنایع سنگین استفاده می‌کند.',
+    descriptionEn: 'Oversaw 50 MW power and 18,000 m³/day desalination plant, coordinating MEP elements (gas generators, HRSG boilers, MED systems) for on-budget delivery with zero safety incidents.',
+    descriptionFa: 'نظارت بر احداث نیروگاه ۵۰ مگاوات و آب‌شیرین‌کن ۱۸،۰۰۰ مترمکعب در روز، هماهنگی کامل عناصر MEP (ژنراتورهای گاز، بویلرهای HRSG، واحدهای MED) و تحویل در بودجه با کارنامه صفر حادثه ایمنی.',
     image: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80',
     metrics: [
-      { labelEn: 'Power Output', labelFa: 'ظرفیت تولید برق', value: '240 MW' },
-      { labelEn: 'Daily Fresh Water', labelFa: 'تولید روزانه آب شیرین', value: '45k m³/d' },
-      { labelEn: 'Heat Recovery', labelFa: 'بازیافت حرارت اتلافی', value: '78%' }
+      { labelEn: 'Power Output', labelFa: 'ظرفیت تولید برق', value: '50 MW' },
+      { labelEn: 'MED Fresh Water', labelFa: 'تولید روزانه آب شیرین', value: '18k m³/d' },
+      { labelEn: 'Safety Record', labelFa: 'کارنامه ایمنی', value: '0 Incidents' }
     ],
     highlightsEn: [
-      'Multi-stage flash (MSF) & reverse osmosis hybrid configuration',
-      'Direct transmission to regional industrial manufacturing parks',
-      'Real-time water quality spectrophotometry monitoring'
+      'Gas generators, HRSG recovery boilers, and MED multi-effect distillation',
+      'Flawless zero-safety-incident record across all delivery and commissioning phases',
+      'Completed on-budget within 13-month EPC contract timeline'
     ],
     highlightsFa: [
-      'پیکربندی هیبریدی اسمز معکوس و تبخیر ناگهانی چندمرحله‌ای',
-      'انتقال مستقیم شبکه به شهرک‌های صنعتی و پالایشگاهی منطقه',
-      'پایش طیف‌سنجی بلادرنگ خلوص و شاخص‌های کیفی آب'
+      'هماهنگی یکپارچه ژنراتورهای گاز، بویلرهای بازیاب حرارت HRSG و سیستم‌های MED',
+      'کارنامه افتخارآمیز صفر حادثه ایمنی در تمام مراحل اجرا و راه‌اندازی',
+      'تحویل کامل منطبق بر بودجه و برنامه زمان‌بندی فشرده ۱۳ ماهه'
     ],
-    roleEn: 'Lead EPC Contractor & Operations Supervisor',
-    roleFa: 'پیمانکار ارشد EPC و ناظر عالی بهره‌برداری'
+    roleEn: 'Mapna Qeshm Water & Power / KKM Lead MEP Coordinator',
+    roleFa: 'شرکت تولید آب و برق مپنا قشم / هماهنگ‌کننده ارشد MEP گروه KKM'
+  },
+  {
+    id: 'combined-cycle-qeshm',
+    nameEn: 'Combined Cycle Power Plant',
+    nameFa: 'نیروگاه سیکل ترکیبی قشم',
+    subtitleEn: '500 MW Facility (2x170 MW Gas + 160 MW Steam) with Revit MEP',
+    subtitleFa: 'تاسیسات ۵۰۰ مگاواتی (۲ توربین گاز ۱۷۰ مگاوات + توربین بخار ۱۶۰ مگاوات)',
+    locationEn: 'Qeshm Island, Iran',
+    locationFa: 'جزیره قشم، ایران',
+    sectorEn: 'Combined Cycle Power Generation / Advanced MEP Systems',
+    sectorFa: 'تولید برق سیکل ترکیبی / سامانه‌های پیشرفته MEP',
+    statusEn: 'Ongoing (38-Month EPC Contract)',
+    statusFa: 'در حال اجرا (قرارداد ۳۸ ماهه EPC)',
+    trl: 'TRL 8',
+    descriptionEn: 'Managed 500 MW facility with 2x170 MW gas turbines and 160 MW steam turbine, integrating MEP systems using Revit MEP for compliance with ISO standards and risk mitigation.',
+    descriptionFa: 'مدیریت تاسیسات ۵۰۰ مگاواتی با ۲ توربین گاز ۱۷۰ مگاوات و یک توربین بخار ۱۶۰ مگاوات و یکپارچه‌سازی سیستم‌های MEP با استفاده از نرم‌افزار Revit MEP جهت انطباق با استانداردهای ایزو و کاهش ریسک.',
+    image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=80',
+    metrics: [
+      { labelEn: 'Total Capacity', labelFa: 'ظرفیت کل نیروگاه', value: '500 MW' },
+      { labelEn: 'Gas Turbines', labelFa: 'توربین‌های گازی', value: '2x170 MW' },
+      { labelEn: 'Steam Turbine', labelFa: 'توربین بخار', value: '160 MW' }
+    ],
+    highlightsEn: [
+      'Integrated MEP systems using Revit MEP preventing design clashes',
+      'Strict adherence to ISO quality, environmental & safety standards',
+      'Comprehensive risk mitigation and 38-month EPC project controls'
+    ],
+    highlightsFa: [
+      'یکپارچه‌سازی سیستم‌های MEP با Revit MEP و رفع تداخلات پیش از اجرا',
+      'انطباق دقیق با استانداردهای کیفیت، محیط زیست و ایمنی ISO',
+      'مدیریت جامع ریسک و کنترل پروژه در چارچوب قرارداد ۳۸ ماهه EPC'
+    ],
+    roleEn: 'Energy Gostar Qeshm Company / KKM MEP Systems Integrator',
+    roleFa: 'شرکت انرژی گستر قشم / یکپارچه‌ساز سیستم‌های MEP گروه KKM'
   },
   {
     id: 'meshkin-geothermal',
@@ -258,25 +292,37 @@ const ProjectHighlightsCarousel: React.FC<ProjectHighlightsCarouselProps> = ({
     setIsPlaying((prev) => !prev);
   }, []);
 
-  // Auto-play interval and progress tick
+  // Decoupled Autoplay & Progress Timers to eliminate React state batching collisions
   React.useEffect(() => {
     if (!isPlaying || isSwiping) return;
 
-    const tickRate = 50; // ms
+    const autoplayTimer = setInterval(() => {
+      goToNext();
+    }, autoPlayInterval);
+
+    return () => clearInterval(autoplayTimer);
+  }, [isPlaying, isSwiping, autoPlayInterval, goToNext]);
+
+  // Visual Progress Timer per active slide
+  React.useEffect(() => {
+    if (!isPlaying || isSwiping) {
+      setProgress(0);
+      return;
+    }
+
+    setProgress(0);
+    const tickRate = 50;
     const increment = (tickRate / autoPlayInterval) * 100;
 
-    const intervalTimer = setInterval(() => {
+    const progressTimer = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) {
-          goToNext();
-          return 0;
-        }
+        if (prev >= 100) return 100;
         return prev + increment;
       });
     }, tickRate);
 
-    return () => clearInterval(intervalTimer);
-  }, [isPlaying, isSwiping, autoPlayInterval, goToNext]);
+    return () => clearInterval(progressTimer);
+  }, [currentIndex, isPlaying, isSwiping, autoPlayInterval]);
 
   // Keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -512,19 +558,20 @@ const ProjectHighlightsCarousel: React.FC<ProjectHighlightsCarouselProps> = ({
                   <button
                     id={`view-spec-${currentProject.id}`}
                     type="button"
-                    onClick={() => setPage(Page.ProjectTemplate)}
-                    className="flex-1 sm:flex-none px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider transition-colors border border-white/15 flex items-center justify-center gap-1.5"
+                    onClick={() => setPage(Page.EvidenceRegistry)}
+                    className="flex-1 sm:flex-none px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider transition-colors border border-white/15 flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                   >
-                    <span>{isFa ? 'برگ مشخصات فنی' : 'View Spec Sheet'}</span>
+                    <ShieldCheck className="w-3.5 h-3.5 text-secondary" />
+                    <span>{isFa ? 'شواهد و مشخصات فنی' : 'Verified Evidence & Specs'}</span>
                   </button>
 
                   <button
                     id={`explore-proj-${currentProject.id}`}
                     type="button"
                     onClick={() => setPage(Page.Projects)}
-                    className="flex-1 sm:flex-none px-5 py-2.5 rounded-full bg-secondary hover:bg-white text-primary-dark font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 shadow-lg shadow-secondary/20"
+                    className="flex-1 sm:flex-none px-5 py-2.5 rounded-full bg-secondary hover:bg-white text-primary-dark font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 shadow-lg shadow-secondary/20 cursor-pointer active:scale-95"
                   >
-                    <span>{isFa ? 'کاوش پروژه' : 'Explore Project'}</span>
+                    <span>{isFa ? 'مشاهده کلیه پروژه‌ها' : 'Explore All Projects'}</span>
                     <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
                   </button>
                 </div>
@@ -561,35 +608,34 @@ const ProjectHighlightsCarousel: React.FC<ProjectHighlightsCarouselProps> = ({
               <div className="absolute bottom-4 start-4 z-10 bg-slate-950/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-[11px] text-slate-300 flex items-center gap-1.5 lg:hidden">
                 <span>{isFa ? 'برای ورق زدن به چپ یا راست بکشید' : 'Swipe left/right to browse'}</span>
               </div>
+
+              {/* Desktop Floating Next / Prev Navigation Buttons (Strictly positioned on media column - zero text interference) */}
+              <div className="absolute bottom-4 end-4 z-20 hidden sm:flex items-center gap-2">
+                <button
+                  id="carousel-prev-btn"
+                  type="button"
+                  onClick={goToPrev}
+                  aria-label={isFa ? 'پروژه قبلی' : 'Previous project'}
+                  className="w-10 h-10 rounded-full bg-slate-950/80 hover:bg-secondary hover:text-primary-dark text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition-all shadow-xl focus:outline-none focus:ring-2 focus:ring-secondary cursor-pointer active:scale-95"
+                  title={isFa ? 'پروژه قبلی' : 'Previous project'}
+                >
+                  {direction === 'rtl' ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+                </button>
+                <button
+                  id="carousel-next-btn"
+                  type="button"
+                  onClick={goToNext}
+                  aria-label={isFa ? 'پروژه بعدی' : 'Next project'}
+                  className="w-10 h-10 rounded-full bg-slate-950/80 hover:bg-secondary hover:text-primary-dark text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition-all shadow-xl focus:outline-none focus:ring-2 focus:ring-secondary cursor-pointer active:scale-95"
+                  title={isFa ? 'پروژه بعدی' : 'Next project'}
+                >
+                  {direction === 'rtl' ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+                </button>
+              </div>
             </div>
 
           </motion.div>
         </AnimatePresence>
-
-        {/* Carousel Arrow Controls (Floating on Desktop) */}
-        <div className="absolute top-1/2 -translate-y-1/2 start-3 z-30 hidden sm:block">
-          <button
-            id="carousel-prev-btn"
-            type="button"
-            onClick={direction === 'rtl' ? goToNext : goToPrev}
-            aria-label={isFa ? 'پروژه قبلی' : 'Previous project'}
-            className="w-11 h-11 rounded-full bg-slate-950/70 hover:bg-secondary hover:text-primary-dark text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition-all shadow-xl focus:outline-none focus:ring-2 focus:ring-secondary"
-          >
-            {direction === 'rtl' ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
-          </button>
-        </div>
-
-        <div className="absolute top-1/2 -translate-y-1/2 end-3 z-30 hidden sm:block">
-          <button
-            id="carousel-next-btn"
-            type="button"
-            onClick={direction === 'rtl' ? goToPrev : goToNext}
-            aria-label={isFa ? 'پروژه بعدی' : 'Next project'}
-            className="w-11 h-11 rounded-full bg-slate-950/70 hover:bg-secondary hover:text-primary-dark text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition-all shadow-xl focus:outline-none focus:ring-2 focus:ring-secondary"
-          >
-            {direction === 'rtl' ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
-          </button>
-        </div>
       </div>
 
       {/* Bottom Thumbnail Bar & Dots Navigation */}
@@ -622,26 +668,30 @@ const ProjectHighlightsCarousel: React.FC<ProjectHighlightsCarouselProps> = ({
           })}
         </div>
 
-        {/* Mobile Arrow Navigation */}
-        <div className="flex items-center gap-3 sm:hidden">
+        {/* Convenient Arrow Navigation Controls */}
+        <div className="flex items-center gap-2">
           <button
+            id="carousel-bottom-prev-btn"
             type="button"
-            onClick={direction === 'rtl' ? goToNext : goToPrev}
+            onClick={goToPrev}
             aria-label={isFa ? 'پروژه قبلی' : 'Previous project'}
-            className="w-10 h-10 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10"
+            className="w-8 h-8 rounded-full bg-slate-800 hover:bg-secondary hover:text-primary-dark text-slate-300 hover:text-white flex items-center justify-center border border-white/10 transition-colors cursor-pointer active:scale-95"
+            title={isFa ? 'پروژه قبلی' : 'Previous project'}
           >
-            {direction === 'rtl' ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+            {direction === 'rtl' ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </button>
-          <span className="text-xs text-slate-400 font-mono">
+          <span className="text-xs text-slate-400 font-mono px-1">
             {currentIndex + 1} / {totalSlides}
           </span>
           <button
+            id="carousel-bottom-next-btn"
             type="button"
-            onClick={direction === 'rtl' ? goToPrev : goToNext}
+            onClick={goToNext}
             aria-label={isFa ? 'پروژه بعدی' : 'Next project'}
-            className="w-10 h-10 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10"
+            className="w-8 h-8 rounded-full bg-slate-800 hover:bg-secondary hover:text-primary-dark text-slate-300 hover:text-white flex items-center justify-center border border-white/10 transition-colors cursor-pointer active:scale-95"
+            title={isFa ? 'پروژه بعدی' : 'Next project'}
           >
-            {direction === 'rtl' ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+            {direction === 'rtl' ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
           </button>
         </div>
 

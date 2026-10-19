@@ -642,20 +642,20 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                nameEn: "Qeshm Green Energy & Biotech Hub",
-                nameFa: "هاب انرژی سبز و زیست‌فناوری قشم",
-                locationEn: "Qeshm Free Zone",
-                locationFa: "منطقه آزاد قشم",
-                sectorEn: "Renewable Energy / Marine / Desalination",
-                sectorFa: "انرژی تجدیدپذیر / دریایی / نمک‌زدایی",
-                roleEn: "Technology Developer / EPC",
-                roleFa: "توسعه‌دهنده فناوری و پیمانکار مهندسی",
-                statusEn: "Development Phase",
-                statusFa: "مرحله توسعه و امکان‌سنجی",
-                descEn: "Integrated closed-loop energy and marine biotechnology complex supporting sustainable island infrastructure.",
-                descFa: "مجتمع یکپارچه انرژی پاک و زیست‌فناوری دریایی با هدف تأمین پایدار آب شیرین و برق بدون کربن جزیره.",
-                image: "/images/smart-microgrid.jpg",
-                tag: "Microgrid & Desal"
+                nameEn: "Qeshm Oil Terminal – Phase 1 (Onshore Infrastructure)",
+                nameFa: "پایانه نفتی قشم – فاز ۱ (زیرساخت خشکی)",
+                locationEn: "Qeshm Free Zone, Iran",
+                locationFa: "منطقه آزاد قشم، ایران",
+                sectorEn: "Storage Terminal & Pipelines / MEP Systems",
+                sectorFa: "پایانه ذخیره‌سازی، خطوط لوله و تاسیسات MEP",
+                roleEn: "EPC Contractor & Key Supplier",
+                roleFa: "پیمانکار مهندسی، تامین و ساخت (EPC)",
+                statusEn: "Completed 2020",
+                statusFa: "تکمیل‌شده (۱۳۹۹)",
+                descEn: "Delivered comprehensive EPC for 3.24M-barrel storage facility, six API-grade tanks, ~22 km onshore pipelines, and sustainable MEP infrastructure.",
+                descFa: "اجرای جامع EPC تاسیسات ذخیره‌سازی ۳.۲۴ میلیون بشکه‌ای، شش مخزن API، حدود ۲۲ کیلومتر خط لوله و تاسیسات پایدار MEP.",
+                image: "/images/qeshm-oilfield.svg",
+                tag: "EPC Contractor"
               },
               {
                 nameEn: "ICOFC Sarakhs Subsurface Testbed",

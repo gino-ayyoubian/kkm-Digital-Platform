@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export interface KKMLogoProps {
-  variant?: 'full' | 'icon' | 'mark';
+  variant?: 'full' | 'icon' | 'mark' | 'header' | 'horizontal';
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   animated?: boolean;
@@ -9,7 +9,7 @@ export interface KKMLogoProps {
 
 /**
  * Official KKM International Group Logo
- * Faithfully incorporates the Official Brand Book (google_labs Pomelli):
+ * Faithfully incorporates the Official Brand Book:
  * - Primary Palette:
  *   - Jet Black: #020617 (RGB: 2, 6, 23)
  *   - Azure Blue: #0A92EF (RGB: 10, 146, 239)
@@ -17,8 +17,6 @@ export interface KKMLogoProps {
  *   - Pure White: #FFFFFF (RGB: 255, 255, 255)
  *   - Golden-Amber Planetary Core: #F59E0B / #D97706
  * - Primary Typeface: Montserrat (Bold 800 & Semi-Bold 600)
- * - Clear Space: 30 px clear space
- * - Minimum Digital Scale: 80 px width (0.83 inch)
  */
 export const KKMLogo: React.FC<KKMLogoProps> = ({
   variant = 'full',
@@ -27,6 +25,80 @@ export const KKMLogo: React.FC<KKMLogoProps> = ({
   animated = true,
 }) => {
   const [isHovered, setIsHovered] = React.useState(false);
+
+  // Sleek Horizontal Header Variant for Navbar Alignment (resolves misplaced logo)
+  if (variant === 'header' || variant === 'horizontal') {
+    return (
+      <div
+        className={`inline-flex items-center gap-2.5 sm:gap-3 select-none group transition-transform duration-200 ${className}`}
+        role="img"
+        aria-label="KKM International Group"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Crisp Golden Core & Azure Swoosh Emblem */}
+        <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-950 border border-slate-800 shadow-md flex items-center justify-center shrink-0 p-1 overflow-hidden transition-all duration-300 group-hover:border-primary/50 group-hover:shadow-primary/20">
+          <svg
+            viewBox="0 0 200 200"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-full object-contain"
+          >
+            <defs>
+              <linearGradient id="hdrWaveGrad" x1="40" y1="20" x2="160" y2="180" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#0A92EF" />
+                <stop offset="100%" stopColor="#89CFF0" />
+              </linearGradient>
+              <radialGradient id="hdrGoldOrbGrad" cx="35%" cy="30%" r="65%">
+                <stop offset="0%" stopColor="#FEF08A" />
+                <stop offset="35%" stopColor="#F59E0B" />
+                <stop offset="75%" stopColor="#D97706" />
+                <stop offset="100%" stopColor="#9A3412" />
+              </radialGradient>
+            </defs>
+
+            {/* Outer pure white arc */}
+            <path
+              d="M95 18C100 28 85 45 76 60C62 83 55 106 58 132C62 161 86 182 116 182C138 182 158 169 168 150C164 163 151 176 132 181C110 186 85 180 68 165C45 144 40 112 48 84C55 58 74 34 95 18Z"
+              fill="#FFFFFF"
+              className={animated && isHovered ? 'opacity-95 filter drop-shadow(0 0 6px #FFFFFF)' : 'opacity-100'}
+            />
+
+            {/* Inner Azure Blue wave */}
+            <path
+              d="M102 38C108 50 96 68 89 82C79 101 76 122 83 143C88 158 100 169 116 172C134 175 152 167 163 152C169 144 172 133 172 122C172 102 162 82 147 69C152 82 153 97 149 111C144 129 130 144 112 147C96 150 83 140 80 125C76 108 83 91 92 76C98 66 104 52 102 38Z"
+              fill="#0A92EF"
+              className={animated && isHovered ? 'scale-105 origin-center transition-transform' : ''}
+            />
+
+            {/* Radiant Golden-Amber Core Sphere */}
+            <circle
+              cx="126"
+              cy="132"
+              r="28"
+              fill="url(#hdrGoldOrbGrad)"
+              className={animated && isHovered ? 'scale-110 origin-[126px_132px] filter drop-shadow(0 0 8px #F59E0B) transition-transform' : ''}
+            />
+          </svg>
+        </div>
+
+        {/* Horizontal Brand Typography */}
+        <div className="flex flex-col justify-center text-start">
+          <div className="flex items-center gap-1.5 leading-none">
+            <span className="font-display font-extrabold text-base sm:text-lg tracking-wider text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-secondary transition-colors">
+              K.K.M.
+            </span>
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-primary/10 dark:bg-secondary/15 text-primary dark:text-secondary font-bold uppercase tracking-widest hidden sm:inline-block">
+              INTL
+            </span>
+          </div>
+          <span className="text-[10px] sm:text-[11px] font-bold text-sky-600 dark:text-sky-400 tracking-[0.16em] uppercase leading-tight mt-0.5">
+            INTERNATIONAL GROUP
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   // Official Brand Book: Minimum size is 80px width
   const sizeClasses = {

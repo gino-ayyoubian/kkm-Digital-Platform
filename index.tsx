@@ -5,6 +5,7 @@ import { LanguageProvider } from './LanguageContext';
 import { ThemeProvider } from './ThemeContext';
 import { AuthProvider } from './AuthContext';
 import { HelmetProvider } from 'react-helmet-async';
+import './index.css';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

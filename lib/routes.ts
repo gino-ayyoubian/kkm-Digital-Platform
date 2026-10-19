@@ -141,7 +141,7 @@ export function pathToPage(pathname: string): Page {
 
     case '/google-keep':
     case '/keep':
-      return Page.GoogleKeep;
+      return Page.InternalPortal;
 
     case '/futures':
       return Page.Futures;
@@ -251,9 +251,6 @@ export function pageToPath(page: Page): string {
 
     case Page.InternalPortal:
       return '/internal-portal';
-
-    case Page.GoogleKeep:
-      return '/google-keep';
 
     case Page.SearchResults:
       return '/search';

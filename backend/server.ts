@@ -12,6 +12,8 @@ import { getCorporateAuthSetupMessage, isCorporateAuthConfigured, verifyCorporat
 import { createInMemoryRateLimit } from "./rateLimit.ts";
 import { secretsManager, requireApiSecurity } from "./secretsManager.ts";
 import { telephonyService } from "./telephonyService.ts";
+import { productionGovernance } from "./productionGovernance.ts";
+import { webAuthnService, requireStepUpAuth } from "./webauthnService.ts";
 import { GoogleGenAI } from "@google/genai";
 
 export interface AuthenticatedUserPayload {
@@ -63,7 +65,7 @@ export const requireCorporateAuth = (req: Request, res: Response, next: NextFunc
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as AuthenticatedUserPayload;
+    const decoded = secretsManager.verifyTokenDualSecret(token) as AuthenticatedUserPayload;
     req.user = decoded;
     next();
   } catch (err: any) {
@@ -93,7 +95,7 @@ export const optionalCorporateAuth = (req: Request, _res: Response, next: NextFu
 
   if (token) {
     try {
-      const decoded = jwt.verify(token, JWT_SECRET) as AuthenticatedUserPayload;
+      const decoded = secretsManager.verifyTokenDualSecret(token) as AuthenticatedUserPayload;
       req.user = decoded;
     } catch {
       // Valid fallback for optional verification
@@ -1325,10 +1327,11 @@ export function setupBackendRoutes(app: express.Application) {
   });
 
   /**
-   * POST /api/admin/telemetry/control
-   * Dispatches operational control commands to GMEL downhole subsystems
+   * POST /api/admin/telemetry/control (and alias /api/admin/scada/command)
+   * Dispatches operational control commands to GMEL downhole subsystems.
+   * Gated by FIDO2 / WebAuthn Hardware 2FA step-up for Tier 3 personnel.
    */
-  app.post("/api/admin/telemetry/control", requireCorporateAuth, (req: Request, res: Response) => {
+  const handleScadaCommand = (req: Request, res: Response) => {
     const { nodeId, command, parameterValue } = req.body;
 
     const node = gmelTelemetryNodes.find(n => n.nodeId === nodeId);
@@ -1367,7 +1370,10 @@ export function setupBackendRoutes(app: express.Application) {
       messageEn: "Control directive acknowledged by GMEL SCADA controller.",
       updatedNode: node
     });
-  });
+  };
+
+  app.post("/api/admin/telemetry/control", requireCorporateAuth, requireStepUpAuth('SCADA_OVERRIDE'), handleScadaCommand);
+  app.post("/api/admin/scada/command", requireCorporateAuth, requireStepUpAuth('SCADA_OVERRIDE'), handleScadaCommand);
 
   /**
    * GET /api/admin/content
@@ -1602,6 +1608,280 @@ export function setupBackendRoutes(app: express.Application) {
       message: `تماس با ${destination} از طریق ترانک ext.daftareshoma.com ارسال شد.`,
       callId: callLog.id,
       gateway: "wss://ext.daftareshoma.com:4443"
+    });
+  });
+
+  // =========================================================================
+  // KKM CORPORATE GOVERNANCE PRINCIPLE 4: EXECUTIVE AUTHORIZATION FOR PRODUCTION
+  // Mandate: Any modification to live DNS records, external telecommunication
+  // trunk routing, or cryptographic key rotation requires signed executive
+  // authorization from the CEO / Board of Directors (g.ayyoubian@kkm-intl.org)
+  // =========================================================================
+
+  /**
+   * GET /api/governance/production-change/queue
+   * Retrieves pending and historical production change requests
+   */
+  app.get("/api/governance/production-change/queue", portalReadRateLimit, requireCorporateAuth, (req: Request, res: Response) => {
+    const queue = productionGovernance.getExecutiveQueue();
+    const authorizedSigners = ["g.ayyoubian@kkm-intl.org", "r.baghdadchi@kkm-intl.org", "info.kkm.co@gmail.com"];
+    const userEmail = (req.user?.email || "").toLowerCase();
+    const isExecutiveSigner = authorizedSigners.includes(userEmail) || req.user?.role === "super_admin";
+
+    return res.status(200).json({
+      success: true,
+      queue,
+      pendingCount: queue.filter(r => r.status === "pending_executive_signoff").length,
+      isExecutiveSigner,
+      authorizedSignatories: [
+        { email: "g.ayyoubian@kkm-intl.org", title: "Chief Executive Officer (CEO)", name: "Gino Ayyoubian" },
+        { email: "r.baghdadchi@kkm-intl.org", title: "Vice Chairman & Senior Executive Director", name: "Reza Baghdadchi" }
+      ],
+      governancePrinciple: "KKM Corporate Governance Principle 4"
+    });
+  });
+
+  /**
+   * POST /api/governance/production-change/propose
+   * Submits a high-risk production change proposal to the Executive Queue
+   */
+  app.post("/api/governance/production-change/propose", requireCorporateAuth, (req: Request, res: Response) => {
+    const { title, description, category, targetResource, currentValue, proposedValue, riskLevel } = req.body;
+
+    if (!title || !category || !targetResource || !proposedValue) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields for production change proposal.",
+        messageFa: "اطلاعات الزامی شامل عنوان، دسته‌بندی، منبع هدف و مقدار پیشنهادی تکمیل نشده است."
+      });
+    }
+
+    const validCategories = ["dns_modification", "telecom_trunk_routing", "cryptographic_key_rotation"];
+    if (!validCategories.includes(category)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid category. Under Principle 4, category must be one of: ${validCategories.join(", ")}`,
+        messageFa: "دسته‌بندی نامعتبر است. طبق اصل ۴ حاکمیت شرکتی، دسته‌بندی باید یکی از موارد تعیین‌شده باشد."
+      });
+    }
+
+    const requester = req.user!;
+    const request = productionGovernance.proposeProductionChange({
+      title,
+      description: description || `Production change proposal for ${targetResource} submitted under Principle 4`,
+      requesterId: requester.uid || requester.email,
+      requesterName: requester.displayName || "Corporate Engineer",
+      requesterRole: requester.role || "engineer",
+      department: requester.department || "Engineering & Infrastructure",
+      category,
+      targetResource,
+      currentValue: currentValue || "(Active Configuration)",
+      proposedValue,
+      riskLevel: riskLevel === "high" ? "high" : "critical"
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: `Production change proposal created (${request.id}) and routed to CEO & Board executive queue. Email alert dispatched.`,
+      messageFa: `پیشنهاد تغییر زیرساخت (${request.id}) ثبت و به کارتابل مدیرعامل و هیئت مدیره ارسال گردید. اعلان ایمیلی ارسال شد.`,
+      request
+    });
+  });
+
+  /**
+   * POST /api/governance/production-change/sign-off
+   * Executive sign-off endpoint requiring CEO or Board authorization
+   */
+  app.post("/api/governance/production-change/sign-off", requireCorporateAuth, (req: Request, res: Response) => {
+    const { requestId, notes } = req.body;
+    if (!requestId) {
+      return res.status(400).json({
+        success: false,
+        message: "Request ID is required for executive sign-off.",
+        messageFa: "شناسه درخواست جهت تایید الزامی است."
+      });
+    }
+
+    const signer = req.user!;
+    const result = productionGovernance.executeExecutiveSignOff({
+      requestId,
+      signerEmail: signer.email,
+      signerName: signer.displayName,
+      signerRole: signer.role === "super_admin" ? "Chief Executive Officer / Super Admin" : signer.role,
+      notes,
+      ipAddress: (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "127.0.0.1"
+    });
+
+    if (!result.success) {
+      return res.status(403).json(result);
+    }
+
+    return res.status(200).json(result);
+  });
+
+  /**
+   * POST /api/governance/production-change/reject
+   * Rejects a production change request with required justification
+   */
+  app.post("/api/governance/production-change/reject", requireCorporateAuth, (req: Request, res: Response) => {
+    const { requestId, reason } = req.body;
+    if (!requestId || !reason) {
+      return res.status(400).json({
+        success: false,
+        message: "Request ID and rejection reason are required.",
+        messageFa: "شناسه درخواست و دلیل رد الزامی است."
+      });
+    }
+
+    const signer = req.user!;
+    const result = productionGovernance.rejectProductionChange({
+      requestId,
+      signerEmail: signer.email,
+      signerName: signer.displayName,
+      signerRole: signer.role,
+      reason
+    });
+
+    return res.status(result.success ? 200 : 400).json(result);
+  });
+
+  /**
+   * GET /api/governance/production-change/audit-log
+   * Retrieves the immutable chained audit log for compliance inspection
+   */
+  app.get("/api/governance/production-change/audit-log", portalReadRateLimit, requireCorporateAuth, (_req: Request, res: Response) => {
+    const logs = productionGovernance.getAuditLog();
+    return res.status(200).json({
+      success: true,
+      logs,
+      totalEntries: logs.length,
+      governancePrinciple: "KKM Corporate Governance Principle 4 (Immutable Cryptographic Audit Trail)"
+    });
+  });
+
+  /**
+   * GET /api/governance/production-change/email-dispatches
+   * Retrieves email notification dispatch history to CEO and Board
+   */
+  app.get("/api/governance/production-change/email-dispatches", portalReadRateLimit, requireCorporateAuth, (_req: Request, res: Response) => {
+    const dispatches = productionGovernance.getEmailDispatches();
+    return res.status(200).json({
+      success: true,
+      dispatches,
+      totalDispatched: dispatches.length
+    });
+  });
+
+  // =========================================================================
+  // PERIODIC 90-DAY KEY ROTATION & CLOUD VAULT STATUS ENDPOINTS
+  // =========================================================================
+
+  /**
+   * GET /api/admin/security/key-status
+   * Retrieves 90-day cryptographic rotation lifecycle status and cloud vault state
+   */
+  app.get("/api/admin/security/key-status", portalReadRateLimit, requireCorporateAuth, (_req: Request, res: Response) => {
+    const status = secretsManager.getKeyRotationStatus();
+    return res.status(200).json({
+      success: true,
+      data: status
+    });
+  });
+
+  /**
+   * POST /api/admin/security/rotate-keys-now
+   * Manually executes cryptographic key rotation (Requires Executive / Super Admin)
+   */
+  app.post("/api/admin/security/rotate-keys-now", requireCorporateAuth, requireRoles(["super_admin", "executive"]), (req: Request, res: Response) => {
+    const { reason } = req.body;
+    const signer = req.user!;
+    const newRecord = secretsManager.rotateServerSecrets(
+      signer.email || signer.displayName,
+      reason || "Manual cryptographic key rotation executed from security console"
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: `Cryptographic keys rotated to generation ${newRecord.generationId}. Dual-key grace window active for 24h.`,
+      messageFa: `کلیدهای رمزنگاری به نسل جدید ${newRecord.generationId} به‌روزرسانی شدند. پنجره انتقال ۲۴ ساعته فعال است.`,
+      record: newRecord
+    });
+  });
+
+  // =========================================================================
+  // FIDO2 / WEBAUTHN HARDWARE 2FA ENDPOINTS FOR TIER 3 PERSONNEL
+  // =========================================================================
+
+  /**
+   * GET /api/auth/webauthn/challenge
+   * Generates a cryptographic challenge for hardware security key verification
+   */
+  app.get("/api/auth/webauthn/challenge", requireCorporateAuth, (req: Request, res: Response) => {
+    const userEmail = req.user!.email;
+    const action = (req.query.action as string) || "SCADA_OVERRIDE";
+    const challengeData = webAuthnService.generateChallenge(userEmail, action);
+
+    return res.status(200).json({
+      success: true,
+      data: challengeData
+    });
+  });
+
+  /**
+   * POST /api/auth/webauthn/verify
+   * Verifies hardware key assertion and issues short-lived step-up authorization token
+   */
+  app.post("/api/auth/webauthn/verify", requireCorporateAuth, (req: Request, res: Response) => {
+    const userEmail = req.user!.email;
+    const { credentialId, action, simulatedHardwareConfirmation } = req.body;
+
+    const result = webAuthnService.verifyAssertion({
+      userEmail,
+      credentialId: credentialId || `FIDO2-YUBIKEY-EXEC-${userEmail.split('@')[0].toUpperCase()}`,
+      action: action || "SCADA_OVERRIDE",
+      simulatedHardwareConfirmation: Boolean(simulatedHardwareConfirmation)
+    });
+
+    if (!result.success) {
+      return res.status(403).json(result);
+    }
+
+    return res.status(200).json(result);
+  });
+
+  /**
+   * GET /api/auth/webauthn/hardware-keys
+   * Retrieves enrolled FIDO2 hardware keys for active user
+   */
+  app.get("/api/auth/webauthn/hardware-keys", requireCorporateAuth, (req: Request, res: Response) => {
+    const userEmail = req.user!.email;
+    const keys = webAuthnService.getUserHardwareKeys(userEmail);
+    return res.status(200).json({
+      success: true,
+      keys,
+      userClearance: req.user!.clearanceLevel
+    });
+  });
+
+  /**
+   * POST /api/auth/webauthn/register
+   * Enrolls a new hardware key / Passkey for user
+   */
+  app.post("/api/auth/webauthn/register", requireCorporateAuth, (req: Request, res: Response) => {
+    const userEmail = req.user!.email;
+    const { deviceLabel, credentialId, publicKey, transports } = req.body;
+
+    const newKey = webAuthnService.registerHardwareKey(userEmail, {
+      credentialId: credentialId || `FIDO2-${Date.now().toString(36).toUpperCase()}`,
+      publicKey: publicKey || "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE-user-enrolled-fido2-key",
+      deviceLabel: deviceLabel || "YubiKey / FIDO2 Hardware Key",
+      transports: transports || ["usb", "nfc"]
+    });
+
+    return res.status(201).json({
+      success: true,
+      key: newKey,
+      message: "Hardware key successfully enrolled."
     });
   });
 

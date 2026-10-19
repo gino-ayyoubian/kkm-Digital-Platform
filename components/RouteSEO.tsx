@@ -230,10 +230,6 @@ const PAGE_SEO: Partial<
     title: 'Internal Staff Portal | KKM International Group',
     description: 'Secure internal portal for KKM personnel, project operations, and organizational tools.',
   },
-  [Page.GoogleKeep]: {
-    title: 'Google Keep Workspace | KKM International Group',
-    description: 'Quick-access notes workspace integrated within the KKM digital platform.',
-  },
   [Page.Offline]: {
     title: 'Offline Mode | KKM International Group',
     description:
@@ -331,8 +327,7 @@ const RouteSEO: React.FC = () => {
     if (specific) {
       const noindex =
         currentPage === Page.Offline ||
-        currentPage === Page.InternalPortal ||
-        currentPage === Page.GoogleKeep;
+        currentPage === Page.InternalPortal;
 
       const schemaType = specific.schemaType ?? 'WebPage';
       const schemaName = specific.schemaName ?? specific.title;

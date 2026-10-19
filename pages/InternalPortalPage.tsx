@@ -27,6 +27,7 @@ import { InternalDirectoryTab } from '../components/portal/InternalDirectoryTab'
 import { InternalCommunicationTab } from '../components/portal/InternalCommunicationTab';
 import { CommunicationStatusDashboard } from '../components/portal/CommunicationStatusDashboard';
 import { TeamOperationsConsole } from '../components/portal/TeamOperationsConsole';
+import { ExecutiveGovernanceQueue } from '../components/portal/ExecutiveGovernanceQueue';
 import { PortalBreadcrumb } from '../components/portal/PortalBreadcrumb';
 import { getPortalModules } from '../data/portalModules';
 
@@ -336,18 +337,7 @@ const LoginView: React.FC = () => {
                 <span>{isFa ? 'ورود امن به پرتال سازمانی (Firebase & Firestore)' : 'Sign In to Enterprise Portal (Firebase & Firestore)'}</span>
               </button>
 
-              {/* Google Workspace SSO Deactivated per Corporate Directive */}
-              <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-center">
-                <div className="flex items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300">
-                  <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0" />
-                  <span>{isFa ? 'ورود با حساب گوگل سازمانی (Google Workspace SSO) غیرفعال است' : 'Google Workspace SSO Deactivated'}</span>
-                </div>
-                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-                  {isFa
-                    ? 'طبق مصوبه امنیت سایبری و سیاست دسترسی مستقیم، ورود با حساب خارجی گوگل مسدود شده و احراز هویت انحصاراً از طریق شناسه و رمز عبور سازمانی KKM انجام می‌پذیرد.'
-                    : 'Per KKM Zero Trust Directive #SEC-2026-09, Google Workspace SSO is deactivated. Please authenticate using authorized corporate credentials.'}
-                </p>
-              </div>
+
 
               <div className="text-center pt-2">
                 <button
@@ -1019,6 +1009,9 @@ const InternalPortalPage: React.FC = () => {
 
         {/* TAB: GMEL TELEMETRY & PORTAL CMS (ADMIN CONTROL PANEL) */}
         {activeTab === 'adminControl' && <AdminControlPanel />}
+
+        {/* TAB: EXECUTIVE PRODUCTION GOVERNANCE (PRINCIPLE 4) */}
+        {activeTab === 'executiveGovernance' && <ExecutiveGovernanceQueue />}
 
         {/* TAB 5: USERS & RBAC ACCESS CONTROL */}
         {activeTab === 'users' && <UserManagementPanel />}

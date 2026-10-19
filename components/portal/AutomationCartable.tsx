@@ -137,6 +137,13 @@ export const AutomationCartable: React.FC<AutomationCartableProps> = ({
             {isFa ? 'رد شده' : 'Rejected'}
           </span>
         );
+      case 'pending_executive_signoff':
+        return (
+          <span className="px-2 py-0.5 bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 rounded text-[10px] font-bold flex items-center gap-1 border border-purple-300 dark:border-purple-700">
+            <ShieldCheck className="w-3 h-3 text-amber-500" />
+            {isFa ? 'نیازمند امضای مدیرعامل (اصل ۴)' : 'Pending Executive Sign-off'}
+          </span>
+        );
       case 'pending_finance':
         return (
           <span className="px-2 py-0.5 bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 rounded text-[10px] font-medium flex items-center gap-1">
@@ -300,6 +307,7 @@ export const AutomationCartable: React.FC<AutomationCartableProps> = ({
             <option value="technical_review">{isFa ? 'تاییدیه فنی مهندسی' : 'Technical Review'}</option>
             <option value="it_access">{isFa ? 'دسترسی IT و سیستم‌ها' : 'IT Access'}</option>
             <option value="memo">{isFa ? 'مکاتبه سازمانی' : 'Memo'}</option>
+            <option value="production_change">{isFa ? 'تغییرات زیرساخت (اصل ۴ حاکمیت شرکتی)' : 'Production Change (Principle 4)'}</option>
           </select>
 
           {/* Priority Filter */}
@@ -322,6 +330,7 @@ export const AutomationCartable: React.FC<AutomationCartableProps> = ({
             className="px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 outline-none text-text-dark dark:text-slate-200"
           >
             <option value="all">{isFa ? 'تمامی وضعیت‌ها' : 'All Statuses'}</option>
+            <option value="pending_executive_signoff">{isFa ? 'در انتظار امضای مدیرعامل (اصل ۴)' : 'Pending Executive Sign-off'}</option>
             <option value="pending_manager">{isFa ? 'در انتظار تایید مدیر' : 'Pending Manager'}</option>
             <option value="pending_finance">{isFa ? 'در انتظار تایید مالی / ارشد' : 'Pending Finance'}</option>
             <option value="approved">{isFa ? 'تصویب شده' : 'Approved'}</option>

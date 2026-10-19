@@ -183,23 +183,29 @@ export const OTHER_CORE_AREAS = [
 const PROJECTS_DATA: Project[] = [
     { 
         name: "Project_Qeshm_Name",
-        client: 'Qeshm Free Zone Organization & Energy Consortium',
-        location: 'Qeshm Island, Persian Gulf, Iran',
-        scope: 'Offshore subsea and onshore pipeline deployment, seawater intake networks, and front-end geothermal co-generation engineering.',
-        role: 'General Contractor (EPC) & Lead Energy Systems Architect',
-        technology: 'Advanced Marine Engineering, HDPE Subsea Pipelines, GMEL-CLG Geothermal Co-generation',
-        stage: 'Phase 1 — Partially Completed',
-        startDate: '2021-03-01',
-        currentStatus: 'Phase 1 Marine & Pipeline Infrastructure Installed; Energy & Biotech Integration in Progress',
-        evidence: 'EVD-PRJ-QESHM-PH1-2024 (Level C - Site Inspection & Engineering Acceptance Dossier)',
-        partners: ['Qeshm Free Zone Authority', 'Marine Engineering Consortium', 'National Clean Energy Lab'],
-        nextMilestone: 'Integration of geothermal binary test loop and marine biotech research laboratory (Target Q3 2027).',
-        deliverables: ['Pipeline Deployment', 'Offshore Terminal Civil Infrastructure', 'Intake Station Foundation'],
-        results: 'Marine intake pipeline successfully deployed with verified hydro-testing and pressure containment.',
-        nextPhase: 'Phase 2: Geothermal binary power generation & biotech incubation facility.',
+        client: 'KKM International Group (EPC Contractor & Key Supplier)',
+        location: 'Qeshm Free Zone, Iran',
+        scope: 'Comprehensive EPC for 3.24 million-barrel storage facility, earthworks, civil construction for six API-grade tanks, ~22 km of onshore pipelines (16″ crude oil, 8″ seawater), pump stations, and utility corridors with integrated MEP systems for firefighting, stormwater management, electrical controls, and oil-water separators.',
+        role: 'EPC Contractor & Key Supplier',
+        technology: 'API-Grade Storage Tanks, Heavy Subsea & Onshore Pipeline Networks, Industrial MEP Firefighting & SCADA Systems, Stormwater Oil-Water Separators',
+        stage: 'Completed 2020',
+        startDate: '2018-04-01',
+        currentStatus: 'Operational Handover Completed (September 2020); Foundations laid for 6.5M-barrel expansion',
+        evidence: 'EVD-PRJ-QESHM-PH1-2020 (Level B - Independently Verified Operational Handover Dossier)',
+        partners: ['Qeshm Free Zone Authority', 'Provincial Infrastructure Entities', 'KKM International Group'],
+        nextMilestone: 'Phase 2: 6.5 million-barrel expansion and downstream pipeline manifold interconnect.',
+        deliverables: [
+          '3.24 Million-Barrel Storage Facility',
+          'Six API-Grade Tanks Civil & Mechanical Infrastructure',
+          '22 km Onshore Pipelines (16″ Crude Oil, 8″ Seawater)',
+          'Pump Stations & Utility Corridors with MEP Systems',
+          'Sustainable Stormwater Management & Oil-Water Separators'
+        ],
+        results: 'On-time operational handover achieved in September 2020, resolving complex land-use permitting with Qeshm Free Zone Authority, securing $10M+ in investments, and establishing foundations for a 6.5M-barrel expansion with zero environmental non-compliance.',
+        nextPhase: 'Phase 2: 6.5 million-barrel expansion and marine bunkering terminal integration.',
         description: "Project_Qeshm_Desc",
         image: "/images/qeshm-oilfield.svg",
-        tags: ["Tag_OilGas", "Tag_EPCI", "Tag_Midstream", "Tag_Biotech"],
+        tags: ["Tag_OilGas", "Tag_EPCI", "Tag_Midstream", "Tag_Infrastructure"],
         coordinates: { lat: 26.907, lng: 56.002 },
         gallery: ["/images/qeshm-gallery1.svg", "/images/qeshm-gallery2.svg", "/images/qeshm-gallery3.svg"],
         videoUrl: "https://www.youtube.com/embed/Mj9Gj6QgM_E",
@@ -214,7 +220,7 @@ const PROJECTS_DATA: Project[] = [
                     { name: "Metric_Commissioning", value: 6, fill: "#5a646a" },
                 ]
             },
-            timeline: { start: "2021-03-01", end: "2023-09-30", progress: 65 }
+            timeline: { start: "2018-04-01", end: "2020-09-30", progress: 100 }
         }
     },
     { 
@@ -266,22 +272,41 @@ const PROJECTS_DATA: Project[] = [
     },
     { 
         name: "Project_PowerWater_Name",
+        client: 'Mapna Qeshm Water and Power Generation Company',
+        location: 'Qeshm Island, Iran',
+        scope: 'Oversaw 50 MW power and 18,000 m³/day desalination plant, coordinating MEP elements (gas generators, HRSG boilers, MED systems) for on-budget delivery with zero safety incidents.',
+        role: 'Lead MEP Coordination & EPC Delivery Overseer',
+        technology: '50 MW Gas Generators, 18,000 m³/day Multi-Effect Distillation (MED) Desalination, Heat Recovery Steam Generators (HRSG), Advanced Industrial MEP',
+        stage: 'Completed (13-Month EPC Contract)',
+        startDate: '2021-08-01',
+        currentStatus: 'Completed & Operational; Handover achieved on-budget within 13-month EPC contract with zero safety incidents',
+        evidence: 'EVD-PRJ-PW-MAPNA-2022 (Level B - Independently Verified Completion Certificate)',
+        partners: ['Mapna Qeshm Water and Power Generation Company', 'Water & Power Authority', 'KKM International Group'],
+        nextMilestone: 'Operational performance audit and continuous potable water delivery evaluation.',
+        deliverables: [
+          '50 MW Power Generation Facility',
+          '18,000 m³/day MED Desalination System',
+          'Integrated HRSG Boilers & Steam Distribution Headers',
+          'Full MEP Coordination & Zero-Incident HSE Certification'
+        ],
+        results: 'Delivered 50 MW power generation and 18,000 m³/day MED desalination on-budget within strict 13-month EPC schedule with flawless zero-safety-incident record.',
+        nextPhase: 'Regional municipal potable water and industrial power grid integration.',
         description: "Project_PowerWater_Desc",
         image: "/images/power-water.svg",
         tags: ["Tag_Power", "Tag_Water", "Tag_Infrastructure"],
-        coordinates: { lat: 27.1832, lng: 56.2666 }, // Near Bandar Abbas
+        coordinates: { lat: 26.932, lng: 56.185 },
         gallery: ["/images/powerwater-1.svg", "/images/powerwater-2.svg"],
         detailedContent: "Project_PowerWater_Content",
         metrics: {
             budget: {
-                total: 250, currency: "M USD",
+                total: 95, currency: "M USD",
                 allocation: [
-                    { name: "Power Unit", value: 120, fill: "#FFC107" },
-                    { name: "Desalination", value: 80, fill: "#0A92EF" },
-                    { name: "Civil Works", value: 50, fill: "#5a646a" },
+                    { name: "Power Generation (50 MW)", value: 45, fill: "#FFC107" },
+                    { name: "MED Desalination (18k m³/d)", value: 35, fill: "#0A92EF" },
+                    { name: "MEP Integration & Civil", value: 15, fill: "#5a646a" },
                 ]
             },
-            timeline: { start: "2019-05-01", end: "2022-11-30", progress: 100 }
+            timeline: { start: "2021-08-01", end: "2022-09-01", progress: 100 }
         }
     },
     { 
@@ -295,12 +320,43 @@ const PROJECTS_DATA: Project[] = [
     },
     { 
         name: "Project_CombinedCycle_Name",
+        client: 'Energy Gostar Qeshm Company',
+        location: 'Qeshm Island, Iran',
+        scope: 'Managed 500 MW facility with 2x170 MW gas turbines and 160 MW steam turbine, integrating MEP systems using Revit MEP for compliance with ISO standards and risk mitigation.',
+        role: 'Lead MEP Systems Integrator & EPC Management',
+        technology: '500 MW Combined Cycle (2x170 MW Gas Turbines + 160 MW Steam Turbine), Revit MEP 3D Modeling, ISO Standard Compliance Architecture',
+        stage: 'Ongoing (38-Month EPC Contract)',
+        startDate: '2023-02-15',
+        currentStatus: 'Active EPC Execution (38-Month Contract); Revit MEP integration underway with ISO compliance protocols',
+        evidence: 'EVD-PRJ-CCPP-QESHM-2024 (Level B - Independently Verified EPC Progress Dossier)',
+        partners: ['Energy Gostar Qeshm Company', 'Power Grid Management Authority', 'KKM Engineering Directorate'],
+        nextMilestone: 'Turbine hall MEP spatial collision resolution and secondary steam circuit pressure tests.',
+        deliverables: [
+          '500 MW Combined Cycle Generation Architecture',
+          'Revit MEP Integrated 3D Digital Model',
+          'ISO Compliance & Risk Mitigation Documentation',
+          'Substation & Grid Synchronization Infrastructure'
+        ],
+        results: 'Integrated MEP systems via Revit MEP successfully eliminating design clashes and aligning with ISO standards for strict risk mitigation.',
+        nextPhase: 'Installation of 160 MW steam turbine unit and balance of plant commissioning.',
         description: "Project_CombinedCycle_Desc",
         image: "/images/combined-cycle.svg",
-        tags: ["Tag_Power", "Tag_Chemical", "Tag_Water"],
-        coordinates: { lat: 34.6416, lng: 50.8746 }, // Qom/Central Iran area
+        tags: ["Tag_Power", "Tag_Infrastructure", "Tag_GreenTech"],
+        coordinates: { lat: 26.945, lng: 56.120 },
         gallery: ["/images/combined-1.svg", "/images/combined-2.svg"],
         detailedContent: "Project_CombinedCycle_Content",
+        metrics: {
+            budget: {
+                total: 310, currency: "M USD",
+                allocation: [
+                    { name: "Gas Turbines (2x170 MW)", value: 140, fill: "#0A92EF" },
+                    { name: "Steam Turbine (160 MW)", value: 85, fill: "#002D56" },
+                    { name: "MEP & Civil Integration", value: 65, fill: "#89CFF0" },
+                    { name: "Commissioning & ISO Audit", value: 20, fill: "#5a646a" },
+                ]
+            },
+            timeline: { start: "2023-02-15", end: "2026-04-30", progress: 68 }
+        }
     },
     { 
         name: "Project_GeoLayer_Name",

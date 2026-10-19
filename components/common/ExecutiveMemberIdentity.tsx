@@ -201,11 +201,11 @@ export const ExecutiveMemberIdentity: React.FC<ExecutiveMemberIdentityProps> = (
             aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover blur-xl opacity-35 scale-110 pointer-events-none select-none"
           />
-          {/* Crisp foreground portrait with golden-ratio calibrated focal position */}
+          {/* Crisp foreground portrait with golden-ratio calibrated focal position & natural upper-body framing */}
           <img
             src={effectivePhotoUrl}
             alt={name}
-            className="relative z-1 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            className="relative z-1 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.01]"
             style={{ objectPosition: focalPosition }}
             loading="lazy"
             decoding="async"

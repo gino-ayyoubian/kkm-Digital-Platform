@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { 
   LayoutDashboard, Inbox, FileText, Clock, PhoneCall, 
-  GitBranch, Network, Sliders, Users, UserCheck, FolderGit2, Database 
+  GitBranch, Network, Sliders, Users, UserCheck, FolderGit2, Database, ShieldCheck 
 } from 'lucide-react';
 import type { NavModuleItem } from '../components/portal/PortalHeader';
 
@@ -115,6 +115,17 @@ export const getPortalModules = (
   },
 
   // 3. GOVERNANCE & ORGANIZATION
+  {
+    id: 'executiveGovernance',
+    labelEn: 'Executive Production Governance (Principle 4)',
+    labelFa: 'کارتابل تاییدات راهبردی مدیرعامل (اصل ۴)',
+    shortLabelFa: 'تاییدات راهبردی (اصل ۴)',
+    shortLabelEn: 'Principle 4 Queue',
+    descFa: 'تایید و امضای رسمی مدیرعامل برای تغییرات DNS، ترانک‌های مخابراتی و چرخش کلیدهای رمزنگاری',
+    descEn: 'Executive signed authorization for live DNS, telecom routing & cryptographic key rotation',
+    category: 'governance',
+    icon: ShieldCheck,
+  },
   {
     id: 'orgchart',
     labelEn: 'Org Directory & Structure',

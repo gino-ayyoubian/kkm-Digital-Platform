@@ -16,41 +16,41 @@ import type { GeminiSearchResult, NewsItem, Project } from '../types';
 import { performDeepSearch } from '../searchEngine';
 import { useAppNavigate } from '../hooks/useAppNavigate';
 import { useLanguage } from '../LanguageContext';
+import { trackLazyLoad } from '../trackLazyLoad';
+import NewsArticlePage from '../pages/NewsArticlePage';
 
-const HomePage = React.lazy(() => import('../pages/HomePage'));
-const AboutUsPage = React.lazy(() => import('../pages/AboutUsPage'));
-const CoreTechnologiesPage = React.lazy(() => import('../pages/CoreTechnologiesPage'));
-const ProjectsPage = React.lazy(() => import('../pages/ProjectsPage'));
-const NewsPage = React.lazy(() => import('../pages/NewsPage'));
-const NewsArticlePage = React.lazy(() => import('../pages/NewsArticlePage'));
-const ContactPage = React.lazy(() => import('../pages/ContactPage'));
-const DownloadsPage = React.lazy(() => import('../pages/DownloadsPage'));
-const RuralDevelopmentPage = React.lazy(() => import('../pages/RuralDevelopmentPage'));
-const ExhibitionPage = React.lazy(() => import('../pages/ExhibitionPage'));
-const EvidenceRegistryPage = React.lazy(() => import('../pages/EvidenceRegistryPage'));
-const ClaimRegistryPage = React.lazy(() => import('../pages/ClaimRegistryPage'));
-const InvestmentPortalPage = React.lazy(() => import('../pages/InvestmentPortalPage'));
-const PilotRequestPage = React.lazy(() => import('../pages/PilotRequestPage'));
-const ProjectDevelopmentPage = React.lazy(() => import('../pages/ProjectDevelopmentPage'));
-const GMELHubPage = React.lazy(() => import('../pages/GMELHubPage'));
-const CorporateInfoPage = React.lazy(() => import('../pages/CorporateInfoPage'));
-const IPCenterPage = React.lazy(() => import('../pages/IPCenterPage'));
-const InnovationHubPage = React.lazy(() => import('../pages/InnovationHubPage'));
-const CarbonCreditPage = React.lazy(() => import('../pages/CarbonCreditPage'));
-const LegalPage = React.lazy(() => import('../pages/LegalPage'));
-const SearchResultsPage = React.lazy(() => import('../pages/SearchResultsPage'));
-const FuturesPage = React.lazy(() => import('../pages/FuturesPage'));
-const DigitalTwinHubPage = React.lazy(() => import('../pages/DigitalTwinHubPage'));
-const REETwinPage = React.lazy(() => import('../pages/REETwinPage'));
-const CareersPage = React.lazy(() => import('../pages/CareersPage'));
-const TeamPage = React.lazy(() => import('../pages/TeamPage'));
-const FAQPage = React.lazy(() => import('../pages/FAQPage'));
-const DivisionsPage = React.lazy(() => import('../pages/DivisionsPage'));
-const InternalPortalPage = React.lazy(() => import('../pages/InternalPortalPage'));
-const GoogleKeepPage = React.lazy(() => import('../pages/GoogleKeepPage'));
-const OfflinePage = React.lazy(() => import('../pages/OfflinePage'));
-const NotFoundPage = React.lazy(() => import('../pages/NotFoundPage'));
-const ESGDashboard = React.lazy(() => import('../components/ESGDashboard'));
+const HomePage = React.lazy(trackLazyLoad('HomePage', () => import('../pages/HomePage')));
+const AboutUsPage = React.lazy(trackLazyLoad('AboutUsPage', () => import('../pages/AboutUsPage')));
+const CoreTechnologiesPage = React.lazy(trackLazyLoad('CoreTechnologiesPage', () => import('../pages/CoreTechnologiesPage')));
+const ProjectsPage = React.lazy(trackLazyLoad('ProjectsPage', () => import('../pages/ProjectsPage')));
+const NewsPage = React.lazy(trackLazyLoad('NewsPage', () => import('../pages/NewsPage')));
+const ContactPage = React.lazy(trackLazyLoad('ContactPage', () => import('../pages/ContactPage')));
+const DownloadsPage = React.lazy(trackLazyLoad('DownloadsPage', () => import('../pages/DownloadsPage')));
+const RuralDevelopmentPage = React.lazy(trackLazyLoad('RuralDevelopmentPage', () => import('../pages/RuralDevelopmentPage')));
+const ExhibitionPage = React.lazy(trackLazyLoad('ExhibitionPage', () => import('../pages/ExhibitionPage')));
+const EvidenceRegistryPage = React.lazy(trackLazyLoad('EvidenceRegistryPage', () => import('../pages/EvidenceRegistryPage')));
+const ClaimRegistryPage = React.lazy(trackLazyLoad('ClaimRegistryPage', () => import('../pages/ClaimRegistryPage')));
+const InvestmentPortalPage = React.lazy(trackLazyLoad('InvestmentPortalPage', () => import('../pages/InvestmentPortalPage')));
+const PilotRequestPage = React.lazy(trackLazyLoad('PilotRequestPage', () => import('../pages/PilotRequestPage')));
+const ProjectDevelopmentPage = React.lazy(trackLazyLoad('ProjectDevelopmentPage', () => import('../pages/ProjectDevelopmentPage')));
+const GMELHubPage = React.lazy(trackLazyLoad('GMELHubPage', () => import('../pages/GMELHubPage')));
+const CorporateInfoPage = React.lazy(trackLazyLoad('CorporateInfoPage', () => import('../pages/CorporateInfoPage')));
+const IPCenterPage = React.lazy(trackLazyLoad('IPCenterPage', () => import('../pages/IPCenterPage')));
+const InnovationHubPage = React.lazy(trackLazyLoad('InnovationHubPage', () => import('../pages/InnovationHubPage')));
+const CarbonCreditPage = React.lazy(trackLazyLoad('CarbonCreditPage', () => import('../pages/CarbonCreditPage')));
+const LegalPage = React.lazy(trackLazyLoad('LegalPage', () => import('../pages/LegalPage')));
+const SearchResultsPage = React.lazy(trackLazyLoad('SearchResultsPage', () => import('../pages/SearchResultsPage')));
+const FuturesPage = React.lazy(trackLazyLoad('FuturesPage', () => import('../pages/FuturesPage')));
+const DigitalTwinHubPage = React.lazy(trackLazyLoad('DigitalTwinHubPage', () => import('../pages/DigitalTwinHubPage')));
+const REETwinPage = React.lazy(trackLazyLoad('REETwinPage', () => import('../pages/REETwinPage')));
+const CareersPage = React.lazy(trackLazyLoad('CareersPage', () => import('../pages/CareersPage')));
+const TeamPage = React.lazy(trackLazyLoad('TeamPage', () => import('../pages/TeamPage')));
+const FAQPage = React.lazy(trackLazyLoad('FAQPage', () => import('../pages/FAQPage')));
+const DivisionsPage = React.lazy(trackLazyLoad('DivisionsPage', () => import('../pages/DivisionsPage')));
+const InternalPortalPage = React.lazy(trackLazyLoad('InternalPortalPage', () => import('../pages/InternalPortalPage')));
+const OfflinePage = React.lazy(trackLazyLoad('OfflinePage', () => import('../pages/OfflinePage')));
+const NotFoundPage = React.lazy(trackLazyLoad('NotFoundPage', () => import('../pages/NotFoundPage')));
+const ESGDashboard = React.lazy(trackLazyLoad('ESGDashboard', () => import('../components/ESGDashboard')));
 
 function withSuspense(node: React.ReactNode) {
   return <Suspense fallback={<PageTemplateSkeleton template="standard" />}>{node}</Suspense>;
@@ -259,7 +259,6 @@ export const routeObjects: RouteObject[] = [
       { path: 'digital-twins', element: <RoutedPage component={DigitalTwinHubPage} /> },
       { path: 'ree', element: withSuspense(<REETwinPage />) },
       { path: 'internal-portal', element: withSuspense(<InternalPortalPage />) },
-      { path: 'google-keep', element: <RoutedPage component={GoogleKeepPage} /> },
       { path: 'search', element: <SearchResultsRoute /> },
       { path: 'futures', element: withSuspense(<FuturesPage />) },
       { path: 'offline', element: <RoutedPage component={OfflinePage} /> },
@@ -300,7 +299,6 @@ export const routeObjects: RouteObject[] = [
       { path: 'kkm-ree', element: <Navigate to="/ree" replace /> },
       { path: 'digital-twin-ree', element: <Navigate to="/ree" replace /> },
       { path: 'portal', element: <Navigate to="/internal-portal" replace /> },
-      { path: 'keep', element: <Navigate to="/google-keep" replace /> },
 
       { path: 'legacy-page', element: <LegacyPageQueryRedirect /> },
       { path: '*', element: <NotFoundRoute /> },

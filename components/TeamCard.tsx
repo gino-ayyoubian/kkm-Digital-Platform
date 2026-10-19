@@ -40,8 +40,8 @@ export const TeamCard: React.FC<TeamCardProps> = ({
       className="group relative bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-md hover:shadow-2xl hover:border-amber-400/50 dark:hover:border-amber-400/40 transition-all duration-300 flex flex-col justify-between overflow-hidden"
       dir={isFa ? 'rtl' : 'ltr'}
     >
-      {/* Top Media / Photo Section */}
-      <div className="relative w-full h-80 sm:h-84 overflow-hidden bg-slate-950">
+      {/* Top Media / Photo Section: Uniform 1:1 fixed aspect ratio container */}
+      <div className="relative w-full aspect-square overflow-hidden bg-slate-950 flex items-center justify-center">
         <ExecutiveMemberIdentity
           name={member.displayName}
           nameFa={member.displayNameFa}
@@ -52,8 +52,8 @@ export const TeamCard: React.FC<TeamCardProps> = ({
           className="w-full h-full"
         />
 
-        {/* Ambient Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
+        {/* Ambient Subtle Vignette Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />
 
         {/* Verified Member Badge (Clickable to Evidence Registry) */}
         {member.isVerifiedMember !== false && (
@@ -62,12 +62,12 @@ export const TeamCard: React.FC<TeamCardProps> = ({
               e.stopPropagation();
               onVerifyClick?.(member);
             }}
-            className="absolute top-4 right-4 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-950/85 backdrop-blur-md border border-amber-400/60 shadow-lg hover:bg-amber-400 hover:text-slate-950 text-amber-300 transition-all duration-200 group/badge cursor-pointer"
+            className="absolute top-3.5 right-3.5 rtl:right-auto rtl:left-3.5 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-950/85 backdrop-blur-md border border-amber-400/60 shadow-lg hover:bg-amber-400 hover:text-slate-950 text-amber-300 transition-all duration-200 group/badge cursor-pointer"
             title={isFa ? 'مشاهده سند اصالت در رجیستری شواهد KKM' : 'View Verified Credential in KKM Evidence Registry'}
           >
             <ShieldCheck className="w-3.5 h-3.5 text-amber-400 group-hover/badge:text-slate-950" />
             <span className="text-[10px] font-mono font-bold tracking-wider uppercase">
-              {isFa ? 'عضو تأییدشده' : 'Verified Member'}
+              {isFa ? 'تأییدشده' : 'Verified'}
             </span>
           </button>
         )}
@@ -79,7 +79,7 @@ export const TeamCard: React.FC<TeamCardProps> = ({
               e.stopPropagation();
               onCallClick?.(member.sipExtension || '', member);
             }}
-            className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md border border-slate-700/80 text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all text-[11px] font-mono font-bold shadow-md cursor-pointer"
+            className="absolute top-3.5 left-3.5 rtl:left-auto rtl:right-3.5 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md border border-slate-700/80 text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all text-[11px] font-mono font-bold shadow-md cursor-pointer"
             title={isFa ? `تماس با داخلی ${member.sipExtension}` : `Call Ext ${member.sipExtension}`}
           >
             <Phone className="w-3 h-3" />
@@ -87,15 +87,15 @@ export const TeamCard: React.FC<TeamCardProps> = ({
           </button>
         )}
 
-        {/* Bottom Banner inside Image: Name & Role */}
-        <div className="absolute bottom-4 inset-x-4 z-10">
-          <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest block mb-1">
+        {/* Bottom Banner inside Image: Crisp Name Tag */}
+        <div className="absolute bottom-3 inset-x-3 z-10 pointer-events-none">
+          <span className="text-[9px] font-mono font-bold text-amber-400 uppercase tracking-widest block mb-0.5">
             {displayDepartment}
           </span>
-          <h3 className="text-lg font-bold font-display text-white drop-shadow-sm group-hover:text-amber-200 transition-colors">
+          <h3 className="text-base sm:text-lg font-bold font-display text-white drop-shadow-md group-hover:text-amber-200 transition-colors leading-tight">
             {displayName}
           </h3>
-          <p className="text-xs text-slate-300 font-medium line-clamp-1 mt-0.5">
+          <p className="text-[11px] sm:text-xs text-slate-300 font-medium line-clamp-1 mt-0.5">
             {displayTitle}
           </p>
         </div>

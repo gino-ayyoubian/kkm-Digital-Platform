@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useMemo } from 'react';
 import type { NewsItem } from '../types';
 import { useLanguage } from '../LanguageContext';
 import { NEWS_ITEMS } from '../constants';
@@ -17,7 +17,7 @@ const NewsArticlePage: React.FC<NewsArticlePageProps> = ({ article, onBack, onSe
     const { t } = useLanguage();
 
     // Suggest 3 other news posts, ensuring it doesn't show the currently active article
-    const relatedArticles = React.useMemo(() => {
+    const relatedArticles = useMemo(() => {
         const others = NEWS_ITEMS.filter((item) => item.title !== article.title);
         // Prioritize same category first if available
         const sameCategory = others.filter((item) => item.category === article.category);

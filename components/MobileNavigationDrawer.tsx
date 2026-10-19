@@ -8,7 +8,7 @@ import type { Variants } from 'motion/react';
 import LanguageSwitcher from './LanguageSwitcher';
 import {
   Search, X, ChevronDown, Check, User, ArrowRight,
-  Building2, StickyNote, Bot, Moon, Sun, Sparkles
+  Building2, Bot, Moon, Sun, Sparkles
 } from 'lucide-react';
 import { PWAInstallButton } from './PWAInstallButton';
 
@@ -341,33 +341,6 @@ export const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                       <div className="text-xs sm:text-sm font-bold">{t(Page.InternalPortal)}</div>
                       <div className="text-[11px] text-slate-500 dark:text-slate-400">
                         {isRtl ? 'سامانه یکپارچه همکاران و اتوماسیون' : 'Employee & Executive Systems'}
-                      </div>
-                    </div>
-                  </div>
-                  <ArrowRight className={`w-4 h-4 text-slate-400 shrink-0 ${isRtl ? 'rotate-180' : ''}`} />
-                </button>
-
-                {/* Google Keep Workspace Button */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    onNavigate(Page.GoogleKeep);
-                    onClose();
-                  }}
-                  className={`flex items-center justify-between w-full p-4 rounded-2xl border text-start transition-all duration-150 ease-out min-h-[56px] active:scale-[0.98] ${
-                    currentPage === Page.GoogleKeep
-                      ? 'border-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-400 shadow-xs'
-                      : 'border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/50 text-slate-700 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-700'
-                  }`}
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center text-amber-500 shrink-0">
-                      <StickyNote className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-xs sm:text-sm font-bold">Google Keep Notes</div>
-                      <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                        {isRtl ? 'یادداشت‌ها و چک‌لیست‌های متصل به ابری' : 'Cloud Sync Notes & Checklists'}
                       </div>
                     </div>
                   </div>

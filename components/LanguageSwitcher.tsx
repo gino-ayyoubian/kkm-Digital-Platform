@@ -194,18 +194,6 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   // 3. Default Header Variant (Responsive: Mobile Sheet on small screens, Popover on Desktop)
   return (
     <div ref={containerRef} className={`relative inline-flex items-center gap-1 sm:gap-1.5 ${className}`}>
-      {/* Quick 1-Click Toggle for Desktop (EN <-> FA) */}
-      <button
-        type="button"
-        onClick={handleQuickToggle}
-        className="hidden md:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-mono font-semibold text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-secondary hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-700 min-h-[38px]"
-        title="Quick Toggle EN / FA"
-        aria-label="Quick toggle English and Persian"
-      >
-        <span className={language === 'EN' ? 'font-bold text-primary dark:text-secondary' : 'opacity-60'}>EN</span>
-        <ArrowLeftRight className="w-3 h-3 text-slate-400" />
-        <span className={language === 'FA' ? 'font-bold text-primary dark:text-secondary' : 'opacity-60'}>فا</span>
-      </button>
 
       {/* Main Header Trigger Button (Mobile 44x44px ergonomic touch target, Desktop sleek button) */}
       <button

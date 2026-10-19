@@ -58,7 +58,6 @@ const TeamPage = React.lazy(trackLazyLoad('TeamPage', () => import('./pages/Team
 const FAQPage = React.lazy(trackLazyLoad('FAQPage', () => import('./pages/FAQPage')));
 const DivisionsPage = React.lazy(trackLazyLoad('DivisionsPage', () => import('./pages/DivisionsPage')));
 const InternalPortalPage = React.lazy(trackLazyLoad('InternalPortalPage', () => import('./pages/InternalPortalPage')));
-const GoogleKeepPage = React.lazy(trackLazyLoad('GoogleKeepPage', () => import('./pages/GoogleKeepPage')));
 const OfflinePage = React.lazy(trackLazyLoad('OfflinePage', () => import('./pages/OfflinePage')));
 import CookieConsent from './components/CookieConsent';
 import { KKMAlgorithmicAdvisorModal } from './components/KKMAlgorithmicAdvisorModal';
@@ -889,9 +888,6 @@ const App: React.FC = () => {
         break;
       case Page.InternalPortal:
         pageComponent = <InternalPortalPage setPage={setCurrentPage} />;
-        break;
-      case Page.GoogleKeep:
-        pageComponent = <GoogleKeepPage setPage={setCurrentPage} />;
         break;
       case Page.Futures:
         pageComponent = <FuturesPage />;

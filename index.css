@@ -1,12 +1,42 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-kkm-deepBlue: #1E3A8A;
-  --color-kkm-skyBlue: #4C9AFE;
-  --color-kkm-sunGold: #F9A826;
+  --color-kkm-jetBlack: #020617;
+  --color-kkm-azureBlue: #0A92EF;
+  --color-kkm-babyBlue: #89CFF0;
+  --color-kkm-pureWhite: #FFFFFF;
+  --color-kkm-sunGold: #F59E0B;
+  --color-kkm-deepBlue: #020617;
+  --color-kkm-skyBlue: #0A92EF;
   --color-kkm-corporateGray: #333333;
   --color-kkm-lightGray: #A0A0A0;
-  --font-poppins: 'Poppins', sans-serif;
+
+  --color-jet-black: #020617;
+  --color-azure-blue: #0A92EF;
+  --color-baby-blue: #89CFF0;
+  --color-pure-white: #FFFFFF;
+  --color-primary: #0A92EF;
+  --color-primary-dark: #020617;
+  --color-primary-light: #89CFF0;
+  --color-secondary: #0A92EF;
+  --color-accent-gold: #F59E0B;
+  --color-accent-yellow: #F59E0B;
+  --color-corporate-gray: #333333;
+  --color-light-gray: #A0A0A0;
+  --color-accent-dark: #D97706;
+  --color-light-yellow: #FEF3C7;
+  --color-background: #F8FAFC;
+  --color-text-dark: #020617;
+  --color-text-light: #475569;
+
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-vazirmatn: 'Vazirmatn', sans-serif;
+  --font-poppins: 'Montserrat', 'Poppins', sans-serif;
+  --font-sans: 'Montserrat', 'Vazirmatn', 'Poppins', system-ui, sans-serif;
+  --font-display: 'Montserrat', 'Vazirmatn', 'Poppins', sans-serif;
 }
 
 /* Custom CSS for Node Connectors & Logo Micro-Interactions */

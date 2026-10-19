@@ -1,6 +1,6 @@
 {
-  "summary":  "Comprehensive content audit and architectural implementation plan for separating public visitor content from internal organizational data, establishing strict Role-Based Access Control (RBAC) across the internal portal and secure data layer, and consolidating overlapping platform sections.",
-  "updatedAt":  "2026-10-12T01:04:55.328932889Z",
-  "requestFeedback":  true,
-  "userFacing":  true
+  "summary": "Implementation plan to remove cdn.tailwindcss.com in favor of native production @tailwindcss/vite bundling and add a WCAG 2.2.2 Level A pause/play affordance with prefers-reduced-motion support for the lottie-react header animation.",
+  "updatedAt": "2026-10-18T11:43:09.775460212Z",
+  "requestFeedback": true,
+  "userFacing": true
 }

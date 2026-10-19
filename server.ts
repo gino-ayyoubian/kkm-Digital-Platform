@@ -1,7 +1,11 @@
 import { createApp } from './app.ts';
 import logger from './logger.ts';
+import { validateProductionEnvironment } from './backend/secretsManager.ts';
 
 async function startServer() {
+  // Validate production vault variables (strictly exits in production if missing)
+  validateProductionEnvironment();
+
   const app = await createApp({ includeFrontend: true });
   const port = process.env.NODE_ENV === 'production' && process.env.PORT ? Number(process.env.PORT) : 3000;
 
