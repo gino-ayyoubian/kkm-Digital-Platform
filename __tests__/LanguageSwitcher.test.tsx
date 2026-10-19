@@ -25,7 +25,7 @@ describe('LanguageSwitcher Component', () => {
     document.documentElement.lang = 'en';
   });
 
-  it('renders default English and switches dynamically to Persian using quick toggle', () => {
+  it('renders default English and switches dynamically to Persian', () => {
     render(
       <LanguageProvider>
         <LanguageTestHarness variant="header" />
@@ -36,11 +36,16 @@ describe('LanguageSwitcher Component', () => {
     expect(screen.getByTestId('translated-home')).toHaveTextContent('Home');
     expect(screen.getByTestId('translated-about')).toHaveTextContent('About Us');
 
-    const quickToggleBtn = screen.getByLabelText('Quick toggle English and Persian');
-    expect(quickToggleBtn).toBeInTheDocument();
+    const dropdownBtn = screen.getByRole('button', { name: /Language selector:/i });
+    expect(dropdownBtn).toBeInTheDocument();
 
     act(() => {
-      fireEvent.click(quickToggleBtn);
+      fireEvent.click(dropdownBtn);
+    });
+
+    const persianOption = screen.getByRole('option', { name: /فارسی/i });
+    act(() => {
+      fireEvent.click(persianOption);
     });
 
     expect(screen.getByTestId('current-lang')).toHaveTextContent('FA');
