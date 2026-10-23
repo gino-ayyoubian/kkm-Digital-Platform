@@ -19,7 +19,14 @@ const JobListItem: React.FC<{ job: JobOpening; isExpanded: boolean; onToggle: ()
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-lg mb-4">
             <button onClick={onToggle} className="w-full p-6 text-left flex flex-col md:flex-row md:items-center justify-between gap-4" aria-expanded={isExpanded}>
                 <div>
-                    <h3 className="text-xl font-display font-bold text-primary-dark dark:text-secondary">{job.title}</h3>
+                    <div className="flex items-center gap-2 mb-1">
+                        <h3 className="text-xl font-display font-bold text-primary-dark dark:text-secondary">{t(job.title as any) || job.title}</h3>
+                        {job.id.includes('officer') || job.id.includes('ciso') || job.id.includes('controller') || job.id.includes('pmo') || job.id.includes('governance') || job.id.includes('lead') || job.id.includes('manager') ? (
+                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30">
+                                Executive Governance Opening
+                            </span>
+                        ) : null}
+                    </div>
                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-text-light dark:text-slate-400 mt-1">
                         <span>{job.department}</span>
                         <span>&bull;</span>
@@ -45,16 +52,16 @@ const JobListItem: React.FC<{ job: JobOpening; isExpanded: boolean; onToggle: ()
                         className="overflow-hidden"
                     >
                         <div className="px-6 pb-6 border-t dark:border-slate-700 pt-4">
-                            <p className="text-text-light dark:text-slate-300 mb-6">{job.description}</p>
+                            <p className="text-text-light dark:text-slate-300 mb-6">{t(job.description as any) || job.description}</p>
                             <h4 className="text-lg font-display font-semibold text-text-dark dark:text-white mb-2">{t('Responsibilities')}</h4>
                             <ul className="list-disc list-inside space-y-2 mb-6 text-text-light dark:text-slate-300">
-                                {job.responsibilities.map((item, index) => <li key={index}>{item}</li>)}
+                                {job.responsibilities.map((item, index) => <li key={index}>{t(item as any) || item}</li>)}
                             </ul>
                             <h4 className="text-lg font-display font-semibold text-text-dark dark:text-white mb-2">{t('Qualifications')}</h4>
                             <ul className="list-disc list-inside space-y-2 mb-6 text-text-light dark:text-slate-300">
-                                {job.qualifications.map((item, index) => <li key={index}>{item}</li>)}
+                                {job.qualifications.map((item, index) => <li key={index}>{t(item as any) || item}</li>)}
                             </ul>
-                            <button className="px-6 py-2 font-bold text-white bg-primary rounded-full hover:bg-secondary transition-colors duration-300">
+                            <button className="px-6 py-2 font-bold text-white bg-primary rounded-full hover:bg-secondary transition-colors duration-300 cursor-pointer">
                                 {t('ApplyNow')}
                             </button>
                         </div>
@@ -125,7 +132,35 @@ const CareersPage: React.FC = () => {
 
             <section id="job-listings" className="bg-gray-50 dark:bg-slate-900 py-20">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 className="text-3xl md:text-4xl font-display font-extrabold text-primary-dark dark:text-white text-center mb-12">{t('CurrentOpenings')}</h2>
+                    <h2 className="text-3xl md:text-4xl font-display font-extrabold text-primary-dark dark:text-white text-center mb-4">{t('CurrentOpenings')}</h2>
+                    <p className="text-sm text-center text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10">
+                        {t('CurrentOpeningsSubtitle') || 'Explore strategic career vacancies across industrial clean energy, deep subsurface research, and corporate governance.'}
+                    </p>
+
+                    {/* 7 Complementary Executive Positions Highlight Banner */}
+                    <div className="max-w-4xl mx-auto mb-8 p-6 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-start">
+                        <div className="flex items-center gap-2 mb-2 text-amber-700 dark:text-amber-400 font-bold text-xs uppercase tracking-wider font-mono">
+                            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                            <span>Executive Governance Vacancies — 7 Open Complementary Directorates</span>
+                        </div>
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                            استخدام و جذب نخبگان در ۷ کارکرد ارتقای ساختاری سازمانی KKM
+                        </h3>
+                        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                            در راستای تفکیک لایه حاکمیت شرکتی از مدیریت اجرایی و پوشش الزامات استانداردهای بین‌المللی صنعتی، پوزیشن‌های مدیریتی زیر آماده پذیرش رزومه و مصاحبه تخصصی می‌باشند:
+                            مدیریت انطباق و تحریم (گزارش به کمیته ریسک)، امنیت اطلاعات و زیرساخت CISO، کنترلر مالی و حسابداری، دفتر مدیریت پروژه PMO (گزارش به CEO)، حاکمیت داده، تدارکات و زنجیره تامین EPC، و پایداری و مدیریت کربن ESG.
+                        </p>
+                        <div className="flex flex-wrap gap-2 text-[11px] font-mono text-slate-700 dark:text-slate-300">
+                            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-850 border border-amber-500/30">Compliance & Sanctions</span>
+                            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-850 border border-amber-500/30">CISO & OT</span>
+                            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-850 border border-amber-500/30">Financial Controller</span>
+                            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-850 border border-amber-500/30">PMO Director</span>
+                            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-850 border border-amber-500/30">Data Governance</span>
+                            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-850 border border-amber-500/30">Procurement & Supply</span>
+                            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-850 border border-amber-500/30">Sustainability & ESG</span>
+                        </div>
+                    </div>
+
                     <div className="max-w-4xl mx-auto">
                         <div className="grid sm:grid-cols-2 gap-4 mb-8 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
                             <div>

@@ -567,20 +567,153 @@ export const JOB_OPENINGS: JobOpening[] = [
         responsibilities: ['Job_5_Resp_1', 'Job_5_Resp_2', 'Job_5_Resp_3', 'Job_5_Resp_4'],
         qualifications: ['Job_5_Qual_1', 'Job_5_Qual_2', 'Job_5_Qual_3', 'Job_5_Qual_4'],
     },
+    {
+        id: 'compliance-sanctions-officer',
+        title: 'Compliance, Sanctions & Anti-Bribery Officer',
+        department: 'Corporate Governance & Legal',
+        location: 'Tehran, Iran',
+        type: 'Full-time',
+        description: 'Directing transnational capital compliance, international sanctions mitigation, anti-bribery policies, and Green Sukuk regulatory certifications reporting directly to the Audit, Risk & Compliance Committee.',
+        responsibilities: [
+            'Overseeing transnational capital syndication and banking transfer compliance',
+            'Formulating and enforcing anti-bribery (ABC) and sanctions adherence protocols',
+            'Independent auditing of third-party EPC vendor and SPV contracts',
+            'Direct quarterly and incident reporting to the Audit, Risk & Compliance Committee'
+        ],
+        qualifications: [
+            'Master or Ph.D. in International Law, Compliance, or Financial Regulation',
+            'Minimum 8 years in cross-border sanctions compliance and international banking',
+            'ACAMS, CCEP, or equivalent global compliance accreditation'
+        ]
+    },
+    {
+        id: 'ciso-ot-security',
+        title: 'Chief Information Security Officer (CISO) & OT Security',
+        department: 'Technology & Cybersecurity',
+        location: 'Tehran / Hybrid',
+        type: 'Full-time',
+        description: 'Safeguarding reservoir geophysics models, IP HoldCo patents, proprietary clean tech trade secrets, and industrial SCADA/OT networks. Reports to CTO with a direct emergency escalation line to the Risk Committee.',
+        responsibilities: [
+            'Protecting high-tier IP HoldCo patent archives and downhole reservoir models',
+            'Securing field SCADA, IoT telemetry, and industrial automation networks against cyber intrusion',
+            'Enforcing Zero-Trust role-based access control (RBAC) across all digital portals',
+            'Direct emergency escalation channel to the Board Risk Committee in cyber crises'
+        ],
+        qualifications: [
+            'Degree in Cybersecurity, Computer Engineering, or Information Assurance',
+            'CISSP, CISM, or IEC 62443 Industrial Cybersecurity certification',
+            'Experience in critical infrastructure and operational technology (OT) defense'
+        ]
+    },
+    {
+        id: 'financial-controller-accounting',
+        title: 'Financial Controller & Accounting',
+        department: 'Finance & Treasury',
+        location: 'Tehran, Iran',
+        type: 'Full-time',
+        description: 'Segregating day-to-day operational accounting, financial reporting, and treasury management from the strategic investment & expansion role of the CFO. Reports directly to the CFO.',
+        responsibilities: [
+            'Managing comprehensive operational general ledgers, tax compliance, and treasury',
+            'Coordinating independent external financial audits and statutory IFRS reports',
+            'Maintaining internal fiscal controls and project expenditure reconciliations',
+            'Working closely with the CFO to segregate operational accounting from strategic investments'
+        ],
+        qualifications: [
+            'CPA, ACCA, or Master in Accounting & Financial Management',
+            '7+ years leading corporate accounting and statutory audits in engineering or EPC groups',
+            'Deep expertise in IFRS and multi-currency project accounting'
+        ]
+    },
+    {
+        id: 'pmo-director',
+        title: 'Project Management Office (PMO) Director',
+        department: 'Executive Board & PMO',
+        location: 'Tehran / Field Sites (Qeshm, Sarakhs)',
+        type: 'Full-time',
+        description: 'Orchestrating the 10-gate lifecycle, schedule baselines, and integrated project controls across mega-projects. Reports directly to the CEO.',
+        responsibilities: [
+            'Monitoring and enforcing the 10-gate lifecycle transition criteria and RACI compliance',
+            'Consolidating multi-project EVM, risk registers, and master engineering schedules',
+            'Direct liaison with CEO, CTO, and COO on critical path bottlenecks',
+            'Standardizing project management methodologies across all consortium subsidiaries'
+        ],
+        qualifications: [
+            'PMP, PgMP, or equivalent project governance credentials',
+            '10+ years in EPC mega-project planning and PMO leadership',
+            'Proven track record in high-stakes infrastructure and industrial scheduling'
+        ]
+    },
+    {
+        id: 'data-governance-director',
+        title: 'Data Governance & Digital Asset Audit Lead',
+        department: 'Technology & AI Directorate',
+        location: 'Tehran, Iran / Hybrid',
+        type: 'Full-time',
+        description: 'Auditing digital telemetry assets, ensuring sensor data quality, and monitoring autonomous control algorithms. Reports to the CTO.',
+        responsibilities: [
+            'Establishing organizational digital asset registries and telemetry data standards',
+            'Ensuring downhole sensor calibration and time-series data integrity for AI models',
+            'Auditing autonomous control algorithms and physics-informed neural network inputs',
+            'Maintaining data cataloging and compliance with international standards'
+        ],
+        qualifications: [
+            'Degree in Data Science, Computer Science, or Information Systems',
+            '5+ years in enterprise data governance, telemetry quality, and data asset management',
+            'Familiarity with industrial SCADA and cloud telemetry architectures'
+        ]
+    },
+    {
+        id: 'procurement-supply-chain-lead',
+        title: 'Procurement & Supply Chain Lead',
+        department: 'Operations & EPC Directorate',
+        location: 'Tehran / Qeshm Free Zone',
+        type: 'Full-time',
+        description: 'Sourcing modular plant components, specialty metallurgy, and managing global EPC vendor networks. Reports to the COO.',
+        responsibilities: [
+            'Strategic sourcing for high-pressure, corrosion-resistant alloy casing and valves',
+            'Vetting and qualifying international EPC suppliers and fabrication yards',
+            'Managing logistics, customs clearance, and Free Zone mobilization timelines',
+            'Ensuring total compliance with ASME, API, and QA/QC procurement specifications'
+        ],
+        qualifications: [
+            'Degree in Supply Chain Management, Mechanical Engineering, or Business Administration',
+            '7+ years in oil/gas, energy, or industrial EPC equipment procurement',
+            'Extensive vendor network and deep knowledge of marine and drilling logistics'
+        ]
+    },
+    {
+        id: 'sustainability-esg-carbon-manager',
+        title: 'Sustainability, ESG & Carbon Management Director',
+        department: 'Finance & Sustainability Directorate',
+        location: 'Tehran, Iran',
+        type: 'Full-time',
+        description: 'Managing Carbon Capture, Utilization and Storage (CCUS), geothermal net-zero modeling, and Green Sukuk certifications. Reports to the CFO.',
+        responsibilities: [
+            'Structuring CCUS integration and lifecycle decarbonization verification',
+            'Developing ISO 14064 verified carbon credit accounting and audit dossiers',
+            'Directing ESG reporting, Green Sukuk framework compliance, and sustainability ratings',
+            'Collaborating with research partners on geothermal circular economy initiatives'
+        ],
+        qualifications: [
+            'Master in Environmental Science, Energy Economics, or Sustainability Management',
+            '6+ years in corporate ESG structuring, carbon offset registries, and green finance',
+            'Familiarity with GHG Protocol, TCFD, and international ESG disclosure standards'
+        ]
+    },
 ];
 
 export const EMPLOYEE_TESTIMONIALS: { quote: string; name: string; role: string; image?: string; initials?: string; department?: string; }[] = [
     {
         quote: "Emp_Testimonial_1_Quote",
-        name: 'Ali Rezaei',
+        name: 'Mostafa Sharifi',
         role: 'Emp_Testimonial_1_Role',
-        initials: 'AR',
-        department: 'Reservoir & Thermodynamics',
-        image: '',
+        initials: 'MS',
+        department: 'Quality Assurance & Technical Inspection',
+        image: '/images/mostafa-sharifi.jpg',
     },
     {
         quote: 'Emp_Testimonial_2_Quote',
-        name: 'Dr. Benyamin Rezaei',
+        name: 'Benyamin Rezaei',
         role: 'Emp_Testimonial_2_Role',
         initials: 'BR',
         department: 'Thermal Spallation & Drilling',

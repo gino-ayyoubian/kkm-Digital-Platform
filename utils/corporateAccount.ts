@@ -15,8 +15,8 @@ export const CORPORATE_EMAIL_DOMAIN = 'kkm-intl.org';
  * first_initial.last_name@kkm-intl.org
  * Examples:
  * "Gino Ayyoubian" -> "g.ayyoubian@kkm-intl.org"
- * "Dr. Reza Asakereh" -> "r.asakereh@kkm-intl.org"
- * "Eng. Ali Rezaei" -> "a.rezaei@kkm-intl.org"
+ * "Reza Asakereh" -> "r.asakereh@kkm-intl.org"
+ * "Seyed Jassem Hosseini" -> "j.hosseini@kkm-intl.org"
  */
 export function generateCorporateEmail(fullName: string): string {
   if (!fullName) return `user@${CORPORATE_EMAIL_DOMAIN}`;

@@ -9,6 +9,7 @@ import {
   Building2, Search, CheckCircle2, LayoutGrid, Network, Maximize2 
 } from 'lucide-react';
 import { getMemberPhotoObjectPosition } from '../components/common/ExecutiveMemberIdentity';
+import GovernanceFrameworkSection from '../components/governance/GovernanceFrameworkSection';
 
 interface TeamPageProps {
   setPage?: (page: Page) => void;
@@ -150,7 +151,7 @@ const LEADERSHIP: Member[] = [
   {
     id: "gino-ayyoubian",
     name: "Gino Ayyoubian",
-    nameFa: "سید ژینو ایوبیان",
+    nameFa: "سید ژینو ایوبیان مرکزی",
     title: "Chief Executive Officer & Chairman of the Board",
     titleFa: "مدیرعامل و رئیس هیئت مدیره",
     department: "Executive Board & Strategic Directorate",
@@ -182,8 +183,8 @@ const LEADERSHIP: Member[] = [
     titleFa: "نایب رئیس هیئت مدیره و مدیر ارشد اجرایی",
     department: "Executive Board & Corporate Strategy",
     departmentFa: "هیئت مدیره و راهبرد توسعه کلان",
-    bio: "Senior corporate governance and industrial strategy leader directing international operations, multi-sector partnerships, and enterprise governance across KKM's global ventures.",
-    bioFa: "راهبر ارشد حاکمیت شرکتی و راهبرد صنعتی، ناظر بر تعاملات بین‌المللی، مشارکت‌های راهبردی و انضباط سازمانی در پروژه‌های فرامرزی و کنسرسیوم‌های بین‌المللی گروه KKM.",
+    bio: "Senior corporate governance and industrial strategy leader directing international operations, multi-sector partnerships, human capital governance, and contractual authorizations across KKM's global ventures.",
+    bioFa: "راهبر ارشد حاکمیت شرکتی و راهبرد صنعتی، ناظر بر تعاملات بین‌المللی، سرمایه انسانی و اختیار قراردادها، مشارکت‌های راهبردی و انضباط سازمانی در پروژه‌های فرامرزی گروه KKM.",
     initials: "RB",
     credentials: ["Corporate Governance", "Strategic Planning", "International Joint Ventures", "Executive Board"],
     imageUrl: "/images/reza-baghdadchi.jpg",
@@ -205,80 +206,161 @@ const LEADERSHIP: Member[] = [
     id: "ashkan-tofangchiha",
     name: "Ashkan Tofangchiha",
     nameFa: "اشکان تفنگچی‌ها",
-    title: "Board Member & Chief Commercial & Investment Officer",
-    titleFa: "عضو هیئت مدیره و مدیر ارشد بازرگانی و سرمایه‌گذاری",
-    department: "Commercial Directorate & Capital Allocations",
-    departmentFa: "هیئت مدیره، توسعه تجاری و سرمایه‌گذاری بین‌الملل",
-    bio: "Directing capital structuring, international commercial contracts, institutional investor relations, and strategic project financing for closed-loop energy and industrial infrastructure.",
-    bioFa: "هدایت‌کننده ساختارهای تأمین مالی، قراردادهای بین‌المللی تجاری، تعامل با سرمایه‌گذاران نهادی و تأمین سرمایه برای زیرساخت‌های کلان انرژی پاک و پروژه‌های EPC.",
+    title: "Board Member & Open Innovation Directorate",
+    titleFa: "عضو هیئت مدیره و مدیر واحد نوآوری باز و تفکر طراحی",
+    department: "Open Innovation & Design Thinking",
+    departmentFa: "هیئت مدیره، نوآوری باز و تفکر طراحی",
+    bio: "Directing open innovation ecosystems, design thinking frameworks, international commercial pacts, and strategic technology transfer partnerships for industrial clean energy.",
+    bioFa: "هدایت‌کننده زیست‌بوم نوآوری باز، چارچوب تفکر طراحی، مشارکت‌های بین‌المللی انتقال فناوری و توسعه راهبردی پروژه‌های انرژی پاک و زیرساخت مدولار.",
     initials: "AT",
-    credentials: ["Project Financing", "Capital Structuring", "Commercial Contracts", "Executive Board"],
+    credentials: ["Open Innovation", "Design Thinking", "Project Financing", "Executive Board"],
     imageUrl: "/images/ashkan-tofangchiha.jpg",
     category: "leadership",
     linkedInUrl: "https://www.linkedin.com/in/ashkantofangchiha",
     email: "a.tofangchiha@kkm-intl.org",
-    phone: "+98 21 9103 0835",
-    sipExtension: "106",
+    phone: "+98 21 9103 0837",
+    sipExtension: "107",
     employeeId: "KKM-008",
     clearanceLevel: "Top Secret / Strategic",
     engineeringDomains: [
-      "Project Financing",
-      "Capital Markets",
-      "International Commercial Contracts",
-      "Energy Asset Valuation"
-    ]
-  },
-  {
-    id: "pedram-abdarzadeh",
-    name: "Dr. Pedram Abdarzadeh",
-    nameFa: "دکتر پدرام آبدارزاده",
-    title: "Chief Financial Officer (CFO)",
-    titleFa: "مدیر ارشد مالی و بودجه",
-    department: "Finance & Accounting",
-    departmentFa: "امور مالی، حسابداری و بودجه‌ریزی",
-    bio: "Chief Financial Officer leading fiscal compliance, sovereign energy bond issuance, and multi-currency treasury operations across clean tech infrastructure.",
-    bioFa: "مدیر ارشد مالی و بودجه؛ مدیر حاکمیت مالی، انتشار اوراق قرضه انرژی پاک و عملیات خزانه‌داری ارزی در پروژه‌های پیشرفته انرژی پایدار.",
-    initials: "PA",
-    credentials: ["Ph.D. Economics & Finance", "IFRS Clean Tech Compliance", "Executive Committee"],
-    imageUrl: "/images/pedram-abdarzadeh.jpg",
-    category: "leadership",
-    linkedInUrl: "https://www.linkedin.com/in/pedram-abdarzadeh-64515689",
-    email: "p.abdarzadeh@kkm-intl.org",
-    phone: "+98 21 9103 0834",
-    sipExtension: "105",
-    employeeId: "KKM-005",
-    clearanceLevel: "Confidential / Tier-1",
-    engineeringDomains: [
-      "Macroeconomic Modeling",
-      "Cross-Border Financial Governance",
-      "IFRS Clean Tech Compliance",
-      "Carbon Credit Arbitrage"
+      "Open Innovation Ecosystems",
+      "Design Thinking Methodologies",
+      "Commercial Technology Transfer",
+      "Clean Energy Asset Structuring"
     ]
   },
   {
     id: "farid-imani",
     name: "Farid Imani",
     nameFa: "فرید ایمانی",
-    title: "Chief Investment Officer (CIO)",
-    titleFa: "مدیر ارشد سرمایه‌گذاری و دارایی‌ها",
-    department: "Finance & Investments",
-    departmentFa: "سرمایه‌گذاری، تامین مالی و دارایی‌های سرمایه‌ای",
-    bio: "Chief Investment Officer directing international clean infrastructure fund allocation and sovereign capital syndication.",
-    bioFa: "مدیر ارشد سرمایه‌گذاری؛ هدایت‌کننده جذب و تخصیص سرمایه در مگاپروژه‌های انرژی پاک و دارایی‌های بدون کربن.",
+    title: "Chief Financial Officer (CFO)",
+    titleFa: "معاونت مالی و دارایی (CFO)",
+    department: "Finance, Investments & Asset Management",
+    departmentFa: "معاونت مالی، خزانه‌داری، سرمایه‌گذاری فراملی و SPVها",
+    bio: "Chief Financial Officer leading transnational capital syndication, SPV structures, Green Sukuk bond issuances, and strategic treasury across clean tech mega-projects.",
+    bioFa: "معاونت مالی و دارایی؛ هدایت سرمایه‌گذاری فراملی، تأسیس SPVهای بین‌المللی، انتشار صکوک سبز، پایش کنترلر مالی و مدیریت ریسک‌های کلان اعتباری.",
     initials: "FI",
-    credentials: ["Infrastructure Financing", "Capital Syndication", "Asset Valuation"],
+    credentials: ["Infrastructure Financing", "Capital Syndication", "Transnational SPVs", "CFO Directorate"],
     imageUrl: "/images/farid-imani.jpg",
     category: "leadership",
     linkedInUrl: "https://www.linkedin.com/in/farid-imani-0aaa0313",
     email: "f.imani@kkm-intl.org",
-    phone: "+98 21 9103 0833",
+    phone: "+98 21 9103 0834",
     sipExtension: "104",
     employeeId: "KKM-004",
     clearanceLevel: "Confidential / Tier-1",
     engineeringDomains: [
-      "Infrastructure Project Structuring",
+      "Transnational SPV Structuring",
       "Sovereign Capital Syndication",
+      "Green Sukuk Issuance",
       "Decarbonization Asset Pricing"
+    ]
+  },
+  {
+    id: "khosro-jarrahian",
+    name: "Khosro Jarrahian",
+    nameFa: "خسرو جراحیان",
+    title: "Chief Technology Officer (CTO)",
+    titleFa: "معاونت فناوری (CTO)",
+    department: "Technology & Subsurface R&D Directorate",
+    departmentFa: "معاونت فناوری، تحقیق و توسعه زیرسطحی، ژئوترمال و هوش مصنوعی",
+    bio: "Chief Technology Officer directing subsurface thermodynamics, geothermal reservoir physics, zero-liquid discharge (ZLD) desalination, and supervising CISO and Data Governance.",
+    bioFa: "معاونت فناوری سازمان؛ هدایت R&D زیرسطحی و ژئوترمال، سامانه‌های نانومواد، یکپارچه‌سازی هوش مصنوعی مخزن و نظارت راهبردی بر امنیت اطلاعات (CISO) و حاکمیت داده.",
+    initials: "KJ",
+    credentials: ["Subsurface Thermodynamics", "ZLD Desalination", "Geothermal Engineering", "CTO Directorate"],
+    imageUrl: "/images/khosro-jarrahian.jpg",
+    category: "leadership",
+    linkedInUrl: "https://www.linkedin.com/in/khosro-jarrahian-phd-7a83b641",
+    email: "k.jarrahian@kkm-intl.org",
+    phone: "+98 21 9103 0832",
+    sipExtension: "102",
+    employeeId: "KKM-003",
+    clearanceLevel: "Top Secret / Strategic",
+    engineeringDomains: [
+      "Subsurface Geothermal Thermodynamics",
+      "Hydro-mechanical Well Modeling",
+      "Zero-Liquid Discharge Desalination",
+      "Subsurface Data Architecture"
+    ]
+  },
+  {
+    id: "heidar-yarveicy",
+    name: "Heydar Yarveisi",
+    nameFa: "حیدر یارویسی",
+    title: "Chief Operating Officer (COO)",
+    titleFa: "معاونت اجرایی و EPC (COO)",
+    department: "Operations, Offshore & EPC Directorate",
+    departmentFa: "معاونت اجرایی، مگاپروژه‌های فراساحل و زیرسطحی (قشم، سرخس)",
+    bio: "Chief Operating Officer directing turnkey EPC delivery, offshore and subsurface rig mobilizations (Qeshm, Sarakhs), automation networks, robotics, and global supply chain logistics.",
+    bioFa: "معاونت اجرایی و EPC؛ راهبری عملیات پروژه‌های فراساحل و زیرسطحی قشم و سرخس، شبکه‌های اتوماسیون، رباتیک صنعتی و مدیریت زنجیره تامین تجهیزات سنگین.",
+    initials: "HY",
+    credentials: ["Turnkey EPC Management", "Rig Fleet Mobilization", "Offshore Field Operations", "COO Directorate"],
+    imageUrl: "/images/heidar-yarveicy.jpg",
+    category: "leadership",
+    linkedInUrl: "https://www.linkedin.com/in/heidar-yarveicy-ab4420179",
+    email: "h.yarveicy@kkm-intl.org",
+    phone: "+98 21 9103 0833",
+    sipExtension: "103",
+    employeeId: "KKM-006",
+    clearanceLevel: "Confidential / Tier-1",
+    engineeringDomains: [
+      "Offshore Mega-Project Mobilization",
+      "Subsurface Rig Logistics",
+      "EPC Vendor Supply Chain",
+      "Industrial Robotics Integration"
+    ]
+  },
+  {
+    id: "seyed-jassem-hosseini",
+    name: "Seyed Jassem Hosseini",
+    nameFa: "سید جاسم حسینی",
+    title: "Director of Health, Safety & Environment (HSE)",
+    titleFa: "مدیر بهداشت، ایمنی و محیط زیست (HSE)",
+    department: "HSE, Environmental & Industrial Safety Directorate",
+    departmentFa: "مدیریت بهداشت، ایمنی و محیط زیست (گزارش مستقیم به کمیته حسابرسی و ریسک)",
+    bio: "Directing deep drilling high-hazard mitigation, sour gas (H2S) toxic containment, offshore marine safety compliance, and environmental stewardship with direct reporting line to the Audit, Risk & Compliance Committee.",
+    bioFa: "مهار مخاطرات بالای عملیات حفاری عمیق، مهار گازهای ترش H2S و الزامات زیست‌محیطی فراساحلی با استقلال ساختاری و خط گزارش مستقیم به کمیته حسابرسی، ریسک و انطباق.",
+    initials: "JH",
+    credentials: ["HSE Leadership", "Sour Gas (H2S) Containment", "Offshore Safety Protocols", "Independent Risk Line"],
+    category: "leadership",
+    linkedInUrl: "https://www.linkedin.com/company/kkm-international-group",
+    email: "j.hosseini@kkm-intl.org",
+    phone: "+98 21 9103 0839",
+    sipExtension: "109",
+    employeeId: "KKM-019",
+    clearanceLevel: "Top Secret / Strategic",
+    engineeringDomains: [
+      "Deep Drilling Well Control",
+      "Sour Gas (H2S) Containment",
+      "Offshore Marine Safety",
+      "Zero-Harm Environmental Oversight"
+    ]
+  },
+  {
+    id: "pedram-abdarzadeh",
+    name: "Pedram Abdarzadeh",
+    nameFa: "پدرام آبدارزاده",
+    title: "Director of Corporate Governance, Risk & Insurance",
+    titleFa: "مدیر حاکمیت شرکتی، ریسک و بیمه",
+    department: "Corporate Governance & Risk Directorate",
+    departmentFa: "حاکمیت شرکتی، ریسک و بیمه (با رعایت کامل سلب اختیار در تعارض منافع)",
+    bio: "Director of Corporate Governance, Enterprise Risk Management, and Industrial Insurance syndication, upholding strict conflict-of-interest recusal principles.",
+    bioFa: "مدیر حاکمیت شرکتی، ریسک و پوشش‌های بیمه صنعتی ذیل معاونت مالی، با رعایت کامل سلب اختیار و عدم دخالت در تصمیم‌گیری‌های دارای تعارض منافع.",
+    initials: "PA",
+    credentials: ["Corporate Governance", "Enterprise Risk Management", "Industrial Insurance", "Audit Committee Liaison"],
+    imageUrl: "/images/pedram-abdarzadeh.jpg",
+    category: "leadership",
+    linkedInUrl: "https://www.linkedin.com/in/pedram-abdarzadeh-64515689",
+    email: "p.abdarzadeh@kkm-intl.org",
+    phone: "+98 21 9103 0838",
+    sipExtension: "108",
+    employeeId: "KKM-005",
+    clearanceLevel: "Confidential / Tier-1",
+    engineeringDomains: [
+      "Corporate Governance Architecture",
+      "Enterprise Risk Mitigation",
+      "Industrial Insurance Syndication",
+      "Conflict of Interest Protocols"
     ]
   },
 
@@ -287,22 +369,22 @@ const LEADERSHIP: Member[] = [
   // ============================
   {
     id: "reza-asakereh",
-    name: "Dr. Reza Asakereh",
-    nameFa: "دکتر رضا عساکره",
-    title: "Director of Cognitive Systems & Digital Twins",
-    titleFa: "مدیر ارشد فناوری، هوش مصنوعی و سامانه‌های شناختی",
-    department: "Industrial AI & Computing",
-    departmentFa: "هوش مصنوعی صنعتی و محاسبات پیشرفته",
-    bio: "Architect behind KKM's real-time digital twin architecture, integrating physics-informed neural networks with field telemetry and reservoir physics.",
+    name: "Reza Asakereh",
+    nameFa: "رضا عساکره",
+    title: "Director of AI, Data & Cognitive Systems",
+    titleFa: "مدیر هوش مصنوعی، داده و سامانه‌های شناختی",
+    department: "AI, Data & Cognitive Computing (CTO Directorate)",
+    departmentFa: "هوش مصنوعی و داده (ذیل معاونت فناوری)",
+    bio: "Architect behind KKM's real-time digital twin architecture, integrating physics-informed neural networks (PINN) with downhole telemetry, reservoir physics, and autonomous industrial controls.",
     bioFa: "معمار زیرساخت دوقلوهای دیجیتال و یکپارچه‌سازی شبکه‌های عصبی مبتنی بر فیزیک با داده‌های تله‌متری مخزن و سیستم‌های کنترل ترمودینامیکی خودکار.",
     initials: "RA",
-    credentials: ["Ph.D. Computer Science / AI", "PINN Specialist", "Telemetry Fellow"],
+    credentials: ["Cognitive Computing", "Industrial AI", "PINN Specialist", "Telemetry Architecture"],
     imageUrl: "/DCB4BC5A-B9EE-4C50-8C99-F3303C779DE5.png",
     category: "engineering",
     linkedInUrl: "https://www.linkedin.com/in/canada-reza-asakereh",
     email: "r.asakereh@kkm-intl.org",
-    phone: "+98 21 9103 0831",
-    sipExtension: "102",
+    phone: "+98 21 9103 0836",
+    sipExtension: "106",
     employeeId: "KKM-002",
     clearanceLevel: "Top Secret / Strategic",
     engineeringDomains: [
@@ -313,44 +395,17 @@ const LEADERSHIP: Member[] = [
     ]
   },
   {
-    id: "khosro-jarrahian",
-    name: "Dr. Khosro Jarrahian",
-    nameFa: "دکتر خسرو جراحیان",
-    title: "Chief Science Officer & Water-Energy Nexus Director",
-    titleFa: "مدیر ارشد علوم زمین، پیوند آب و انرژی و پایداری",
-    department: "Water Systems & Environmental Governance",
-    departmentFa: "سامانه‌های آب و حاکمیت زیست‌محیطی",
-    bio: "Specialist in zero-liquid discharge (ZLD) seawater desalination, industrial brine concentration, geothermal water-energy nexus, and regional ecosystem restoration.",
-    bioFa: "متخصص سامانه‌های نمک‌زدایی بدون پساب (ZLD)، بازچرخانی پساب‌های صنعتی در پیوند با انرژی پاک و مهندسی پایدار محیط زیست و مخازن ژئوفیزیکی عمیق.",
-    initials: "KJ",
-    credentials: ["Ph.D. Environmental Engineering", "ZLD Desalination Expert", "ISO 14001 Auditor", "Nexus Architecture"],
-    imageUrl: "/images/khosro-jarrahian.jpg",
-    category: "engineering",
-    linkedInUrl: "https://www.linkedin.com/in/khosro-jarrahian-phd-7a83b641",
-    email: "k.jarrahian@kkm-intl.org",
-    phone: "+98 21 9103 0832",
-    sipExtension: "103",
-    employeeId: "KKM-003",
-    clearanceLevel: "Confidential / Tier-1",
-    engineeringDomains: [
-      "Reservoir Geophysics",
-      "Hydro-mechanical Well Simulation",
-      "Subsurface Sealing Integrity",
-      "Geochemical Heat Tracing"
-    ]
-  },
-  {
     id: "sina-ayyoubian",
     name: "Sina Ayyoubian",
     nameFa: "سینا ایوبیان",
-    title: "R&D Specialist & Technical Associate",
-    titleFa: "کارشناس ارشد تحقیق و توسعه و سامانه‌های نوآوری",
-    department: "R&D & Cognitive Technologies",
-    departmentFa: "تحقیق و توسعه، فناوری‌های نوظهور و نوآوری",
-    bio: "R&D Specialist leading advanced technology prototyping, geothermal instrumentation modeling, and cross-functional clean energy initiatives.",
-    bioFa: "کارشناس ارشد تحقیق و توسعه و سامانه‌های نوآوری؛ فعال در پیشبرد نمونه‌سازی فناوری‌های نوظهور، مدل‌سازی تجهیزات زمین‌گرمایی و طرح‌های نوآورانه گروه KKM.",
+    title: "Robotics, Automation & Advanced R&D Specialist",
+    titleFa: "کارشناس ارشد اتوماسیون، شبکه و رباتیک",
+    department: "Robotics & Automation (COO / CTO Liaison)",
+    departmentFa: "اتوماسیون، شبکه و رباتیک (همکاری مشترک معاونت اجرایی و فناوری)",
+    bio: "Specialist in industrial robotics, autonomous wellhead automation, SCADA network instrumentation, and clean energy prototyping.",
+    bioFa: "کارشناس ارشد رباتیک صنعتی، اتوماسیون هوشمند سرچاهی، شبکه‌های پایش میدانی SCADA و نمونه‌سازی تجهیزات نوین انرژی پاک.",
     initials: "SA",
-    credentials: ["Energy Systems Modeling", "Clean Tech Prototyping", "R&D Associate"],
+    credentials: ["Industrial Robotics", "SCADA Automation", "Instrumentation Modeling"],
     imageUrl: "/images/sina-ayyoubian.jpg",
     category: "engineering",
     linkedInUrl: "https://www.linkedin.com/in/sina-a-6a4426157",
@@ -360,42 +415,47 @@ const LEADERSHIP: Member[] = [
     employeeId: "KKM-018",
     clearanceLevel: "Operational / Tier-2",
     engineeringDomains: [
-      "Clean Tech Prototyping",
-      "Geothermal Instrumentation Modeling",
-      "Advanced Sensor Validation",
-      "Innovation System Integration"
+      "Industrial Robotics",
+      "SCADA Telemetry Integration",
+      "Wellhead Instrumentation",
+      "Closed-Loop Sensors"
     ]
   },
   {
     id: "mostafa-sharifi",
     name: "Mostafa Sharifi",
     nameFa: "مصطفی شریفی",
-    title: "Operational Excellence Manager (OpEx)",
-    titleFa: "مدیر تعالی عملیاتی و بهبود مستمر",
-    department: "Operational Excellence & Continuous Improvement",
-    departmentFa: "تعالی عملیاتی و بهبود مستمر",
-    bio: "Senior Management (Level 2) leading process optimization, Lean and Six Sigma programs across the 10-stage project lifecycle, reducing production cost and raising operational efficiency on platforms such as GMEL; direct liaison between engineering teams, QA/QC and the COO.",
-    bioFa: "مدیر ارشد سطح ۲، هدایت‌کننده بهینه‌سازی فرآیند، متدولوژی‌های ناب (Lean) و شش‌سیگما در چرخه ۱۰ مرحله‌ای پروژه‌ها، کاهش هزینه تولید و ارتقای کارایی عملیاتی در پلتفرم‌هایی نظیر GMEL؛ رابط مستقیم تیم‌های مهندسی، QA/QC و COO.",
+    title: "Director of Technical Inspection & Independent QA/QC",
+    titleFa: "مدیر بازرسی فنی و کنترل کیفیت مستقل (QA/QC)",
+    department: "Technical Inspection & Quality Assurance",
+    departmentFa: "بازرسی فنی و تضمین کیفیت (مستقل از خط اجرایی)",
+    bio: "Leading independent technical inspection, ASME/API conformity, non-destructive testing (NDT), and continuous operational excellence across all 10 gates of the project lifecycle.",
+    bioFa: "مدیریت بازرسی فنی، انطباق استانداردهای ASME و API، ممیزی مستقل کیفیت ساخت و آزمون‌های غیرمخرب (NDT) خارج از سلسله‌مراتب عملیاتی مجریان پروژه.",
     initials: "MS",
     imageUrl: "/images/mostafa-sharifi.jpg",
-    credentials: ["Project Engineering", "Technical Documentation"],
+    credentials: ["Independent Technical Inspection", "ASME / API Compliance", "NDT Level III"],
     category: "engineering",
     verificationStatus: "verified",
     linkedInUrl: "https://www.linkedin.com/in/mostafa-sharifi-0686a284",
-    engineeringDomains: ["Project Design Support", "Technical Documentation", "Delivery Coordination"]
+    email: "m.sharifi@kkm-intl.org",
+    phone: "+98 21 9103 0849",
+    sipExtension: "209",
+    employeeId: "KKM-022",
+    clearanceLevel: "Confidential / Tier-1",
+    engineeringDomains: ["Technical Inspection", "ASME/API Standards", "NDT Non-Destructive Testing", "Gate Quality Signoff"]
   },
   {
     id: "benyamin-rezaei",
-    name: "Dr. Benyamin Rezaei",
-    nameFa: "دکتر بنیامین رضایی",
-    title: "Chief Technology Officer & Lead Geothermal Engineer",
-    titleFa: "مدیر ارشد فناوری و سرپرست مهندسی زمین‌گرمایی",
+    name: "Benyamin Rezaei",
+    nameFa: "بنیامین رضایی",
+    title: "Lead Geothermal Thermodynamic Systems Engineer",
+    titleFa: "سرپرست مهندسی سامانه‌های ترمودینامیکی زمین‌گرمایی",
     department: "Energy Systems & Thermodynamics",
     departmentFa: "سامانه‌های انرژی و ترمودینامیک",
     bio: "Pioneering researcher in deep closed-loop geothermal extraction, downhole heat exchangers, and supercritical thermodynamic fluid cycles.",
     bioFa: "پژوهشگر ارشد سامانه‌های استخراج حرارت زمین‌گرمایی و طراح سیکل‌های بسته فوق‌بحرانی GMEL-CLG.",
     initials: "BR",
-    credentials: ["Ph.D. Thermodynamics", "ASME Member", "Lead GMEL Architect"],
+    credentials: ["Supercritical Fluid Cycles", "Downhole Heat Transfer", "ASME Thermodynamics"],
     category: "engineering",
     linkedInUrl: "https://www.linkedin.com/company/kkm-international-group",
     email: "b.rezaei@kkm-intl.org",
@@ -407,39 +467,17 @@ const LEADERSHIP: Member[] = [
     ]
   },
   {
-    id: "ali-rezaei",
-    name: "Dr. Ali Rezaei",
-    nameFa: "دکتر علی رضایی",
-    title: "Head of Materials Science & Nanotechnology",
-    titleFa: "سرپرست علوم مواد پیشرفته و نانوفناوری",
-    department: "Advanced Materials & Biomedical",
-    departmentFa: "مواد پیشرفته و زیست‌مهندسی",
-    bio: "Leading research into specialized nanofluids with enhanced thermal conductivity and biocompatible sensing instruments.",
-    bioFa: "هدایت‌کننده پروژه‌های سنتز نانوسیالات با رسانندگی حرارتی بالا و حسگرهای تشخیصی سازگار با محیط.",
-    initials: "AR",
-    credentials: ["Ph.D. Nanomaterials", "Polymer & Fluid Rheology", "Senior Fellow"],
-    category: "engineering",
-    linkedInUrl: "https://www.linkedin.com/company/kkm-international-group",
-    email: "a.rezaei@kkm-intl.org",
-    employeeId: "KKM-042",
-    engineeringDomains: [
-      "Nanofluid Rheology",
-      "Corrosion-Resistant Alloys",
-      "Biocompatible Diagnostic Sensors"
-    ]
-  },
-  {
     id: "farzad-kazemi",
-    name: "Eng. Farzad Kazemi",
-    nameFa: "مهندس فرزاد کاظمی",
+    name: "Farzad Kazemi",
+    nameFa: "فرزاد کاظمی",
     title: "Head of Systems Engineering & Technical Office",
     titleFa: "سرپرست مهندسی سیستم‌ها و دفتر فنی",
     department: "Engineering & Technical Office",
     departmentFa: "دفتر فنی و مهندسی سیستم‌ها",
     bio: "Directing field operations, SCADA telemetry integration, and EPC quality assurance across testing sites and demonstration pilots.",
-    bioFa: "مسئول ارشد نظارت فنی، تله‌متری میدانی SCADA و صحه‌گذاری استانداردهای کیفی در پروژه‌های EPC.",
+    bioFa: "مسئول نظارت فنی، تله‌متری میدانی SCADA و صحه‌گذاری استانداردهای کیفی در پروژه‌های EPC.",
     initials: "FK",
-    credentials: ["B.Sc. Mechanical / Control", "SCADA Telemetry", "EPC Quality Director"],
+    credentials: ["Control & Automation", "SCADA Telemetry", "EPC Technical Office"],
     category: "engineering",
     linkedInUrl: "https://www.linkedin.com/company/kkm-international-group",
     email: "f.kazemi@kkm-intl.org",
@@ -458,14 +496,14 @@ const LEADERSHIP: Member[] = [
     id: "hamed-zatajam",
     name: "Hamed Zatajam",
     nameFa: "حامد ذات‌عجم",
-    title: "Director of Legal & IP",
-    titleFa: "مدیر حقوقی، قراردادها و مالکیت فکری",
-    department: "Legal & Intellectual Property",
-    departmentFa: "امور حقوقی، مالکیت فکری و پتنت‌ها",
-    bio: "Director of Legal & Intellectual Property safeguarding proprietary GMEL patent filings and negotiating international EPCIC pacts.",
-    bioFa: "مدیر حقوقی و مالکیت فکری؛ محافظ حقوقی اختراعات و پتنت‌های بین‌المللی GMEL و تنظیم‌کننده قراردادهای کلان EPCIC.",
+    title: "Director of IP HoldCo, Legal & International Contracts",
+    titleFa: "مدیر دفتر IP، امور حقوقی و قراردادهای بین‌المللی",
+    department: "IP HoldCo, Patents & Legal Office",
+    departmentFa: "دفتر IP و امور حقوقی (مدیریت اسناد IP HoldCo، ثبت اختراعات PCT و قراردادها)",
+    bio: "Director of IP HoldCo and Legal Affairs managing PCT international patents, WIPO fortress protections, trade secret compartmentalization, and FIDIC/EPCIC contractual structures.",
+    bioFa: "مدیر دفتر IP و امور حقوقی؛ راهبری اسناد مالکیت فکری IP HoldCo، ثبت اختراعات بین‌المللی PCT، حفاظت اسرار تجاری و تنظیم قراردادهای کلان مهندسی FIDIC و EPCIC.",
     initials: "HZ",
-    credentials: ["LL.M. International Law", "WIPO Patent Attorney", "FIDIC Contracts Expert"],
+    credentials: ["WIPO PCT Patent Attorney", "International IP Fortress", "FIDIC Contracts", "Legal Directorate"],
     imageUrl: "/images/hamed-zatajam.jpg",
     category: "support",
     linkedInUrl: "https://www.linkedin.com/in/hamed-zatajam",
@@ -473,51 +511,27 @@ const LEADERSHIP: Member[] = [
     phone: "+98 21 9103 0846",
     sipExtension: "205",
     employeeId: "KKM-016",
-    clearanceLevel: "Confidential / Tier-1",
+    clearanceLevel: "Top Secret / Strategic",
     engineeringDomains: [
-      "WIPO Patent Drafting",
-      "FIDIC & EPCIC Contracts",
-      "Cross-Border Concessions",
-      "Trade Secret Protection"
-    ]
-  },
-  {
-    id: "heidar-yarveicy",
-    name: "Heidar Yarveicy",
-    nameFa: "حیدر یارویسی",
-    title: "Chief Operating Officer (COO)",
-    titleFa: "مدیر ارشد عملیات و زیرساخت",
-    department: "Operations & Logistics",
-    departmentFa: "عملیات اجرایی، لجستیک و پروژه‌ها",
-    bio: "Chief Operating Officer managing drilling logistics, heavy equipment mobilization, and turnkey EPC site deployments.",
-    bioFa: "مدیر ارشد عملیات؛ مدیر لجستیک دکل‌های حفاری، تجهیزات سنگین و اجرای مگاپروژه‌های EPC در شرایط دشوار میدانی.",
-    initials: "HY",
-    credentials: ["Turnkey Rig Procurement", "EPC Mobilization", "Zero-Accident HSE"],
-    category: "support",
-    linkedInUrl: "https://www.linkedin.com/in/heidar-yarveicy-ab4420179",
-    email: "h.yarveicy@kkm-intl.org",
-    phone: "+98 21 9103 0835",
-    sipExtension: "106",
-    employeeId: "KKM-006",
-    clearanceLevel: "Confidential / Tier-1",
-    engineeringDomains: [
-      "Field Mobilization",
-      "Supply Chain Optimization",
-      "Industrial Rigging Logistics"
+      "WIPO PCT Patent Drafting",
+      "IP HoldCo Structuring",
+      "FIDIC & EPCIC International Pacts",
+      "Trade Secret Segregation"
     ]
   },
   {
     id: "masoumeh-moshar",
     name: "Masoumeh Moshar",
     nameFa: "معصومه مشار",
-    title: "Director of PR & Communications",
-    titleFa: "مدیر روابط عمومی و ارتباطات بین‌الملل",
-    department: "Public Relations",
-    departmentFa: "روابط عمومی، رسانه و برندینگ سازمانی",
-    bio: "Director of Public Relations leading global media representation, government liaison, and international technological outreach.",
-    bioFa: "مدیر روابط عمومی و ارتباطات بین‌الملل؛ مدیر ارشد تعاملات دیپلماتیک صنعتی، پوشش رسانه‌ای و حضور در نمایشگاه‌های بین‌المللی.",
+    title: "Director of Stakeholder Relations & Communications",
+    titleFa: "معاونت ارتباطات و ذینفعان",
+    department: "Communications & Stakeholder Affairs",
+    departmentFa: "معاونت ارتباطات، رسانه و روابط با ذینفعان",
+    bio: "Director of Communications and Stakeholder Affairs leading corporate diplomacy, multilateral outreach, press relations, and sustainability public disclosures.",
+    bioFa: "معاونت ارتباطات و ذینفعان؛ مدیریت دیپلماسی تجاری، تعامل با نهادهای حاکمیتی و بین‌المللی، مدیریت رسانه و شفافیت دستاوردهای گروه KKM.",
     initials: "MM",
-    credentials: ["Strategic Communications", "Governmental Protocol", "ESG Brand Narrative"],
+    credentials: ["Stakeholder Relations", "Corporate Communications", "Public Protocol"],
+    imageUrl: "/images/masoumeh-moshar.jpg",
     category: "support",
     linkedInUrl: "https://www.linkedin.com/in/masoumeh-moshar",
     email: "m.moshar@kkm-intl.org",
@@ -526,33 +540,9 @@ const LEADERSHIP: Member[] = [
     employeeId: "KKM-015",
     clearanceLevel: "Operational / Tier-2",
     engineeringDomains: [
-      "Strategic Communications",
-      "International Exhibition Protocol",
-      "Multilateral Liaison"
-    ]
-  },
-  {
-    id: "maryam-bahrami",
-    name: "Maryam Bahrami",
-    nameFa: "مریم بهرامی",
-    title: "Accounting Specialist & Operational Desk",
-    titleFa: "کارشناس امور مالی و حسابداری",
-    department: "Finance & Accounting",
-    departmentFa: "امور مالی، خزانه‌داری و حسابداری",
-    bio: "Specialist managing internal financial automation, operational audits, and corporate ledger compliance.",
-    bioFa: "کارشناس ارشد امور مالی و حسابداری؛ مسئول انضباط مالی پروژه‌ها، اسناد خزانه‌داری و هماهنگی کارتابل سازمانی.",
-    initials: "MB",
-    credentials: ["Treasury Reconciliation", "Fiscal Reporting", "Audit Coordination"],
-    category: "support",
-    linkedInUrl: "https://www.linkedin.com/company/kkm-international-group",
-    email: "m.bahrami@kkm-intl.org",
-    phone: "+98 21 9103 0847",
-    sipExtension: "206",
-    employeeId: "KKM-043",
-    engineeringDomains: [
-      "Financial Automation",
-      "Operational Audit Compliance",
-      "Project Cost Control"
+      "Stakeholder Engagement",
+      "Industrial Diplomatic Protocol",
+      "Multilateral Media Communication"
     ]
   }
 ];
@@ -561,7 +551,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
   const { direction, isFa } = useLanguage();
   const shouldReduceMotion = useReducedMotion();
   const [selectedCategory, setSelectedCategory] = React.useState<'all' | TeamCategory>('all');
-  const [viewMode, setViewMode] = React.useState<'grid' | 'orgChart'>('grid');
+  const [viewMode, setViewMode] = React.useState<'grid' | 'orgChart' | 'governance'>('grid');
   const [searchQuery, setSearchQuery] = React.useState<string>('');
   const [selectedMember, setSelectedMember] = React.useState<Member | null>(null);
   const [copiedEmail, setCopiedEmail] = React.useState<string | null>(null);
@@ -666,9 +656,9 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
           </p>
         </div>
 
-        {/* View Mode Switcher: Cards vs. Org Chart */}
+        {/* View Mode Switcher: Cards vs. Org Chart vs. Governance */}
         <div className="flex items-center justify-center mb-8">
-          <div className="p-1 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs inline-flex items-center gap-1">
+          <div className="p-1 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs inline-flex items-center gap-1 flex-wrap justify-center">
             <button
               onClick={() => setViewMode('grid')}
               className={`px-4 sm:px-5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
@@ -690,6 +680,17 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
             >
               <Network className="w-3.5 h-3.5" />
               <span>{isFa ? 'چارت سلسله‌مراتب سازمانی' : 'Organizational Chart'}</span>
+            </button>
+            <button
+              onClick={() => setViewMode('governance')}
+              className={`px-4 sm:px-5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                viewMode === 'governance'
+                  ? 'bg-primary text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-secondary'
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>{isFa ? 'چارچوب حاکمیت و ماتریس RACI' : 'Governance & RACI'}</span>
             </button>
           </div>
         </div>
@@ -959,7 +960,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
           </motion.div>
         )}
           </>
-        ) : (
+        ) : viewMode === 'orgChart' ? (
           /* ========================================================= */
           /* INTERACTIVE ORGANIZATIONAL CHART VIEW                     */
           /* ========================================================= */
@@ -1025,7 +1026,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {LEADERSHIP.filter(m => m.id === 'reza-asakereh' || m.id === 'khosro-jarrahian' || m.id === 'pedram-abdarzadeh' || m.id === 'farid-imani' || m.id === 'heidar-yarveicy').map(member => (
+                {LEADERSHIP.filter(m => m.id === 'reza-asakereh' || m.id === 'khosro-jarrahian' || m.id === 'pedram-abdarzadeh' || m.id === 'farid-imani' || m.id === 'heidar-yarveicy' || m.id === 'seyed-jassem-hosseini').map(member => (
                   <div
                     key={member.id}
                     onClick={() => setSelectedMember(member)}
@@ -1076,7 +1077,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {LEADERSHIP.filter(m => m.id === 'hamed-zatajam' || m.id === 'masoumeh-moshar' || m.id === 'benyamin-rezaei' || m.id === 'ali-rezaei' || m.id === 'farzad-kazemi').map(member => (
+                {LEADERSHIP.filter(m => m.id === 'hamed-zatajam' || m.id === 'masoumeh-moshar' || m.id === 'benyamin-rezaei' || m.id === 'farzad-kazemi').map(member => (
                   <div
                     key={member.id}
                     onClick={() => setSelectedMember(member)}
@@ -1127,7 +1128,7 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {LEADERSHIP.filter(m => m.id === 'sina-ayyoubian' || m.id === 'mostafa-sharifi' || m.id === 'maryam-bahrami').map(member => (
+                {LEADERSHIP.filter(m => m.id === 'sina-ayyoubian' || m.id === 'mostafa-sharifi').map(member => (
                   <div
                     key={member.id}
                     onClick={() => setSelectedMember(member)}
@@ -1167,6 +1168,8 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
               </div>
             </div>
           </div>
+        ) : (
+          <GovernanceFrameworkSection onNavigate={setPage} />
         )}
 
         {/* CTA Banner */}

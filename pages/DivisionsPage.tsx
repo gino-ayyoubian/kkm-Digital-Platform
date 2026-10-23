@@ -37,7 +37,7 @@ const DIVISIONS: DivisionInfo[] = [
     descriptionFa: "توسعه و مهندسی معماری اختصاصی GMEL-CLG برای استخراج پایدار حرارت اعماق زمین و تبدیل آن به برق بدون وقفه و بدون آلایندگی در تمام طول سال.",
     technologies: ["GMEL-CLG", "Downhole Casing Heat Exchanger", "Subsurface Thermoelectrics", "Depleted Well Retrofit"],
     activeProjects: 3,
-    leadExecutive: "Dr. Benyamin Rezaei",
+    leadExecutive: "Benyamin Rezaei",
     targetPage: Page.GMELHub,
     icon: Zap,
     color: "from-amber-500/20 to-orange-500/20 border-amber-500/30 text-amber-500"
@@ -53,7 +53,7 @@ const DIVISIONS: DivisionInfo[] = [
     descriptionFa: "پیوند انرژی حرارتی پاک با سامانه‌های تقطیر چندمرحله‌ای برای تأمین آب شرب و صنعتی در مناطق خشک با فناوری بدون پساب (ZLD).",
     technologies: ["ZLD Evaporation", "Membrane Distillation", "Geothermal Brine Recovery", "Industrial Water Reclamation"],
     activeProjects: 2,
-    leadExecutive: "Dr. Khosro Jarrahian",
+    leadExecutive: "Khosro Jarrahian",
     targetPage: Page.Projects,
     icon: Droplets,
     color: "from-blue-500/20 to-cyan-500/20 border-blue-500/30 text-blue-500"
@@ -69,7 +69,7 @@ const DIVISIONS: DivisionInfo[] = [
     descriptionFa: "توسعه مدل‌های دینامیک محاسباتی سیالات و شبکه‌های عصبی فیزیک‌پایه جهت پایش بلادرنگ و پیش‌بینی عملکرد مخازن طبق استانداردهای ASME.",
     technologies: ["PINN Reservoir Modeling", "Subsurface Telemetry", "ASME CFD Twin", "Autonomous Well Control"],
     activeProjects: 4,
-    leadExecutive: "Dr. Reza Asakereh",
+    leadExecutive: "Reza Asakereh",
     targetPage: Page.DigitalTwinHub,
     icon: Cpu,
     color: "from-purple-500/20 to-indigo-500/20 border-purple-500/30 text-purple-500"
@@ -101,7 +101,7 @@ const DIVISIONS: DivisionInfo[] = [
     descriptionFa: "پژوهش‌های مولکولی در زمینه نانوسیالات با انتقال حرارت فوق‌العاده، مواد تغییر فاز دهنده و حسگرهای تشخیصی محیطی و پزشکی.",
     technologies: ["High-Conductivity Nanofluids", "Phase Change Materials", "Bio-Sensors", "Eco-friendly Catalysts"],
     activeProjects: 1,
-    leadExecutive: "Dr. Ali Rezaei",
+    leadExecutive: "Salar Hasheminasab",
     targetPage: Page.Technology,
     icon: HeartPulse,
     color: "from-rose-500/20 to-pink-500/20 border-rose-500/30 text-rose-500"

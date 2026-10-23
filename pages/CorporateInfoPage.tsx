@@ -4,6 +4,7 @@ import { useLanguage } from '../LanguageContext';
 import { motion } from 'motion/react';
 import { Building2, FileCheck, MapPin, Phone, Globe, Briefcase, Mail, ShieldAlert, ArrowRight, Download } from 'lucide-react';
 import { getMemberPhotoObjectPosition } from '../components/common/ExecutiveMemberIdentity';
+import GovernanceFrameworkSection from '../components/governance/GovernanceFrameworkSection';
 
 interface CorporateInfoPageProps {
   setPage: (page: Page) => void;
@@ -85,8 +86,8 @@ const CorporateInfoPage: React.FC<CorporateInfoPageProps> = ({ setPage }) => {
               {[
                 {
                   name: 'Gino Ayyoubian',
-                  nameFa: 'سید ژینو ایوبیان',
-                  role: 'CEO & Chairman',
+                  nameFa: 'سید ژینو ایوبیان مرکزی',
+                  role: 'CEO & Chairman of the Board',
                   roleFa: 'مدیرعامل و رئیس هیئت مدیره',
                   image: '/images/gino-ayyoubian.jpg',
                   dept: 'Executive Board',
@@ -95,29 +96,29 @@ const CorporateInfoPage: React.FC<CorporateInfoPageProps> = ({ setPage }) => {
                 {
                   name: 'Reza Baghdadchi',
                   nameFa: 'رضا بغدادچی',
-                  role: 'Vice Chairman',
-                  roleFa: 'نایب رئیس هیئت مدیره',
+                  role: 'Vice Chairman & Senior Executive Director',
+                  roleFa: 'نایب رئیس هیئت مدیره و مدیر ارشد اجرایی',
                   image: '/images/reza-baghdadchi.jpg',
-                  dept: 'Executive Board',
-                  deptFa: 'هیئت مدیره',
+                  dept: 'Executive Board & Human Capital',
+                  deptFa: 'هیئت مدیره و سرمایه انسانی',
                 },
                 {
                   name: 'Ashkan Tofangchiha',
                   nameFa: 'اشکان تفنگچی‌ها',
-                  role: 'Board Member & CCIO',
-                  roleFa: 'عضو هیئت مدیره و مدیر بازرگانی',
+                  role: 'Board Member & Open Innovation',
+                  roleFa: 'عضو هیئت مدیره و نوآوری باز',
                   image: '/images/ashkan-tofangchiha.jpg',
-                  dept: 'Commercial Directorate',
-                  deptFa: 'هیئت مدیره و بازرگانی',
+                  dept: 'Open Innovation Directorate',
+                  deptFa: 'هیئت مدیره و نوآوری باز',
                 },
                 {
-                  name: 'Dr. Khosro Jarrahian',
-                  nameFa: 'دکتر خسرو جراحیان',
-                  role: 'Director of Sustainability',
-                  roleFa: 'مدیر دپارتمان پایداری و آب',
+                  name: 'Khosro Jarrahian',
+                  nameFa: 'خسرو جراحیان',
+                  role: 'Chief Technology Officer (CTO)',
+                  roleFa: 'معاونت فناوری (CTO)',
                   image: '/images/khosro-jarrahian.jpg',
-                  dept: 'Sustainability & Water',
-                  deptFa: 'پایداری و محیط زیست',
+                  dept: 'Technology & Subsurface R&D',
+                  deptFa: 'معاونت فناوری و R&D زیرسطحی',
                 },
               ].map((leader) => (
                 <div
@@ -242,6 +243,11 @@ const CorporateInfoPage: React.FC<CorporateInfoPageProps> = ({ setPage }) => {
           </div>
 
         </motion.div>
+
+        {/* Corporate Governance & RACI Framework Section */}
+        <div className="mt-12">
+          <GovernanceFrameworkSection onNavigate={setPage} />
+        </div>
       </div>
     </div>
   );

@@ -30,6 +30,7 @@ import { TeamOperationsConsole } from '../components/portal/TeamOperationsConsol
 import { ExecutiveGovernanceQueue } from '../components/portal/ExecutiveGovernanceQueue';
 import { PortalBreadcrumb } from '../components/portal/PortalBreadcrumb';
 import { getPortalModules } from '../data/portalModules';
+import GovernanceFrameworkSection from '../components/governance/GovernanceFrameworkSection';
 
 import { 
   Shield, ShieldCheck, ShieldAlert, CheckCircle, XCircle, Clock, ArrowRight, 
@@ -454,8 +455,12 @@ const LoginView: React.FC = () => {
   );
 };
 
+interface InternalPortalPageProps {
+  setPage?: (page: Page) => void;
+}
+
 // Main Portal Page Component
-const InternalPortalPage: React.FC = () => {
+const InternalPortalPage: React.FC<InternalPortalPageProps> = ({ setPage }) => {
   const { t, isFa } = useLanguage();
   const { currentUser, userProfile, logout, isSuperAdmin, isAdmin } = useAuth();
 
@@ -1012,6 +1017,11 @@ const InternalPortalPage: React.FC = () => {
 
         {/* TAB: EXECUTIVE PRODUCTION GOVERNANCE (PRINCIPLE 4) */}
         {activeTab === 'executiveGovernance' && <ExecutiveGovernanceQueue />}
+
+        {/* TAB: CORPORATE GOVERNANCE & RACI FRAMEWORK */}
+        {activeTab === 'governanceFramework' && (
+          <GovernanceFrameworkSection onNavigate={setPage} />
+        )}
 
         {/* TAB 5: USERS & RBAC ACCESS CONTROL */}
         {activeTab === 'users' && <UserManagementPanel />}

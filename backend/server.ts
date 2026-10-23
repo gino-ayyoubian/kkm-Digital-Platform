@@ -253,7 +253,7 @@ export function setupBackendRoutes(app: express.Application) {
       completionDate: "2026-04-25",
       status: "completed",
       evidenceLevelRequired: "Level C",
-      assignedLead: "Dr. Reza Asakereh",
+      assignedLead: "Reza Asakereh",
       department: "R&D & AI Systems",
       departmentFa: "تحقیق و توسعه، هوش مصنوعی و سامانه‌های شناختی",
       createdAt: "2026-01-20T08:00:00Z"
@@ -269,7 +269,7 @@ export function setupBackendRoutes(app: express.Application) {
       targetDate: "2026-11-15",
       status: "in_progress",
       evidenceLevelRequired: "Level F",
-      assignedLead: "Eng. Farzad Kazemi",
+      assignedLead: "Farzad Kazemi",
       department: "Engineering & Technical Office",
       departmentFa: "دفتر فنی و مهندسی سیستم‌ها",
       createdAt: "2026-02-10T10:00:00Z"
@@ -285,7 +285,7 @@ export function setupBackendRoutes(app: express.Application) {
       targetDate: "2026-10-01",
       status: "in_progress",
       evidenceLevelRequired: "Level D",
-      assignedLead: "Dr. Khosro Jarrahian",
+      assignedLead: "Khosro Jarrahian",
       department: "Science & Sustainability",
       departmentFa: "علوم پایه، پایداری و اکوسیستم‌ها",
       createdAt: "2026-03-01T12:00:00Z"
@@ -299,19 +299,19 @@ export function setupBackendRoutes(app: express.Application) {
       type: "leave",
       title: "درخواست مرخصی استحقاقی سالانه - ۳ روز کاری",
       titleEn: "Annual Leave Request - 3 Days",
-      requesterId: "kkm-user-005",
-      requesterName: "Dr. Ali Rezaei",
-      department: "Science & Sustainability",
+      requesterId: "kkm-user-020",
+      requesterName: "Seyed Jassem Hosseini",
+      department: "HSE & Environmental Management",
       priority: "normal",
       status: "pending",
-      details: "درخواست مرخصی استحقاقی جهت شرکت در همایش بین‌المللی انرژی و محیط‌زیست ژنو",
+      details: "درخواست مرخصی استحقاقی جهت شرکت در همایش بین‌المللی ایمنی حفاری عمیق و مهار H2S",
       startDate: "2026-10-05",
       endDate: "2026-10-08",
       approvals: [
         {
           step: 1,
-          role: "مدیر واحد پایداری",
-          approverName: "Dr. Reza Asakereh",
+          role: "مدیر دفتر سرمایه انسانی",
+          approverName: "Reza Baghdadchi",
           status: "pending"
         }
       ],
@@ -324,7 +324,7 @@ export function setupBackendRoutes(app: express.Application) {
       title: "خرید تجهیزات سرور GPU کلاستر مدل NVIDIA H100",
       titleEn: "Procurement of NVIDIA H100 GPU Cluster Nodes",
       requesterId: "kkm-user-002",
-      requesterName: "Dr. Reza Asakereh",
+      requesterName: "Reza Asakereh",
       department: "R&D & AI Systems",
       priority: "critical",
       status: "approved",
@@ -333,8 +333,8 @@ export function setupBackendRoutes(app: express.Application) {
       approvals: [
         {
           step: 1,
-          role: "مدیر ارشد فناوری",
-          approverName: "Dr. Reza Asakereh",
+          role: "مدیر ارشد فناوری (CTO)",
+          approverName: "Khosro Jarrahian",
           status: "approved",
           comments: "تایید فنی انجام شد. اولویت راهبردی گروه.",
           timestamp: "2026-09-21 10:14"
@@ -357,8 +357,8 @@ export function setupBackendRoutes(app: express.Application) {
       title: "ممیزی امنیتی کد قرارداد هوشمند بلاکچین صدور اعتبارات کربن",
       titleEn: "Security & Formal Verification of Carbon Credit Smart Contract",
       requesterId: "kkm-user-003",
-      requesterName: "Dr. Kasra Jarrahian",
-      department: "Energy Systems",
+      requesterName: "Khosro Jarrahian",
+      department: "Technology Directorate",
       priority: "urgent",
       status: "in_review",
       details: "بررسی رسمی آسیب‌پذیری‌های امنیتی اسمارت‌کانترکت‌های شبکه قبل از دیپلوی روی شبکه اصلی",
@@ -366,7 +366,7 @@ export function setupBackendRoutes(app: express.Application) {
         {
           step: 1,
           role: "ممیز ارشد نرم‌افزار و قرارداد هوشمند",
-          approverName: "Eng. Farzad Kazemi",
+          approverName: "Farzad Kazemi",
           status: "pending"
         }
       ],
@@ -1001,7 +1001,7 @@ export function setupBackendRoutes(app: express.Application) {
         description: "Leading closed-loop geothermal heat extraction, Organic Rankine Cycle (ORC) turbines, and high-efficiency baseload power infrastructure.",
         technologies: ["GMEL-CLG", "Downhole Heat Exchanger", "Subsurface Thermoelectrics"],
         activeProjects: 3,
-        leadExecutive: "Dr. Benyamin Rezaei"
+        leadExecutive: "Benyamin Rezaei"
       },
       {
         id: "DIV-WATER",
@@ -1011,7 +1011,7 @@ export function setupBackendRoutes(app: express.Application) {
         description: "Zero-liquid discharge (ZLD) seawater desalination, industrial water reclamation, and solar/geothermal-driven multi-effect distillation.",
         technologies: ["ZLD Evaporation", "Membrane Distillation", "Geothermal Desalination"],
         activeProjects: 2,
-        leadExecutive: "Dr. Khosro Jarrahian"
+        leadExecutive: "Khosro Jarrahian"
       },
       {
         id: "DIV-AI",
@@ -1021,7 +1021,7 @@ export function setupBackendRoutes(app: express.Application) {
         description: "Computational fluid dynamics, physics-informed neural networks (PINN), and real-time telemetry pipelines for heavy engineering assets.",
         technologies: ["PINN Reservoir Modeling", "Subsurface Telemetry", "ASME CFD Twin"],
         activeProjects: 4,
-        leadExecutive: "Dr. Reza Asakereh"
+        leadExecutive: "Reza Asakereh"
       },
       {
         id: "DIV-RURAL",
@@ -1041,7 +1041,7 @@ export function setupBackendRoutes(app: express.Application) {
         description: "Nanomaterial synthesis, thermal transfer fluids, and specialized medical/environmental diagnostics.",
         technologies: ["Nanofluids", "Phase Change Materials", "Bio-Sensors"],
         activeProjects: 1,
-        leadExecutive: "Dr. Ali Rezaei"
+        leadExecutive: "Salar Hasheminasab"
       }
     ];
 
@@ -1278,7 +1278,7 @@ export function setupBackendRoutes(app: express.Application) {
       title: "تأییدیه ممیزی آزمایشگاه EPFL لوزان بر پایداری ترمودینامیکی چرخه‌های sORC",
       titleEn: "EPFL Lausanne Laboratory Verification of sORC Thermodynamic Cycle Stability",
       category: "Scientific & QA",
-      author: "Dr. Khosro Jarrahian (CSO)",
+      author: "Khosro Jarrahian (CTO)",
       date: "2026-09-25",
       priority: "medium",
       content: "نتایج تست فاز سوم صحه‌گذاری چرخه‌های فوق بحرانی در رجیستری شواهد KKM ثبت گردید."

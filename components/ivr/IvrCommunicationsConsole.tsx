@@ -33,7 +33,7 @@ export const DAFTARE_SHOMA_CONFIG = {
   panelLoginUrl: 'https://portal.daftareshoma.com',
   dartamasDirectCallUrl: 'https://my.dartamas.com/directLink/61be6882-8824-4c31-8903-aaf074248aa5',
   gitHubRepo: 'https://github.com/gino-ayyoubian/kkm-ivr-daftareshoma',
-  architect: 'Gino Ayyoubian (سید ژینو ایوبیان)',
+  architect: 'Gino Ayyoubian (سید ژینو ایوبیان مرکزی)',
   codecs: ['PCMA (G.711a)', 'PCMU (G.711u)', 'Opus (HD Voice)', 'GSM'],
   vipAccessCode: '*8888',
   hseEmergencyCode: '*9111',
@@ -61,118 +61,118 @@ export const IVR_DIAL_TREE: IvrNode[] = [
     key: '1',
     layer: 'Layer 1: Strategic',
     titleEn: 'Executive Board & CEO Directorate',
-    titleFa: 'دفتر مدیرعامل و هیئت مدیره',
+    titleFa: 'دفتر مدیر ارشد اجرایی و هیئت مدیره',
     targetExtension: '101',
-    targetDepartmentEn: 'Executive Board',
-    targetDepartmentFa: 'دفتر مدیرعامل و هیئت مدیره',
+    targetDepartmentEn: 'Executive Leadership',
+    targetDepartmentFa: 'دفتر مدیر ارشد اجرایی و هیئت مدیره',
     targetLeaderEn: 'Gino Ayyoubian (CEO & Chairman)',
-    targetLeaderFa: 'سید ژینو ایوبیان (مدیرعامل و رئیس هیئت مدیره)',
+    targetLeaderFa: 'سید ژینو ایوبیان مرکزی (مدیر ارشد اجرایی و رئیس هیئت مدیره)',
     announcementEn: 'Connecting to the Office of the Chief Executive Officer and Executive Board...',
-    announcementFa: 'در حال انتقال به دفتر مدیرعامل و رئیس هیئت مدیره، لطفاً منتظر بمانید...'
+    announcementFa: 'در حال انتقال به دفتر مدیر ارشد اجرایی و رئیس هیئت مدیره، لطفاً منتظر بمانید...'
   },
   {
     key: '2',
     layer: 'Layer 2: Operations',
-    titleEn: 'AI Systems, R&D & Cognitive Engineering',
-    titleFa: 'فناوری، هوش مصنوعی و تحقیق و توسعه',
+    titleEn: 'Technology Directorate (CTO)',
+    titleFa: 'معاونت فناوری (CTO)',
     targetExtension: '102',
-    targetDepartmentEn: 'R&D & AI Systems',
-    targetDepartmentFa: 'تحقیق و توسعه، هوش مصنوعی و سامانه‌های شناختی',
-    targetLeaderEn: 'Dr. Reza Asakereh (CTO)',
-    targetLeaderFa: 'دکتر رضا عساکره (مدیر ارشد فناوری)',
-    announcementEn: 'Connecting to AI Systems, Cognitive Technologies, and R&D Directorate...',
-    announcementFa: 'در حال اتصال به معاونت فناوری اطلاعات، هوش مصنوعی و تحقیق و توسعه...'
+    targetDepartmentEn: 'Technology Directorate',
+    targetDepartmentFa: 'معاونت فناوری و توسعه سیستم‌ها',
+    targetLeaderEn: 'Khosro Jarrahian (CTO)',
+    targetLeaderFa: 'خسرو جراحیان (معاونت فناوری)',
+    announcementEn: 'Connecting to Technology Directorate, R&D, and Applied Sciences...',
+    announcementFa: 'در حال اتصال به معاونت فناوری، تحقیق و توسعه و علوم مهندسی...'
   },
   {
     key: '3',
     layer: 'Layer 2: Operations',
-    titleEn: 'Earth Science, GMEL Energy & Sustainability',
-    titleFa: 'علوم زمین، سامانه‌های انرژی GMEL و پایداری',
+    titleEn: 'Operations & EPC Directorate (COO)',
+    titleFa: 'معاونت اجرایی و EPC (COO)',
     targetExtension: '103',
-    targetDepartmentEn: 'Science & Sustainability',
-    targetDepartmentFa: 'علوم پایه، پایداری و اکوسیستم‌ها',
-    targetLeaderEn: 'Dr. Khosro Jarrahian (CSO)',
-    targetLeaderFa: 'دکتر خسرو جراحیان (مدیر ارشد علوم و پایداری)',
-    announcementEn: 'Connecting to Earth Sciences and Subsurface Geothermal Engineering...',
-    announcementFa: 'در حال اتصال به مدیریت علوم زمین، انرژی‌های پاک و پایایی زیست‌محیطی...'
+    targetDepartmentEn: 'Operations & EPC',
+    targetDepartmentFa: 'معاونت اجرایی و مگاپروژه‌های EPC',
+    targetLeaderEn: 'Heydar Yarveisi (COO)',
+    targetLeaderFa: 'حیدر یارویسی (معاونت اجرایی و EPC)',
+    announcementEn: 'Connecting to Operations, Offshore & Subsurface EPC Directorate...',
+    announcementFa: 'در حال اتصال به معاونت اجرایی، پروژه‌های فراساحل و عملیات EPC...'
   },
   {
     key: '4',
-    layer: 'Layer 3: Support',
-    titleEn: 'Investment, Enterprise IT & Infrastructure Security',
-    titleFa: 'سرمایه‌گذاری، شبکه و امنیت زیرساخت',
+    layer: 'Layer 1: Strategic',
+    titleEn: 'Finance & Capital Directorate (CFO)',
+    titleFa: 'معاونت مالی و دارایی (CFO)',
     targetExtension: '104',
-    targetDepartmentEn: 'Finance & Investments',
-    targetDepartmentFa: 'سرمایه‌گذاری و امنیت شبکه سازمانی',
-    targetLeaderEn: 'Farid Imani (CIO)',
-    targetLeaderFa: 'مهندس فرید ایمانی (مدیر ارشد سرمایه‌گذاری و زیرساخت)',
-    announcementEn: 'Connecting to Enterprise Systems and Investment Management...',
-    announcementFa: 'در حال انتقال به مدیریت سرمایه‌گذاری و امنیت زیرساخت شبکه...'
+    targetDepartmentEn: 'Finance & Capital Directorate',
+    targetDepartmentFa: 'معاونت مالی، دارایی و سرمایه‌گذاری',
+    targetLeaderEn: 'Farid Imani (CFO)',
+    targetLeaderFa: 'فرید ایمانی (معاونت مالی و دارایی)',
+    announcementEn: 'Connecting to Finance, Capital Structuring, and Investment Directorate...',
+    announcementFa: 'در حال انتقال به معاونت مالی، دارایی و سرمایه‌گذاری...'
   },
   {
     key: '5',
     layer: 'Layer 3: Support',
-    titleEn: 'Finance, Treasury & Sovereign Capital',
-    titleFa: 'امور مالی، حسابداری و اعتبارات بین‌المللی',
+    titleEn: 'Human Capital & Contract Authorization',
+    titleFa: 'دفتر سرمایه انسانی و اختیار قراردادها',
     targetExtension: '105',
-    targetDepartmentEn: 'Finance & Accounting',
-    targetDepartmentFa: 'امور مالی، حسابداری و بودجه‌ریزی',
-    targetLeaderEn: 'Dr. Pedram Abdarzadeh (CFO)',
-    targetLeaderFa: 'دکتر پدرام آبدارزاده (مدیر ارشد مالی و بودجه)',
-    announcementEn: 'Connecting to Financial Affairs and Corporate Treasury...',
-    announcementFa: 'در حال انتقال به مدیریت امور مالی، بودجه و اعتبارات...'
+    targetDepartmentEn: 'Human Capital & Governance',
+    targetDepartmentFa: 'دفتر سرمایه انسانی و اختیار قراردادها',
+    targetLeaderEn: 'Reza Baghdadchi',
+    targetLeaderFa: 'رضا بغدادچی (مدیر سرمایه انسانی و قراردادها)',
+    announcementEn: 'Connecting to Human Capital and Enterprise Contracts Directorate...',
+    announcementFa: 'در حال انتقال به دفتر سرمایه انسانی، قراردادها و اختیارات سازمانی...'
   },
   {
     key: '6',
     layer: 'Layer 2: Operations',
-    titleEn: 'Field Operations, Rigs & Mega-Projects EPC',
-    titleFa: 'عملیات اجرایی، حفاری و مگاپروژه‌ها',
+    titleEn: 'AI & Cognitive Telemetry Systems',
+    titleFa: 'واحد هوش مصنوعی و داده',
     targetExtension: '106',
-    targetDepartmentEn: 'Operations & Logistics',
-    targetDepartmentFa: 'عملیات اجرایی، لجستیک و پروژه‌ها',
-    targetLeaderEn: 'Heidar Yarveicy (COO)',
-    targetLeaderFa: 'مهندس حیدر یارویسی (مدیر ارشد عملیات)',
-    announcementEn: 'Connecting to Drilling Operations and Turnkey Project Logistics...',
-    announcementFa: 'در حال اتصال به مدیریت عملیات اجرایی، حفاری و لجستیک مگاپروژه‌ها...'
+    targetDepartmentEn: 'AI & Data Directorate',
+    targetDepartmentFa: 'واحد هوش مصنوعی و داده (معاونت فناوری)',
+    targetLeaderEn: 'Reza Asakereh',
+    targetLeaderFa: 'رضا عساکره (مدیر هوش مصنوعی و داده)',
+    announcementEn: 'Connecting to AI Systems, Neural Digital Twins, and Telemetry...',
+    announcementFa: 'در حال اتصال به واحد سامانه‌های شناختی، هوش مصنوعی و داده‌های تله‌متری...'
   },
   {
     key: '7',
-    layer: 'Layer 3: Support',
-    titleEn: 'Public Relations, Media & International Diplomacy',
-    titleFa: 'روابط عمومی، رسانه و امور بین‌الملل',
-    targetExtension: '204',
-    targetDepartmentEn: 'Public Relations',
-    targetDepartmentFa: 'روابط عمومی و برندینگ سازمانی',
-    targetLeaderEn: 'Masoumeh Moshar',
-    targetLeaderFa: 'معصومه مشار (مدیر روابط عمومی و بین‌الملل)',
-    announcementEn: 'Connecting to International Communications and Media Relations...',
-    announcementFa: 'در حال اتصال به مدیریت روابط عمومی و ارتباطات بین‌الملل...'
+    layer: 'Layer 2: Operations',
+    titleEn: 'Open Innovation & Design Thinking',
+    titleFa: 'واحد نوآوری باز و تفکر طراحی',
+    targetExtension: '107',
+    targetDepartmentEn: 'Open Innovation Directorate',
+    targetDepartmentFa: 'واحد نوآوری باز و تفکر طراحی (معاونت فناوری)',
+    targetLeaderEn: 'Ashkan Tofangchiha',
+    targetLeaderFa: 'اشکان تفنگچی‌ها (مدیر نوآوری باز و تفکر طراحی)',
+    announcementEn: 'Connecting to Open Innovation, Design Thinking, and Ecosystem Directorate...',
+    announcementFa: 'در حال اتصال به واحد نوآوری باز، تفکر طراحی و توسعه اکوسیستم...'
   },
   {
     key: '8',
-    layer: 'Layer 3: Support',
-    titleEn: 'Legal Directorate, Patents & WIPO Affairs',
-    titleFa: 'امور حقوقی، قراردادها و مالکیت فکری IP',
-    targetExtension: '205',
-    targetDepartmentEn: 'Legal & Intellectual Property',
-    targetDepartmentFa: 'امور حقوقی و مالکیت فکری',
-    targetLeaderEn: 'Hamed Zatajam',
-    targetLeaderFa: 'حامد ذات‌عجم (مدیر حقوقی و پتنت‌ها)',
-    announcementEn: 'Connecting to Corporate Legal Directorate and Intellectual Property Office...',
-    announcementFa: 'در حال انتقال به مدیریت امور حقوقی، قراردادها و مالکیت فکری...'
+    layer: 'Layer 1: Strategic',
+    titleEn: 'Corporate Governance, Risk & Insurance',
+    titleFa: 'حاکمیت شرکتی، ریسک و بیمه',
+    targetExtension: '108',
+    targetDepartmentEn: 'Corporate Governance & Risk',
+    targetDepartmentFa: 'حاکمیت شرکتی، ریسک و بیمه (معاونت مالی)',
+    targetLeaderEn: 'Pedram Abdarzadeh',
+    targetLeaderFa: 'پدرام آبدارزاده (مدیر حاکمیت شرکتی، ریسک و بیمه)',
+    announcementEn: 'Connecting to Corporate Governance, Insurance, and Enterprise Risk...',
+    announcementFa: 'در حال انتقال به مدیریت حاکمیت شرکتی، ریسک و بیمه سازمانی...'
   },
   {
     key: '9',
     layer: 'Layer 2: Operations',
-    titleEn: 'HSE Emergency Incident & Site Safety Protocol (*9111)',
-    titleFa: 'مرکز فوریت‌های HSE و ایمنی کارگاه‌ها (*9111)',
-    targetExtension: '*9111',
-    targetDepartmentEn: 'HSE Emergency Command',
-    targetDepartmentFa: 'ستاد واکنش اضطراری و ایمنی پروژه‌ها',
-    targetLeaderEn: 'On-Duty Safety Commander',
-    targetLeaderFa: 'فرمانده شیفت ایمنی و بهداشت صنعتی',
-    announcementEn: 'Connecting to HSE Emergency Command Protocol. All available officers alerted.',
-    announcementFa: 'پروتکل شرایط اضطراری HSE فعال گردید. در حال برقراری تماس دارای اولویت اضطراری...',
+    titleEn: 'HSE & Environmental Management (*9111)',
+    titleFa: 'مدیریت بهداشت، ایمنی و محیط زیست (HSE و *9111)',
+    targetExtension: '109',
+    targetDepartmentEn: 'HSE & Environmental Management',
+    targetDepartmentFa: 'مدیریت بهداشت، ایمنی و محیط زیست',
+    targetLeaderEn: 'Seyed Jassem Hosseini',
+    targetLeaderFa: 'سید جاسم حسینی (مدیر بهداشت، ایمنی و محیط زیست)',
+    announcementEn: 'Connecting to HSE & Environmental Management. Priority protocol active.',
+    announcementFa: 'در حال اتصال به مدیریت HSE و محیط زیست؛ پروتکل ایمنی و شرایط اضطراری فعال گردید...',
     isSpecialProtocol: true
   },
   {
@@ -195,12 +195,12 @@ const AUDIO_PROMPT_SCRIPTS = {
   farsi_main: {
     title: 'پیام اصلی تلفن گویا (فارسی - ساعات اداری)',
     speaker: 'ElevenLabs Studio HD / Persian Voice',
-    text: 'سلام. شما با گروه بین‌المللی کیمیا کاران ماد تماس گرفته‌اید. جهت ارتباط با دفتر مدیرعامل و هیئت مدیره عدد ۱، فناوری و هوش مصنوعی عدد ۲، علوم زمین و انرژی‌های پاک عدد ۳، سرمایه‌گذاری و شبکه عدد ۴، امور مالی و حسابداری عدد ۵، عملیات اجرایی و پروژه‌ها عدد ۶، روابط عمومی عدد ۷، امور حقوقی و پتنت‌ها عدد ۸، فوریت‌های HSE عدد ۹ و جهت ارتباط با اپراتور یا صندوق صوتی عدد ۰ را شماره‌گیری فرمایید. همچنین می‌توانید شماره داخلی مورد نظر را مستقیماً وارد کنید.'
+    text: 'سلام. شما با گروه بین‌المللی کیمیا کاران ماد تماس گرفته‌اید. جهت ارتباط با دفتر مدیر ارشد اجرایی و هیئت مدیره عدد ۱، معاونت فناوری عدد ۲، معاونت اجرایی و پروژه‌ها عدد ۳، معاونت مالی و دارایی عدد ۴، سرمایه انسانی و قراردادها عدد ۵، هوش مصنوعی و داده عدد ۶، نوآوری باز و تفکر طراحی عدد ۷، حاکمیت شرکتی و ریسک عدد ۸، مدیریت ایمنی، بهداشت و محیط زیست عدد ۹ و جهت ارتباط با اپراتور یا صندوق صوتی عدد ۰ را شماره‌گیری فرمایید. همچنین می‌توانید شماره داخلی مورد نظر را مستقیماً وارد کنید.'
   },
   english_main: {
     title: 'Main Gateway Announcement (English - International)',
     speaker: 'ElevenLabs Studio HD / English Voice',
-    text: 'Welcome to KKM International Group. For CEO & Executive Directorate press 1, for AI & Technology press 2, for Earth Sciences press 3, for Investments press 4, for Finance press 5, for Operations press 6, for PR press 7, for Legal press 8, for HSE Emergency press 9, or press 0 for operator.'
+    text: 'Welcome to KKM International Group. For CEO & Executive Directorate press 1, for CTO press 2, for COO press 3, for CFO press 4, for Human Capital press 5, for AI & Data press 6, for Open Innovation press 7, for Governance & Risk press 8, for HSE & Environmental Management press 9, or press 0 for operator.'
   },
   after_hours: {
     title: 'پیام شیفت شب و روزهای تعطیل (انتقال به صندوق صوتی)',
@@ -210,7 +210,7 @@ const AUDIO_PROMPT_SCRIPTS = {
   hse_emergency: {
     title: 'پیام هشدار فوری HSE و ایمنی کارگاه‌ها (*9111)',
     speaker: 'Emergency Broadcast System',
-    text: 'پروتکل فوریت‌های HSE فعال شد. تماس شما با بالاترین اولویت به تلفن همراه کارشناس ایمنی شیفت در سایت عملیاتی هدایت می‌گردد.'
+    text: 'پروتکل فوریت‌های HSE فعال شد. تماس شما با بالاترین اولویت به تلفن همراه مسئول ایمنی شیفت (سید جاسم حسینی) هدایت می‌گردد.'
   }
 };
 
@@ -231,21 +231,22 @@ interface LocalExtension {
 }
 
 const INITIAL_EXTENSIONS: LocalExtension[] = [
-  { extension: '101', sipUsername: '206962', name: 'Gino Ayyoubian', nameFa: 'سید ژینو ایوبیان', role: 'CEO & Chairman', department: 'Executive Board', departmentFa: 'دفتر مدیرعامل و هیئت مدیره', directPhone: '+98 21 9103 0830', mobileForward: '+98 912 000 0101', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
-  { extension: '102', sipUsername: '206963', name: 'Dr. Reza Asakereh', nameFa: 'دکتر رضا عساکره', role: 'Chief Technology Officer (CTO)', department: 'R&D & AI Systems', departmentFa: 'تحقیق و توسعه، هوش مصنوعی و سامانه‌های شناختی', directPhone: '+98 21 9103 0831', mobileForward: '+98 912 000 0102', forwardEnabled: true, ringStrategy: 'sequential', status: 'available' },
-  { extension: '103', sipUsername: '206964', name: 'Dr. Khosro Jarrahian', nameFa: 'دکتر خسرو جراحیان', role: 'Chief Scientific Officer (CSO)', department: 'Earth Sciences & GMEL', departmentFa: 'علوم پایه، پایداری و اکوسیستم‌ها', directPhone: '+98 21 9103 0832', mobileForward: '+98 912 000 0103', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
-  { extension: '104', sipUsername: '206965', name: 'Farid Imani', nameFa: 'فرید ایمانی', role: 'Chief Investment Officer (CIO)', department: 'Finance & Investments', departmentFa: 'سرمایه‌گذاری، تامین مالی و دارایی‌های سرمایه‌ای', directPhone: '+98 21 9103 0833', mobileForward: '+98 912 000 0104', forwardEnabled: false, ringStrategy: 'softphone_only', status: 'available' },
-  { extension: '105', sipUsername: '206966', name: 'Dr. Pedram Abdarzadeh', nameFa: 'دکتر پدرام آبدارزاده', role: 'Chief Financial Officer (CFO)', department: 'Finance & Accounting', departmentFa: 'امور مالی، حسابداری و بودجه‌ریزی', directPhone: '+98 21 9103 0834', mobileForward: '+98 912 000 0105', forwardEnabled: true, ringStrategy: 'sequential', status: 'available' },
-  { extension: '106', sipUsername: '206967', name: 'Heidar Yarveicy', nameFa: 'حیدر یارویسی', role: 'Chief Operating Officer (COO)', department: 'Operations & Logistics', departmentFa: 'عملیات اجرایی، لجستیک و پروژه‌ها', directPhone: '+98 21 9103 0835', mobileForward: '+98 912 000 0106', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
-  { extension: '107', sipUsername: '206973', name: 'Reza Baghdadchi', nameFa: 'رضا بغدادچی', role: 'Member of the Board & Strategic Development', department: 'Board of Directors', departmentFa: 'هیئت مدیره و راهبرد توسعه کلان', directPhone: '+98 21 9103 0836', mobileForward: '+98 912 000 0107', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
-  { extension: '108', sipUsername: '206974', name: 'Ashkan Tofangchiha', nameFa: 'اشکان تفنگچی‌ها', role: 'Member of the Board & CCO', department: 'Commercial & Global Trade', departmentFa: 'هیئت مدیره، توسعه تجاری و سرمایه‌گذاری بین‌الملل', directPhone: '+98 21 9103 0837', mobileForward: '+98 912 000 0108', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
+  { extension: '101', sipUsername: '206962', name: 'Gino Ayyoubian', nameFa: 'سید ژینو ایوبیان مرکزی', role: 'CEO & Chairman', department: 'Executive Board', departmentFa: 'دفتر مدیر ارشد اجرایی و هیئت مدیره', directPhone: '+98 21 9103 0830', mobileForward: '+98 912 000 0101', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
+  { extension: '102', sipUsername: '206964', name: 'Khosro Jarrahian', nameFa: 'خسرو جراحیان', role: 'Chief Technology Officer (CTO)', department: 'Technology Directorate', departmentFa: 'معاونت فناوری و توسعه سیستم‌ها', directPhone: '+98 21 9103 0831', mobileForward: '+98 912 000 0102', forwardEnabled: true, ringStrategy: 'sequential', status: 'available' },
+  { extension: '103', sipUsername: '206967', name: 'Heydar Yarveisi', nameFa: 'حیدر یارویسی', role: 'Chief Operating Officer (COO)', department: 'Operations & EPC', departmentFa: 'معاونت اجرایی و مگاپروژه‌های EPC', directPhone: '+98 21 9103 0832', mobileForward: '+98 912 000 0103', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
+  { extension: '104', sipUsername: '206965', name: 'Farid Imani', nameFa: 'فرید ایمانی', role: 'Chief Financial Officer (CFO)', department: 'Finance & Capital', departmentFa: 'معاونت مالی، دارایی و سرمایه‌گذاری', directPhone: '+98 21 9103 0833', mobileForward: '+98 912 000 0104', forwardEnabled: false, ringStrategy: 'softphone_only', status: 'available' },
+  { extension: '105', sipUsername: '206973', name: 'Reza Baghdadchi', nameFa: 'رضا بغدادچی', role: 'Director of Human Capital & Contracts', department: 'Human Capital', departmentFa: 'دفتر سرمایه انسانی و اختیار قراردادها', directPhone: '+98 21 9103 0834', mobileForward: '+98 912 000 0105', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
+  { extension: '106', sipUsername: '206963', name: 'Reza Asakereh', nameFa: 'رضا عساکره', role: 'Head of AI & Cognitive Telemetry', department: 'AI & Data', departmentFa: 'واحد هوش مصنوعی و داده (معاونت فناوری)', directPhone: '+98 21 9103 0835', mobileForward: '+98 912 000 0106', forwardEnabled: true, ringStrategy: 'sequential', status: 'available' },
+  { extension: '107', sipUsername: '206974', name: 'Ashkan Tofangchiha', nameFa: 'اشکان تفنگچی‌ها', role: 'Head of Open Innovation & Design Thinking', department: 'Open Innovation', departmentFa: 'واحد نوآوری باز و تفکر طراحی (معاونت فناوری)', directPhone: '+98 21 9103 0836', mobileForward: '+98 912 000 0107', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
+  { extension: '108', sipUsername: '206966', name: 'Pedram Abdarzadeh', nameFa: 'پدرام آبدارزاده', role: 'Head of Corporate Governance, Risk & Insurance', department: 'Governance & Risk', departmentFa: 'حاکمیت شرکتی، ریسک و بیمه (معاونت مالی)', directPhone: '+98 21 9103 0837', mobileForward: '+98 912 000 0108', forwardEnabled: true, ringStrategy: 'sequential', status: 'available' },
+  { extension: '109', sipUsername: '206982', name: 'Seyed Jassem Hosseini', nameFa: 'سید جاسم حسینی', role: 'Head of HSE & Environmental Management', department: 'HSE Directorate', departmentFa: 'مدیریت بهداشت، ایمنی و محیط زیست', directPhone: '+98 21 9103 0838', mobileForward: '+98 912 000 0109', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
   { extension: '200', sipUsername: '206960', name: 'Corporate Central Reception', nameFa: 'پذیرش و اپراتور مرکزی ۲۴ ساعته', role: 'Central Dispatch', department: 'Administration', departmentFa: 'میز خدمت و اپراتور پذیرش', directPhone: '+98 21 9103 0830', mobileForward: '+98 912 000 0200', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
-  { extension: '204', sipUsername: '206971', name: 'Masoumeh Moshar', nameFa: 'معصومه مشار', role: 'Director of Public Relations', department: 'Public Relations', departmentFa: 'روابط عمومی، رسانه و برندینگ سازمانی', directPhone: '+98 21 9103 0845', mobileForward: '+98 912 000 0204', forwardEnabled: false, ringStrategy: 'softphone_only', status: 'available' },
-  { extension: '205', sipUsername: '206972', name: 'Hamed Zatajam', nameFa: 'حامد ذات‌عجم', role: 'Director of Legal Affairs & Patents', department: 'Legal Directorate', departmentFa: 'امور حقوقی، مالکیت فکری و پتنت‌ها', directPhone: '+98 21 9103 0846', mobileForward: '+98 912 000 0205', forwardEnabled: true, ringStrategy: 'sequential', status: 'available' },
-  { extension: '208', sipUsername: '206978', name: 'Sina Ayyoubian', nameFa: 'سینا ایوبیان', role: 'R&D Engineering Specialist', department: 'Emerging Tech', departmentFa: 'تحقیق و توسعه، فناوری‌های نوظهور و نوآوری', directPhone: '+98 21 9103 0848', mobileForward: '+98 912 000 0208', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
-  { extension: '209', sipUsername: '206979', name: 'Mostafa Sharifi', nameFa: 'مصطفی شریفی', role: 'Senior Project Engineering Specialist', department: 'Technical Office', departmentFa: 'دفتر فنی و مهندسی پروژه', directPhone: '+98 21 9103 0849', mobileForward: '+98 912 000 0209', forwardEnabled: true, ringStrategy: 'sequential', status: 'available' },
-  { extension: '210', sipUsername: '206980', name: 'Eng. Ali Rezaei', nameFa: 'مهندس علی رضایی', role: 'Field Engineering Specialist', department: 'Field Operations', departmentFa: 'مهندسی انرژی و نیروگاه‌های زمین‌گرمایی', directPhone: '+98 21 9103 0850', mobileForward: '+98 912 000 0210', forwardEnabled: true, ringStrategy: 'softphone_only', status: 'available' },
-  { extension: '211', sipUsername: '206981', name: 'Maryam Bahrami', nameFa: 'مریم بهرامی', role: 'Financial Automation Specialist', department: 'Finance & Treasury', departmentFa: 'امور مالی، حسابداری و بودجه‌ریزی', directPhone: '+98 21 9103 0851', mobileForward: '+98 912 000 0211', forwardEnabled: false, ringStrategy: 'softphone_only', status: 'available' }
+  { extension: '201', sipUsername: '206968', name: 'Salar Hasheminasab', nameFa: 'سید سالار هاشمی‌نسب', role: 'Head of Nanomaterials & Sensors', department: 'Nanomaterials', departmentFa: 'نانومواد و سنسورها (معاونت فناوری)', directPhone: '+98 21 9103 0840', mobileForward: '+98 912 000 0201', forwardEnabled: true, ringStrategy: 'softphone_only', status: 'available' },
+  { extension: '202', sipUsername: '206969', name: 'Mahdi Ghiasy', nameFa: 'مهدی غیاثی', role: 'Director of Automation & BIM Simulation', department: 'Automation Systems', departmentFa: 'اتوماسیون، شبکه و شبیه‌سازی BIM', directPhone: '+98 21 9103 0841', mobileForward: '+98 912 000 0202', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
+  { extension: '204', sipUsername: '206971', name: 'Masoumeh Moshar', nameFa: 'معصومه مشار', role: 'Director of Communications & Stakeholders', department: 'Communications', departmentFa: 'معاونت ارتباطات و ذینفعان', directPhone: '+98 21 9103 0845', mobileForward: '+98 912 000 0204', forwardEnabled: false, ringStrategy: 'softphone_only', status: 'available' },
+  { extension: '205', sipUsername: '206972', name: 'Hamed Zatajam', nameFa: 'حامد ذات‌عجم', role: 'Director of IP HoldCo & Legal Affairs', department: 'Legal Directorate', departmentFa: 'دفتر IP و امور حقوقی (گزارش به مدیرعامل)', directPhone: '+98 21 9103 0846', mobileForward: '+98 912 000 0205', forwardEnabled: true, ringStrategy: 'sequential', status: 'available' },
+  { extension: '208', sipUsername: '206978', name: 'Sina Ayyoubian', nameFa: 'سینا ایوبیان', role: 'Robotics, Automation & R&D Specialist', department: 'Emerging Tech', departmentFa: 'اتوماسیون، شبکه و رباتیک', directPhone: '+98 21 9103 0848', mobileForward: '+98 912 000 0208', forwardEnabled: true, ringStrategy: 'simultaneous', status: 'available' },
+  { extension: '209', sipUsername: '206979', name: 'Mostafa Sharifi', nameFa: 'مصطفی شریفی', role: 'Director of QA/QC', department: 'Independent QA/QC', departmentFa: 'بازرسی فنی و کنترل کیفیت (مستقل)', directPhone: '+98 21 9103 0849', mobileForward: '+98 912 000 0209', forwardEnabled: true, ringStrategy: 'sequential', status: 'available' }
 ];
 
 interface VoicemailItem {
@@ -266,13 +267,13 @@ const INITIAL_VOICEMAILS: VoicemailItem[] = [
   {
     id: 'VM-2026-0830-01',
     callerNumber: '+98 912 345 6789',
-    callerName: 'دکتر محمودی (شرکت مهندسی مپنا)',
+    callerName: 'محمودی (شرکت مهندسی مپنا)',
     targetExtension: '101',
-    targetDepartmentFa: 'دفتر مدیرعامل و هیئت مدیره',
+    targetDepartmentFa: 'دفتر مدیر ارشد اجرایی و هیئت مدیره',
     timestamp: '2026-10-04 11:24',
     durationSeconds: 48,
-    transcriptionFa: 'سلام جناب مهندس ایوبیان، محمودی هستم از مپنا. پیرامون جلسه مشترک صحه‌گذاری آزمایشگاهی رآکتور GMEL با دانشگاه تهران هماهنگ کردم و پیش‌نویس تفاهم‌نامه ارسال شد. لطفاً در اولین فرصت تماس بگیرید.',
-    transcriptionEn: 'Hello Mr. Ayyoubian, this is Dr. Mahmoudi from MAPNA. I coordinated the lab validation meeting for the GMEL reactor with University of Tehran. Please call back.',
+    transcriptionFa: 'سلام جناب ایوبیان، محمودی هستم از مپنا. پیرامون جلسه مشترک صحه‌گذاری آزمایشگاهی رآکتور GMEL با دانشگاه تهران هماهنگ کردم و پیش‌نویس تفاهم‌نامه ارسال شد. لطفاً در اولین فرصت تماس بگیرید.',
+    transcriptionEn: 'Hello Mr. Ayyoubian, this is Mahmoudi from MAPNA. I coordinated the lab validation meeting for the GMEL reactor with University of Tehran. Please call back.',
     isRead: false,
     priority: 'vip'
   },
@@ -293,12 +294,12 @@ const INITIAL_VOICEMAILS: VoicemailItem[] = [
     id: 'VM-2026-0830-03',
     callerNumber: '+98 935 111 2233',
     callerName: 'سرپرست کارگاه حفاری قشم (فوری)',
-    targetExtension: '106',
-    targetDepartmentFa: 'عملیات اجرایی، لجستیک و پروژه‌ها',
+    targetExtension: '103',
+    targetDepartmentFa: 'معاونت اجرایی و EPC',
     timestamp: '2026-10-03 18:40',
     durationSeconds: 65,
-    transcriptionFa: 'مهندس یارویسی عزیز، گزارش ترخیص قطعات یدکی پمپ‌های سانتریفیوژ فشار قوی از گمرک منطقه آزاد قشم دریافت شد و فردا بارگیری می‌شود.',
-    transcriptionEn: 'Mr. Yarveicy, clearance report for high-pressure centrifugal pump spare parts received from Qeshm customs, loading tomorrow.',
+    transcriptionFa: 'یارویسی عزیز، گزارش ترخیص قطعات یدکی پمپ‌های سانتریفیوژ فشار قوی از گمرک منطقه آزاد قشم دریافت شد و فردا بارگیری می‌شود.',
+    transcriptionEn: 'Mr. Yarveisi, clearance report for high-pressure centrifugal pump spare parts received from Qeshm customs, loading tomorrow.',
     isRead: false,
     priority: 'urgent'
   }
@@ -316,10 +317,10 @@ interface CallRecord {
 }
 
 const INITIAL_CALL_LOGS: CallRecord[] = [
-  { id: 'LOG-10492', callType: 'inbound', callerNumber: '+98 912 345 6789', destination: 'Ext: 101 (سید ژینو ایوبیان)', departmentFa: 'دفتر مدیرعامل و هیئت مدیره', durationSeconds: 145, timestamp: '2026-10-04 11:24:10', status: 'موفق (Completed)' },
-  { id: 'LOG-10491', callType: 'inbound', callerNumber: '+98 21 8877 6655', destination: 'Ext: 205 (حامد ذات‌عجم)', departmentFa: 'امور حقوقی و پتنت‌ها', durationSeconds: 78, timestamp: '2026-10-04 09:15:32', status: 'موفق (Completed)' },
-  { id: 'LOG-10490', callType: 'missed', callerNumber: '+98 919 777 8899', destination: 'Ext: 102 (دکتر رضا عساکره)', departmentFa: 'فناوری و هوش مصنوعی', durationSeconds: 0, timestamp: '2026-10-04 08:42:15', status: 'بی‌پاسخ (Missed)' },
-  { id: 'LOG-10489', callType: 'voicemail', callerNumber: '+98 935 111 2233', destination: 'صندوق صوتی خط ۱ (داخلی ۱۰۶)', departmentFa: 'عملیات اجرایی و پروژه‌ها', durationSeconds: 65, timestamp: '2026-10-03 18:40:02', status: 'پیام ضبط شد' },
+  { id: 'LOG-10492', callType: 'inbound', callerNumber: '+98 912 345 6789', destination: 'Ext: 101 (سید ژینو ایوبیان مرکزی)', departmentFa: 'دفتر مدیر ارشد اجرایی و هیئت مدیره', durationSeconds: 145, timestamp: '2026-10-04 11:24:10', status: 'موفق (Completed)' },
+  { id: 'LOG-10491', callType: 'inbound', callerNumber: '+98 21 8877 6655', destination: 'Ext: 205 (حامد ذات‌عجم)', departmentFa: 'دفتر IP و امور حقوقی', durationSeconds: 78, timestamp: '2026-10-04 09:15:32', status: 'موفق (Completed)' },
+  { id: 'LOG-10490', callType: 'missed', callerNumber: '+98 919 777 8899', destination: 'Ext: 102 (خسرو جراحیان)', departmentFa: 'معاونت فناوری (CTO)', durationSeconds: 0, timestamp: '2026-10-04 08:42:15', status: 'بی‌پاسخ (Missed)' },
+  { id: 'LOG-10489', callType: 'voicemail', callerNumber: '+98 935 111 2233', destination: 'صندوق صوتی خط ۱ (داخلی ۱۰۳)', departmentFa: 'معاونت اجرایی و EPC', durationSeconds: 65, timestamp: '2026-10-03 18:40:02', status: 'پیام ضبط شد' },
   { id: 'LOG-10488', callType: 'outbound', callerNumber: '+98 21 9103 0830 (خط ۱)', destination: '+98 21 6655 4433 (دانشگاه صنعتی شریف)', departmentFa: 'تحقیق و توسعه و آزمایشگاه انرژی', durationSeconds: 310, timestamp: '2026-10-03 16:20:00', status: 'موفق (Completed)' }
 ];
 

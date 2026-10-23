@@ -214,8 +214,8 @@ export interface MapMarker {
 export interface JobOpening {
   id: string;
   title: string;
-  department: 'Engineering' | 'R&D' | 'Corporate' | 'Operations';
-  location: 'Tehran, Iran' | 'Qeshm, Iran' | 'Remote';
+  department: string;
+  location: string;
   type: 'Full-time' | 'Contract';
   description: string;
   responsibilities: string[];

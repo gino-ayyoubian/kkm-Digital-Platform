@@ -228,6 +228,17 @@ export const PortalHeader: React.FC<PortalHeaderProps> = ({
 
     // 3. GOVERNANCE & ORGANIZATION
     {
+      id: 'governanceFramework',
+      labelEn: 'Corporate Governance & RACI Framework',
+      labelFa: 'ساختار حاکمیت شرکتی و ماتریس RACI',
+      shortLabelFa: 'حاکمیت و RACI',
+      shortLabelEn: 'Governance & RACI',
+      descFa: '۸ نقش مکمل، ماتریس ۱۰ مرحله‌ای RACI، سطوح امنیت داده و فازهای عملیاتی',
+      descEn: '8 Complementary Roles, 10-Gate RACI, 4 Data Security Tiers & Operational Phases',
+      category: 'governance',
+      icon: Shield,
+    },
+    {
       id: 'orgchart',
       labelEn: 'Org Directory & Structure',
       labelFa: 'ارکان و چارت سازمانی',

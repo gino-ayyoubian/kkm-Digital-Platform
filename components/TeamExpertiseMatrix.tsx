@@ -26,7 +26,7 @@ export const EXPERTISE_ITEMS: ExpertiseItem[] = [
       'Vacuum-insulated tubing (VIT) thermal bypass mitigation'
     ],
     associatedGmelTech: ['GMEL CLG', 'GMEL ThermoFluid'],
-    researchLead: 'Dr. Khosro Jarrahian (R&D Directorate)',
+    researchLead: 'Khosro Jarrahian (Technology Directorate)',
     openRolesCount: 2
   },
   {
@@ -41,7 +41,7 @@ export const EXPERTISE_ITEMS: ExpertiseItem[] = [
       'Subsurface casing integrity under extreme thermal cycling'
     ],
     associatedGmelTech: ['GMEL DrillX', 'GMEL EHS'],
-    researchLead: 'Heidar Yarveicy (Global EPCI)',
+    researchLead: 'Heydar Yarveisi (Operations & EPC)',
     openRolesCount: 1
   },
   {
@@ -56,7 +56,7 @@ export const EXPERTISE_ITEMS: ExpertiseItem[] = [
       'Automated turbine dispatch and grid frequency optimization'
     ],
     associatedGmelTech: ['KKM Shader Pilot', 'GMEL Navigator'],
-    researchLead: 'Dr. Reza Asakereh (Digital Systems)',
+    researchLead: 'Reza Asakereh (AI & Data)',
     openRolesCount: 3
   },
   {
@@ -71,7 +71,7 @@ export const EXPERTISE_ITEMS: ExpertiseItem[] = [
       'Heavy mineral valorization (silica, boron, zinc coproducts)'
     ],
     associatedGmelTech: ['GMEL LithiumLoop', 'GMEL EcoCluster'],
-    researchLead: 'Dr. Khosro Jarrahian & Material Science Unit',
+    researchLead: 'Khosro Jarrahian & Nanomaterials Unit',
     openRolesCount: 1
   },
   {

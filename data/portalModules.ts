@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { 
   LayoutDashboard, Inbox, FileText, Clock, PhoneCall, 
-  GitBranch, Network, Sliders, Users, UserCheck, FolderGit2, Database, ShieldCheck 
+  GitBranch, Network, Sliders, Users, UserCheck, FolderGit2, Database, ShieldCheck, Shield 
 } from 'lucide-react';
 import type { NavModuleItem } from '../components/portal/PortalHeader';
 
@@ -125,6 +125,17 @@ export const getPortalModules = (
     descEn: 'Executive signed authorization for live DNS, telecom routing & cryptographic key rotation',
     category: 'governance',
     icon: ShieldCheck,
+  },
+  {
+    id: 'governanceFramework',
+    labelEn: 'Corporate Governance & RACI Framework',
+    labelFa: 'ساختار حاکمیت شرکتی و ماتریس RACI',
+    shortLabelFa: 'حاکمیت و RACI',
+    shortLabelEn: 'Governance & RACI',
+    descFa: '۸ نقش مکمل، ماتریس ۱۰ مرحله‌ای RACI، سطوح امنیت داده و فازهای عملیاتی',
+    descEn: '8 Complementary Roles, 10-Gate RACI, 4 Data Security Tiers & Operational Phases',
+    category: 'governance',
+    icon: Shield,
   },
   {
     id: 'orgchart',

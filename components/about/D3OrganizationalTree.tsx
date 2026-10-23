@@ -46,216 +46,218 @@ export const D3OrganizationalTree: React.FC<D3OrganizationalTreeProps> = ({ onSe
   const rawTreeData: D3OrgNodeData = React.useMemo(() => {
     return {
       id: 'root-kkm',
-      name: 'General Assembly & Board Directorate',
+      name: 'General Assembly & Sovereign Governance',
       nameFa: 'مجمع عمومی و هیئت مدیره گروه کیمیا کاران ماد',
       title: 'Corporate Sovereign Governance',
-      titleFa: 'رکن عالی حاکمیت سازمانی KKM',
+      titleFa: 'رکن عالی حاکمیت سازمانی و مجمع KKM',
       department: 'KKM International Group',
       departmentFa: 'گروه بین‌المللی کیمیا کاران ماد',
       role: 'root',
       children: [
+        // Governance Direct Committee: HSE & Environment
+        {
+          id: 'gov-hse',
+          name: 'Seyed Jassem Hosseini',
+          nameFa: 'سید جاسم حسینی',
+          title: 'Head of HSE & Environmental Management',
+          titleFa: 'مدیر بهداشت، ایمنی و محیط زیست (HSE)',
+          department: 'Audit, Risk & Compliance Committee',
+          departmentFa: 'کمیته حسابرسی، ریسک و انطباق (گزارش مستقیم)',
+          extension: '109',
+          role: 'director',
+          memberUid: 'kkm-user-020'
+        },
+        // Executive Layer Root: CEO
         {
           id: 'ceo-gino',
           name: 'Gino Ayyoubian',
-          nameFa: 'سید ژینو ایوبیان',
-          title: 'Chief Executive Officer & Chairman of the Board',
-          titleFa: 'مدیرعامل و رئیس هیئت مدیره',
-          department: 'Executive Board',
-          departmentFa: 'دفتر مدیرعامل و هیئت مدیره',
+          nameFa: 'سید ژینو ایوبیان مرکزی',
+          title: 'Chief Executive Officer (CEO) & Chairman',
+          titleFa: 'مدیر ارشد اجرایی و رئیس هیئت مدیره',
+          department: 'Executive Leadership',
+          departmentFa: 'دفتر مدیر ارشد اجرایی و هیئت مدیره',
           extension: '101',
           role: 'board',
           memberUid: 'kkm-user-001',
           children: [
-            // 1. Board Members & Strategic Directorate
+            // Direct Offices under CEO
             {
-              id: 'board-baghdadchi',
-              name: 'Reza Baghdadchi',
-              nameFa: 'رضا بغدادچی',
-              title: 'Member of the Board & Strategic Development',
-              titleFa: 'عضو هیئت مدیره و راهبرد توسعه کلان',
-              department: 'Board Directorate',
-              departmentFa: 'هیئت مدیره و راهبرد کلان',
-              extension: '107',
-              role: 'board',
-              memberUid: 'kkm-user-002-board'
+              id: 'corp-legal',
+              name: 'Hamed Zatajam',
+              nameFa: 'حامد ذات‌عجم',
+              title: 'Director of IP HoldCo & Legal Affairs',
+              titleFa: 'مدیر دفتر IP و امور حقوقی',
+              department: 'Legal Directorate',
+              departmentFa: 'دفتر IP و امور حقوقی (گزارش مستقیم به CEO)',
+              extension: '205',
+              role: 'director',
+              memberUid: 'kkm-user-016'
             },
             {
-              id: 'board-tofangchiha',
-              name: 'Ashkan Tofangchiha',
-              nameFa: 'اشکان تفنگچی‌ها',
-              title: 'Member of the Board & Chief Commercial Officer (CCO)',
-              titleFa: 'عضو هیئت مدیره، توسعه تجاری و بازرگانی بین‌الملل',
-              department: 'Commercial Directorate',
-              departmentFa: 'هیئت مدیره و توسعه تجاری',
-              extension: '108',
-              role: 'board',
-              memberUid: 'kkm-user-003-board'
+              id: 'corp-pmo',
+              name: 'Project Management Office (PMO)',
+              nameFa: 'دفتر مدیریت پروژه و راهبرد (PMO)',
+              title: 'PMO & Strategy Directorate (Open)',
+              titleFa: 'هماهنگی دروازه‌های ۱۰ گانه چرخه حیات',
+              department: 'Executive Directorate',
+              departmentFa: 'دفتر مدیریت پروژه (گزارش به CEO)',
+              role: 'director'
             },
-            // 2. Executive Directorate (C-Suite)
+            // CTO Directorate
             {
               id: 'csuite-cto',
-              name: 'Dr. Reza Asakereh',
-              nameFa: 'دکتر رضا عساکره',
+              name: 'Khosro Jarrahian',
+              nameFa: 'خسرو جراحیان',
               title: 'Chief Technology Officer (CTO)',
-              titleFa: 'مدیر ارشد فناوری، هوش مصنوعی و R&D',
-              department: 'R&D & AI Systems',
-              departmentFa: 'معاونت فناوری، هوش مصنوعی و تحقیق و توسعه',
+              titleFa: 'معاونت فناوری (CTO)',
+              department: 'Technology Directorate',
+              departmentFa: 'معاونت فناوری و توسعه سیستم‌ها',
               extension: '102',
               role: 'c_level',
-              memberUid: 'kkm-user-002',
+              memberUid: 'kkm-user-003',
               children: [
                 {
-                  id: 'spec-sina',
-                  name: 'Sina Ayyoubian',
-                  nameFa: 'سینا ایوبیان',
-                  title: 'R&D Engineering Specialist',
-                  titleFa: 'کارشناس ارشد تحقیق، توسعه و نوآوری',
-                  department: 'Emerging Technologies',
-                  departmentFa: 'تحقیق و توسعه، فناوری‌های نوظهور و نوآوری',
-                  extension: '208',
-                  role: 'specialist',
-                  memberUid: 'kkm-user-018'
+                  id: 'dir-nano',
+                  name: 'Salar Hasheminasab',
+                  nameFa: 'سید سالار هاشمی‌نسب',
+                  title: 'Head of Nanomaterials & Sensors',
+                  titleFa: 'مدیر واحد نانومواد و سنسورها',
+                  department: 'Nanomaterials & Sensors',
+                  departmentFa: 'نانومواد و سنسورها (معاونت فناوری)',
+                  extension: '201',
+                  role: 'director',
+                  memberUid: 'kkm-user-010'
                 },
                 {
-                  id: 'dir-bim',
-                  name: 'Mahdi Ghiasy',
-                  nameFa: 'مهدی غیاثی',
-                  title: 'Director of BIM & Virtual Simulation',
-                  titleFa: 'مدیر مدل‌سازی BIM و شبیه‌سازی واقعیت مجازی',
-                  department: 'BIM & Simulation',
-                  departmentFa: 'مدل‌سازی BIM، شبیه‌سازی و واقعیت مجازی',
-                  extension: '202',
+                  id: 'dir-ai',
+                  name: 'Reza Asakereh',
+                  nameFa: 'رضا عساکره',
+                  title: 'Head of AI & Cognitive Telemetry',
+                  titleFa: 'مدیر هوش مصنوعی و داده',
+                  department: 'AI & Data Directorate',
+                  departmentFa: 'واحد هوش مصنوعی و داده (معاونت فناوری)',
+                  extension: '106',
+                  role: 'director',
+                  memberUid: 'kkm-user-002'
+                },
+                {
+                  id: 'dir-innovation',
+                  name: 'Ashkan Tofangchiha',
+                  nameFa: 'اشکان تفنگچی‌ها',
+                  title: 'Head of Open Innovation & Design Thinking',
+                  titleFa: 'مدیر واحد نوآوری باز و تفکر طراحی',
+                  department: 'Open Innovation Directorate',
+                  departmentFa: 'واحد نوآوری باز و تفکر طراحی (معاونت فناوری)',
+                  extension: '107',
                   role: 'director',
                   memberUid: 'kkm-user-008'
                 }
               ]
             },
-            {
-              id: 'csuite-cso',
-              name: 'Dr. Khosro Jarrahian',
-              nameFa: 'دکتر خسرو جراحیان',
-              title: 'Chief Scientific Officer (CSO)',
-              titleFa: 'مدیر ارشد علوم پایه، سامانه‌های انرژی GMEL و پایداری',
-              department: 'Earth Sciences & Energy',
-              departmentFa: 'علوم پایه، پایداری و اکوسیستم‌ها',
-              extension: '103',
-              role: 'c_level',
-              memberUid: 'kkm-user-003',
-              children: [
-                {
-                  id: 'dir-geothermal',
-                  name: 'Dr. Salar Hashemi',
-                  nameFa: 'دکتر سالار هاشمی',
-                  title: 'Director of Geothermal Energy Systems',
-                  titleFa: 'مدیر مهندسی انرژی و نیروگاه‌های زمین‌گرمایی',
-                  department: 'Energy Systems',
-                  departmentFa: 'مهندسی انرژی و نیروگاه‌های زمین‌گرمایی',
-                  extension: '201',
-                  role: 'director',
-                  memberUid: 'kkm-user-007'
-                }
-              ]
-            },
-            {
-              id: 'csuite-cio',
-              name: 'Farid Imani',
-              nameFa: 'فرید ایمانی',
-              title: 'Chief Investment Officer (CIO)',
-              titleFa: 'مدیر ارشد سرمایه‌گذاری، تامین مالی و شبکه سازمانی',
-              department: 'Finance & Investments',
-              departmentFa: 'سرمایه‌گذاری، تامین مالی و دارایی‌های سرمایه‌ای',
-              extension: '104',
-              role: 'c_level',
-              memberUid: 'kkm-user-004'
-            },
-            {
-              id: 'csuite-cfo',
-              name: 'Dr. Pedram Abdarzadeh',
-              nameFa: 'دکتر پدرام آبدارزاده',
-              title: 'Chief Financial Officer (CFO)',
-              titleFa: 'مدیر ارشد امور مالی، حسابداری و بودجه‌ریزی',
-              department: 'Finance & Accounting',
-              departmentFa: 'امور مالی، حسابداری و بودجه‌ریزی',
-              extension: '105',
-              role: 'c_level',
-              memberUid: 'kkm-user-005',
-              children: [
-                {
-                  id: 'spec-finance',
-                  name: 'Maryam Bahrami',
-                  nameFa: 'مریم بهرامی',
-                  title: 'Financial Automation & Accounting Specialist',
-                  titleFa: 'کارشناس اتوماسیون مالی و حسابداری',
-                  department: 'Finance & Treasury',
-                  departmentFa: 'امور مالی و حسابداری',
-                  extension: '211',
-                  role: 'specialist',
-                  memberUid: 'kkm-user-043'
-                }
-              ]
-            },
+            // COO Directorate
             {
               id: 'csuite-coo',
-              name: 'Heidar Yarveicy',
+              name: 'Heydar Yarveisi',
               nameFa: 'حیدر یارویسی',
               title: 'Chief Operating Officer (COO)',
-              titleFa: 'مدیر ارشد عملیات اجرایی، لجستیک و مگاپروژه‌های EPC',
-              department: 'Operations & Field Mega-Projects',
-              departmentFa: 'عملیات اجرایی، لجستیک و پروژه‌ها',
-              extension: '106',
+              titleFa: 'معاونت اجرایی و EPC (COO)',
+              department: 'Operations & EPC',
+              departmentFa: 'معاونت اجرایی و مگاپروژه‌های EPC',
+              extension: '103',
               role: 'c_level',
               memberUid: 'kkm-user-006',
               children: [
                 {
-                  id: 'spec-technical-office',
-                  name: 'Mostafa Sharifi',
-                  nameFa: 'مصطفی شریفی',
-                  title: 'Senior Project Engineering Specialist & Technical Office Coordinator',
-                  titleFa: 'کارشناس ارشد مهندسی پروژه و هماهنگ‌کننده دفتر فنی',
-                  department: 'Technical Office',
-                  departmentFa: 'دفتر فنی و مهندسی پروژه',
-                  extension: '209',
-                  role: 'specialist',
-                  memberUid: 'kkm-user-019'
+                  id: 'dir-bim',
+                  name: 'Mahdi Ghiasy',
+                  nameFa: 'مهدی غیاثی',
+                  title: 'Director of Automation & BIM Simulation',
+                  titleFa: 'مدیر اتوماسیون، شبکه و شبیه‌سازی BIM',
+                  department: 'Automation Systems',
+                  departmentFa: 'اتوماسیون، شبکه و شبیه‌سازی BIM',
+                  extension: '202',
+                  role: 'director',
+                  memberUid: 'kkm-user-011'
                 },
                 {
-                  id: 'spec-field',
-                  name: 'Eng. Ali Rezaei',
-                  nameFa: 'مهندس علی رضایی',
-                  title: 'Field Engineering Specialist',
-                  titleFa: 'کارشناس مهندسی عملیات اجرایی و کارگاهی',
-                  department: 'Field Operations',
-                  departmentFa: 'عملیات اجرایی و کارگاه‌ها',
-                  extension: '210',
+                  id: 'spec-sina',
+                  name: 'Sina Ayyoubian',
+                  nameFa: 'سینا ایوبیان',
+                  title: 'Robotics, Automation & R&D Specialist',
+                  titleFa: 'متخصص اتوماسیون، شبکه و رباتیک',
+                  department: 'Emerging Technologies',
+                  departmentFa: 'تحقیق و توسعه، فناوری‌های نوظهور و رباتیک',
+                  extension: '208',
                   role: 'specialist',
-                  memberUid: 'kkm-user-042'
+                  memberUid: 'kkm-user-018'
                 }
               ]
             },
-            // 3. Corporate Functions & Legal
+            // CFO Directorate
+            {
+              id: 'csuite-cfo',
+              name: 'Farid Imani',
+              nameFa: 'فرید ایمانی',
+              title: 'Chief Financial Officer (CFO)',
+              titleFa: 'معاونت مالی و دارایی (CFO)',
+              department: 'Finance & Capital Directorate',
+              departmentFa: 'معاونت مالی، دارایی و سرمایه‌گذاری',
+              extension: '104',
+              role: 'c_level',
+              memberUid: 'kkm-user-004',
+              children: [
+                {
+                  id: 'dir-gov-risk',
+                  name: 'Pedram Abdarzadeh',
+                  nameFa: 'پدرام آبدارزاده',
+                  title: 'Head of Corporate Governance, Risk & Insurance',
+                  titleFa: 'مدیر حاکمیت شرکتی، ریسک و بیمه',
+                  department: 'Governance & Risk',
+                  departmentFa: 'حاکمیت شرکتی، ریسک و بیمه (معاونت مالی)',
+                  extension: '108',
+                  role: 'director',
+                  memberUid: 'kkm-user-005'
+                }
+              ]
+            },
+            // Human Capital Directorate
+            {
+              id: 'corp-hr',
+              name: 'Reza Baghdadchi',
+              nameFa: 'رضا بغدادچی',
+              title: 'Director of Human Capital & Contracts',
+              titleFa: 'مدیر دفتر سرمایه انسانی و اختیار قراردادها',
+              department: 'Human Capital & Governance',
+              departmentFa: 'دفتر سرمایه انسانی و اختیار قراردادها',
+              extension: '105',
+              role: 'board',
+              memberUid: 'kkm-user-007'
+            },
+            // Communications Directorate
             {
               id: 'corp-pr',
               name: 'Masoumeh Moshar',
               nameFa: 'معصومه مشار',
-              title: 'Director of Public Relations & International Media',
-              titleFa: 'مدیر روابط عمومی، رسانه و برندینگ سازمانی',
-              department: 'Public Relations',
-              departmentFa: 'روابط عمومی، رسانه و برندینگ سازمانی',
+              title: 'Director of Communications & Stakeholders',
+              titleFa: 'معاونت ارتباطات و ذینفعان',
+              department: 'Communications Directorate',
+              departmentFa: 'معاونت ارتباطات و ذینفعان',
               extension: '204',
               role: 'director',
-              memberUid: 'kkm-user-010'
+              memberUid: 'kkm-user-015'
             },
+            // Independent QA/QC Line
             {
-              id: 'corp-legal',
-              name: 'Hamed Zatajam',
-              nameFa: 'حامد ذات‌عجم',
-              title: 'Director of Legal Affairs & Patents',
-              titleFa: 'مدیر امور حقوقی، قراردادها، مالکیت فکری و پتنت‌ها',
-              department: 'Legal Directorate',
-              departmentFa: 'امور حقوقی، مالکیت فکری و پتنت‌ها',
-              extension: '205',
-              role: 'director',
-              memberUid: 'kkm-user-016'
+              id: 'corp-qaqc',
+              name: 'Mostafa Sharifi',
+              nameFa: 'مصطفی شریفی',
+              title: 'Director of QA/QC & Inspection',
+              titleFa: 'مدیر بازرسی فنی و کنترل کیفیت (QA/QC)',
+              department: 'Independent Quality Directorate',
+              departmentFa: 'بازرسی فنی و کنترل کیفیت (مستقل از COO)',
+              extension: '209',
+              role: 'specialist',
+              memberUid: 'kkm-user-019'
             }
           ]
         }
