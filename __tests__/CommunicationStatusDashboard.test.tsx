@@ -46,8 +46,8 @@ describe('CommunicationStatusDashboard', () => {
     const busyFilterBtns = screen.getAllByRole('button', { name: /Busy|مشغول/i });
     fireEvent.click(busyFilterBtns[0]);
 
-    // Should still display Dr. Reza Asakereh (Busy)
-    expect(screen.getByText(/Dr\. Reza Asakereh|دکتر رضا عساکره/i)).toBeTruthy();
+    // Should still display Reza Asakereh (Busy)
+    expect(screen.getByText(/Reza Asakereh|رضا عساکره/i)).toBeTruthy();
   });
 
   it('renders descriptive legend defining Active, Busy, and Away statuses', async () => {

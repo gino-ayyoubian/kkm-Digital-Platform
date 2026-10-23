@@ -37,8 +37,8 @@ describe('buildInternalDirectory', () => {
       deskPhone,
       deskAvailability,
     }))).toEqual([
+      { extension: '105', deskPhone: '+98 21 9103 0834', deskAvailability: 'busy' },
       { extension: '107', deskPhone: '+98 21 9103 0836', deskAvailability: 'busy' },
-      { extension: '108', deskPhone: '+98 21 9103 0837', deskAvailability: 'away' },
     ]);
   });
 });
