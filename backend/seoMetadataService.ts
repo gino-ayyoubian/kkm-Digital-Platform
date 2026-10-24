@@ -294,6 +294,42 @@ export function injectSeoMetadata(html: string, requestPath: string): string {
     `<meta property="og:image:secure_url" content="${meta.ogImage}" />`
   );
 
+  const isJpeg = meta.ogImage.endsWith('.jpg') || meta.ogImage.endsWith('.jpeg');
+  const imageMime = isJpeg ? 'image/jpeg' : 'image/png';
+  const isPersian = requestPath.startsWith('/fa') || requestPath.includes('lang=fa');
+  const locale = isPersian ? 'fa_IR' : 'en_US';
+  const altLocale = isPersian ? 'en_US' : 'fa_IR';
+
+  // Replace OpenGraph image type and dimensions
+  updated = updated.replace(
+    /<meta\s+property="og:image:type"\s+content=".*?"\s*\/?>/i,
+    `<meta property="og:image:type" content="${imageMime}" />`
+  );
+
+  updated = updated.replace(
+    /<meta\s+property="og:image:alt"\s+content=".*?"\s*\/?>/i,
+    `<meta property="og:image:alt" content="${meta.title}" />`
+  );
+
+  // Replace Twitter image alt
+  updated = updated.replace(
+    /<meta\s+property="twitter:image:alt"\s+content=".*?"\s*\/?>/i,
+    `<meta property="twitter:image:alt" content="${meta.title}" />`
+  );
+
+  // Ensure og:locale is present and accurate
+  if (updated.includes('property="og:locale"')) {
+    updated = updated.replace(
+      /<meta\s+property="og:locale"\s+content=".*?"\s*\/?>/i,
+      `<meta property="og:locale" content="${locale}" />`
+    );
+  } else {
+    updated = updated.replace(
+      /<\/head>/i,
+      `  <meta property="og:locale" content="${locale}" />\n  <meta property="og:locale:alternate" content="${altLocale}" />\n</head>`
+    );
+  }
+
   // Replace Twitter tags
   updated = updated.replace(
     /<meta\s+property="twitter:title"\s+content=".*?"\s*\/?>/i,
