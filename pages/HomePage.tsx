@@ -131,9 +131,8 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
           <div className="max-w-4xl mx-auto text-center">
             <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="space-y-6">
               
-              <motion.div variants={fadeUpVariants} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-secondary text-xs font-bold uppercase tracking-widest backdrop-blur-md border border-white/10">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                {isFa ? 'گروه بین‌المللی کیمیا کاران ماد' : 'KKM INTERNATIONAL GROUP'}
+              <motion.div variants={fadeUpVariants} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-secondary text-xs font-semibold uppercase tracking-widest backdrop-blur-md border border-white/10">
+                <span>{isFa ? 'گروه بین‌المللی کیمیا کاران ماد' : 'KKM INTERNATIONAL GROUP'}</span>
               </motion.div>
 
               <motion.h1 variants={fadeUpVariants} className="text-4xl sm:text-6xl lg:text-7xl font-display font-black leading-tight tracking-tight text-white">
@@ -265,51 +264,60 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {[
               { 
+                id: '01',
                 titleEn: 'Energy & Geothermal Systems', 
                 titleFa: 'انرژی و سامانه‌های زمین‌گرمایی',
-                descEn: 'Closed-loop geothermal extraction, multi-energy hybrid microgrids, and baseload thermal power conversion.', 
-                descFa: 'استخراج زمین‌گرمایی مداربسته (GMEL-CLG)، ریزشبکه‌های هیبریدی تجدیدپذیر و تولید بار پایه برق.',
+                descEn: 'Closed-loop geothermal extraction (GMEL-CLG), multi-energy hybrid microgrids, and baseload thermal power conversion.', 
+                descFa: 'استخراج زمین‌گرمایی مداربسته (GMEL-CLG)، ریزشبکه‌های هیبریدی تجدیدپذیر و تولید بار پایه برق پایدار.',
                 icon: Zap,
                 page: Page.GMELHub,
                 imageUrl: '/src/assets/images/geothermal_icon_1791765115317.jpg'
               },
               { 
+                id: '02',
                 titleEn: 'Water & Closed Cycles', 
                 titleFa: 'آب و چرخه‌های بسته',
                 descEn: 'Thermal desalination, brackish water treatment, smart storage, and integrated water-energy corridors.', 
-                descFa: 'نمک‌زدایی حرارتی آب شور، تصفیه پساب‌های معدنی، ذخیره‌سازی هوشمند و همبست آب-انرژی.',
+                descFa: 'نمک‌زدایی حرارتی آب شور، تصفیه پساب‌های معدنی، ذخیره‌سازی هوشمند و همبست راهبردی آب-انرژی.',
                 icon: Droplets,
                 page: Page.CoreTechnologies,
                 imageUrl: '/src/assets/images/water_nexus_icon_1791765125654.jpg'
               },
               { 
+                id: '03',
                 titleEn: 'Resilient Infrastructure', 
                 titleFa: 'زیرساخت‌های پایدار و مقاوم',
                 descEn: 'Civil and industrial infrastructure designed for extreme arid, marine, and rural environments.', 
                 descFa: 'زیرساخت‌های عمرانی، تأسیسات صنعتی و ابنیه مهندسی متناسب با اقلیم‌های سخت بیابانی و دریایی.',
                 icon: Building2,
-                page: Page.Projects
+                page: Page.Projects,
+                imageUrl: '/src/assets/images/resilient_infrastructure_isometric_1792800605381.jpg'
               },
               { 
+                id: '04',
                 titleEn: 'Advanced Materials & Sensors', 
                 titleFa: 'مواد پیشرفته و ادوات سنجش',
                 descEn: 'Nanofluids for rapid thermal transfer, smart subsurface well casings, and bio-mineralized materials.', 
                 descFa: 'نانوسیالات تبادل سریع گرما، لوله‌های جداره هوشمند با فیبر نوری و بتن‌های خودترمیم‌شونده.',
                 icon: Factory,
-                page: Page.IPCenter
+                page: Page.IPCenter,
+                imageUrl: '/src/assets/images/advanced_materials_sensors_isometric_1792800607239.jpg'
               },
               { 
+                id: '05',
                 titleEn: 'AI & Digital Twins', 
                 titleFa: 'هوش مصنوعی و دوقلوهای دیجیتال',
                 descEn: 'Predictive energy dispatch, IoT remote telemetry for remote rural plants, and physics-informed models.', 
                 descFa: 'دیسپاچینگ هوشمند بار انرژی، پایش از راه دور اینترنت اشیاء (IoT) و دوقلوی دیجیتال سایت‌های عملیاتی.',
                 icon: Cpu,
-                page: Page.DigitalTwinHub
+                page: Page.DigitalTwinHub,
+                imageUrl: '/src/assets/images/ai_digital_twins_isometric_1792800606776.jpg'
               },
               { 
+                id: '06',
                 titleEn: 'Rural Microgrids & Value Chains', 
                 titleFa: 'ریزشبکه‌های روستایی و زنجیره‌های ارزش',
                 descEn: 'Modular hybrid microgrids, agricultural cold-chain conditioning, smart irrigation, and rural processing units.', 
@@ -320,37 +328,52 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
               }
             ].map((domain, i) => (
               <div 
-                key={i} 
+                key={domain.id || i} 
                 onClick={() => setPage(domain.page)}
-                className="p-8 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-primary/50 transition-all cursor-pointer group flex flex-col justify-between"
+                className="group relative rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800/80 p-3.5 pb-6 shadow-sm hover:shadow-2xl hover:border-primary/50 dark:hover:border-sky-500/50 hover:-translate-y-1.5 transition-all duration-300 ease-out cursor-pointer flex flex-col justify-between overflow-hidden"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary-dark dark:text-secondary flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <domain.icon className="w-6 h-6" />
+                  {/* Top Visual Showcase Banner */}
+                  <div className="relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden rounded-2xl bg-slate-950 border border-slate-200/40 dark:border-slate-800/80 mb-5 shadow-inner">
+                    <img 
+                      src={domain.imageUrl} 
+                      alt={isFa ? domain.titleFa : domain.titleEn} 
+                      loading="lazy" 
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" 
+                    />
+                    
+                    {/* Bottom gradient scrim for depth and high contrast */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent pointer-events-none" />
+
+                    {/* Floating Glassmorphic Domain Icon Badge */}
+                    <div className="absolute top-3 start-3 w-10 h-10 rounded-xl bg-slate-900/85 backdrop-blur-md border border-white/15 text-sky-400 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:border-sky-400/50 group-hover:text-secondary transition-all duration-300">
+                      <domain.icon className="w-5 h-5" />
                     </div>
-                    {domain.imageUrl && (
-                      <div className="w-14 h-14 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm bg-slate-950">
-                        <img 
-                          src={domain.imageUrl} 
-                          alt={domain.titleEn} 
-                          loading="lazy" 
-                          referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" 
-                        />
-                      </div>
-                    )}
+
+                    {/* Technical Domain Editorial Index Badge in Monospace */}
+                    <div className="absolute bottom-3 end-3 px-2.5 py-1 rounded-md bg-slate-950/80 backdrop-blur-md border border-white/10 text-[11px] font-mono font-semibold text-slate-300 tracking-wider">
+                      {domain.id}
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
-                    {isFa ? domain.titleFa : domain.titleEn}
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
-                    {isFa ? domain.descFa : domain.descEn}
-                  </p>
+
+                  {/* Text Content */}
+                  <div className="px-2">
+                    <h3 className="text-lg sm:text-xl font-display font-bold text-slate-900 dark:text-white mb-2.5 group-hover:text-primary dark:group-hover:text-secondary transition-colors duration-200">
+                      {isFa ? domain.titleFa : domain.titleEn}
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
+                      {isFa ? domain.descFa : domain.descEn}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs font-bold text-primary dark:text-secondary group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform">
-                  <span>{isFa ? 'مشاهده جزئیات حوزه' : 'Explore Domain'}</span>
-                  <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
+
+                {/* Card Action Link Strip */}
+                <div className="mx-2 pt-3.5 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-primary dark:text-secondary group-hover:text-primary-dark dark:group-hover:text-white transition-colors duration-200">
+                  <span className="tracking-wide">{isFa ? 'مشاهده جزئیات حوزه' : 'Explore Domain'}</span>
+                  <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 group-hover:bg-primary dark:group-hover:bg-secondary group-hover:text-white dark:group-hover:text-slate-950 transition-all duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 shadow-xs">
+                    <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
+                  </div>
                 </div>
               </div>
             ))}

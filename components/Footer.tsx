@@ -117,35 +117,7 @@ const NewsTicker: React.FC<{
     );
 };
 
-import { useFormatters } from '../hooks/useFormatters';
 
-const useLiveMetrics = () => {
-    const [offset, setOffset] = React.useState(14852.34);
-    
-    React.useEffect(() => {
-        const interval = setInterval(() => {
-            setOffset(prev => prev + Number((0.08 + Math.random() * 0.06).toFixed(3)));
-        }, 10000);
-        return () => clearInterval(interval);
-    }, []);
-    
-    return { co2Offset: offset };
-};
-
-const LiveEnergyTicker: React.FC = () => {
-    const { co2Offset } = useLiveMetrics();
-    const { formatLargeMetric } = useFormatters();
-    
-    return (
-        <div className="bg-emerald-900/40 text-emerald-100 py-2 text-xs font-mono border-b border-emerald-500/20 flex items-center justify-center gap-4">
-            <span className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                LIVE METRICS
-            </span>
-            <span className="font-bold">{formatLargeMetric(co2Offset)} MT CO₂ OFFSET</span>
-        </div>
-    );
-};
 
 const Footer: React.FC<FooterProps> = ({ setPage, onSelectArticle, showNewsTicker }) => {
     const { t } = useLanguage();
@@ -176,7 +148,6 @@ const Footer: React.FC<FooterProps> = ({ setPage, onSelectArticle, showNewsTicke
 
     return (
         <footer className="bg-text-dark text-white border-t border-secondary/20 font-sans dark:bg-slate-900 dark:border-slate-800">
-            <LiveEnergyTicker />
             {showNewsTicker && <NewsTicker articles={recentNews} onSelectArticle={onSelectArticle} />}
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">

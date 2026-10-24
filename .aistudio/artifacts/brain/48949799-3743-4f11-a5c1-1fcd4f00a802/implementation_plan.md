@@ -1,202 +1,167 @@
-# KKM Corporate Governance, Directorate Hierarchy, Telephony Extensions & RACI Implementation (Updated Revision)
+# KKM Multidisciplinary Capabilities Visual Upgrade & International-Grade Aesthetic Elevation
 
-Comprehensive multi-page implementation plan for KKM International Group's institutional governance upgrade, separating Sovereign Governance from Executive Operations, establishing a strict **Dual-Language CEO Naming Standard** (strictly **Gino Ayyoubian** in English with no "Seyed" or "Markazi", and **سید ژینو ایوبیان مرکزی** in Persian), enforcing a **Strict Honorific-Free Policy** (completely eliminating "Dr.", "Eng.", "Prof.", "دکتر", "مهندس", "پروفسور" across the entire platform), **completely removing Ali Rezaei and Maryam Bahrami from all organizational sections and records**, realigning the **Corporate PBX Extensions & IVR Telephony Gateway**, integrating Seyed Jassem Hosseini as Head of HSE & Environment, establishing open executive roles in Careers for the 7 complementary functions, permanently coupling member photographs to their verified identities, and embedding interactive Directorate Trees and RACI Matrices across About Us, Team, Corporate Info, and the Internal Portal.
+Comprehensive implementation plan for generating custom high-grade isometric 3D engineering illustrations for KKM International Group's three missing capability domains, redesigning the homepage domain showcase into prominent visual banner cards, and executing a site-wide aesthetic elevation across navigation, header, cards, micro-interactions, and typography to meet top-tier international consortium standards.
+
+---
 
 ### User Review & Critical Decisions
 
 > [!IMPORTANT]
-> The architectural plan has been revised to incorporate the user's explicit directive on CEO naming, personnel deletions, telephony extensions, and honorific-free names:
-
-- **CEO Naming Standardization (English vs Persian)**:
-  - In **English**: The prefix "Seyed" and suffix "Markazi" are completely removed; the official display name is strictly **Gino Ayyoubian**.
-  - In **Persian**: The complete official legal name is preserved as **سید ژینو ایوبیان مرکزی**.
-  - In UI logic and data models:
-    ```typescript
-    displayName: "Gino Ayyoubian",
-    displayNameFa: "سید ژینو ایوبیان مرکزی",
-    ```
-- **Complete & Seamless Removal of Ali Rezaei and Maryam Bahrami**:
-  - Ali Rezaei and Maryam Bahrami are completely excluded from the organization.
-  - They are removed across all codebases and views: `data/orgMembers.ts`, `pages/TeamPage.tsx`, `components/about/D3OrganizationalTree.tsx`, `components/ivr/IvrCommunicationsConsole.tsx`, `pages/DivisionsPage.tsx`, and all internal cartables/records.
-  - They are no longer listed as members, specialists, or personnel anywhere in the application.
-- **Strict Universal Ban on Honorific Titles ("No Academic/Honorific Prefixes")**:
-  - In **no place** anywhere in the application will titles such as "Doctor" (Dr. / دکتر), "Engineer" (Eng. / مهندس), "Professor" (Prof. / پروفسور), or any equivalent prefix be attached to personal names.
-  - All personnel must be identified purely by their authentic first and last names (e.g. **Gino Ayyoubian / سید ژینو ایوبیان مرکزی**, **Khosro Jarrahian / خسرو جراحیان**, **Reza Asakereh / رضا عساکره**, **Reza Baghdadchi / رضا بغدادچی**, **Pedram Abdarzadeh / پدرام آبدارزاده**, etc.).
-  - A runtime sanitizer `getCleanDisplayName(name: string)` will act as a strict safeguard across all components.
-- **Complete Re-alignment of Corporate Telephony Extensions (PBX & IVR Gateway)**:
-  - Corporate telephone extension numbers (شماره‌های داخلی) and the multi-layer IVR dial tree will be reorganized to mirror the new directorate hierarchy:
-    - **Ext 101**: Gino Ayyoubian / سید ژینو ایوبیان مرکزی (CEO & Chairman)
-    - **Ext 102**: Khosro Jarrahian (CTO)
-    - **Ext 103**: Heydar Yarveisi (COO)
-    - **Ext 104**: Farid Imani (CFO)
-    - **Ext 105**: Reza Baghdadchi (Head of Human Capital & Contracts)
-    - **Ext 106**: Reza Asakereh (Head of AI & Cognitive Telemetry)
-    - **Ext 107**: Ashkan Tofangchiha (Head of Open Innovation & Design Thinking)
-    - **Ext 108**: Pedram Abdarzadeh (Head of Corporate Governance, Risk & Insurance)
-    - **Ext 109 / *9111**: Seyed Jassem Hosseini (Head of HSE & Environmental Management)
-    - **Ext 200**: Central Corporate Reception & 24/7 Dispatch
-    - **Ext 204**: Masoumeh Moshar (Director of Communications & Stakeholders)
-    - **Ext 205**: Hamed Zatajam (Director of IP HoldCo & Legal Affairs)
-    - **Ext 208**: Sina Ayyoubian (Automation, Robotics & R&D Specialist)
-    - **Ext 209**: Mostafa Sharifi (Head of Quality Assurance & Inspection QA/QC)
-- **Universal Synchronization Across Pages**: The updated organizational chart, directorates, executive positions, extensions, and reporting lines will be synchronized across **About Us (`/about`)**, **Leadership Team (`/team`)**, **Corporate Info (`/corporate-info`)**, and the **Internal Portal (`/internal-portal`)**.
-- **HSE Head - Seyed Jassem Hosseini (سید جاسم حسینی)**: Introduced as the verified executive for the newly established **HSE & Environmental Management** division, reporting directly to the **Audit, Risk & Compliance Committee** to oversee deep drilling hazards, H2S containment, and offshore infrastructure.
-- **7 Open Complementary Positions in Careers (`/careers`)**: The remaining 7 complementary functions (Compliance/Sanctions, CISO, Financial Controller, PMO, Data Governance, Procurement/Supply Chain, ESG/Carbon) will be featured as active executive job openings in the Careers portal.
-- **Strict Photo-to-Identity Coupling**: Every executive portrait is permanently bound to the individual's full name. When roles shift (e.g., Khosro Jarrahian as CTO, Farid Imani as CFO, Reza Asakereh leading AI & Data, Ashkan Tofangchiha leading Open Innovation, Pedram Abdarzadeh leading Governance & Risk under CFO, Reza Baghdadchi leading Human Capital), their photos follow them seamlessly.
+> The implementation parameters have been confirmed based on the user's design choices:
+>
+> 1. **Visual Graphic Style**:
+>    - **Confirmed**: 3D Isometric Cutaways with glowing neon conduits, cyber-physical cross-sections, and dark studio backgrounds (`#0B0F19`), matching the exact visual language of existing flagship assets (`geothermal_icon` and `microgrid_icon`).
+> 2. **Card Layout & Placement**:
+>    - **Confirmed**: Prominent visual showcase banner atop each card (16:9 / 4:3 high-definition view with subtle scrim and hover depth) replacing the cramped 56×56 thumbnail in all 6 multidisciplinary domain cards.
+> 3. **Site-Wide Visual Elevation Scope**:
+>    - **Confirmed**: Comprehensive polish across navigation, header, card containers, micro-interactions, and themes following international engineering consortium design standards (Anti-Slop guidelines, Zero-Pill metadata, 1-row 3-zone top bar contract, WCAG AA contrast).
 
 ---
 
 ### 1. Overview & Core Concept
 
-- **What It Does**: Upgrades KKM International Group's corporate identity with a clean, egalitarian, verifiable institutional governance framework and an aligned cloud telephony system. Features an interactive Directorate Hierarchy Tree, a 10-Stage Lifecycle RACI Matrix, a 4-Tier Information Security Classification, synchronized PBX extensions, and clean personnel profiles across public and internal surfaces—with **Gino Ayyoubian** in English and **سید ژینو ایوبیان مرکزی** in Persian, Ali Rezaei and Maryam Bahrami completely removed, and all personal honorifics stripped for modern corporate purity.
-- **Target Audience / Persona**: International consortium partners, sovereign wealth & green sukuk investors, free zone authorities, EPC contractors, corporate auditors, and internal project managers.
-- **Key Value**: Enforces clear firewalls between Sovereign Governance and Executive Operations, satisfies international ISO/HSE/compliance standards, clarifies project decision rights (RACI), and maintains a clean, modern, unencumbered corporate naming and telephony presentation.
+- **What It Does**:
+  1. Generates 3 custom, high-fidelity 3D isometric cutaway images via the `generate_image` tool:
+     - **Resilient Infrastructure** (`resilient_infrastructure_isometric`): Deep civil and industrial infrastructure engineered for hyper-arid desert and marine environments, featuring seismic-resistant bedrock foundations, corrosion-proof alloy pilings, and modular closed-loop conduits.
+     - **Advanced Materials & Sensors** (`advanced_materials_sensors_isometric`): High-tech nanofluid thermal exchange core, smart downhole casing with embedded optical fiber luminescent telemetry rings, and self-healing bio-mineralized concrete crystal lattices.
+     - **AI & Digital Twins** (`ai_digital_twins_isometric`): Cyber-physical infrastructure replica with translucent holographic 3D wireframes of surface-to-subsurface plants, IoT sensor nodes, neural predictive dispatch server rack, and real-time data flows.
+  2. Redesigns the 6-card **Multidisciplinary Capabilities** section on the Homepage (`pages/HomePage.tsx`) so that every domain features a prominent, full-width top visual showcase banner with subtle gradient scrim, crisp typography, and interactive hover zoom.
+  3. Executes a site-wide aesthetic and UX upgrade across key layout components:
+     - **Top Header (`components/Header.tsx`)**: Eliminates decorative pulsing status dots on static copy; strengthens dark-mode glassmorphism (`backdrop-blur-xl bg-slate-950/80`); ensures clean single-line text and elegant navigation hierarchy.
+     - **Homepage Rhythm & Bento Sections**: Rebalances spatial margins, typography scales (`text-wrap: balance`), and smooth hover micro-interactions ($\le 200\text{ms}$).
+     - **Card Containers**: Enforces single-elevation depth with subtle hairline borders (`border-slate-800` in dark, `border-slate-200` in light) and eliminates any remaining pill-badge clutter.
+- **Target Audience**: Global energy consortiums, sovereign wealth funds, EPC contractors, academic researchers, and municipal infrastructure partners.
+- **Key Value**: Delivers visual parity and prestige across all 6 core technology sectors, establishing an undeniable, top-tier international engineering brand identity.
 
 ---
 
 ### 2. User Experience & Visual Design
 
-#### Key User Flows & Page Synchronizations
+#### A. Capability Domain Cards (Homepage Redesign)
 
-1. **Leadership & Team Page (`/team`)**:
-   - Executive cards display updated titles, directorates, and re-aligned extension call triggers (Gino Ayyoubian Ext 101, Khosro Jarrahian Ext 102, Heydar Yarveisi Ext 103, Farid Imani Ext 104, Reza Baghdadchi Ext 105, etc.) with pure names, zero honorific prefixes, and zero traces of deleted personnel.
-   - Includes Seyed Jassem Hosseini as Head of HSE & Environment (Ext 109) with verified credentials.
-   - An interactive tab allows switching between the **Executive Member Directory** and the **Interactive Governance & RACI Framework**.
-2. **Corporate Telephony Console (`/internal-portal` & Telephony Hub)**:
-   - Full IVR dial tree and PBX extension table synchronized with the new directorate numbers.
-   - Emergency *9111 protocol linked directly to Seyed Jassem Hosseini (HSE).
-3. **Corporate Info Page (`/corporate-info`)**:
-   - Updated Executive Board & Leadership grid reflecting clean names, latest titles, and verified photos.
-   - Embedded interactive Governance Framework section with downloadable governance dossier requests.
-4. **About Us Page (`/about`)**:
-   - Leadership preview cards updated to reflect the new structure with clean names.
-   - Interactive organizational tree in the institutional section reflecting the Governance vs Execution separation.
-5. **Careers Portal (`/careers`)**:
-   - A dedicated **"Executive & Institutional Open Roles"** section featuring the 7 complementary functions with comprehensive job charters, qualifications, and direct application triggers.
+Every capability card will transition from an icon-and-thumbnail row to a cohesive industrial showcase card:
 
-#### Visual Identity & Theme
+```
+┌────────────────────────────────────────────────────────┐
+│  [Prominent 16:9 Visual Showcase Banner]              │
+│  - High-res 3D Isometric Render                        │
+│  - Gradient Scrim for Contrast                         │
+│  - Floating Domain Icon Badge (Top-Left / Top-Right)   │
+├────────────────────────────────────────────────────────┤
+│  Domain Title (En / Fa)                                │
+│  Subtle Monospace Editorial Index (01 · 02 · 03...)     │
+│                                                        │
+│  Bilingual Technical Scope Description                 │
+│  (Arid infrastructure, smart casings, digital twins)   │
+│                                                        │
+│  [Explore Domain Action Link + Arrow]                  │
+└────────────────────────────────────────────────────────┘
+```
 
-- **Aesthetic Direction**: Institutional corporate minimalism paired with engineering rigor. Clean hairline dividers, zero decorative clutter, high contrast, and balanced typography.
-- **Naming Cleanliness**:
-  - English: **Gino Ayyoubian** (strictly without "Seyed" or "Markazi").
-  - Persian: **سید ژینو ایوبیان مرکزی**.
-  - No "Dr." or "دکتر", no "Eng." or "مهندس", no "Prof." or "پروفسور".
-  - Clean font styling: bold name, subtle role designation, and unboxed department labels.
-- **Color Palette & Hierarchy**:
-  - Dark Mode: Deep Slate Charcoal (`#090D16`) with subtle surface elevation (`#131B2E`).
-  - Light Mode: Pure Alabaster White (`#FFFFFF`) with subtle stone borders (`#E2E8F0`).
-  - Accents: KKM Primary Navy/Sky (`#0284C7`), Amber Gold (`#F59E0B`) for Audit/Risk Committees and HSE, Emerald (`#10B981`) for Level 1 Public / active status, and Ruby (`#EF4444`) for Level 4 Restricted IP.
-- **Zero-Pill Discipline**:
-  - RACI codes (`R`, `A`, `C`, `I`) rendered as crisp tabular cells with monospace figures and accessible tooltips.
-  - Metadata separated by quiet typographic bullets (`·`).
+#### B. The 6 Balanced Capability Domains
+
+1. **انرژی و سامانه‌های زمین‌گرمایی (Energy & Geothermal Systems)**:
+   - Asset: `/src/assets/images/geothermal_icon_1791765115317.jpg`
+   - Target: `Page.GMELHub`
+2. **آب و چرخه‌های بسته (Water & Closed Cycles)**:
+   - Asset: `/src/assets/images/water_nexus_icon_1791765125654.jpg`
+   - Target: `Page.CoreTechnologies`
+3. **زیرساخت‌های پایدار و مقاوم (Resilient Infrastructure)**:
+   - Asset: *New generated isometric cutaway (`resilient_infrastructure_isometric`)*
+   - Target: `Page.Projects`
+4. **مواد پیشرفته و ادوات سنجش (Advanced Materials & Sensors)**:
+   - Asset: *New generated isometric cutaway (`advanced_materials_sensors_isometric`)*
+   - Target: `Page.IPCenter`
+5. **هوش مصنوعی و دوقلوهای دیجیتال (AI & Digital Twins)**:
+   - Asset: *New generated isometric cutaway (`ai_digital_twins_isometric`)*
+   - Target: `Page.DigitalTwinHub`
+6. **ریزشبکه‌های روستایی و زنجیره‌های ارزش (Rural Microgrids & Value Chains)**:
+   - Asset: `/src/assets/images/microgrid_icon_1791765136698.jpg`
+   - Target: `Page.RuralStudies`
+
+#### C. Visual Identity & Anti-Slop Disciplines
+
+- **Color Discipline (60-30-10)**:
+  - 60% Canvas: Dark Slate Obsidian (`#0B0F19`) / Pure Alabaster (`#F8FAFC`).
+  - 30% Structural: Subdued card surfaces (`#111827` / `#FFFFFF`) with hairline borders (`rgba(255,255,255,0.08)` / `rgba(0,0,0,0.06)`).
+  - 10% Accent: Electric Cyan (`#38BDF8`), Geothermal Amber (`#F59E0B`), and Clean Emerald (`#10B981`).
+- **No Decorative Pulsing Dots**: Remove static pulsing green dots from header titles or static hero badges; restrict animations to functional interactions.
+- **Typography & Headline Containment**:
+  - Headings: `font-display font-extrabold tracking-tight` with `text-wrap: balance` to eliminate orphan words.
+  - Body: `text-sm leading-relaxed text-slate-600 dark:text-slate-400`.
+  - Metrics / Numbers: `font-mono tabular-nums`.
+- **Zero-Broken-Image Policy**: Every `<img>` has `referrerPolicy="no-referrer"` and a styled fallback container with domain SVG icon and subtle ambient gradient.
 
 ---
 
 ### 3. Key Product Decisions & Trade-Offs
 
-- **Decision 1: CEO Dual-Language Naming Logic**:
-  - *Chosen Approach*: Specifically configure the CEO record so `displayName: "Gino Ayyoubian"` in English and `displayNameFa: "سید ژینو ایوبیان مرکزی"` in Persian.
-  - *Why*: Satisfies international Western branding norms for English audiences while preserving the full legal name in Persian corporate and gazette documents as requested by the user.
-- **Decision 2: Full Eradication of Ali Rezaei and Maryam Bahrami**:
-  - *Chosen Approach*: Fully remove both entries from `INITIAL_ORG_MEMBERS` in `orgMembers.ts`, remove all extension references from `IvrCommunicationsConsole.tsx`, remove nodes from `D3OrganizationalTree.tsx`, remove cards from `TeamPage.tsx`, and clean any leave/request references in portal data.
-  - *Why*: Ensures complete fidelity to the user's explicit instruction that they are not members of the organization.
-- **Decision 3: Global Honorific Sanitizer Helper (`getCleanDisplayName`)**:
-  - *Chosen Approach*: Implement a shared utility function `getCleanDisplayName(name: string): string` that automatically strips any accidental leading titles (`/^(Dr\.|Eng\.|Mr\.|Ms\.|Mrs\.|Prof\.|دکتر|مهندس|پروفسور)\s+/i`) at render time as an extra safeguard, in addition to cleaning the raw database records in `orgMembers.ts` and `governanceData.ts`.
-  - *Why*: Guarantees 100% adherence to the user's rule even if an imported third-party record or legacy string contains an honorific prefix.
-- **Decision 4: Hierarchical 100-Series PBX Extension Numbering Scheme**:
-  - *Chosen Approach*:
-    - `101`: CEO / Chairman (Executive Office)
-    - `102` - `104`: C-Level Directorates (CTO, COO, CFO)
-    - `105` - `108`: Senior Department Heads (Human Capital, AI & Data, Open Innovation, Governance & Risk)
-    - `109`: HSE & Environmental Management (linked with *9111 Emergency Command)
-    - `200` - `209`: Operations, Technical Staff, and Specialized Support
-  - *Why*: Provides an intuitive, structured telecommunications scheme matching the executive reporting hierarchy.
-- **Decision 5: Centralized Governance Data Store (`src/data/governanceData.ts`)**:
-  - *Chosen Approach*: Store all 8 complementary roles, directorates, RACI matrices, and security levels in a single typed file imported by `TeamPage`, `CorporateInfoPage`, `AboutUsPage`, and `CareersPage`.
-  - *Why*: Eliminates duplicated copy and guarantees that updates to any position or reporting line propagate instantly across all pages.
-- **Decision 6: Member Photo Integrity Mapping**:
-  - *Chosen Approach*: Maintain a canonical `MEMBER_IDENTITY_MAP` linking each person's unique clean name directly to their verified photograph.
-  - *Why*: Perfectly satisfies the requirement that each person's photo remains inseparable from their name, regardless of position realignment.
+- **Decision 1: Parallel Batch Generation of the 3 Isometric Assets**:
+  - *Chosen Approach*: Execute all 3 `generate_image` calls simultaneously in the first execution turn. Wait for the exact timestamped output paths before updating `HomePage.tsx`.
+  - *Why*: Conforms strictly to the `image-generation` and `frontend-design` skills, preventing multi-turn fragmentation and path guessing.
+- **Decision 2: Showcase Banner Layout vs. Small Thumbnails**:
+  - *Chosen Approach*: Expand the imagery into a top banner showcase across all 6 cards.
+  - *Why*: The user selected the prominent showcase banner layout; giving all 6 cards identical visual weight elevates the section from a plain text list into an international engineering flagship showcase.
+- **Decision 3: Seamless Bilingual Support (Persian RTL & English LTR)**:
+  - *Chosen Approach*: Position badges, directional arrows, and typography using logical Tailwind classes (`rtl:rotate-180`, `start-4`, `text-start`).
+  - *Why*: Ensures flawless reading flow and visual polish in both Persian and English.
 
 ---
 
-### 4. Technical Architecture & Data Strategy
+### 4. Technical Architecture & System Flow
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                       KKM GOVERNANCE & EXECUTION MODEL                      │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                       │
-     ┌─────────────────────────────────┴─────────────────────────────────┐
-     ▼                                                                   ▼
-┌───────────────────────────────┐                       ┌───────────────────────────────┐
-│     GOVERNANCE LAYER          │                       │       EXECUTIVE LAYER         │
-│  (Board & Audit Committee)    │                       │  CEO: Gino Ayyoubian          │
-└──────────────┬────────────────┘                       │  (سید ژینو ایوبیان مرکزی)     │
-               │                                        └───────────────┬───────────────┘
-   ┌───────────┴───────────┐                                            │
-   ▼                       ▼                       ┌────────────────────┼────────────────────┐
-┌─────────────────────┐ ┌─────────────────────┐    ▼                    ▼                    ▼
-│ HSE & Environment   │ │ Compliance & Sanction│ ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
-│ Seyed Jassem Hosseini│ │ (Open Role)        │ │ CTO           │ │ COO           │ │ CFO           │
-│ Ext 109 / *9111     │ │                     │ │ Khosro Jarrah.│ │ Heydar Yarveisi│ │ Farid Imani   │
-└─────────────────────┘ └─────────────────────┘ │ Ext 102       │ │ Ext 103       │ │ Ext 104       │
-                                                └───────┬───────┘ └───────┬───────┘ └───────┬───────┘
-                                                        │                 │                 │
-                                                        ▼                 ▼                 ▼
-                                                   AI / Inno /        Offshore /        Capital /
-                                                   Data / CISO        Supply Chain      Risk / ESG
+┌────────────────────────────────────────────────────────────────────────┐
+│ Phase 1: Parallel Image Asset Generation (Batch Turn)                  │
+│                                                                        │
+│  generate_image(resilient_infrastructure_isometric, 1:1 / 4:3)         │
+│  generate_image(advanced_materials_sensors_isometric, 1:1 / 4:3)       │
+│  generate_image(ai_digital_twins_isometric, 1:1 / 4:3)                 │
+└─────────────────────────────────┬──────────────────────────────────────┘
+                                  │ Returns exact timestamped paths
+                                  ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│ Phase 2: Component Implementation & Layout Upgrades                    │
+│                                                                        │
+│  ┌─────────────────────────────┐    ┌────────────────────────────────┐ │
+│  │ pages/HomePage.tsx          │    │ components/Header.tsx          │ │
+│  │ - 6 Showcase Domain Cards   │    │ - Anti-slop pulse cleanup      │ │
+│  │ - Top Image Banners         │    │ - 1-row 3-zone contract polish │ │
+│  │ - Domain Icon Badges        │    │ - Glassmorphic backdrop blur   │ │
+│  │ - Responsive Grid (2x3)     │    │ - Single-line nav items        │ │
+│  └──────────────┬──────────────┘    └───────────────┬────────────────┘ │
+│                 │                                   │                  │
+│                 ▼                                   ▼                  │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │ Global Theme & Typography Micro-Polishes                         │  │
+│  │ - Refined card hover states (settling <= 200ms)                  │  │
+│  │ - Zero-pill metadata styling                                     │  │
+│  │ - Resilient image fallbacks with referrerPolicy="no-referrer"    │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────┬──────────────────────────────────────┘
+                                  │
+                                  ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│ Phase 3: Verification & Compilation                                    │
+│                                                                        │
+│  - lint_applet: Check syntax, imports, and styling                     │
+│  - compile_applet: Run full Vite & esbuild production build            │
+└────────────────────────────────────────────────────────────────────────┘
 ```
 
-#### Detailed Personnel, Directorate & Telephony Mapping (Honorific-Free & Clean)
+---
 
-| Executive | Verified Name (EN / FA) | Official Role | Directorate / Reporting | Ext | Phone Number | Photo Asset |
-| :--- | :--- | :--- | :--- | :---: | :--- | :--- |
-| **Gino Ayyoubian** | سید ژینو ایوبیان مرکزی | Chief Executive Officer (CEO) & Chairman | Executive Leadership (Oversees IP, PMO, Strategy) | **101** | `+98 21 9103 0830` | `/images/gino-ayyoubian.jpg` |
-| **Khosro Jarrahian** | خسرو جراحیان | Chief Technology Officer (CTO) | Technology Directorate (Oversees R&D, Nanomaterials, AI, Open Innovation, CISO) | **102** | `+98 21 9103 0831` | `/images/khosro-jarrahian.jpg` |
-| **Heydar Yarveisi** | حیدر یارویسی | Chief Operating Officer (COO) | Operations & EPC Directorate (Offshore/Qeshm, Automation, Procurement) | **103** | `+98 21 9103 0832` | Executive Avatar / Monogram |
-| **Farid Imani** | فرید ایمانی | Chief Financial Officer (CFO) | Finance & Capital Directorate (Transnational Investment, Controller, ESG, Governance/Risk) | **104** | `+98 21 9103 0833` | `/images/farid-imani.jpg` |
-| **Reza Baghdadchi** | رضا بغدادچی | Head of Human Capital & Contract Authorization | Human Capital & Governance Directorate | **105** | `+98 21 9103 0834` | `/images/reza-baghdadchi.jpg` |
-| **Reza Asakereh** | رضا عساکره | Head of AI & Cognitive Telemetry | Under CTO Directorate | **106** | `+98 21 9103 0835` | `/images/reza-asakereh.jpg` |
-| **Ashkan Tofangchiha** | اشکان تفنگچی‌ها | Head of Open Innovation & Design Thinking | Under CTO Directorate | **107** | `+98 21 9103 0836` | `/images/ashkan-tofangchiha.jpg` |
-| **Pedram Abdarzadeh** | پدرام آبدارزاده | Head of Corporate Governance, Risk & Insurance | Under CFO Directorate (with conflict of interest firewalls) | **108** | `+98 21 9103 0837` | `/images/pedram-abdarzadeh.jpg` |
-| **Seyed Jassem Hosseini** | سید جاسم حسینی | Head of HSE & Environmental Management | Direct line to Audit, Risk & Compliance Committee | **109** | `+98 21 9103 0838` | Executive Portrait / Verified Badge |
-| **Corporate Central Reception** | پذیرش و اپراتور مرکزی | 24/7 Corporate Operator & Dispatch | Administration | **200** | `+98 21 9103 0830` | Central PBX Gateway |
-| **Masoumeh Moshar** | معصومه مشار | Director of Communications & Stakeholder Relations | Communications Directorate | **204** | `+98 21 9103 0845` | Executive Avatar / Verified Badge |
-| **Hamed Zatajam** | حامد ذات‌عجم | Director of IP HoldCo & Legal Affairs | Reporting directly to CEO | **205** | `+98 21 9103 0846` | `/images/hamed-zatajam.jpg` |
-| **Sina Ayyoubian** | سینا ایوبیان | R&D & Prototyping Specialist | Under COO / CTO Directorate | **208** | `+98 21 9103 0848` | `/images/sina-ayyoubian.jpg` |
-| **Mostafa Sharifi** | مصطفی شریفی | Head of Quality Assurance & Inspection (QA/QC) | Independent Line (outside COO operations) | **209** | `+98 21 9103 0849` | `/images/mostafa-sharifi.jpg` |
+### 5. Detailed Execution Steps (Upon Approval)
 
-*(Note: Ali Rezaei and Maryam Bahrami are completely excluded).*
-
-#### 10-Stage Lifecycle RACI Matrix (Clean Names)
-
-| Gate | Stage Title | CEO (Gino Ayyoubian) | CTO (Jarrahian) | COO (Yarveisi) | CFO (Imani) | IP/Legal (Zatajam) | QA/QC (Sharifi) | HR (Baghdadchi) |
-| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | Scientific Evidence | `I` | **`A / R`** | `I` | `I` | `C` | `I` | `C` |
-| **2** | Technology Development | `I` | **`A / R`** | `C` | `I` | `C` | `C` | `C` |
-| **3** | IP Registration & Protection | **`A`** | `C` | `I` | `C` | **`R`** | `I` | `I` |
-| **4** | Industrial Prototype | `I` | **`A / R`** | `C` | `I` | `I` | `C` | `I` |
-| **5** | Field Pilot Testing | `I` | `C` | **`A / R`** | `C` | `I` | `C` | `I` |
-| **6** | Modular Product Commercialization | `I` | `C` | **`R`** | `I` | `I` | **`A`** | `I` |
-| **7** | Integrated Mega-Project | `I` | `C` | **`A / R`** | `C` | `I` | `C` | `I` |
-| **8** | Strategic Infrastructure Platform | **`A`** | `C` | `C` | **`R`** | `C` | `I` | `I` |
-| **9** | National Scale Deployment | **`A`** | `C` | **`R`** | **`R`** | `C` | `I` | `C` |
-| **10** | Internationalization & Cross-Border | **`A`** | `C` | `C` | **`R`** | `C` | `I` | `I` |
-
-#### 4 Information Security Classification Tiers
-
-1. **Level 1 (Public / عمومی)**: Published website data, audited proof, official whitepapers. Open to the public.
-2. **Level 2 (Internal / داخلی)**: Administrative policies, routine correspondence, standard operational workflows. Accessible to all authenticated personnel.
-3. **Level 3 (Confidential / محرمانه)**: GMEL-AI source code, nanofluid formulas, raw reservoir geophysics, financial ledgers. Restricted to CTO, department heads, and CISO.
-4. **Level 4 (Restricted IP & Executive / به کلی سری)**: First-filing patent claims, core trade secrets, IP HoldCo ownership instruments, transnational SPV structures. Exclusively restricted to CEO (Gino Ayyoubian / سید ژینو ایوبیان مرکزی), Head of Legal/IP, and approved Risk Committee members.
-
-#### Verification & Test Strategy
-
-- Verify that all unit tests (`npm run test`) pass.
-- Verify TypeScript compilation without errors (`tsc --noEmit`).
-- Verify that English displays render strictly as `Gino Ayyoubian` and Persian displays render as `سید ژینو ایوبیان مرکزی`.
-- Scan codebase to confirm zero occurrences of Ali Rezaei and Maryam Bahrami in active personnel lists.
-- Scan codebase to confirm zero occurrences of "دکتر", "مهندس", "پروفسور", "Dr.", "Eng.", "Prof." preceding personal names.
-- Validate telephony simulator and extension directory in `IvrCommunicationsConsole.tsx` to confirm correct routing to all new extension numbers.
-- Validate responsive rendering across mobile, tablet, and desktop viewports.
+1. **Step 1: Batch Image Generation**
+   - Prompt 1: `resilient_infrastructure_isometric` — 3D isometric cutaway block of deep industrial infrastructure in arid desert and coastal marine terrain, earthquake-resistant foundation cross-section, glowing fluid pipes, modular reinforced structures, dark studio slate background.
+   - Prompt 2: `advanced_materials_sensors_isometric` — 3D isometric cutaway of advanced materials and downhole sensor instrumentation, glowing blue optical fiber wrapped around high-pressure casing, nanofluid heat exchange channels, self-healing crystal matrix, dark studio background.
+   - Prompt 3: `ai_digital_twins_isometric` — 3D isometric cutaway of an AI and digital twin industrial control node, glowing holographic wireframe replica of an energy plant hovering above a server chassis, IoT data streams, cyan and amber circuitry, dark studio slate background.
+2. **Step 2: Redesign Capabilities Section in `pages/HomePage.tsx`**
+   - Bind all 6 domains with their respective high-definition image assets.
+   - Implement the prominent visual banner card layout with smooth zoom on hover, domain icon badge, and clean typography.
+3. **Step 3: Site-Wide Visual Polish in `components/Header.tsx` & Theme Surfaces**
+   - Refine header aesthetics, remove decorative pulse animations on static tags, and ensure flawless glassmorphism.
+   - Verify card elevation and padding math ($r_{inner} = r_{outer} - padding$).
+4. **Step 4: Quality & Build Verification**
+   - Run `lint_applet` and `compile_applet` to verify zero errors in production build.

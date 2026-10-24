@@ -710,6 +710,7 @@ const InternalPortalPage: React.FC<InternalPortalPageProps> = ({ setPage }) => {
 
   const corporateFunctions: OrgMemberCard[] = [
     { name: 'MasoumehMoshar', role: 'DirectorOfPR', desc: 'PRDesc', rbac: 'Manager' },
+    { name: 'SeyedJasemHosseini', role: 'DirectorOfHSE', desc: 'HSEDesc', rbac: 'Manager' },
     { name: 'HamedZatajam', role: 'DirectorOfLegal', desc: 'LegalDesc', rbac: 'Manager' },
   ];
 

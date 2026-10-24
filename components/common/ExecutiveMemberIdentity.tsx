@@ -47,6 +47,12 @@ export const getMemberPhotoObjectPosition = (nameOrUrl: string = ''): string => 
   
   // Reza Baghdadchi: Square aspect ratio (0.96), face centered at ~22%
   if (s.includes('baghdadchi') || s.includes('بغدادچی')) return '50% 22%';
+
+  // Masoomeh Moshar: Head starts ~10%, eyes ~20%
+  if (s.includes('moshar') || s.includes('مشار') || s.includes('masoumeh') || s.includes('masoomeh') || s.includes('معصومه')) return '50% 18%';
+
+  // Seyed Jasem Hosseini: Head starts ~12%, eyes ~22%
+  if (s.includes('hosseini') || s.includes('حسینی') || s.includes('jassem') || s.includes('jasem') || s.includes('جاسم')) return '50% 20%';
   
   // Default rule-of-thirds upper-third focal point for executive vertical portraits
   return '50% 15%';
@@ -143,6 +149,8 @@ const getAuthenticMemberPhoto = (name: string, nameFa?: string, photoUrl?: strin
   if (n.includes('abdarzadeh') || nFa.includes('آبدارزاده')) return '/images/pedram-abdarzadeh.jpg';
   if (n.includes('zatajam') || nFa.includes('ذات‌عجم') || nFa.includes('ذات عجم')) return '/images/hamed-zatajam.jpg';
   if (n.includes('sharifi') || nFa.includes('شریفی') || n.includes('mostafa') || nFa.includes('مصطفی')) return '/images/mostafa-sharifi.jpg';
+  if (n.includes('moshar') || nFa.includes('مشار') || n.includes('masoumeh') || n.includes('masoomeh') || nFa.includes('معصومه')) return '/images/masoumeh-moshar.png';
+  if (n.includes('hosseini') || nFa.includes('حسینی') || n.includes('jassem') || n.includes('jasem') || nFa.includes('جاسم')) return '/images/seyed-jassem-hosseini.png';
 
   return photoUrl;
 };
