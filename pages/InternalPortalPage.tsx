@@ -23,6 +23,7 @@ import { ExecutiveMemberIdentity } from '../components/common/ExecutiveMemberIde
 import { IvrCommunicationsConsole } from '../components/ivr/IvrCommunicationsConsole';
 import { EvidenceRegistryModal } from '../components/common/EvidenceRegistryModal';
 import { AdminControlPanel } from '../components/portal/AdminControlPanel';
+import { SocialPreviewDebugger } from '../components/social/SocialPreviewDebugger';
 import { InternalDirectoryTab } from '../components/portal/InternalDirectoryTab';
 import { InternalCommunicationTab } from '../components/portal/InternalCommunicationTab';
 import { CommunicationStatusDashboard } from '../components/portal/CommunicationStatusDashboard';
@@ -36,7 +37,7 @@ import {
   Shield, ShieldCheck, ShieldAlert, CheckCircle, XCircle, Clock, ArrowRight, 
   Mail, Calendar, HardDrive, FileText, UserCheck, 
   HelpCircle, ChevronRight, Lock, User, Key, Sparkles, Building, KeyRound, Eye, EyeOff,
-  Phone, PhoneCall, Award, ExternalLink
+  Phone, PhoneCall, Award, ExternalLink, Share2
 } from 'lucide-react';
 import { OrgMemberProfile } from '../types';
 
@@ -832,7 +833,7 @@ const InternalPortalPage: React.FC<InternalPortalPageProps> = ({ setPage }) => {
                       </h3>
                     </div>
                     <span className="text-[10px] font-mono text-text-light dark:text-slate-400">
-                      7 {isFa ? 'ابزار متصل' : 'Tools'}
+                      8 {isFa ? 'ابزار متصل' : 'Tools'}
                     </span>
                   </div>
 
@@ -891,6 +892,15 @@ const InternalPortalPage: React.FC<InternalPortalPageProps> = ({ setPage }) => {
                     >
                       <HelpCircle className="w-5 h-5 text-primary dark:text-secondary group-hover:scale-110 transition-transform" />
                       <span className="text-[11px] font-bold text-text-dark dark:text-slate-200">{t('Tool_IT')}</span>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab('socialPreview')}
+                      className="p-3 rounded-xl bg-gray-50 dark:bg-slate-700/50 hover:bg-primary/10 dark:hover:bg-secondary/15 transition-all text-center flex flex-col items-center justify-center gap-1.5 group"
+                      title={isFa ? 'شبیه‌ساز و عیب‌یاب سئو و کارت‌های شبکه‌های اجتماعی' : 'Social Share & OpenGraph Simulator'}
+                    >
+                      <Share2 className="w-5 h-5 text-primary dark:text-secondary group-hover:scale-110 transition-transform" />
+                      <span className="text-[11px] font-bold text-text-dark dark:text-slate-200">{isFa ? 'سئو و اشتراک' : 'Social SEO'}</span>
                     </button>
                   </div>
                 </div>
@@ -1015,6 +1025,9 @@ const InternalPortalPage: React.FC<InternalPortalPageProps> = ({ setPage }) => {
 
         {/* TAB: GMEL TELEMETRY & PORTAL CMS (ADMIN CONTROL PANEL) */}
         {activeTab === 'adminControl' && <AdminControlPanel />}
+
+        {/* TAB: OPENGRAPH & SOCIAL SHARE PREVIEW SIMULATOR */}
+        {activeTab === 'socialPreview' && <SocialPreviewDebugger initialPath="/" />}
 
         {/* TAB: EXECUTIVE PRODUCTION GOVERNANCE (PRINCIPLE 4) */}
         {activeTab === 'executiveGovernance' && <ExecutiveGovernanceQueue />}

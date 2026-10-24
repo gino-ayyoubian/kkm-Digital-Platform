@@ -152,6 +152,12 @@ export function pathToPage(pathname: string): Page {
     case '/offline':
       return Page.Offline;
 
+    case '/social-preview':
+    case '/preview':
+    case '/meta-debug':
+    case '/og-preview':
+      return Page.SocialPreview;
+
     default:
       return Page.NotFound;
   }
@@ -260,6 +266,9 @@ export function pageToPath(page: Page): string {
 
     case Page.Offline:
       return '/offline';
+
+    case Page.SocialPreview:
+      return '/social-preview';
 
     case Page.NotFound:
       return typeof window !== 'undefined' ? window.location.pathname : '/404';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { 
   LayoutDashboard, Inbox, FileText, Clock, PhoneCall, 
-  GitBranch, Network, Sliders, Users, UserCheck, FolderGit2, Database, ShieldCheck, Shield 
+  GitBranch, Network, Sliders, Users, UserCheck, FolderGit2, Database, ShieldCheck, Shield, Share2 
 } from 'lucide-react';
 import type { NavModuleItem } from '../components/portal/PortalHeader';
 
@@ -171,6 +171,18 @@ export const getPortalModules = (
       descEn: 'Real-time telemetry monitoring, system logs & CMS control',
       category: 'governance' as const,
       icon: Sliders,
+      adminOnly: true,
+    },
+    {
+      id: 'socialPreview',
+      labelEn: 'Social Share & OpenGraph Simulator',
+      labelFa: 'شبیه‌ساز پیش‌نمایش شبکه‌های اجتماعی',
+      shortLabelFa: 'سئو و اشتراک‌گذاری',
+      shortLabelEn: 'Social Preview',
+      descFa: 'شبیه‌سازی کارت‌های ۱۲۰۰×۶۳۰ لینکدین، توییتر/X و واتساپ و بازنشانی کش',
+      descEn: 'Simulate 1200x630 cards for LinkedIn, X & messaging apps with live crawler verification',
+      category: 'governance' as const,
+      icon: Share2,
       adminOnly: true,
     }
   ] : []),

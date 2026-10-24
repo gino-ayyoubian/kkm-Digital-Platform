@@ -47,6 +47,7 @@ export enum Page {
   Team = 'Team & Leadership',
   FAQ = 'Frequently Asked Questions',
   Divisions = 'Strategic Divisions',
+  SocialPreview = 'Social Preview',
   NotFound = 'Page Not Found',
 }
 

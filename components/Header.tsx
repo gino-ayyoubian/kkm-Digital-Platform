@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Page } from '../types';
 import { NAV_LINKS } from '../constants';
 import { useLanguage } from '../LanguageContext';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react';
 import { useTheme } from '../ThemeContext';
 import { PWAInstallButton } from './PWAInstallButton';
 import KKMLogo from './KKMLogo';
@@ -30,6 +30,17 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
   const headerRef = React.useRef<HTMLElement>(null);
   const isRtl = direction === 'rtl';
 
+  // Framer Motion useScroll hook for soft contraction & shadow appearance
+  const { scrollY } = useScroll();
+  const [hasScrolled, setHasScrolled] = React.useState(false);
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const isPastThreshold = latest > 15;
+    if (isPastThreshold !== hasScrolled) {
+      setHasScrolled(isPastThreshold);
+    }
+  });
+
   // Unified Navigation State Hook
   const {
     isDrawerOpen,
@@ -56,6 +67,9 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
     currentPage,
     onSearch,
   });
+
+  // Effective scroll state combining Framer Motion listener and unified navigation
+  const activeScrolled = hasScrolled || isScrolled;
 
   // Adaptive Condensed Navigation: 6 core primary links + auto-collapsing "More" overflow menu
   const primaryNavLinks = React.useMemo(() => {
@@ -91,24 +105,47 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
 
   return (
     <>
-      <header
+      <motion.header
         ref={headerRef}
-        className={`sticky top-0 z-50 w-full transition-all duration-300 relative ${
-          isScrolled
-            ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-md py-1 border-b border-gray-200 dark:border-slate-800'
-            : 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md py-2 border-b border-gray-100 dark:border-slate-800/60'
-        }`}
+        animate={{
+          y: 0,
+          backgroundColor: theme === 'dark'
+            ? (activeScrolled ? 'rgba(15, 23, 42, 0.96)' : 'rgba(15, 23, 42, 0.88)')
+            : (activeScrolled ? 'rgba(255, 255, 255, 0.96)' : 'rgba(255, 255, 255, 0.88)'),
+          boxShadow: activeScrolled
+            ? (theme === 'dark'
+                ? '0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3)'
+                : '0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04)')
+            : '0 0px 0px 0px rgba(0, 0, 0, 0)',
+          borderBottomColor: theme === 'dark'
+            ? (activeScrolled ? 'rgba(51, 65, 85, 0.8)' : 'rgba(51, 65, 85, 0.4)')
+            : (activeScrolled ? 'rgba(226, 232, 240, 0.9)' : 'rgba(241, 245, 249, 0.6)'),
+        }}
+        transition={{
+          duration: 0.25,
+          ease: [0.16, 1, 0.3, 1],
+        }}
+        className="sticky top-0 z-50 w-full backdrop-blur-md border-b relative"
         role="banner"
       >
         {/* Subtle Fluid Motion Animation Stream */}
-        <HeaderFluidAnimation opacity={isScrolled ? 0.35 : 0.6} />
+        <HeaderFluidAnimation opacity={activeScrolled ? 0.35 : 0.6} />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* ========================================================= */}
           {/* RESPONSIVE FLEX SYSTEM: Non-overlapping Header Container   */}
           {/* ========================================================= */}
-          <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4 w-full">
+          <motion.div 
+            animate={{
+              height: activeScrolled ? 62 : 76,
+            }}
+            transition={{
+              duration: 0.25,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="flex items-center justify-between gap-2 sm:gap-4 w-full"
+          >
             
             {/* BRAND LOGO & IDENTIFIER */}
             <div className="flex items-center justify-start shrink-0">
@@ -424,9 +461,9 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
               </div>
 
             </div>
-          </div>
+          </motion.div>
         </div>
-      </header>
+      </motion.header>
 
       {/* ========================================================= */}
       {/* MOBILE & TABLET NAVIGATION DRAWER (Slide-over Full Panel) */}

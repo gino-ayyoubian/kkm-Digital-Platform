@@ -28,6 +28,10 @@ describe('route helpers', () => {
     expect(pathToPage('/esg')).toBe(Page.Sustainability);
     expect(pathToPage('/contact-us')).toBe(Page.Contact);
     expect(pathToPage('/portal')).toBe(Page.InternalPortal);
+    expect(pathToPage('/social-preview')).toBe(Page.SocialPreview);
+    expect(pathToPage('/preview')).toBe(Page.SocialPreview);
+    expect(pathToPage('/og-preview')).toBe(Page.SocialPreview);
+    expect(pageToPath(Page.SocialPreview)).toBe('/social-preview');
   });
 
   it('round-trips page enum through path mapping', () => {

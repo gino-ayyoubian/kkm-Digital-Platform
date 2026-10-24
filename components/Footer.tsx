@@ -9,6 +9,7 @@ import type { TranslationKey } from '../translations';
 import { useTheme } from '../ThemeContext';
 import KKMLogo from './KKMLogo';
 import { PWAInstallButton } from './PWAInstallButton';
+import { Share2 } from 'lucide-react';
 
 interface FooterProps {
     setPage: (page: Page) => void;
@@ -303,6 +304,15 @@ const Footer: React.FC<FooterProps> = ({ setPage, onSelectArticle, showNewsTicke
                          <button onClick={() => setPage(Page.Legal)} className="text-gray-400 hover:text-white text-xs transition-colors">{t('TermsOfUse')}</button>
                          <button onClick={() => setPage(Page.Contact)} className="text-gray-400 hover:text-white text-xs transition-colors">{t('Contact')}</button>
                          <PWAInstallButton variant="footer" />
+                         <button 
+                           type="button"
+                           onClick={() => setPage(Page.SocialPreview)} 
+                           className="text-gray-400 hover:text-secondary text-xs transition-colors flex items-center gap-1.5"
+                           title="OpenGraph & Social Share Simulator (1200x630)"
+                         >
+                           <Share2 className="w-3.5 h-3.5 text-secondary" />
+                           <span>Social Preview</span>
+                         </button>
                          <button 
                            onClick={() => setPage(Page.Offline)} 
                            className="text-gray-400 hover:text-emerald-400 text-xs transition-colors flex items-center gap-1.5"

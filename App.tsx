@@ -58,6 +58,7 @@ const TeamPage = React.lazy(trackLazyLoad('TeamPage', () => import('./pages/Team
 const FAQPage = React.lazy(trackLazyLoad('FAQPage', () => import('./pages/FAQPage')));
 const DivisionsPage = React.lazy(trackLazyLoad('DivisionsPage', () => import('./pages/DivisionsPage')));
 const InternalPortalPage = React.lazy(trackLazyLoad('InternalPortalPage', () => import('./pages/InternalPortalPage')));
+const SocialPreviewPage = React.lazy(trackLazyLoad('SocialPreviewPage', () => import('./pages/SocialPreviewPage')));
 const OfflinePage = React.lazy(trackLazyLoad('OfflinePage', () => import('./pages/OfflinePage')));
 import CookieConsent from './components/CookieConsent';
 import { KKMAlgorithmicAdvisorModal } from './components/KKMAlgorithmicAdvisorModal';
@@ -684,6 +685,17 @@ const App: React.FC = () => {
            "description": description,
            "url": canonicalUrl
          };
+     } else if (currentPage === Page.SocialPreview) {
+         title = "OpenGraph & Social Share Preview Simulator | KKM";
+         description = "Interactive 1200x630px social media card simulator and metadata validation inspector for LinkedIn, X (Twitter), Facebook, and messaging crawlers.";
+         canonicalUrl = `${CANONICAL_HOST}/social-preview`;
+         jsonLdSchema = {
+           "@context": "https://schema.org",
+           "@type": "WebPage",
+           "name": title,
+           "description": description,
+           "url": canonicalUrl
+         };
      }
   }
 
@@ -888,6 +900,9 @@ const App: React.FC = () => {
         break;
       case Page.InternalPortal:
         pageComponent = <InternalPortalPage setPage={setCurrentPage} />;
+        break;
+      case Page.SocialPreview:
+        pageComponent = <SocialPreviewPage setPage={setCurrentPage} />;
         break;
       case Page.Futures:
         pageComponent = <FuturesPage />;
