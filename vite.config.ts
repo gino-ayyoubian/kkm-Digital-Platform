@@ -69,7 +69,7 @@ export default defineConfig(() => {
         VitePWA({
           registerType: 'autoUpdate',
           injectRegister: false,
-          includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg'],
+          includeAssets: ['favicon.ico', 'favicon.svg', 'apple-touch-icon.png'],
           manifest: {
             id: '/',
             name: 'KKM International Group',
@@ -88,10 +88,22 @@ export default defineConfig(() => {
                 purpose: 'any',
               },
               {
+                src: '/pwa-192x192.png',
+                sizes: '192x192',
+                type: 'image/png',
+                purpose: 'maskable',
+              },
+              {
                 src: '/pwa-512x512.png',
                 sizes: '512x512',
                 type: 'image/png',
                 purpose: 'any',
+              },
+              {
+                src: '/pwa-512x512.png',
+                sizes: '512x512',
+                type: 'image/png',
+                purpose: 'maskable',
               }
             ],
           },

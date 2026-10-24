@@ -7,6 +7,7 @@ import { GoogleGenAI } from '@google/genai';
 import logger from './logger.ts';
 import { createInMemoryRateLimit } from './backend/rateLimit.ts';
 import { setupBackendRoutes } from './backend/server.ts';
+import { injectSeoMetadata } from './backend/seoMetadataService.ts';
 
 let sentryInitialized = false;
 
@@ -227,12 +228,13 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
         next();
       });
 
-      // Serve index.html with Vite transformation for all client-side page navigation routes
+      // Serve index.html with Vite transformation and dynamic server-side SEO metadata injection
       app.get('*all', pageRequestLimiter, async (req, res, next) => {
         try {
           const url = req.originalUrl || req.url;
           const template = fs.readFileSync(path.join(process.cwd(), 'index.html'), 'utf-8');
-          const html = await vite.transformIndexHtml(url, template);
+          const transformedHtml = await vite.transformIndexHtml(url, template);
+          const html = injectSeoMetadata(transformedHtml, url);
           res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
         } catch (e) {
           vite.ssrFixStacktrace(e as Error);
@@ -312,8 +314,21 @@ export async function createApp(options?: { includeFrontend?: boolean }) {
         next();
       });
 
-      app.get('*all', pageRequestLimiter, (_req, res) => {
-        res.sendFile(path.join(distPath, 'index.html'));
+      let cachedIndexHtml = '';
+      app.get('*all', pageRequestLimiter, (req, res) => {
+        try {
+          if (!cachedIndexHtml) {
+            cachedIndexHtml = fs.readFileSync(path.join(distPath, 'index.html'), 'utf-8');
+          }
+          const url = req.originalUrl || req.url;
+          const enrichedHtml = injectSeoMetadata(cachedIndexHtml, url);
+          res.status(200).set({
+            'Content-Type': 'text/html',
+            'Cache-Control': 'public, max-age=0, must-revalidate',
+          }).send(enrichedHtml);
+        } catch {
+          res.sendFile(path.join(distPath, 'index.html'));
+        }
       });
     }
   }

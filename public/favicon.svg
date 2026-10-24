@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="kkmWaveGrad" x1="40" y1="20" x2="160" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0A92EF" />
+      <stop offset="100%" stop-color="#89CFF0" />
+    </linearGradient>
+    <radialGradient id="kkmGoldOrbGrad" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FEF08A" />
+      <stop offset="35%" stop-color="#F59E0B" />
+      <stop offset="75%" stop-color="#D97706" />
+      <stop offset="100%" stop-color="#9A3412" />
+    </radialGradient>
+    <filter id="kkmGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="3" flood-color="#0A92EF" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .outer-arc { fill: #FFFFFF; }
+    }
+    @media (prefers-color-scheme: light) {
+      .outer-arc { fill: #002D56; }
+    }
+  </style>
+  <!-- Outer contrasting arc (Dark blue in light mode, Pure white in dark mode) -->
+  <path
+    class="outer-arc"
+    d="M95 18C100 28 85 45 76 60C62 83 55 106 58 132C62 161 86 182 116 182C138 182 158 169 168 150C164 163 151 176 132 181C110 186 85 180 68 165C45 144 40 112 48 84C55 58 74 34 95 18Z"
+    fill="#002D56"
+  />
+  <!-- Inner Azure Blue wave -->
+  <path
+    d="M102 38C108 50 96 68 89 82C79 101 76 122 83 143C88 158 100 169 116 172C134 175 152 167 163 152C169 144 172 133 172 122C172 102 162 82 147 69C152 82 153 97 149 111C144 129 130 144 112 147C96 150 83 140 80 125C76 108 83 91 92 76C98 66 104 52 102 38Z"
+    fill="url(#kkmWaveGrad)"
+    filter="url(#kkmGlow)"
+  />
+  <!-- Radiant Golden-Amber Core Sphere -->
+  <circle
+    cx="126"
+    cy="132"
+    r="28"
+    fill="url(#kkmGoldOrbGrad)"
+  />
+</svg>

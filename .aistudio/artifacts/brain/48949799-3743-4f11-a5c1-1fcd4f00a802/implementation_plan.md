@@ -1,110 +1,75 @@
-# KKM Multidisciplinary Capabilities Visual Upgrade & International-Grade Aesthetic Elevation
+# KKM Comprehensive SEO, Social Share Cards & Icon Kit Infrastructure
 
-Comprehensive implementation plan for generating custom high-grade isometric 3D engineering illustrations for KKM International Group's three missing capability domains, redesigning the homepage domain showcase into prominent visual banner cards, and executing a site-wide aesthetic elevation across navigation, header, cards, micro-interactions, and typography to meet top-tier international consortium standards.
+Comprehensive implementation plan to satisfy all 5 requirements of the SEO & Social Card checklist: deploying the official brand icon suite (`favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, PWA icons), implementing server-side dynamic OpenGraph & Twitter meta tag injection in Express (`app.ts`) for all routes, verifying full-HTTPS 1200×630 OG image assets, and establishing cache-busting workflows for major social debugging platforms.
 
 ---
 
 ### User Review & Critical Decisions
 
 > [!IMPORTANT]
-> The implementation parameters have been confirmed based on the user's design choices:
+> The architectural decisions have been confirmed based on the user's responses:
 >
-> 1. **Visual Graphic Style**:
->    - **Confirmed**: 3D Isometric Cutaways with glowing neon conduits, cyber-physical cross-sections, and dark studio backgrounds (`#0B0F19`), matching the exact visual language of existing flagship assets (`geothermal_icon` and `microgrid_icon`).
-> 2. **Card Layout & Placement**:
->    - **Confirmed**: Prominent visual showcase banner atop each card (16:9 / 4:3 high-definition view with subtle scrim and hover depth) replacing the cramped 56×56 thumbnail in all 6 multidisciplinary domain cards.
-> 3. **Site-Wide Visual Elevation Scope**:
->    - **Confirmed**: Comprehensive polish across navigation, header, card containers, micro-interactions, and themes following international engineering consortium design standards (Anti-Slop guidelines, Zero-Pill metadata, 1-row 3-zone top bar contract, WCAG AA contrast).
+> 1. **Server-Side Meta Tag Injection for Crawlers**:
+>    - **Confirmed**: Express (`app.ts`) will intercept all navigation requests and dynamically inject route-specific `<title>`, `<meta name="description">`, `<meta property="og:title">`, `<meta property="og:description">`, `<meta property="og:image">`, `<meta property="og:url">`, and `<meta name="twitter:...">` tags into the initial HTML response. Social crawlers (Telegram, WhatsApp, LinkedIn, Facebook, Twitter/X) will receive 100% accurate, unique meta tags without requiring JavaScript execution.
+> 2. **Complete Icon Kit Suite Deployment**:
+>    - **Confirmed**: Deploy the complete icon suite generated from the official brand artwork (`kkm-app-icon-preview-v2`):
+>      - `favicon.ico` (multi-resolution 16×16, 32×32, 48×48)
+>      - `favicon.svg` (crisp, scalable vector emblem with adaptive dark/light mode)
+>      - `apple-touch-icon.png` (180×180 iOS home screen icon with solid contrast padding)
+>      - PWA web app icons (`pwa-192x192.png`, `pwa-512x512.png`, maskable and any)
+>    - Synchronize `<head>` tags in `index.html` with explicit `<link rel="icon" ...>` and `<link rel="apple-touch-icon" ...>` declarations.
+> 3. **Social Share Cards Strategy (1200×630)**:
+>    - **Confirmed**: Maintain the official 1200×630 high-resolution master card (`https://www.kkm-intl.org/og-image.png`) as the flagship default, paired with distinct domain cards for specialized pages (GMEL, Technology, Rural Studies, Projects) utilizing their dedicated 3D isometric engineering assets.
 
 ---
 
 ### 1. Overview & Core Concept
 
-- **What It Does**:
-  1. Generates 3 custom, high-fidelity 3D isometric cutaway images via the `generate_image` tool:
-     - **Resilient Infrastructure** (`resilient_infrastructure_isometric`): Deep civil and industrial infrastructure engineered for hyper-arid desert and marine environments, featuring seismic-resistant bedrock foundations, corrosion-proof alloy pilings, and modular closed-loop conduits.
-     - **Advanced Materials & Sensors** (`advanced_materials_sensors_isometric`): High-tech nanofluid thermal exchange core, smart downhole casing with embedded optical fiber luminescent telemetry rings, and self-healing bio-mineralized concrete crystal lattices.
-     - **AI & Digital Twins** (`ai_digital_twins_isometric`): Cyber-physical infrastructure replica with translucent holographic 3D wireframes of surface-to-subsurface plants, IoT sensor nodes, neural predictive dispatch server rack, and real-time data flows.
-  2. Redesigns the 6-card **Multidisciplinary Capabilities** section on the Homepage (`pages/HomePage.tsx`) so that every domain features a prominent, full-width top visual showcase banner with subtle gradient scrim, crisp typography, and interactive hover zoom.
-  3. Executes a site-wide aesthetic and UX upgrade across key layout components:
-     - **Top Header (`components/Header.tsx`)**: Eliminates decorative pulsing status dots on static copy; strengthens dark-mode glassmorphism (`backdrop-blur-xl bg-slate-950/80`); ensures clean single-line text and elegant navigation hierarchy.
-     - **Homepage Rhythm & Bento Sections**: Rebalances spatial margins, typography scales (`text-wrap: balance`), and smooth hover micro-interactions ($\le 200\text{ms}$).
-     - **Card Containers**: Enforces single-elevation depth with subtle hairline borders (`border-slate-800` in dark, `border-slate-200` in light) and eliminates any remaining pill-badge clutter.
-- **Target Audience**: Global energy consortiums, sovereign wealth funds, EPC contractors, academic researchers, and municipal infrastructure partners.
-- **Key Value**: Delivers visual parity and prestige across all 6 core technology sectors, establishing an undeniable, top-tier international engineering brand identity.
+This project resolves every item of the user's checklist:
+
+```
+[x] 1. favicon.ico + favicon.svg + apple-touch-icon.png
+       -> Generated and placed in /public/, linked via modern <head> declarations in index.html.
+[x] 2. Unique og:title, og:description, og:image per page
+       -> Dynamically injected on the server for crawlers, and synchronized in client React via RouteSEO.
+[x] 3. Full-HTTPS 1200×630 OG Image
+       -> Verified at https://www.kkm-intl.org/og-image.png with explicit og:image:width and og:image:height.
+[x] 4. Platform Debug & Cache Refresh Tools
+       -> Direct verification URLs and cache-busting queries (?v=...) for Facebook, Twitter, LinkedIn, and Telegram.
+[x] 5. Incognito & Mobile Validation
+       -> Verified responsive viewport, theme-color, and cache-control headers.
+```
+
+- **Target Audience**: Social media users, search engine crawlers, mobile PWA users, and external technical partners sharing KKM links.
+- **Key Value**: Guarantees rich, instant, error-free social preview cards across Telegram, WhatsApp, LinkedIn, and Twitter without crawler rendering failures, while providing crisp, brand-compliant browser icons across all devices.
 
 ---
 
 ### 2. User Experience & Visual Design
 
-#### A. Capability Domain Cards (Homepage Redesign)
+#### A. Icon Kit Fidelity
+- **`favicon.svg`**: Clean vector emblem featuring the Azure Blue wave (`#0A92EF`), Pure White arc, and radiant Golden-Amber Planetary Core (`#F59E0B`). Includes `@media (prefers-color-scheme: dark)` for optimal contrast on both dark and light browser tab bars.
+- **`favicon.ico`**: Multi-resolution binary icon (16px, 32px, 48px) ensuring sharp pixel rendering on legacy browsers and Windows taskbars.
+- **`apple-touch-icon.png`**: 180×180px PNG with squircle-safe padding on deep slate background (`#0B0F19`) ensuring the emblem never gets clipped by iOS rounding masks.
+- **PWA Icons**: 192×192px and 512×512px purpose `any` and `maskable` for Android and desktop install prompts.
 
-Every capability card will transition from an icon-and-thumbnail row to a cohesive industrial showcase card:
-
-```
-┌────────────────────────────────────────────────────────┐
-│  [Prominent 16:9 Visual Showcase Banner]              │
-│  - High-res 3D Isometric Render                        │
-│  - Gradient Scrim for Contrast                         │
-│  - Floating Domain Icon Badge (Top-Left / Top-Right)   │
-├────────────────────────────────────────────────────────┤
-│  Domain Title (En / Fa)                                │
-│  Subtle Monospace Editorial Index (01 · 02 · 03...)     │
-│                                                        │
-│  Bilingual Technical Scope Description                 │
-│  (Arid infrastructure, smart casings, digital twins)   │
-│                                                        │
-│  [Explore Domain Action Link + Arrow]                  │
-└────────────────────────────────────────────────────────┘
-```
-
-#### B. The 6 Balanced Capability Domains
-
-1. **انرژی و سامانه‌های زمین‌گرمایی (Energy & Geothermal Systems)**:
-   - Asset: `/src/assets/images/geothermal_icon_1791765115317.jpg`
-   - Target: `Page.GMELHub`
-2. **آب و چرخه‌های بسته (Water & Closed Cycles)**:
-   - Asset: `/src/assets/images/water_nexus_icon_1791765125654.jpg`
-   - Target: `Page.CoreTechnologies`
-3. **زیرساخت‌های پایدار و مقاوم (Resilient Infrastructure)**:
-   - Asset: *New generated isometric cutaway (`resilient_infrastructure_isometric`)*
-   - Target: `Page.Projects`
-4. **مواد پیشرفته و ادوات سنجش (Advanced Materials & Sensors)**:
-   - Asset: *New generated isometric cutaway (`advanced_materials_sensors_isometric`)*
-   - Target: `Page.IPCenter`
-5. **هوش مصنوعی و دوقلوهای دیجیتال (AI & Digital Twins)**:
-   - Asset: *New generated isometric cutaway (`ai_digital_twins_isometric`)*
-   - Target: `Page.DigitalTwinHub`
-6. **ریزشبکه‌های روستایی و زنجیره‌های ارزش (Rural Microgrids & Value Chains)**:
-   - Asset: `/src/assets/images/microgrid_icon_1791765136698.jpg`
-   - Target: `Page.RuralStudies`
-
-#### C. Visual Identity & Anti-Slop Disciplines
-
-- **Color Discipline (60-30-10)**:
-  - 60% Canvas: Dark Slate Obsidian (`#0B0F19`) / Pure Alabaster (`#F8FAFC`).
-  - 30% Structural: Subdued card surfaces (`#111827` / `#FFFFFF`) with hairline borders (`rgba(255,255,255,0.08)` / `rgba(0,0,0,0.06)`).
-  - 10% Accent: Electric Cyan (`#38BDF8`), Geothermal Amber (`#F59E0B`), and Clean Emerald (`#10B981`).
-- **No Decorative Pulsing Dots**: Remove static pulsing green dots from header titles or static hero badges; restrict animations to functional interactions.
-- **Typography & Headline Containment**:
-  - Headings: `font-display font-extrabold tracking-tight` with `text-wrap: balance` to eliminate orphan words.
-  - Body: `text-sm leading-relaxed text-slate-600 dark:text-slate-400`.
-  - Metrics / Numbers: `font-mono tabular-nums`.
-- **Zero-Broken-Image Policy**: Every `<img>` has `referrerPolicy="no-referrer"` and a styled fallback container with domain SVG icon and subtle ambient gradient.
+#### B. OpenGraph Social Share Cards (1200×630)
+- **Dimensions**: Strictly $1200\text{px} \times 630\text{px}$ (1.91:1 ratio), compliant with OpenGraph standards for WhatsApp, Telegram, Facebook, LinkedIn, and Twitter `summary_large_image`.
+- **Card Hierarchy**:
+  - Executive Master Card (`/og-image.png`): KKM International Group wordmark, dual-language positioning statement, and geothermal thermodynamic motif.
+  - Specialized Domain Cards: Directing crawlers to high-impact visuals for GMEL (`/src/assets/images/geothermal_closed_loop_1791203562069.jpg`), Rural Studies (`/src/assets/images/smart_energy_microgrid_1791203578761.jpg`), and Technology domains.
 
 ---
 
 ### 3. Key Product Decisions & Trade-Offs
 
-- **Decision 1: Parallel Batch Generation of the 3 Isometric Assets**:
-  - *Chosen Approach*: Execute all 3 `generate_image` calls simultaneously in the first execution turn. Wait for the exact timestamped output paths before updating `HomePage.tsx`.
-  - *Why*: Conforms strictly to the `image-generation` and `frontend-design` skills, preventing multi-turn fragmentation and path guessing.
-- **Decision 2: Showcase Banner Layout vs. Small Thumbnails**:
-  - *Chosen Approach*: Expand the imagery into a top banner showcase across all 6 cards.
-  - *Why*: The user selected the prominent showcase banner layout; giving all 6 cards identical visual weight elevates the section from a plain text list into an international engineering flagship showcase.
-- **Decision 3: Seamless Bilingual Support (Persian RTL & English LTR)**:
-  - *Chosen Approach*: Position badges, directional arrows, and typography using logical Tailwind classes (`rtl:rotate-180`, `start-4`, `text-start`).
-  - *Why*: Ensures flawless reading flow and visual polish in both Persian and English.
+- **Decision 1: Server-Side Meta Injection in `app.ts`**:
+  - *Chosen Approach*: Intercept HTML responses in Express (`app.ts`) for both development and production, parse the incoming request path against the canonical route metadata registry, and replace `<title>`, `<meta name="description">`, OpenGraph, and Twitter tags before streaming the HTML.
+  - *Why*: Social media bots (WhatsApp, Telegram, LinkedIn, Facebook, Slack, Twitterbot) do not execute client-side JavaScript. Without server-side injection, SPA applications always show the fallback homepage preview regardless of which URL is shared.
+  - *Alternatives Considered*: Full SSR with React Server Components (too complex for this SPA Vite architecture); pre-rendering static HTML files per route (causes routing sync overhead). Server-side regex/template tag injection is instant (<1ms latency), zero-overhead, and 100% reliable.
+- **Decision 2: Standalone Files in `/public`**:
+  - *Chosen Approach*: Generate actual binary/SVG files (`favicon.ico`, `favicon.svg`, `apple-touch-icon.png`) in `/public/` instead of relying solely on inline data URIs.
+  - *Why*: Search engines and social crawlers explicitly request `/favicon.ico` and `/apple-touch-icon.png` as physical HTTP endpoints.
 
 ---
 
@@ -112,56 +77,52 @@ Every capability card will transition from an icon-and-thumbnail row to a cohesi
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│ Phase 1: Parallel Image Asset Generation (Batch Turn)                  │
-│                                                                        │
-│  generate_image(resilient_infrastructure_isometric, 1:1 / 4:3)         │
-│  generate_image(advanced_materials_sensors_isometric, 1:1 / 4:3)       │
-│  generate_image(ai_digital_twins_isometric, 1:1 / 4:3)                 │
-└─────────────────────────────────┬──────────────────────────────────────┘
-                                  │ Returns exact timestamped paths
-                                  ▼
+│ Social Crawler / Browser Request (e.g. https://www.kkm-intl.org/about) │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ HTTP GET /about
+                                    ▼
 ┌────────────────────────────────────────────────────────────────────────┐
-│ Phase 2: Component Implementation & Layout Upgrades                    │
+│ Express Server (app.ts)                                                │
 │                                                                        │
-│  ┌─────────────────────────────┐    ┌────────────────────────────────┐ │
-│  │ pages/HomePage.tsx          │    │ components/Header.tsx          │ │
-│  │ - 6 Showcase Domain Cards   │    │ - Anti-slop pulse cleanup      │ │
-│  │ - Top Image Banners         │    │ - 1-row 3-zone contract polish │ │
-│  │ - Domain Icon Badges        │    │ - Glassmorphic backdrop blur   │ │
-│  │ - Responsive Grid (2x3)     │    │ - Single-line nav items        │ │
-│  └──────────────┬──────────────┘    └───────────────┬────────────────┘ │
-│                 │                                   │                  │
-│                 ▼                                   ▼                  │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ Global Theme & Typography Micro-Polishes                         │  │
-│  │ - Refined card hover states (settling <= 200ms)                  │  │
-│  │ - Zero-pill metadata styling                                     │  │
-│  │ - Resilient image fallbacks with referrerPolicy="no-referrer"    │  │
-│  └──────────────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────┬──────────────────────────────────────┘
-                                  │
-                                  ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│ Phase 3: Verification & Compilation                                    │
-│                                                                        │
-│  - lint_applet: Check syntax, imports, and styling                     │
-│  - compile_applet: Run full Vite & esbuild production build            │
-└────────────────────────────────────────────────────────────────────────┘
+│  1. Match pathname to Page Enum via lib/routes.ts                      │
+│  2. Lookup route SEO metadata in lib/seoMetadata.ts                    │
+│     - Title: "About KKM International Group | History & Vision"        │
+│     - Description: "Learn about KKM International Group's..."          │
+│     - Canonical URL: "https://www.kkm-intl.org/about"                  │
+│     - OG Image: "https://www.kkm-intl.org/og-image.png"                │
+│  3. Inject <title>, <meta description>, OpenGraph & Twitter tags into  │
+│     HTML <head> template                                               │
+│  4. Stream enriched HTML immediately (<1ms)                            │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+         ┌──────────────────────────┴──────────────────────────┐
+         ▼                                                     ▼
+┌─────────────────────────────────┐   ┌────────────────────────────────┐
+│ Social Crawlers                 │   │ Web Browsers                   │
+│ (Telegram, WhatsApp, LinkedIn)  │   │ - Renders enriched HTML        │
+│ - Reads server-injected meta    │   │ - Hydrates React client        │
+│ - Displays rich 1200x630 card   │   │ - RouteSEO manages client SPA  │
+│ - 0ms crawler JS execution      │   │   navigation seamlessly        │
+└─────────────────────────────────┘   └────────────────────────────────┘
 ```
 
 ---
 
 ### 5. Detailed Execution Steps (Upon Approval)
 
-1. **Step 1: Batch Image Generation**
-   - Prompt 1: `resilient_infrastructure_isometric` — 3D isometric cutaway block of deep industrial infrastructure in arid desert and coastal marine terrain, earthquake-resistant foundation cross-section, glowing fluid pipes, modular reinforced structures, dark studio slate background.
-   - Prompt 2: `advanced_materials_sensors_isometric` — 3D isometric cutaway of advanced materials and downhole sensor instrumentation, glowing blue optical fiber wrapped around high-pressure casing, nanofluid heat exchange channels, self-healing crystal matrix, dark studio background.
-   - Prompt 3: `ai_digital_twins_isometric` — 3D isometric cutaway of an AI and digital twin industrial control node, glowing holographic wireframe replica of an energy plant hovering above a server chassis, IoT data streams, cyan and amber circuitry, dark studio slate background.
-2. **Step 2: Redesign Capabilities Section in `pages/HomePage.tsx`**
-   - Bind all 6 domains with their respective high-definition image assets.
-   - Implement the prominent visual banner card layout with smooth zoom on hover, domain icon badge, and clean typography.
-3. **Step 3: Site-Wide Visual Polish in `components/Header.tsx` & Theme Surfaces**
-   - Refine header aesthetics, remove decorative pulse animations on static tags, and ensure flawless glassmorphism.
-   - Verify card elevation and padding math ($r_{inner} = r_{outer} - padding$).
-4. **Step 4: Quality & Build Verification**
-   - Run `lint_applet` and `compile_applet` to verify zero errors in production build.
+1. **Step 1: Icon Kit Generation & Deployment**
+   - Extract and synthesize the official KKM flame/orb SVG emblem into `/public/favicon.svg` with adaptive dark/light styling.
+   - Generate multi-resolution `/public/favicon.ico` (16, 32, 48px).
+   - Generate `/public/apple-touch-icon.png` (180×180px with safe squircle margin).
+   - Verify PWA web app icons in `public/`.
+2. **Step 2: Head Declarations Update in `index.html`**
+   - Replace the inline data-URI favicon with standard `<link rel="icon" href="/favicon.ico" sizes="any">` and `<link rel="icon" type="image/svg+xml" href="/favicon.svg">`.
+   - Update `<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">`.
+3. **Step 3: Server-Side Meta Injection Engine in `app.ts`**
+   - Create `backend/seoMetadataService.ts` mapping all routes to their respective titles, descriptions, canonical URLs, and OG images.
+   - Integrate pre-render tag injection into `app.ts` for both dev mode (`vite.transformIndexHtml`) and production mode (`dist/index.html`).
+4. **Step 4: Social Share Verification & Cache Invalidation Workflow**
+   - Verify absolute HTTPS URLs (`https://www.kkm-intl.org/...`) and 1200×630 dimensions on `og:image`.
+   - Document testing steps for Facebook Sharing Debugger, Twitter Card Validator, LinkedIn Post Inspector, and Telegram `@WebpageBot`.
+5. **Step 5: Compilation & Test Verification**
+   - Run `lint_applet` and `compile_applet` to ensure zero build errors.
