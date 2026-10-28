@@ -82,7 +82,7 @@ const CorporateInfoPage: React.FC<CorporateInfoPageProps> = ({ setPage }) => {
               </button>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 {
                   name: 'Gino Ayyoubian',
@@ -119,6 +119,24 @@ const CorporateInfoPage: React.FC<CorporateInfoPageProps> = ({ setPage }) => {
                   image: '/images/khosro-jarrahian.jpg',
                   dept: 'Technology & Subsurface R&D',
                   deptFa: 'معاونت فناوری و R&D زیرسطحی',
+                },
+                {
+                  name: 'Farid Imani',
+                  nameFa: 'فرید ایمانی',
+                  role: 'Chief Financial Officer (CFO)',
+                  roleFa: 'معاونت مالی و دارایی (CFO)',
+                  image: '/assets/leadership/farid-imani-portrait.png',
+                  dept: 'Finance & Capital Directorate',
+                  deptFa: 'معاونت مالی، دارایی و سرمایه‌گذاری',
+                },
+                {
+                  name: 'Heidar Yarveisi',
+                  nameFa: 'حیدر یارویسی',
+                  role: 'Chief Operating Officer (COO)',
+                  roleFa: 'معاونت اجرایی و EPC (COO)',
+                  image: '/assets/leadership/heidar-yarveisi-portrait.png',
+                  dept: 'Operations & EPC Directorate',
+                  deptFa: 'معاونت اجرایی و مگاپروژه‌های EPC',
                 },
               ].map((leader) => (
                 <div

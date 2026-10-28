@@ -126,3 +126,15 @@ This project resolves every item of the user's checklist:
    - Document testing steps for Facebook Sharing Debugger, Twitter Card Validator, LinkedIn Post Inspector, and Telegram `@WebpageBot`.
 5. **Step 5: Compilation & Test Verification**
    - Run `lint_applet` and `compile_applet` to ensure zero build errors.
+
+---
+
+### 6. Executive Leadership Authentic Portrait Integration Milestone
+1. **Heidar Yarveisi (COO)**:
+   - High-resolution dual portrait deployment (`/assets/leadership/heidar-yarveisi-portrait.png` and `/assets/leadership/heidar-yarveisi-executive.png`).
+   - Integrated into `INITIAL_ORG_MEMBERS`, `LEADERSHIP`, and `CorporateInfoPage`.
+2. **Farid Imani (CFO)**:
+   - High-resolution executive portrait deployed without alterations to `/assets/leadership/farid-imani-portrait.png`, `/assets/leadership/farid-imani.png`, and mirrored to `/images/farid-imani.jpg`, `/images/farid-imani.png`.
+   - Linked to `INITIAL_ORG_MEMBERS` (`kkm-user-004`), `LEADERSHIP` (`farid-imani`), `CorporateInfoPage` (Executive Directorate Showcase), and `ExecutiveMemberIdentity` with calibrated golden-ratio vertical alignment (`50% 18%`).
+   - All 14 test suites and 37 tests passing.
+

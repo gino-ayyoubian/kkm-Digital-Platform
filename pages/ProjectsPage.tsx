@@ -14,10 +14,11 @@ import { sanitizeHtml } from '../utils/sanitizeHtml';
 import type { TranslationKey } from '../translations';
 
 import GlobalCTA from '../components/GlobalCTA';
-import { ArrowRight, Layers, Sprout } from 'lucide-react';
+import { ArrowRight, Layers, Sprout, MessageSquareCode, Sparkles, PhoneCall } from 'lucide-react';
 import { trackLazyLoad } from '../trackLazyLoad';
 import BlurUpImage from '../components/BlurUpImage';
 import { DEFAULT_IMAGE_PLACEHOLDER } from '../utils/imagePlaceholder';
+import TechnicalConsultationModal from '../components/consultation/TechnicalConsultationModal';
 // Lazy load modal
 const ProjectDetailModal = React.lazy(trackLazyLoad('ProjectDetailModal', () => import('./ProjectDetailModal')));
 
@@ -79,6 +80,8 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
     const [playVideo, setPlayVideo] = React.useState(false);
     const [modalProject, setModalProject] = React.useState<Project | null>(null);
     const [visibleCount, setVisibleCount] = React.useState(INITIAL_VISIBLE_COUNT);
+    const [isConsultationModalOpen, setIsConsultationModalOpen] = React.useState<boolean>(false);
+    const [consultationProjectContext, setConsultationProjectContext] = React.useState<string | undefined>(undefined);
     
     // Tooltip State
     const [tooltipData, setTooltipData] = React.useState<{ content: React.ReactNode; position: { top: number; left?: number; right?: number }; side: 'left' | 'right' } | null>(null);
@@ -278,10 +281,20 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
                         <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3 w-full sm:w-auto">
                             <button
                                 onClick={() => setPage(Page.RuralStudies)}
-                                className="px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm rounded-xl shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+                                className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm rounded-xl shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
                             >
                                 <span>{isFa ? 'ورود به پلتفرم توسعه روستایی و عشایری' : 'Explore Rural Development Platform'}</span>
                                 <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setConsultationProjectContext(undefined);
+                                    setIsConsultationModalOpen(true);
+                                }}
+                                className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm rounded-xl border border-white/20 transition-all flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+                            >
+                                <MessageSquareCode className="w-4 h-4 text-emerald-300" />
+                                <span>{isFa ? 'درخواست مشاوره پروژه‌ها' : 'Request Project Consultation'}</span>
                             </button>
                         </div>
                     </div>
@@ -338,9 +351,21 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
                                         {!isDetailsExpanded && (
                                             <>
                                                 <p className="text-sm text-text-light dark:text-slate-300 mt-2 mb-6">{getSnippet(t(activeProjectForMap.detailedContent as TranslationKey))}</p>
-                                                <button onClick={handleViewDetails} className="inline-block px-6 py-2 font-semibold text-white bg-primary rounded-full hover:bg-secondary transition-colors duration-300 transform hover:scale-105 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary dark:focus:ring-offset-slate-800">
-                                                    {t('ViewCaseStudy')}
-                                                </button>
+                                                <div className="flex flex-wrap items-center gap-2.5">
+                                                    <button onClick={handleViewDetails} className="inline-block px-5 py-2 font-semibold text-white bg-primary rounded-xl hover:bg-secondary transition-colors duration-300 text-xs shadow-md focus:outline-none cursor-pointer">
+                                                        {t('ViewCaseStudy')}
+                                                    </button>
+                                                    <button 
+                                                        onClick={() => {
+                                                            setConsultationProjectContext(t(activeProjectForMap.name as TranslationKey));
+                                                            setIsConsultationModalOpen(true);
+                                                        }}
+                                                        className="inline-flex items-center gap-1.5 px-4 py-2 font-bold text-amber-900 dark:text-amber-200 bg-amber-400/20 hover:bg-amber-400/30 border border-amber-400/40 rounded-xl transition-all text-xs cursor-pointer shadow-xs"
+                                                    >
+                                                        <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                                                        <span>{isFa ? 'درخواست مشاوره این پروژه' : 'Request Consultation'}</span>
+                                                    </button>
+                                                </div>
                                             </>
                                         )}
                                         
@@ -394,7 +419,30 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
                                                             </div>
                                                         )}
                                                         
-                                                        <div className="text-center pt-4">
+                                                        {/* Project Consultation Advisory Callout */}
+                                                        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex flex-col sm:flex-row items-center justify-between gap-3 text-start">
+                                                            <div>
+                                                                <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                                                                    <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                                                                    <span>{isFa ? 'علاقه‌مند به استقرار یا مشاوره فنی این مدل پروژه؟' : 'Interested in deploying or evaluating this project?'}</span>
+                                                                </div>
+                                                                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                                                                    {isFa ? 'بررسی امکان‌سنجی اولیه و مشاوره مستقیم با کارگروه مهندسی KKM' : 'Direct engineering intake with KKM Advisory Desk (24h SLA)'}
+                                                                </div>
+                                                            </div>
+                                                            <button 
+                                                                onClick={() => {
+                                                                    setConsultationProjectContext(t(activeProjectForMap.name as TranslationKey));
+                                                                    setIsConsultationModalOpen(true);
+                                                                }}
+                                                                className="w-full sm:w-auto px-4 py-2 bg-primary hover:bg-secondary text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
+                                                            >
+                                                                <MessageSquareCode className="w-3.5 h-3.5" />
+                                                                <span>{isFa ? 'درخواست مشاوره مهندسی' : 'Request Consultation'}</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div className="text-center pt-2">
                                                             <button 
                                                                 onClick={() => setIsDetailsExpanded(false)}
                                                                 className="text-sm text-text-light dark:text-slate-400 hover:text-primary dark:hover:text-secondary underline"
@@ -533,8 +581,69 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
                     </React.Suspense>
                 )}
             </AnimatePresence>
+
+            {/* Project Technical Consultation & EPCM Co-Development Banner */}
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 my-16">
+                <div className="rounded-3xl bg-gradient-to-r from-slate-900 via-primary-dark to-slate-950 border border-emerald-500/30 p-8 sm:p-12 shadow-2xl text-white relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+                    <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+                        <div className="space-y-4 max-w-2xl text-start">
+                            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 text-xs font-mono font-bold tracking-wider">
+                                <Sparkles className="w-3.5 h-3.5" />
+                                <span>{isFa ? 'میز پذیرش مهندسی و سرمایه‌گذاری پروژه‌ها' : 'PROJECT CO-DEVELOPMENT & ADVISORY DESK'}</span>
+                            </div>
+                            <h3 className="text-2xl sm:text-3xl font-display font-black text-white leading-tight">
+                                {isFa ? 'برنامه‌ریزی، تامین مالی و تحویل کلیددردست (EPC/EPCM) مگاپروژه‌ها' : 'Turnkey EPC Delivery, Bankable Feasibility & Project Co-Development'}
+                            </h3>
+                            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                                {isFa 
+                                    ? 'تیم مهندسی و مدیریت پروژه‌های KKM آماده است تا با تلفیق فناوری‌های انحصاری انرژی، نمک‌زدایی و زیرساخت، طرح‌های پیشنهادی یا RFP سازمان شما را ارزیابی و ساختار اجرایی بهینه را ارائه نماید.' 
+                                    : 'KKM\'s Project Management & Engineering Bureau assists industrial partners, utilities, and regional developers with bankable feasibility studies, subsurface integration, and turnkey EPC/EPCM delivery.'}
+                            </p>
+                            <div className="flex flex-wrap gap-4 text-xs font-mono text-slate-300 pt-1">
+                                <span className="flex items-center gap-1.5">
+                                    <span className="text-emerald-400 font-bold">✓</span> {isFa ? 'پاسخ و ارزیابی اولیه ۲۴ ساعته' : '24h Desk Response SLA'}
+                                </span>
+                                <span className="flex items-center gap-1.5">
+                                    <span className="text-emerald-400 font-bold">✓</span> {isFa ? 'مدلسازی مالی و اعتبارات کربن' : 'Carbon Credit & CAPEX Modeling'}
+                                </span>
+                                <span className="flex items-center gap-1.5">
+                                    <span className="text-emerald-400 font-bold">✓</span> {isFa ? 'انطباق با استاندارد بانکی و PPP' : 'Bankable PPP Structures'}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3 w-full sm:w-auto">
+                            <button
+                                onClick={() => {
+                                    setConsultationProjectContext(undefined);
+                                    setIsConsultationModalOpen(true);
+                                }}
+                                className="px-8 py-4 rounded-2xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-xs sm:text-sm shadow-xl shadow-emerald-400/20 hover:shadow-emerald-400/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                            >
+                                <MessageSquareCode className="w-4 h-4" />
+                                <span>{isFa ? 'درخواست مشاوره و امکان‌سنجی پروژه' : 'Request Project Feasibility Consultation'}</span>
+                            </button>
+                            <a
+                                href="tel:+982191030830"
+                                className="px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
+                            >
+                                <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
+                                <span>{isFa ? 'خط مستقیم مهندسی: ۰۲۱۹۱۰۳۰۸۳۰' : 'Direct Line: +98 21 9103 0830'}</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         
       <GlobalCTA setPage={setPage} />
+
+      {/* Technical Consultation Modal */}
+      <TechnicalConsultationModal
+        isOpen={isConsultationModalOpen}
+        onClose={() => setIsConsultationModalOpen(false)}
+        prefilledProject={consultationProjectContext}
+      />
     </div>
     );
 };

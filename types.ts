@@ -279,6 +279,7 @@ export interface OrgMemberProfile {
   departmentFa?: string;
   employeeId: string;
   avatarUrl?: string;
+  secondaryPhotoUrl?: string; // Secondary authentic portrait (e.g. executive office portrait)
   phone?: string;
   sipExtension?: string; // Direct internal telephone extension (e.g. '101', '206962')
   sipUsername?: string; // SIP Trunk extension username (e.g. '206962' on ext.daftareshoma.com)

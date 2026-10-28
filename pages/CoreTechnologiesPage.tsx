@@ -12,9 +12,10 @@ import D3ImpactChart from '../components/D3ImpactChart';
 import GmelInteractiveDiagram from '../components/GmelInteractiveDiagram';
 import InteractiveTechMap from '../components/InteractiveTechMap';
 import IPBadge, { IPStatus } from '../components/IPBadge';
-import { Zap, Droplets, Network, ArrowRight, Sparkles } from 'lucide-react';
+import { Zap, Droplets, Network, ArrowRight, Sparkles, MessageSquareCode, PhoneCall } from 'lucide-react';
 
 import GlobalCTA from '../components/GlobalCTA';
+import TechnicalConsultationModal from '../components/consultation/TechnicalConsultationModal';
 // Icon Definitions
 const ClgIcon = () => (
     <motion.svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" variants={{ rest: { scale: 1 }, hover: { scale: 1.1, transition: { duration: 0.8, repeat: Infinity, repeatType: "reverse" } } }}>
@@ -159,7 +160,10 @@ const processTextWithTooltips = (text: string): React.ReactNode => {
 };
 
 const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const isFa = language === 'FA';
+    const [isConsultationModalOpen, setIsConsultationModalOpen] = React.useState<boolean>(false);
+    const [consultationDomain, setConsultationDomain] = React.useState<string | undefined>(undefined);
 
     const handleScrollToApps = () => {
         const element = document.getElementById('digital-platforms');
@@ -187,6 +191,26 @@ const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
                         <p className="text-base text-text-light dark:text-slate-300">
                             Explore KKM's foundational engineering platforms across closed-loop geothermal baseload generation, circular water-energy thermodynamics, and resilient rural microgrids.
                         </p>
+                        
+                        <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
+                            <button
+                                onClick={() => {
+                                    setConsultationDomain('gmel-closed-loop');
+                                    setIsConsultationModalOpen(true);
+                                }}
+                                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-secondary text-white font-bold text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all cursor-pointer"
+                            >
+                                <MessageSquareCode className="w-4 h-4 text-amber-400" />
+                                <span>{isFa ? 'درخواست مشاوره تخصصی مهندسی' : 'Request Technical Consultation'}</span>
+                            </button>
+                            <button
+                                onClick={handleScrollToApps}
+                                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm transition-all cursor-pointer"
+                            >
+                                <span>{isFa ? 'مشاهده پلتفرم‌های ابری GMEL' : 'View GMEL Cloud Platforms'}</span>
+                                <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+                            </button>
+                        </div>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
@@ -225,15 +249,25 @@ const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between gap-2">
                                     <button
                                         onClick={() => setPage ? setPage(Page.GMELHub) : handleScrollToApps()}
                                         className="inline-flex items-center gap-1.5 text-xs font-bold text-primary dark:text-secondary hover:underline cursor-pointer"
                                     >
                                         <span>Explore GMEL Architecture</span>
-                                        <ArrowRight className="w-3.5 h-3.5" />
+                                        <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
                                     </button>
-                                    <span className="text-[11px] font-mono text-slate-400">GMEL-01</span>
+                                    <button
+                                        onClick={() => {
+                                            setConsultationDomain('gmel-closed-loop');
+                                            setIsConsultationModalOpen(true);
+                                        }}
+                                        className="px-2.5 py-1 rounded-lg bg-amber-400/10 hover:bg-amber-400/20 text-amber-700 dark:text-amber-300 border border-amber-400/30 text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                                        title={isFa ? 'درخواست مشاوره فنی این حوزه' : 'Request Consultation'}
+                                    >
+                                        <Sparkles className="w-3 h-3 text-amber-500" />
+                                        <span>{isFa ? 'مشاوره فنی' : 'Advisory'}</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -273,15 +307,25 @@ const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between gap-2">
                                     <button
                                         onClick={() => handleScrollToApps()}
                                         className="inline-flex items-center gap-1.5 text-xs font-bold text-primary dark:text-secondary hover:underline cursor-pointer"
                                     >
                                         <span>Explore Desalination Loops</span>
-                                        <ArrowRight className="w-3.5 h-3.5" />
+                                        <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
                                     </button>
-                                    <span className="text-[11px] font-mono text-slate-400">NEXUS-02</span>
+                                    <button
+                                        onClick={() => {
+                                            setConsultationDomain('thermal-desalination-zld');
+                                            setIsConsultationModalOpen(true);
+                                        }}
+                                        className="px-2.5 py-1 rounded-lg bg-cyan-400/10 hover:bg-cyan-400/20 text-cyan-700 dark:text-cyan-300 border border-cyan-400/30 text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                                        title={isFa ? 'درخواست مشاوره فنی این حوزه' : 'Request Consultation'}
+                                    >
+                                        <Sparkles className="w-3 h-3 text-cyan-500" />
+                                        <span>{isFa ? 'مشاوره فنی' : 'Advisory'}</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -321,15 +365,25 @@ const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                <div className="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between gap-2">
                                     <button
                                         onClick={() => setPage ? setPage(Page.RuralStudies) : handleScrollToApps()}
                                         className="inline-flex items-center gap-1.5 text-xs font-bold text-primary dark:text-secondary hover:underline cursor-pointer"
                                     >
                                         <span>Explore Rural Systems</span>
-                                        <ArrowRight className="w-3.5 h-3.5" />
+                                        <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
                                     </button>
-                                    <span className="text-[11px] font-mono text-slate-400">MICRO-03</span>
+                                    <button
+                                        onClick={() => {
+                                            setConsultationDomain('hybrid-microgrid-storage');
+                                            setIsConsultationModalOpen(true);
+                                        }}
+                                        className="px-2.5 py-1 rounded-lg bg-emerald-400/10 hover:bg-emerald-400/20 text-emerald-700 dark:text-emerald-300 border border-emerald-400/30 text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                                        title={isFa ? 'درخواست مشاوره فنی این حوزه' : 'Request Consultation'}
+                                    >
+                                        <Sparkles className="w-3 h-3 text-emerald-500" />
+                                        <span>{isFa ? 'مشاوره فنی' : 'Advisory'}</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -436,9 +490,70 @@ const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
                         </div>
                     </div>
                 </section>
+
+                {/* Technical Advisory & Intake Banner */}
+                <section className="my-20">
+                    <div className="rounded-3xl bg-gradient-to-r from-slate-900 via-primary-dark to-slate-950 border border-amber-500/30 p-8 sm:p-12 shadow-2xl text-white relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+                        <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+                            <div className="space-y-4 max-w-2xl text-start">
+                                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-300 text-xs font-mono font-bold tracking-wider">
+                                    <Sparkles className="w-3.5 h-3.5" />
+                                    <span>{isFa ? 'میز پذیرش پروژه‌های پیشرفته مهندسی KKM' : 'KKM ENGINEERING & ADVISORY DESK'}</span>
+                                </div>
+                                <h3 className="text-2xl sm:text-3xl font-display font-black text-white leading-tight">
+                                    {isFa ? 'آماده ارزیابی و ادغام سیستم‌های ژئوترمال و ترمودینامیکی در پروژه شما' : 'Ready to Assess and Integrate Closed-Loop Geothermal in Your Facility?'}
+                                </h3>
+                                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                                    {isFa 
+                                        ? 'معاونت فنی و مهندسی گروه بین‌المللی KKM با بهره‌گیری از پتنت‌های انحصاری GMEL، دوقلوی دیجیتال مخازن و زنجیره یکپارچه EPC، آمادگی دارد امکان‌سنجی اولیه و بهینه‌سازی ترمودینامیکی سایت‌های شما را ظرف ۲۴ ساعت کاری بررسی نماید.' 
+                                        : 'KKM\'s Engineering Directorate provides turnkey feasibility, subsurface modeling, and thermodynamic optimization briefs under strict NDA within 24 business hours.'}
+                                </p>
+                                <div className="flex flex-wrap gap-4 text-xs font-mono text-slate-300 pt-1">
+                                    <span className="flex items-center gap-1.5">
+                                        <span className="text-amber-400 font-bold">✓</span> {isFa ? 'پاسخ و ارزیابی اولیه ۲۴ ساعته' : '24h Technical Brief SLA'}
+                                    </span>
+                                    <span className="flex items-center gap-1.5">
+                                        <span className="text-amber-400 font-bold">✓</span> {isFa ? 'تعهد رسمی عدم افشا (NDA)' : 'Corporate NDA Protected'}
+                                    </span>
+                                    <span className="flex items-center gap-1.5">
+                                        <span className="text-amber-400 font-bold">✓</span> {isFa ? 'شبیه‌سازی دوقلوی دیجیتال' : 'Digital Twin Simulation Ready'}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3 w-full sm:w-auto">
+                                <button
+                                    onClick={() => {
+                                        setConsultationDomain(undefined);
+                                        setIsConsultationModalOpen(true);
+                                    }}
+                                    className="px-8 py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs sm:text-sm shadow-xl shadow-amber-400/20 hover:shadow-amber-400/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                                >
+                                    <MessageSquareCode className="w-4 h-4" />
+                                    <span>{isFa ? 'ارسال شرح نیاز و درخواست مشاوره' : 'Request Technical Consultation'}</span>
+                                </button>
+                                <a
+                                    href="tel:+982191030830"
+                                    className="px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
+                                >
+                                    <PhoneCall className="w-3.5 h-3.5 text-amber-400" />
+                                    <span>{isFa ? 'تماس مستقیم: ۰۲۱۹۱۰۳۰۸۳۰' : 'Direct Line: +98 21 9103 0830'}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         
       <GlobalCTA setPage={setPage} />
+
+      {/* Technical Consultation Intake Modal */}
+      <TechnicalConsultationModal
+        isOpen={isConsultationModalOpen}
+        onClose={() => setIsConsultationModalOpen(false)}
+        initialDomain={consultationDomain}
+      />
     </div>
     );
 };

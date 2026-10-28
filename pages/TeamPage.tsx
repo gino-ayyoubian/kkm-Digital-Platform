@@ -30,6 +30,7 @@ export interface Member {
   initials: string;
   credentials: string[];
   imageUrl?: string;
+  executiveImageUrl?: string;
   category: TeamCategory;
   linkedInUrl?: string;
   verificationStatus?: 'pending' | 'verified';
@@ -144,7 +145,7 @@ const MemberImageWithFallback: React.FC<{
   );
 };
 
-const LEADERSHIP: Member[] = [
+export const LEADERSHIP: Member[] = [
   // ============================
   // LEADERSHIP CATEGORY
   // ============================
@@ -241,7 +242,8 @@ const LEADERSHIP: Member[] = [
     bioFa: "معاونت مالی و دارایی؛ هدایت سرمایه‌گذاری فراملی، تأسیس SPVهای بین‌المللی، انتشار صکوک سبز، پایش کنترلر مالی و مدیریت ریسک‌های کلان اعتباری.",
     initials: "FI",
     credentials: ["Infrastructure Financing", "Capital Syndication", "Transnational SPVs", "CFO Directorate"],
-    imageUrl: "/images/farid-imani.jpg",
+    imageUrl: "/assets/leadership/farid-imani-portrait.png",
+    executiveImageUrl: "/images/farid-imani.jpg",
     category: "leadership",
     linkedInUrl: "https://www.linkedin.com/in/farid-imani-0aaa0313",
     email: "f.imani@kkm-intl.org",
@@ -295,7 +297,8 @@ const LEADERSHIP: Member[] = [
     bioFa: "معاونت اجرایی و EPC؛ راهبری عملیات پروژه‌های فراساحل و زیرسطحی قشم و سرخس، شبکه‌های اتوماسیون، رباتیک صنعتی و مدیریت زنجیره تامین تجهیزات سنگین.",
     initials: "HY",
     credentials: ["Turnkey EPC Management", "Rig Fleet Mobilization", "Offshore Field Operations", "COO Directorate"],
-    imageUrl: "/images/heidar-yarveicy.jpg",
+    imageUrl: "/assets/leadership/heidar-yarveisi-portrait.png",
+    executiveImageUrl: "/assets/leadership/heidar-yarveisi-executive.png",
     category: "leadership",
     linkedInUrl: "https://www.linkedin.com/in/heidar-yarveicy-ab4420179",
     email: "h.yarveicy@kkm-intl.org",
@@ -555,8 +558,13 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
   const [viewMode, setViewMode] = React.useState<'grid' | 'orgChart' | 'governance'>('grid');
   const [searchQuery, setSearchQuery] = React.useState<string>('');
   const [selectedMember, setSelectedMember] = React.useState<Member | null>(null);
+  const [drawerPhotoVariant, setDrawerPhotoVariant] = React.useState<'portrait' | 'executive'>('portrait');
   const [copiedEmail, setCopiedEmail] = React.useState<string | null>(null);
   const [lightboxPhoto, setLightboxPhoto] = React.useState<{ url: string; name: string; title: string; initials: string } | null>(null);
+
+  React.useEffect(() => {
+    setDrawerPhotoVariant('portrait');
+  }, [selectedMember?.id]);
 
   // Close modal with Escape key
   React.useEffect(() => {
@@ -1256,23 +1264,24 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                 {/* Profile Hero with Photo */}
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
                   {/* Photo with Lift & Zoom */}
-                  <div className="relative shrink-0 group/drawer-photo">
+                  <div className="relative shrink-0 group/drawer-photo flex flex-col items-center">
                     <div className="relative w-32 h-36 sm:w-36 sm:h-44 rounded-3xl overflow-hidden shadow-xl border-2 border-primary/20 dark:border-secondary/20 group-hover/drawer-photo:border-amber-400 bg-slate-900 transform transition-all duration-500 group-hover/drawer-photo:scale-102">
                       <MemberImageWithFallback
-                        src={selectedMember.imageUrl}
+                        src={drawerPhotoVariant === 'executive' && selectedMember.executiveImageUrl ? selectedMember.executiveImageUrl : selectedMember.imageUrl}
                         alt={isFa ? selectedMember.nameFa : selectedMember.name}
                         initials={selectedMember.initials}
                         fallbackClass="text-3xl"
                         className="w-full h-full"
                       />
                       {/* Full-res lightbox zoom button overlay */}
-                      {selectedMember.imageUrl && (
+                      {(selectedMember.imageUrl || selectedMember.executiveImageUrl) && (
                         <button
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
+                            const activePhoto = drawerPhotoVariant === 'executive' && selectedMember.executiveImageUrl ? selectedMember.executiveImageUrl : (selectedMember.imageUrl || '');
                             setLightboxPhoto({
-                              url: selectedMember.imageUrl || '',
+                              url: activePhoto,
                               name: isFa ? selectedMember.nameFa : selectedMember.name,
                               title: isFa ? selectedMember.titleFa : selectedMember.title,
                               initials: selectedMember.initials
@@ -1288,8 +1297,37 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                         </button>
                       )}
                     </div>
+
+                    {/* Dual-portrait switcher when executive alternative portrait is available */}
+                    {selectedMember.executiveImageUrl && (
+                      <div className="flex items-center justify-center gap-1.5 mt-2.5">
+                        <button
+                          type="button"
+                          onClick={() => setDrawerPhotoVariant('portrait')}
+                          className={`px-2.5 py-1 rounded-xl text-[10px] font-mono font-bold transition-all cursor-pointer ${
+                            drawerPhotoVariant === 'portrait'
+                              ? 'bg-primary text-white dark:bg-secondary dark:text-slate-900 shadow-xs'
+                              : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                          }`}
+                        >
+                          {isFa ? 'پرتره رسمی' : 'Portrait'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDrawerPhotoVariant('executive')}
+                          className={`px-2.5 py-1 rounded-xl text-[10px] font-mono font-bold transition-all cursor-pointer ${
+                            drawerPhotoVariant === 'executive'
+                              ? 'bg-primary text-white dark:bg-secondary dark:text-slate-900 shadow-xs'
+                              : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                          }`}
+                        >
+                          {isFa ? 'پرتره اجرایی دفتر' : 'Office'}
+                        </button>
+                      </div>
+                    )}
+
                     {selectedMember.verificationStatus !== 'pending' && (
-                      <div className="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white dark:border-slate-900 z-10">
+                      <div className="absolute top-0 -right-1 rtl:-right-auto rtl:-left-1 w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white dark:border-slate-900 z-10">
                         ✓
                       </div>
                     )}

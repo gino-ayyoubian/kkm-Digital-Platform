@@ -796,6 +796,11 @@ export function setupBackendRoutes(app: express.Application) {
       departmentEmail = "investor-relations@kkm-intl.org";
       opportunityType = "Investment & Equity Joint-Venture";
       priority = "Urgent";
+    } else if (normalizedType.includes("consult") || normalizedType.includes("technical") || normalizedType.includes("engineering")) {
+      routedDepartment = "Engineering & Technical Office";
+      departmentEmail = "engineering@kkm-intl.org";
+      opportunityType = "Technical Consultation";
+      priority = "High";
     } else if (normalizedType.includes("pilot") || normalizedType.includes("trial") || normalizedType.includes("test")) {
       routedDepartment = "Applied Engineering & Field Pilots Office";
       departmentEmail = "pilots@kkm-intl.org";

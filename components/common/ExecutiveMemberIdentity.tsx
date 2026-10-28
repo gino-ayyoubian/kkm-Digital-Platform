@@ -36,8 +36,8 @@ export const getMemberPhotoObjectPosition = (nameOrUrl: string = ''): string => 
   // Mostafa Sharifi: Head ~8%, eyes ~16%
   if (s.includes('sharifi') || s.includes('شریفی') || s.includes('mostafa') || s.includes('مصطفی')) return '50% 12%';
   
-  // Farid Imani: Aspect ratio 4:5, head starts ~10%, eyes ~20%
-  if (s.includes('farid') || s.includes('فرید') || s.includes('imani') || s.includes('ایمانی')) return '50% 18%';
+  // Farid Imani: Aspect ratio 2:3, head starts ~10%, eyes ~20%
+  if (s.includes('farid') || s.includes('فرید') || s.includes('imani') || s.includes('ایمانی') || s.includes('244c86d8')) return '50% 18%';
   
   // Dr. Pedram Abdarzadeh: Aspect ratio 4:5, head ~12%, eyes ~22%
   if (s.includes('pedram') || s.includes('پدرام') || s.includes('abdarzadeh') || s.includes('آبدارزاده')) return '50% 18%';
@@ -53,6 +53,9 @@ export const getMemberPhotoObjectPosition = (nameOrUrl: string = ''): string => 
 
   // Seyed Jasem Hosseini: Head starts ~12%, eyes ~22%
   if (s.includes('hosseini') || s.includes('حسینی') || s.includes('jassem') || s.includes('jasem') || s.includes('جاسم')) return '50% 20%';
+  
+  // Heydar Yarveisi (COO): Head starts ~10%, eyes ~20%
+  if (s.includes('yarveisi') || s.includes('yarveicy') || s.includes('یارویسی') || s.includes('heydar') || s.includes('heidar')) return '50% 20%';
   
   // Default rule-of-thirds upper-third focal point for executive vertical portraits
   return '50% 15%';
@@ -141,7 +144,7 @@ const getAuthenticMemberPhoto = (name: string, nameFa?: string, photoUrl?: strin
   // Exact mapping for the leadership and executive members with verified authentic portraits
   if (n.includes('gino') || nFa.includes('ژینو')) return '/images/gino-ayyoubian.jpg';
   if (n.includes('sina') || nFa.includes('سینا')) return '/images/sina-ayyoubian.jpg';
-  if (n.includes('farid') || nFa.includes('فرید') || n.includes('imani') || nFa.includes('ایمانی')) return '/images/farid-imani.jpg';
+  if (n.includes('farid') || nFa.includes('فرید') || n.includes('imani') || nFa.includes('ایمانی')) return '/assets/leadership/farid-imani-portrait.png';
   if (n.includes('baghdadchi') || nFa.includes('بغدادچی')) return '/images/reza-baghdadchi.jpg';
   if (n.includes('tofangchiha') || nFa.includes('تفنگچی')) return '/images/ashkan-tofangchiha.jpg';
   if (n.includes('asakereh') || nFa.includes('عساکره')) return '/DCB4BC5A-B9EE-4C50-8C99-F3303C779DE5.png';
@@ -151,6 +154,7 @@ const getAuthenticMemberPhoto = (name: string, nameFa?: string, photoUrl?: strin
   if (n.includes('sharifi') || nFa.includes('شریفی') || n.includes('mostafa') || nFa.includes('مصطفی')) return '/images/mostafa-sharifi.jpg';
   if (n.includes('moshar') || nFa.includes('مشار') || n.includes('masoumeh') || n.includes('masoomeh') || nFa.includes('معصومه')) return '/images/masoumeh-moshar.png';
   if (n.includes('hosseini') || nFa.includes('حسینی') || n.includes('jassem') || n.includes('jasem') || nFa.includes('جاسم')) return '/images/seyed-jassem-hosseini.png';
+  if (n.includes('yarveisi') || nFa.includes('یارویسی') || n.includes('yarveicy') || n.includes('heydar') || n.includes('heidar')) return '/assets/leadership/heidar-yarveisi-portrait.png';
 
   return photoUrl;
 };
