@@ -218,10 +218,17 @@ const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
                         <div className="bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-xl hover:shadow-2xl hover:border-secondary transition-all flex flex-col group">
                             <div className="relative h-56 overflow-hidden bg-slate-950 flex items-center justify-center">
                                 <img 
-                                    src="/src/assets/images/geothermal_icon_1791765115317.jpg" 
+                                    src="/assets/images/geothermal_icon_1791765115317.jpg" 
                                     alt="Geothermal Energy Domain Icon" 
                                     loading="lazy"
                                     referrerPolicy="no-referrer"
+                                    onError={(e) => {
+                                        const target = e.currentTarget;
+                                        if (!target.dataset.triedFallback) {
+                                            target.dataset.triedFallback = 'true';
+                                            target.src = '/src/assets/images/geothermal_icon_1791765115317.jpg';
+                                        }
+                                    }}
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
                                 <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md text-[11px] font-mono font-bold text-amber-400 border border-amber-500/30 flex items-center gap-1.5">
@@ -276,10 +283,17 @@ const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
                         <div className="bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-xl hover:shadow-2xl hover:border-secondary transition-all flex flex-col group">
                             <div className="relative h-56 overflow-hidden bg-slate-950 flex items-center justify-center">
                                 <img 
-                                    src="/src/assets/images/water_nexus_icon_1791765125654.jpg" 
+                                    src="/assets/images/water_nexus_icon_1791765125654.jpg" 
                                     alt="Water-Energy Nexus Domain Icon" 
                                     loading="lazy"
                                     referrerPolicy="no-referrer"
+                                    onError={(e) => {
+                                        const target = e.currentTarget;
+                                        if (!target.dataset.triedFallback) {
+                                            target.dataset.triedFallback = 'true';
+                                            target.src = '/src/assets/images/water_nexus_icon_1791765125654.jpg';
+                                        }
+                                    }}
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
                                 <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md text-[11px] font-mono font-bold text-cyan-400 border border-cyan-500/30 flex items-center gap-1.5">
@@ -334,10 +348,17 @@ const CoreTechnologiesPage: React.FC<{ setPage?: any }> = ({ setPage }) => {
                         <div className="bg-white dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-xl hover:shadow-2xl hover:border-secondary transition-all flex flex-col group">
                             <div className="relative h-56 overflow-hidden bg-slate-950 flex items-center justify-center">
                                 <img 
-                                    src="/src/assets/images/microgrid_icon_1791765136698.jpg" 
+                                    src="/assets/images/microgrid_icon_1791765136698.jpg" 
                                     alt="Rural Microgrids Domain Icon" 
                                     loading="lazy"
                                     referrerPolicy="no-referrer"
+                                    onError={(e) => {
+                                        const target = e.currentTarget;
+                                        if (!target.dataset.triedFallback) {
+                                            target.dataset.triedFallback = 'true';
+                                            target.src = '/src/assets/images/microgrid_icon_1791765136698.jpg';
+                                        }
+                                    }}
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
                                 <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md text-[11px] font-mono font-bold text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">

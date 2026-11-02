@@ -396,18 +396,6 @@ export const D3OrganizationalTree: React.FC<D3OrganizationalTreeProps> = ({ onSe
           return 'SPECIALIST';
         });
 
-      // Extension Badge in card header
-      nodeEnter.filter((d: any) => Boolean(d.data.extension))
-        .append('text')
-        .attr('x', cardWidth / 2 - 14)
-        .attr('y', 24)
-        .attr('text-anchor', 'end')
-        .attr('fill', '#34d399')
-        .attr('font-size', '10px')
-        .attr('font-family', 'ui-monospace, monospace')
-        .attr('font-weight', 'bold')
-        .text((d: any) => `Ext: ${d.data.extension}`);
-
       // Member Name (Dual Language or Main)
       nodeEnter.append('text')
         .attr('x', -cardWidth / 2 + 14)

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   ShieldCheck, X, Award, CheckCircle2, Lock, ExternalLink, 
-  FileText, Calendar, Building2, Phone, Hash, Download, Check
+  FileText, Calendar, Building2, Hash, Download, Check
 } from 'lucide-react';
 import { useLanguage } from '../../LanguageContext';
 import { OrgMemberProfile, Page } from '../../types';
@@ -59,8 +59,7 @@ Executive Title       : ${member.title} (${member.titleFa || ''})
 Directorate / Dept    : ${member.department} (${member.departmentFa || ''})
 Employee ID           : ${member.employeeId}
 Official Email        : ${member.email}
-Direct Phone          : ${member.phone || '+98 21 9103 0830'}
-SIP Extension         : ${member.sipExtension || 'N/A'} (SIP Trunk: ext.daftareshoma.com)
+Central Switchboard   : +98 21 9103 0830
 Security Clearance    : ${member.clearanceLevel}
 
 SPECIALIZED ENGINEERING DOMAINS:
@@ -170,15 +169,6 @@ STATUS: PERMANENTLY ATTESTED ON KKM GOVERNANCE REGISTER
                   <span className="font-mono text-[11px] font-bold text-slate-700 dark:text-slate-300">
                     ID: {member.employeeId}
                   </span>
-                  {member.sipExtension && (
-                    <>
-                      <span className="font-mono text-slate-400">&bull;</span>
-                      <span className="flex items-center gap-1 text-[11px] font-mono text-blue-600 dark:text-blue-400 font-bold">
-                        <Phone className="w-3 h-3" />
-                        {isFa ? `داخلی ${member.sipExtension}` : `Ext: ${member.sipExtension}`}
-                      </span>
-                    </>
-                  )}
                 </div>
               </div>
             </div>

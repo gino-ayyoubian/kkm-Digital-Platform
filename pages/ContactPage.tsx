@@ -7,7 +7,6 @@ import PageHeader from '../components/PageHeader';
 import Accordion from '../components/Accordion';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, PhoneCall, Globe } from 'lucide-react';
-import { IvrCommunicationsConsole } from '../components/ivr/IvrCommunicationsConsole';
 
 import { trackFormSubmission, parseUTMParams } from '../lib/analytics';
 import { db } from '../firebase';
@@ -72,7 +71,7 @@ const CommTierCard: React.FC<{ title: string; description: string; icon: React.R
 );
 
 const ContactPage: React.FC = () => {
-    const { t } = useLanguage();
+    const { t, isFa } = useLanguage();
     
     // State
     const [formData, setFormData] = React.useState<ContactFormData>({ name: '', email: '', inquiryType: 'General Inquiry', subject: '', message: '', _gotcha: '' });
@@ -81,7 +80,6 @@ const ContactPage: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [formStatus, setFormStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
     const [submitError, setSubmitError] = React.useState<string | null>(null);
-    const [isIvrConsoleOpen, setIsIvrConsoleOpen] = React.useState<boolean>(false);
     const [leadReference, setLeadReference] = React.useState<{ id: string; routedDepartment?: string } | null>(null);
     const formRenderTimeRef = React.useRef<number>(Date.now());
 
@@ -574,14 +572,13 @@ const ContactPage: React.FC = () => {
                                     </div>
 
                                     <div className="flex flex-col sm:flex-row gap-2 mt-3">
-                                        <button
-                                            type="button"
-                                            onClick={() => setIsIvrConsoleOpen(true)}
-                                            className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                        <a
+                                            href={`tel:${t('IVRPhone').replace(/\s/g, '')}`}
+                                            className="flex-1 py-2.5 px-3 rounded-xl bg-primary hover:bg-primary-dark dark:bg-secondary dark:text-slate-950 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                                         >
                                             <PhoneCall className="w-3.5 h-3.5" />
-                                            <span>{t('IVRLabel') || 'تلفن گویا و سافت‌فون (IVR)'}</span>
-                                        </button>
+                                            <span>{isFa ? 'تماس با تلفن گویای مرکزی' : 'Call Central Phone'}</span>
+                                        </a>
 
                                         <a
                                             href="https://my.dartamas.com/directLink/61be6882-8824-4c31-8903-aaf074248aa5"
@@ -677,17 +674,6 @@ const ContactPage: React.FC = () => {
                 </div>
             </div>
 
-            {/* IVR Communications Console Modal */}
-            {isIvrConsoleOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-                    <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-                        <IvrCommunicationsConsole
-                            isOpen={isIvrConsoleOpen}
-                            onClose={() => setIsIvrConsoleOpen(false)}
-                        />
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

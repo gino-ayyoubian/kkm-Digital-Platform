@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { motion } from 'motion/react';
 import { 
-  ShieldCheck, Phone, Mail, ExternalLink, Award, 
+  ShieldCheck, Mail, ExternalLink, Award, 
   GraduationCap, Briefcase, ChevronRight, CheckCircle2
 } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
@@ -72,20 +72,6 @@ export const TeamCard: React.FC<TeamCardProps> = ({
           </button>
         )}
 
-        {/* SIP Direct Extension Pill */}
-        {member.sipExtension && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onCallClick?.(member.sipExtension || '', member);
-            }}
-            className="absolute top-3.5 left-3.5 rtl:left-auto rtl:right-3.5 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md border border-slate-700/80 text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all text-[11px] font-mono font-bold shadow-md cursor-pointer"
-            title={isFa ? `تماس با داخلی ${member.sipExtension}` : `Call Ext ${member.sipExtension}`}
-          >
-            <Phone className="w-3 h-3" />
-            <span>{member.sipExtension}</span>
-          </button>
-        )}
 
         {/* Bottom Banner inside Image: Crisp Name Tag */}
         <div className="absolute bottom-3 inset-x-3 z-10 pointer-events-none">
@@ -137,18 +123,8 @@ export const TeamCard: React.FC<TeamCardProps> = ({
 
         {/* Action Controls Footer */}
         <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
-          {/* Quick Actions (Call, LinkedIn, Email) */}
+          {/* Quick Actions (LinkedIn, Email) */}
           <div className="flex items-center gap-1.5">
-            {member.sipExtension && (
-              <button
-                onClick={() => onCallClick?.(member.sipExtension || '', member)}
-                className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-emerald-600 hover:text-white dark:hover:bg-emerald-600 text-slate-600 dark:text-slate-300 transition-colors"
-                title={isFa ? `تماس با داخلی ${member.sipExtension}` : `Call Ext ${member.sipExtension}`}
-              >
-                <Phone className="w-3.5 h-3.5" />
-              </button>
-            )}
-
             {member.linkedInUrl && (
               <a
                 href={member.linkedInUrl}

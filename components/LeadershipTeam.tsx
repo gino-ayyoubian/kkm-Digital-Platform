@@ -5,7 +5,6 @@ import { OrgMemberProfile, Page } from '../types';
 import { INITIAL_ORG_MEMBERS } from '../data/orgMembers';
 import { TeamCard } from './TeamCard';
 import { EvidenceRegistryModal } from './common/EvidenceRegistryModal';
-import { IvrCommunicationsConsole } from './ivr/IvrCommunicationsConsole';
 import { D3OrganizationalTree } from './about/D3OrganizationalTree';
 import { 
   Award, ShieldCheck, Phone, Search, Filter, 
@@ -24,20 +23,10 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
   
   // State for Modals
   const [selectedEvidenceMember, setSelectedEvidenceMember] = React.useState<OrgMemberProfile | null>(null);
-  const [isIvrOpen, setIsIvrOpen] = React.useState<boolean>(false);
-  const [ivrExtension, setIvrExtension] = React.useState<string>('101');
-  const [ivrMember, setIvrMember] = React.useState<OrgMemberProfile | null>(null);
 
   // Filter & Search
   const [activeFilter, setActiveFilter] = React.useState<string>('all');
   const [searchQuery, setSearchQuery] = React.useState<string>('');
-
-  // Handle Call Click
-  const handleCallMember = (extension: string, member: OrgMemberProfile) => {
-    setIvrExtension(extension);
-    setIvrMember(member);
-    setIsIvrOpen(true);
-  };
 
   // Handle Verified Member Click
   const handleVerifyMember = (member: OrgMemberProfile) => {
@@ -86,7 +75,6 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
         member.title.toLowerCase().includes(q) ||
         (member.titleFa && member.titleFa.includes(q)) ||
         member.department.toLowerCase().includes(q) ||
-        (member.sipExtension && member.sipExtension.includes(q)) ||
         (member.engineeringDomains && member.engineeringDomains.some(d => d.toLowerCase().includes(q)));
 
       return matchesFilter && matchesSearch;
@@ -139,7 +127,7 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
             ))}
           </div>
 
-          {/* Search Input & Quick IVR Button */}
+          {/* Search Input */}
           <div className="flex items-center gap-3">
             <div className="relative flex-1 sm:w-64">
               <Search className="w-4 h-4 absolute top-3 right-3 text-slate-400" />
@@ -147,22 +135,10 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={isFa ? 'جستجوی نام، تخصص یا داخلی...' : 'Search leader or domain...'}
+                placeholder={isFa ? 'جستجوی نام، دپارتمان یا حوزه تخصصی...' : 'Search leader, department or domain...'}
                 className="w-full pr-9 pl-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:ring-2 focus:ring-primary focus:outline-hidden"
               />
             </div>
-
-            <button
-              onClick={() => {
-                setIvrExtension('101');
-                setIsIvrOpen(true);
-              }}
-              className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shrink-0"
-              title={isFa ? 'باز کردن سامانه تلفن گویا و سافت‌فون' : 'Open IVR Softphone'}
-            >
-              <Phone className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{isFa ? 'تلفن گویا و داخلی‌ها' : 'IVR Softphone'}</span>
-            </button>
 
             {/* View Mode Toggle: Grid vs D3 Collapsible Tree */}
             <div className="flex items-center bg-white dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shrink-0">
@@ -211,7 +187,6 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
                   key={`leadership-card-${member.uid}-${index}`}
                   member={member}
                   onVerifyClick={handleVerifyMember}
-                  onCallClick={handleCallMember}
                 />
               ))}
             </div>
@@ -234,6 +209,33 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
                 </button>
               </div>
             )}
+
+            {/* Central Corporate Switchboard & Inquiries Banner */}
+            <div className="mt-12 p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-start">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 dark:bg-secondary/10 flex items-center justify-center text-primary dark:text-secondary shrink-0">
+                  <Phone className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                    {isFa ? 'ارتباط با کادر رهبری و دپارتمان‌های سازمانی KKM' : 'Corporate Communications & Directorate Inquiries'}
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xl">
+                    {isFa 
+                      ? 'بازدیدکنندگان گرامی؛ جهت برقراری ارتباط با اعضای هیئت مدیره و مدیریت‌های اجرایی، لطفاً با خط ارتباطی تلفن مرکزی تماس حاصل فرمایید تا از طریق تلفن گویای هوشمند به واحد مربوطه متصل گردید.'
+                      : 'To contact our executive leadership or specific directorates, please dial our central corporate switchboard for automated department routing.'}
+                  </p>
+                </div>
+              </div>
+              <a
+                href="tel:+982191030830"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark dark:bg-secondary dark:text-slate-950 text-white font-mono font-bold text-xs shadow-md transition-all shrink-0 cursor-pointer"
+                dir="ltr"
+              >
+                <Phone className="w-4 h-4" />
+                <span>+98 21 9103 0830</span>
+              </a>
+            </div>
           </>
         )}
       </div>
@@ -245,20 +247,6 @@ export const LeadershipTeam: React.FC<LeadershipTeamProps> = ({ onNavigate }) =>
         onClose={() => setSelectedEvidenceMember(null)}
         onNavigateToRegistry={onNavigate}
       />
-
-      {/* IVR Communications Console Modal */}
-      {isIvrOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-          <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <IvrCommunicationsConsole
-              isOpen={isIvrOpen}
-              onClose={() => setIsIvrOpen(false)}
-              initialExtension={ivrExtension}
-              initialMember={ivrMember}
-            />
-          </div>
-        </div>
-      )}
     </section>
   );
 };

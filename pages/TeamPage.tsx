@@ -1467,54 +1467,63 @@ export const TeamPage: React.FC<TeamPageProps> = ({ setPage }) => {
                   </div>
                 </div>
 
-                {/* Corporate Direct Contact Box */}
-                {(selectedMember.email || selectedMember.sipExtension || selectedMember.phone) && (
-                  <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
-                    <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                      {isFa ? 'ارتباط مستقیم سازمانی' : 'Corporate Communications'}
-                    </div>
+                {/* Corporate Communications & Central Switchboard Box */}
+                <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
+                  <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    {isFa ? 'ارتباطات سازمانی و تلفن مرکزی' : 'Corporate Communications & Inquiries'}
+                  </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {selectedMember.email && (
-                        <div className="p-3 rounded-xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 shadow-2xs">
-                          <div className="min-w-0">
-                            <div className="text-[10px] font-mono text-slate-400 uppercase">
-                              {isFa ? 'ایمیل سازمانی' : 'Corporate Email'}
-                            </div>
-                            <div className="text-xs font-mono font-semibold text-slate-800 dark:text-slate-200 truncate">
-                              {selectedMember.email}
-                            </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {selectedMember.email && (
+                      <div className="p-3 rounded-xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 shadow-2xs">
+                        <div className="min-w-0">
+                          <div className="text-[10px] font-mono text-slate-400 uppercase">
+                            {isFa ? 'مکاتبات سازمانی' : 'Corporate Inquiries'}
                           </div>
-                          <button
-                            onClick={() => handleCopyEmail(selectedMember.email!)}
-                            className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors shrink-0 cursor-pointer"
-                            title="Copy email"
-                          >
-                            {copiedEmail === selectedMember.email ? (
-                              <Check className="w-3.5 h-3.5 text-emerald-500" />
-                            ) : (
-                              <Copy className="w-3.5 h-3.5" />
-                            )}
-                          </button>
+                          <div className="text-xs font-mono font-semibold text-slate-800 dark:text-slate-200 truncate">
+                            {selectedMember.email}
+                          </div>
                         </div>
-                      )}
+                        <button
+                          onClick={() => handleCopyEmail(selectedMember.email!)}
+                          className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors shrink-0 cursor-pointer"
+                          title="Copy email"
+                        >
+                          {copiedEmail === selectedMember.email ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-500" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
+                      </div>
+                    )}
 
-                      {selectedMember.sipExtension && (
-                        <div className="p-3 rounded-xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 shadow-2xs">
-                          <div>
-                            <div className="text-[10px] font-mono text-slate-400 uppercase">
-                              {isFa ? 'داخلی تلفن سانترال' : 'SIP Direct Extension'}
-                            </div>
-                            <div className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
-                              Ext: {selectedMember.sipExtension}
-                            </div>
-                          </div>
-                          <Phone className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <div className="p-3 rounded-xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 shadow-2xs">
+                      <div className="min-w-0">
+                        <div className="text-[10px] font-mono text-slate-400 uppercase font-semibold">
+                          {isFa ? 'تلفن تماس مرکزی شرکت' : 'Central Switchboard'}
                         </div>
-                      )}
+                        <a
+                          href="tel:+982191030830"
+                          className="text-xs font-mono font-bold text-primary dark:text-secondary hover:underline inline-block mt-0.5"
+                          dir="ltr"
+                        >
+                          +98 21 9103 0830
+                        </a>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">
+                          {isFa ? 'ارتباط با واحد مربوطه از تلفن گویا' : 'Routing to directorate divisions'}
+                        </div>
+                      </div>
+                      <a
+                        href="tel:+982191030830"
+                        className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white dark:hover:bg-secondary dark:hover:text-slate-950 text-slate-600 dark:text-slate-300 transition-colors shrink-0"
+                        title={isFa ? 'تماس با تلفن مرکزی' : 'Call Switchboard'}
+                      >
+                        <Phone className="w-4 h-4" />
+                      </a>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
 
               {/* Drawer Footer */}

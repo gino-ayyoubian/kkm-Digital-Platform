@@ -189,7 +189,20 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
             >
                 <div className="h-64 bg-slate-100 dark:bg-slate-900 overflow-hidden relative">
                     <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors z-10"></div>
-                    <img src="/src/assets/images/gmel_3d_icon_1788774005038.jpg" alt="GMEL Technology" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                    <img 
+                        src="/assets/images/gmel_3d_icon_1788774005038.jpg" 
+                        alt="GMEL Technology" 
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                        onError={(e) => {
+                            const target = e.currentTarget;
+                            if (!target.dataset.triedFallback) {
+                                target.dataset.triedFallback = 'true';
+                                target.src = '/src/assets/images/gmel_3d_icon_1788774005038.jpg';
+                            }
+                        }}
+                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" 
+                    />
                     <div className="absolute bottom-4 left-4 z-20">
                         <span className="px-3 py-1 bg-accent-yellow text-accent-dark text-xs font-bold uppercase rounded-full">Active</span>
                     </div>
@@ -201,7 +214,7 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
                     <p className="text-text-light dark:text-slate-400">
                         Closed-loop geothermal simulation preview for exploring subsurface thermal gradients, flow rates, and electrical generation scenarios.
                     </p>
-                    <div className="pt-4 border-t border-gray-100 dark:border-slate-700 flex justify-between items-center">
+                    <div className="pt-4 border-t border-gray-100 dark:slate-700 flex justify-between items-center">
                         <div className="text-xs font-mono text-slate-500 dark:text-slate-400">Subdomain: gmel.kkm-intl.org</div>
                         <button 
                             onClick={() => setPage(Page.DigitalTwinGMEL)}
@@ -225,7 +238,20 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
             >
                 <div className="h-64 bg-slate-100 dark:bg-slate-900 overflow-hidden relative">
                     <div className="absolute inset-0 bg-secondary/10 group-hover:bg-transparent transition-colors z-10"></div>
-                    <img src="/src/assets/images/ree_3d_icon_1788774020718.jpg" alt="River Energy Ecosystem" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                    <img 
+                        src="/assets/images/ree_3d_icon_1788774020718.jpg" 
+                        alt="River Energy Ecosystem" 
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                        onError={(e) => {
+                            const target = e.currentTarget;
+                            if (!target.dataset.triedFallback) {
+                                target.dataset.triedFallback = 'true';
+                                target.src = '/src/assets/images/ree_3d_icon_1788774020718.jpg';
+                            }
+                        }}
+                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" 
+                    />
                     <div className="absolute bottom-4 left-4 z-20 flex gap-2">
                         <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-bold uppercase rounded-full shadow">TRL 6-7 Validated</span>
                         <span className="px-3 py-1 bg-secondary text-white text-xs font-bold uppercase rounded-full shadow">3 Regimes</span>

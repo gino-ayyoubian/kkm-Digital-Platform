@@ -274,7 +274,7 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 descFa: 'استخراج زمین‌گرمایی مداربسته (GMEL-CLG)، ریزشبکه‌های هیبریدی تجدیدپذیر و تولید بار پایه برق پایدار.',
                 icon: Zap,
                 page: Page.GMELHub,
-                imageUrl: '/src/assets/images/geothermal_icon_1791765115317.jpg'
+                imageUrl: '/assets/images/geothermal_icon_1791765115317.jpg'
               },
               { 
                 id: '02',
@@ -284,7 +284,7 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 descFa: 'نمک‌زدایی حرارتی آب شور، تصفیه پساب‌های معدنی، ذخیره‌سازی هوشمند و همبست راهبردی آب-انرژی.',
                 icon: Droplets,
                 page: Page.CoreTechnologies,
-                imageUrl: '/src/assets/images/water_nexus_icon_1791765125654.jpg'
+                imageUrl: '/assets/images/water_nexus_icon_1791765125654.jpg'
               },
               { 
                 id: '03',
@@ -294,7 +294,7 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 descFa: 'زیرساخت‌های عمرانی، تأسیسات صنعتی و ابنیه مهندسی متناسب با اقلیم‌های سخت بیابانی و دریایی.',
                 icon: Building2,
                 page: Page.Projects,
-                imageUrl: '/src/assets/images/resilient_infrastructure_isometric_1792800605381.jpg'
+                imageUrl: '/assets/images/resilient_infrastructure_isometric_1792800605381.jpg'
               },
               { 
                 id: '04',
@@ -304,7 +304,7 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 descFa: 'نانوسیالات تبادل سریع گرما، لوله‌های جداره هوشمند با فیبر نوری و بتن‌های خودترمیم‌شونده.',
                 icon: Factory,
                 page: Page.IPCenter,
-                imageUrl: '/src/assets/images/advanced_materials_sensors_isometric_1792800607239.jpg'
+                imageUrl: '/assets/images/advanced_materials_sensors_isometric_1792800607239.jpg'
               },
               { 
                 id: '05',
@@ -314,7 +314,7 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 descFa: 'دیسپاچینگ هوشمند بار انرژی، پایش از راه دور اینترنت اشیاء (IoT) و دوقلوی دیجیتال سایت‌های عملیاتی.',
                 icon: Cpu,
                 page: Page.DigitalTwinHub,
-                imageUrl: '/src/assets/images/ai_digital_twins_isometric_1792800606776.jpg'
+                imageUrl: '/assets/images/ai_digital_twins_isometric_1792800606776.jpg'
               },
               { 
                 id: '06',
@@ -324,7 +324,7 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                 descFa: 'تأمین گرمایش گلخانه‌ها با ژئوترمال، ریزشبکه‌های خورشیدی و احداث صنایع تبدیلی روستایی.',
                 icon: Leaf,
                 page: Page.RuralStudies,
-                imageUrl: '/src/assets/images/microgrid_icon_1791765136698.jpg'
+                imageUrl: '/assets/images/microgrid_icon_1791765136698.jpg'
               }
             ].map((domain, i) => (
               <div 
@@ -340,6 +340,13 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
                       alt={isFa ? domain.titleFa : domain.titleEn} 
                       loading="lazy" 
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (!target.dataset.triedFallback) {
+                          target.dataset.triedFallback = 'true';
+                          target.src = domain.imageUrl.replace('/assets/images/', '/src/assets/images/');
+                        }
+                      }}
                       className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" 
                     />
                     
