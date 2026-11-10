@@ -14,11 +14,13 @@ import { sanitizeHtml } from '../utils/sanitizeHtml';
 import type { TranslationKey } from '../translations';
 
 import GlobalCTA from '../components/GlobalCTA';
-import { ArrowRight, Layers, Sprout, MessageSquareCode, Sparkles, PhoneCall } from 'lucide-react';
+import { ArrowRight, Layers, Sprout, MessageSquareCode, Sparkles, PhoneCall, LayoutGrid, List } from 'lucide-react';
 import { trackLazyLoad } from '../trackLazyLoad';
 import BlurUpImage from '../components/BlurUpImage';
 import { DEFAULT_IMAGE_PLACEHOLDER } from '../utils/imagePlaceholder';
 import TechnicalConsultationModal from '../components/consultation/TechnicalConsultationModal';
+import { HolographicTiltProjectCard } from '../components/projects/HolographicTiltProjectCard';
+import { HolographicTiltContainer } from '../components/projects/HolographicTiltContainer';
 // Lazy load modal
 const ProjectDetailModal = React.lazy(trackLazyLoad('ProjectDetailModal', () => import('./ProjectDetailModal')));
 
@@ -82,6 +84,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
     const [visibleCount, setVisibleCount] = React.useState(INITIAL_VISIBLE_COUNT);
     const [isConsultationModalOpen, setIsConsultationModalOpen] = React.useState<boolean>(false);
     const [consultationProjectContext, setConsultationProjectContext] = React.useState<string | undefined>(undefined);
+    const [viewMode, setViewMode] = React.useState<'grid' | 'compact'>('grid');
     
     // Tooltip State
     const [tooltipData, setTooltipData] = React.useState<{ content: React.ReactNode; position: { top: number; left?: number; right?: number }; side: 'left' | 'right' } | null>(null);
@@ -131,11 +134,13 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
         setPlayVideo(false);
 
         if (activeProjectForMap) {
-            if (detailsPanelRef.current && window.innerWidth < 1024) {
+            if (typeof detailsPanelRef.current?.scrollIntoView === 'function' && window.innerWidth < 1024) {
                 detailsPanelRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             const itemElement = itemRefs.current[activeProjectForMap.name];
-            itemElement?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            if (typeof itemElement?.scrollIntoView === 'function') {
+                itemElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         }
     }, [activeProjectForMap]);
 
@@ -143,14 +148,20 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
         setIsDetailsExpanded(true);
         // Ensure the details are visible
         setTimeout(() => {
-             detailsPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (typeof detailsPanelRef.current?.scrollIntoView === 'function') {
+                detailsPanelRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }, 100);
     };
 
-    const handleProjectSelect = React.useCallback((projectName: string) => {
-        const projectToShow = PROJECTS.find(p => t(p.name as TranslationKey) === projectName || p.name === projectName);
-        if (projectToShow) {
-            setActiveProjectForMap(projectToShow);
+    const handleProjectSelect = React.useCallback((projectOrName: Project | string) => {
+        if (typeof projectOrName === 'string') {
+            const projectToShow = PROJECTS.find(p => t(p.name as TranslationKey) === projectOrName || p.name === projectOrName);
+            if (projectToShow) {
+                setActiveProjectForMap(projectToShow);
+            }
+        } else {
+            setActiveProjectForMap(projectOrName);
         }
     }, [t]);
     
@@ -319,7 +330,9 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
                         >
                             <h2 className="text-2xl font-display font-bold text-primary-dark dark:text-secondary mb-4">{t('ProjectDetails')}</h2>
                             {activeProjectForMap ? (
-                                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg hover:shadow-xl dark:shadow-none transition-shadow duration-300 overflow-hidden">
+                                <HolographicTiltContainer maxTilt={3} className="w-full">
+                                    <div className="bg-white/95 dark:bg-slate-900/90 rounded-2xl shadow-xl dark:shadow-cyan-500/10 border border-slate-200 dark:border-cyan-500/30 backdrop-blur-xl transition-shadow duration-300 overflow-hidden relative group">
+                                        <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent pointer-events-none z-20" />
                                     {!isDetailsExpanded && (
                                         <div className="relative group overflow-hidden">
                                             <BlurUpImage src={activeProjectForMap.thumbnail || activeProjectForMap.image} placeholder={activeProjectForMap.placeholder || DEFAULT_IMAGE_PLACEHOLDER} alt={t(activeProjectForMap.name as TranslationKey)} className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105" />
@@ -455,7 +468,8 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
                                             )}
                                         </AnimatePresence>
                                     </div>
-                                </div>
+                                    </div>
+                                </HolographicTiltContainer>
                             ) : (
                                 <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-6 text-center h-full flex flex-col justify-center items-center min-h-[400px]">
                                     <p className="text-text-light dark:text-slate-400">Select a project from the list or map to see details.</p>
@@ -466,83 +480,98 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ setPage }) => {
 
                     {/* Right Panel: Controls & Map */}
                     <div className="lg:col-span-7">
-                        <div className="mb-6">
-                            <h2 className="text-2xl font-display font-bold text-primary-dark dark:text-secondary mb-4">{t('OurKeyInitiatives')}</h2>
-                            <div className="flex flex-wrap gap-2">
-                                {allTags.map(tag => (
-                                    <button
-                                        key={tag}
-                                        onClick={() => setActiveTag(tag)}
-                                        className={`px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 ${activeTag === tag ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-slate-700 text-text-dark dark:text-slate-200 hover:bg-gray-300 dark:hover:bg-slate-600'}`}
-                                    >
-                                        {tag === 'All' ? t('AllDepartments') : t(tag as TranslationKey)}
-                                    </button>
-                                ))}
+                        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 className="text-2xl font-display font-bold text-primary-dark dark:text-secondary">{t('OurKeyInitiatives')}</h2>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                    {isFa ? 'طرح‌های راهبردی زیرساختی، انرژی و صنایع زیستی' : 'Strategic Infrastructure, Energy & Bio-Industrial Initiatives'}
+                                </p>
+                            </div>
+
+                            {/* View Mode Switcher: 3D Cards Grid vs Compact Tilt List */}
+                            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-cyan-500/30 shrink-0 self-start sm:self-auto">
+                                <button
+                                    type="button"
+                                    onClick={() => setViewMode('grid')}
+                                    className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                                        viewMode === 'grid'
+                                            ? 'bg-cyan-500 text-slate-950 font-bold shadow-xs'
+                                            : 'text-slate-600 dark:text-slate-400 hover:text-cyan-400'
+                                    }`}
+                                    title={isFa ? 'شبکه کارت‌های سه‌بعدی هولوگرافیک' : 'Holographic 3D Cards Grid'}
+                                    aria-label={isFa ? 'شبکه کارت‌های سه‌بعدی هولوگرافیک' : 'Holographic 3D Cards Grid'}
+                                >
+                                    <LayoutGrid className="w-3.5 h-3.5" />
+                                    <span>{isFa ? 'کارت‌های سه‌بعدی' : '3D Cards'}</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setViewMode('compact')}
+                                    className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                                        viewMode === 'compact'
+                                            ? 'bg-cyan-500 text-slate-950 font-bold shadow-xs'
+                                            : 'text-slate-600 dark:text-slate-400 hover:text-cyan-400'
+                                    }`}
+                                    title={isFa ? 'فهرست فشرده هولوگرافیک' : 'Compact Tilt List'}
+                                    aria-label={isFa ? 'فهرست فشرده هولوگرافیک' : 'Compact Tilt List'}
+                                >
+                                    <List className="w-3.5 h-3.5" />
+                                    <span>{isFa ? 'فهرست فشرده' : 'List'}</span>
+                                </button>
                             </div>
                         </div>
 
+                        {/* Department / Category Filter Tabs */}
+                        <div className="flex flex-wrap gap-2 mb-6">
+                            {allTags.map(tag => (
+                                <button
+                                    key={tag}
+                                    onClick={() => setActiveTag(tag)}
+                                    className={`px-3.5 py-1.5 text-xs font-mono font-bold rounded-xl transition-all cursor-pointer ${
+                                        activeTag === tag
+                                            ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
+                                            : 'bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+                                    }`}
+                                >
+                                    {tag === 'All' ? t('AllDepartments') : t(tag as TranslationKey)}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Interactive Holographic Tilt Projects Container */}
                         <motion.div 
                             ref={listContainerRef} 
-                            className="mb-6 border dark:border-slate-700 rounded-lg"
+                            className={`mb-6 ${
+                                viewMode === 'grid' 
+                                    ? 'grid grid-cols-1 sm:grid-cols-2 gap-4.5' 
+                                    : 'space-y-3'
+                            }`}
                             variants={listVariants}
                             initial="hidden"
                             animate="show"
-                            key={activeTag} // Rerender animation on tag change
+                            key={`${activeTag}-${viewMode}`}
                         >
                             {visibleProjects.map((project) => {
                                 const isActive = activeProjectForMap?.name === project.name;
                                 const isHoveredByMap = mapHoveredProjectName === t(project.name as TranslationKey);
                                 
                                 return (
-                                    <motion.div
-                                        key={project.name} 
-                                        variants={listItemVariants}
-                                        ref={el => { itemRefs.current[project.name] = el; }}
-                                        className={`w-full text-left p-3 rounded-md transition-colors duration-200 border-b dark:border-slate-700 last:border-b-0 relative overflow-hidden group cursor-pointer ${
-                                            isActive ? 'bg-secondary/20 dark:bg-slate-700 border-l-4 border-l-primary dark:border-l-secondary' : 
-                                            isHoveredByMap ? 'bg-gray-100 dark:bg-slate-700' : 
-                                            'hover:bg-gray-50 dark:hover:bg-slate-800'
-                                        }`}
-                                        onClick={() => setActiveProjectForMap(project)}
-                                        onMouseEnter={(e) => handleItemHover(e, project)}
-                                        onMouseLeave={handleItemLeave}
-                                        onFocus={(e) => handleItemHover(e, project)}
-                                        onBlur={handleItemLeave}
-                                        aria-current={isActive ? 'true' : undefined}
-                                        aria-label={`Select project: ${t(project.name as TranslationKey)}`}
-                                        whileHover={{ scale: 1.02, x: 4, backgroundColor: isActive ? 'rgba(var(--color-secondary-rgb), 0.25)' : 'rgba(243, 244, 246, 1)' }}
-                                        whileTap={{ scale: 0.98 }}
-                                    >
-                                        <div className="flex justify-between items-center relative z-10">
-                                            <h3 className={`text-md font-display font-semibold transition-colors ${isActive ? 'text-primary-dark dark:text-secondary' : 'text-text-dark dark:text-slate-200 group-hover:text-primary dark:group-hover:text-secondary'}`}>
-                                                {t(project.name as TranslationKey)}
-                                            </h3>
-                                            {isActive && (
-                                                <motion.div 
-                                                    layoutId="active-indicator" 
-                                                    className="w-2 h-2 rounded-full bg-accent-yellow shadow-sm"
-                                                    initial={{ scale: 0 }}
-                                                    animate={{ scale: 1 }}
-                                                />
-                                            )}
-                                        </div>
-                                        
-                                        <div className="mt-2 flex justify-end relative z-10">
-                                            <button
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    setModalProject(project);
-                                                }}
-                                                className="text-xs flex items-center gap-1 text-text-light dark:text-slate-400 hover:text-primary dark:hover:text-secondary transition-colors px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-slate-600"
-                                                aria-label={t('ViewGallery')}
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                </svg>
-                                                <span className="font-semibold">{t('ViewGallery')}</span>
-                                            </button>
-                                        </div>
-                                    </motion.div>
+                                    <HolographicTiltProjectCard
+                                        key={project.name}
+                                        project={project}
+                                        isActive={isActive}
+                                        isHoveredByMap={isHoveredByMap}
+                                        variant={viewMode}
+                                        refCallback={(el) => { itemRefs.current[project.name] = el; }}
+                                        onSelect={handleProjectSelect}
+                                        onOpenGallery={(proj) => setModalProject(proj)}
+                                        onRequestConsultation={(projName) => {
+                                            setConsultationProjectContext(projName);
+                                            setIsConsultationModalOpen(true);
+                                        }}
+                                        onHoverStart={(e, proj) => handleItemHover(e, proj)}
+                                        onHoverEnd={handleItemLeave}
+                                    />
                                 );
                             })}
                         </motion.div>
