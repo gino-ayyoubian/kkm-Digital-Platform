@@ -69,6 +69,11 @@ export function pathToPage(pathname: string): Page {
     case '/investment-portal':
       return Page.InvestmentPortal;
 
+    case '/partner-data-room':
+    case '/data-room':
+    case '/dataroom':
+      return Page.PartnerDataRoom;
+
     case '/team':
     case '/leadership':
     case '/board':
@@ -203,6 +208,9 @@ export function pageToPath(page: Page): string {
     case Page.Invest:
     case Page.InvestmentPortal:
       return '/invest';
+
+    case Page.PartnerDataRoom:
+      return '/partner-data-room';
 
     case Page.InnovationHub:
       return '/innovation-hub';

@@ -37,6 +37,7 @@ const GMELHubPage = React.lazy(trackLazyLoad('GMELHubPage', () => import('../pag
 const CorporateInfoPage = React.lazy(trackLazyLoad('CorporateInfoPage', () => import('../pages/CorporateInfoPage')));
 const IPCenterPage = React.lazy(trackLazyLoad('IPCenterPage', () => import('../pages/IPCenterPage')));
 const InnovationHubPage = React.lazy(trackLazyLoad('InnovationHubPage', () => import('../pages/InnovationHubPage')));
+const PartnerDataRoomPage = React.lazy(trackLazyLoad('PartnerDataRoomPage', () => import('../pages/PartnerDataRoomPage')));
 const CarbonCreditPage = React.lazy(trackLazyLoad('CarbonCreditPage', () => import('../pages/CarbonCreditPage')));
 const LegalPage = React.lazy(trackLazyLoad('LegalPage', () => import('../pages/LegalPage')));
 const SearchResultsPage = React.lazy(trackLazyLoad('SearchResultsPage', () => import('../pages/SearchResultsPage')));
@@ -246,6 +247,7 @@ export const routeObjects: RouteObject[] = [
       { path: 'faq', element: withSuspense(<FAQPage />) },
       { path: 'divisions', element: withSuspense(<DivisionsPage />) },
       { path: 'innovation-hub', element: withSuspense(<InnovationHubPage />) },
+      { path: 'partner-data-room', element: withSuspense(<PartnerDataRoomPage />) },
       { path: 'corporate-info', element: <RoutedPage component={CorporateInfoPage} /> },
       { path: 'ip-center', element: <RoutedPage component={IPCenterPage} /> },
       { path: 'gmel', element: <RoutedPage component={GMELHubPage} /> },
@@ -286,6 +288,8 @@ export const routeObjects: RouteObject[] = [
       { path: 'questions', element: <Navigate to="/faq" replace /> },
       { path: 'business-units', element: <Navigate to="/divisions" replace /> },
       { path: 'innovation', element: <Navigate to="/innovation-hub" replace /> },
+      { path: 'data-room', element: <Navigate to="/partner-data-room" replace /> },
+      { path: 'dataroom', element: <Navigate to="/partner-data-room" replace /> },
       { path: 'corporate', element: <Navigate to="/corporate-info" replace /> },
       { path: 'ip', element: <Navigate to="/ip-center" replace /> },
       { path: 'esg', element: <Navigate to="/sustainability" replace /> },

@@ -7,8 +7,9 @@ import { motion } from 'motion/react';
 import CarbonOffsetViz from '../components/CarbonOffsetViz';
 import LazyImage from '../components/LazyImage';
 import InnovationMilestones from '../components/InnovationMilestones';
-import TechnicalConsultationModal from '../components/consultation/TechnicalConsultationModal';
-import { ShieldCheck, Lock, Globe2, Sparkles, FileText, CheckCircle2 } from 'lucide-react';
+import { ProposalTrackerWidget } from '../components/innovation/ProposalTrackerWidget';
+import { InnovationProposalIntakeModal } from '../components/innovation/InnovationProposalIntakeModal';
+import { ShieldCheck, Lock, Globe2, Sparkles, FileText, CheckCircle2, KeyRound, ArrowRight } from 'lucide-react';
 
 const InnovationStep: React.FC<{ number: string; title: string; children: React.ReactNode }> = ({ number, title, children }) => (
     <motion.div 
@@ -50,9 +51,10 @@ const InnovationStep: React.FC<{ number: string; title: string; children: React.
     </motion.div>
 );
 
-const InnovationHubPage: React.FC = () => {
+const InnovationHubPage: React.FC<{ setPage?: (page: Page) => void }> = ({ setPage }) => {
     const { t, isFa } = useLanguage();
     const [isProposalModalOpen, setIsProposalModalOpen] = React.useState(false);
+    const [recentTrackingId, setRecentTrackingId] = React.useState<string | undefined>(undefined);
 
     return (
         <div>
@@ -220,6 +222,46 @@ const InnovationHubPage: React.FC = () => {
                 </div>
             </div>
 
+            {/* Live Proposal Tracker Widget */}
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 my-16">
+                <ProposalTrackerWidget initialTrackingId={recentTrackingId} />
+            </div>
+
+            {/* Strategic Partner Tier-2 Data Room Invitation Banner */}
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+                <div className="rounded-3xl bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 border border-slate-700/80 p-8 sm:p-10 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div className="space-y-2 max-w-2xl">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                            <Lock className="w-3.5 h-3.5" />
+                            <span>{isFa ? 'دسترسی اختصاصی سرمایه‌گذاران و پیمانکاران EPC' : 'Accredited EPC & Investor Gated Access'}</span>
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-display font-bold text-white">
+                            {isFa ? 'اتاق داده امن شرکا (Tier 2 Partner Data Room تحت NDA)' : 'Tier 2 Partner Data Room (Under Digital NDA)'}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            {isFa 
+                                ? 'شرکای صنعتی، پیمانکاران نیروگاهی و سرمایه‌گذاران معتبر می‌توانند با ورود یک‌بارمصرف (OTP) و امضای تعهدنامه محرمانگی، به گزارش‌های تفصیلی ممیزی سطح C، دیاگرام‌های P&ID و مدل‌های مالی دسترسی یابند.'
+                                : 'Access confidential Level C engineering audit logs, wellbore P&ID schematics, and microgrid financial models via secure OTP authentication.'}
+                        </p>
+                    </div>
+
+                    <button
+                        onClick={() => {
+                            if (setPage) {
+                                setPage(Page.PartnerDataRoom);
+                            } else {
+                                window.location.href = '/partner-data-room';
+                            }
+                        }}
+                        className="px-6 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap self-start md:self-auto"
+                    >
+                        <KeyRound className="w-4 h-4" />
+                        <span>{isFa ? 'ورود به اتاق داده امن شرکا' : 'Enter Partner Data Room'}</span>
+                        <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+                    </button>
+                </div>
+            </div>
+
             {/* Innovation Milestones Timeline */}
             <InnovationMilestones />
 
@@ -228,12 +270,17 @@ const InnovationHubPage: React.FC = () => {
                 <CarbonOffsetViz />
             </div>
 
-            {/* Structured Proposal & Consultation Modal */}
-            <TechnicalConsultationModal 
+            {/* Structured Innovation Proposal Intake Modal */}
+            <InnovationProposalIntakeModal 
                 isOpen={isProposalModalOpen}
                 onClose={() => setIsProposalModalOpen(false)}
-                initialDomain="advanced-materials-sensors"
-                prefilledProject={isFa ? 'طرح فناورانه مرکز نوآوری KKM' : 'KKM Innovation Hub Collaboration Proposal'}
+                onSuccessTrackingId={(id) => {
+                    setRecentTrackingId(id);
+                    setTimeout(() => {
+                        const el = document.getElementById('proposal-tracker');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 400);
+                }}
             />
         </div>
     );

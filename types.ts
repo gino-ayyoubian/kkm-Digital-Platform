@@ -40,6 +40,7 @@ export enum Page {
   PilotRequest = 'Pilot Request',
   ProjectDevelopment = 'Project Development',
   InvestmentPortal = 'Investment Portal',
+  PartnerDataRoom = 'Partner Data Room',
   IPCenter = 'IP Center',
   EvidenceRegistry = 'Evidence Registry',
   ClaimRegistry = 'Claim Registry',

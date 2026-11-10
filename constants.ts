@@ -117,6 +117,7 @@ export const NAV_LINKS: NavLink[] = [
     subLinks: [
       { name: "Evidence Registry", id: "evidence-registry", page: Page.EvidenceRegistry },
       { name: "IP & Patent Center", id: "patents", page: Page.IPCenter },
+      { name: "Partner Data Room", id: "partner-data-room", page: Page.PartnerDataRoom },
       { name: "Technology Portfolio", id: "tech-portfolio", page: Page.CoreTechnologies },
       { name: "R&D Programs", id: "rnd", page: Page.InnovationHub },
       { name: "Commercialization", id: "commercialization", page: Page.InnovationHub }

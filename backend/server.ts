@@ -14,6 +14,7 @@ import { secretsManager, requireApiSecurity } from "./secretsManager.ts";
 import { telephonyService } from "./telephonyService.ts";
 import { productionGovernance } from "./productionGovernance.ts";
 import { webAuthnService, requireStepUpAuth } from "./webauthnService.ts";
+import { innovationTriageService } from "./innovationTriageService.ts";
 import { GoogleGenAI } from "@google/genai";
 
 export interface AuthenticatedUserPayload {
@@ -1890,6 +1891,231 @@ export function setupBackendRoutes(app: express.Application) {
     });
   });
 
+  // =========================================================================
+  // KKM INNOVATION HUB: AI TRIAGE & PUBLIC PROPOSAL TRACKING API
+  // =========================================================================
+
+  /**
+   * POST /api/innovation/proposals
+   * Public proposal intake with automated AI novelty scoring & patent cross-match
+   */
+  app.post("/api/innovation/proposals", (req: Request, res: Response) => {
+    try {
+      const { title, domain, submitterName, submitterOrg, submitterEmail, submitterPhone, declaredTrl, abstract, ndaAgreed } = req.body;
+
+      if (!title || !submitterName || !submitterEmail || !abstract) {
+        return res.status(400).json({
+          success: false,
+          error: "عنوان، نام متقاضی، ایمیل سازمانی و خلاصه فنی الزامی است.",
+          errorEn: "Title, submitter name, email, and technical abstract are required."
+        });
+      }
+
+      const result = innovationTriageService.submitProposal({
+        title: String(title).slice(0, 300),
+        domain: String(domain || 'General Innovation').slice(0, 100),
+        submitterName: String(submitterName).slice(0, 150),
+        submitterOrg: String(submitterOrg || 'مستقل / دانشگاهی').slice(0, 200),
+        submitterEmail: String(submitterEmail).slice(0, 150),
+        submitterPhone: String(submitterPhone || '').slice(0, 50),
+        declaredTrl: String(declaredTrl || 'TRL-3').slice(0, 80),
+        abstract: String(abstract).slice(0, 3000),
+        ndaAgreed: Boolean(ndaAgreed)
+      });
+
+      return res.status(201).json({
+        success: true,
+        trackingId: result.trackingId,
+        proposal: result.proposal,
+        message: "پروپوزال شما با موفقیت ثبت شد و کد رهگیری یکتا صادر گردید.",
+        messageEn: "Proposal registered successfully. Unique tracking ID issued."
+      });
+    } catch (error: any) {
+      logger.error(`Error in /api/innovation/proposals: ${error?.message}`);
+      return res.status(500).json({ success: false, error: "خطا در پردازش و تریاژ پروپوزال" });
+    }
+  });
+
+  /**
+   * GET /api/innovation/track/:trackingId
+   * Public endpoint to query multi-stage review status WITHOUT exposing private data
+   */
+  app.get("/api/innovation/track/:trackingId", (req: Request, res: Response) => {
+    try {
+      const trackingId = String(req.params.trackingId);
+      const tracking = innovationTriageService.getPublicTracking(trackingId);
+
+      if (!tracking.found) {
+        return res.status(404).json({
+          success: false,
+          error: "پروپوزالی با این کد رهگیری یافت نشد. لطفاً کد را بررسی کنید.",
+          errorEn: "Proposal with specified tracking ID not found."
+        });
+      }
+
+      return res.json({
+        success: true,
+        data: tracking
+      });
+    } catch (error: any) {
+      return res.status(500).json({ success: false, error: "خطا در استعلام کد رهگیری" });
+    }
+  });
+
+  /**
+   * GET /api/innovation/proposals
+   * Internal portal endpoint: returns full proposals with Novelty Reports for committee
+   */
+  app.get("/api/innovation/proposals", optionalCorporateAuth, (_req: Request, res: Response) => {
+    try {
+      const proposals = innovationTriageService.getAllProposals();
+      return res.json({
+        success: true,
+        count: proposals.length,
+        proposals
+      });
+    } catch (error: any) {
+      return res.status(500).json({ success: false, error: "Failed to fetch proposals" });
+    }
+  });
+
+  /**
+   * PATCH /api/innovation/proposals/:id/status
+   * Internal Innovation Committee review action & evaluation notes
+   */
+  app.patch("/api/innovation/proposals/:id/status", optionalCorporateAuth, (req: Request, res: Response) => {
+    try {
+      const id = String(req.params.id);
+      const { status, evaluatorNotes, committeeScore } = req.body;
+
+      if (!status) {
+        return res.status(400).json({ success: false, error: "وضعیت جدید (status) الزامی است." });
+      }
+
+      const updated = innovationTriageService.updateProposalStatus(id, status, evaluatorNotes, committeeScore);
+      if (!updated) {
+        return res.status(404).json({ success: false, error: "پروپوزال یافت نشد." });
+      }
+
+      return res.json({
+        success: true,
+        proposal: updated,
+        message: "وضعیت پرونده نوآوری با موفقیت به‌روزرسانی شد."
+      });
+    } catch (error: any) {
+      return res.status(500).json({ success: false, error: "خطا در به‌روزرسانی پرونده" });
+    }
+  });
+
+  // =========================================================================
+  // TIER-2 PARTNER DATA ROOM (OTP & DIGITAL NDA WORKFLOW)
+  // =========================================================================
+
+  /**
+   * POST /api/data-room/request-otp
+   */
+  app.post("/api/data-room/request-otp", (req: Request, res: Response) => {
+    try {
+      const { email, organization } = req.body;
+      if (!email || !organization) {
+        return res.status(400).json({
+          success: false,
+          error: "ایمیل معتبر شرکتی و نام سازمان یا صندوق سرمایه‌گذاری الزامی است."
+        });
+      }
+
+      const result = innovationTriageService.requestDataRoomOtp(email, organization);
+      return res.json(result);
+    } catch (error: any) {
+      return res.status(500).json({ success: false, error: "خطا در ارسال کد تایید" });
+    }
+  });
+
+  /**
+   * POST /api/data-room/verify-otp
+   */
+  app.post("/api/data-room/verify-otp", (req: Request, res: Response) => {
+    try {
+      const { email, otp } = req.body;
+      if (!email || !otp) {
+        return res.status(400).json({ success: false, error: "ایمیل و رمز یک‌بارمصرف الزامی است." });
+      }
+
+      const result = innovationTriageService.verifyDataRoomOtp(email, otp);
+      if (!result.success) {
+        return res.status(401).json(result);
+      }
+
+      return res.json(result);
+    } catch (error: any) {
+      return res.status(500).json({ success: false, error: "خطا در اعتبارسنجی کد" });
+    }
+  });
+
+  /**
+   * POST /api/data-room/accept-nda
+   */
+  app.post("/api/data-room/accept-nda", (req: Request, res: Response) => {
+    try {
+      const { token, signerName, title } = req.body;
+      if (!token || !signerName || !title) {
+        return res.status(400).json({
+          success: false,
+          error: "توکن دسترسی، نام و نام‌خانوادگی امضاکننده و سمت سازمانی الزامی است."
+        });
+      }
+
+      const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+      const result = innovationTriageService.acceptDigitalNda(token, signerName, title, String(ip));
+
+      if (!result.success) {
+        return res.status(400).json(result);
+      }
+
+      return res.json({
+        success: true,
+        message: "توافق‌نامه محرمانگی دوجانبه (NDA) با موفقیت امضا و دسترسی به اتاق داده فعال شد."
+      });
+    } catch (error: any) {
+      return res.status(500).json({ success: false, error: "خطا در ثبت توافق‌نامه NDA" });
+    }
+  });
+
+  /**
+   * GET /api/data-room/documents
+   * Returns confidential Tier-2 dossiers only if OTP + NDA are valid
+   */
+  app.get("/api/data-room/documents", (req: Request, res: Response) => {
+    try {
+      let token = req.query.token as string;
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith("Bearer ")) {
+        token = authHeader.split(" ")[1];
+      }
+      if (!token && req.headers['x-data-room-token']) {
+        token = req.headers['x-data-room-token'] as string;
+      }
+
+      if (!token) {
+        return res.status(401).json({
+          authorized: false,
+          error: "توکن معتبر اتاق داده ارائه نشده است. لطفاً ابتدا با کد یک‌بارمصرف وارد شوید."
+        });
+      }
+
+      const result = innovationTriageService.getDataRoomDossiers(token);
+      if (!result.authorized) {
+        return res.status(403).json(result);
+      }
+
+      return res.json({
+        success: true,
+        ...result
+      });
+    } catch (error: any) {
+      return res.status(500).json({ success: false, error: "خطا در واکشی اسناد اتاق داده" });
+    }
+  });
 }
 
 /**

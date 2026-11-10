@@ -29,6 +29,7 @@ import { InternalCommunicationTab } from '../components/portal/InternalCommunica
 import { CommunicationStatusDashboard } from '../components/portal/CommunicationStatusDashboard';
 import { TeamOperationsConsole } from '../components/portal/TeamOperationsConsole';
 import { ExecutiveGovernanceQueue } from '../components/portal/ExecutiveGovernanceQueue';
+import { InnovationTriageTab } from '../components/portal/InnovationTriageTab';
 import { PortalBreadcrumb } from '../components/portal/PortalBreadcrumb';
 import { getPortalModules } from '../data/portalModules';
 import GovernanceFrameworkSection from '../components/governance/GovernanceFrameworkSection';
@@ -1019,6 +1020,9 @@ const InternalPortalPage: React.FC<InternalPortalPageProps> = ({ setPage }) => {
 
         {/* TAB: ENGINEERING VAULT & INTERNAL CLAIMS (P0-13 RESTRICTED) */}
         {activeTab === 'engineeringVault' && <EngineeringVaultTab />}
+
+        {/* TAB: AI INNOVATION TRIAGE & PATENT NOVELTY CARTABLE */}
+        {activeTab === 'innovationTriage' && <InnovationTriageTab />}
 
         {/* TAB 4: ATTENDANCE & TELEMETRY */}
         {activeTab === 'attendance' && <AttendanceWidget />}

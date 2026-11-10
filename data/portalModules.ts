@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { 
   LayoutDashboard, Inbox, FileText, Clock, PhoneCall, 
-  GitBranch, Network, Sliders, Users, UserCheck, FolderGit2, Database, ShieldCheck, Shield, Share2 
+  GitBranch, Network, Sliders, Users, UserCheck, FolderGit2, Database, ShieldCheck, Shield, Share2, Sparkles 
 } from 'lucide-react';
 import type { NavModuleItem } from '../components/portal/PortalHeader';
 
@@ -77,6 +77,17 @@ export const getPortalModules = (
     descEn: 'Rapid project tracking, GitHub repository health & patent pipeline (15-20 core cohort)',
     category: 'operations',
     icon: FolderGit2,
+  },
+  {
+    id: 'innovationTriage',
+    labelEn: 'AI Innovation Triage & Novelty Engine',
+    labelFa: 'کارتابل تریاژ و ارزیابی نوآوری باز با هوش مصنوعی',
+    shortLabelFa: 'تریاژ هوش مصنوعی',
+    shortLabelEn: 'AI Innovation Triage',
+    descFa: 'ارزیابی خودکار پروپوزال‌های نوآوری، بررسی انطباق با پتنت‌های KKM و استخراج گزارش تشابه و تازگی (Novelty Report)',
+    descEn: 'Automated AI proposal triage, KKM patent prior-art matching & novelty reports',
+    category: 'operations',
+    icon: Sparkles,
   },
 
   // 2. TELEPHONY & COMMUNICATIONS (Daftare Shoma Cloud PBX & IVR)

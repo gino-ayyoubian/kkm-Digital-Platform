@@ -129,8 +129,15 @@
             str.indexOf('@vite/client') !== -1 ||
             str.indexOf('failed to connect to websocket') !== -1 ||
             str.indexOf('vite:ws') !== -1 ||
+            str.indexOf('webkit-masked-url') !== -1 ||
+            str.indexOf('sendViaBridge') !== -1 ||
+            str.indexOf('sendWithHealth') !== -1 ||
+            str.indexOf('sendWithRouting') !== -1 ||
             urlStr.indexOf('@vite/client') !== -1 ||
-            (error && error.name === 'SecurityError')
+            urlStr.indexOf('webkit-masked-url') !== -1 ||
+            (error && error.name === 'SecurityError') ||
+            (typeof error === 'object' && error !== null && Object.keys(error).length === 0 && !(error instanceof Error)) ||
+            (str === '[object Object]' && (!urlStr || urlStr.indexOf('webkit-masked-url') !== -1))
           );
         }
 
@@ -141,7 +148,7 @@
             var arg = arguments[i];
             combined += (arg && arg.stack ? ' ' + arg.stack : ' ' + String(arg));
           }
-          if (isIgnoredError(combined, '', null)) {
+          if (isIgnoredError(combined, '', null) || combined.indexOf('webkit-masked-url') !== -1 || combined.indexOf('sendViaBridge') !== -1) {
             return;
           }
           if (origConsoleError) return origConsoleError.apply(console, arguments);
@@ -149,7 +156,9 @@
 
         var origOnError = window.onerror;
         window.onerror = function(msg, url, lineNo, columnNo, error) {
-          if (isIgnoredError(msg, url, error)) {
+          var urlStr = String(url || '');
+          var isEmptyObj = typeof error === 'object' && error !== null && Object.keys(error).length === 0 && !(error instanceof Error);
+          if (isEmptyObj || urlStr.indexOf('webkit-masked-url') !== -1 || isIgnoredError(msg, url, error)) {
             return true;
           }
           if (origOnError) return origOnError.apply(this, arguments);
@@ -159,7 +168,9 @@
         window.addEventListener('error', function(e) {
           var msg = e && (e.message || (e.error && e.error.message)) || '';
           var filename = e && e.filename || '';
-          if (isIgnoredError(msg, filename, e.error)) {
+          var err = e && e.error;
+          var isEmptyObj = typeof err === 'object' && err !== null && Object.keys(err).length === 0 && !(err instanceof Error);
+          if (isEmptyObj || isIgnoredError(msg, filename, err) || filename.indexOf('webkit-masked-url') !== -1) {
             e.preventDefault();
             e.stopPropagation();
             if (typeof e.stopImmediatePropagation === 'function') {
@@ -172,7 +183,9 @@
         window.addEventListener('unhandledrejection', function(e) {
           var reason = e && e.reason;
           var msg = (reason && (reason.message || String(reason))) || '';
-          if (isIgnoredError(msg, '', reason)) {
+          var stack = (reason && reason.stack) || '';
+          var isEmptyObj = typeof reason === 'object' && reason !== null && Object.keys(reason).length === 0 && !(reason instanceof Error);
+          if (isEmptyObj || isIgnoredError(msg + ' ' + stack, '', reason)) {
             e.preventDefault();
             e.stopPropagation();
             if (typeof e.stopImmediatePropagation === 'function') {

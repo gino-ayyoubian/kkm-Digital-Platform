@@ -45,6 +45,7 @@ const IPCenterPage = React.lazy(trackLazyLoad('IPCenterPage', () => import('./pa
 const TechnologyTemplatePage = React.lazy(trackLazyLoad('TechnologyTemplatePage', () => import('./pages/TechnologyTemplatePage')));
 const ProjectTemplatePage = React.lazy(trackLazyLoad('ProjectTemplatePage', () => import('./pages/ProjectTemplatePage')));
 const InnovationHubPage = React.lazy(trackLazyLoad('InnovationHubPage', () => import('./pages/InnovationHubPage')));
+const PartnerDataRoomPage = React.lazy(trackLazyLoad('PartnerDataRoomPage', () => import('./pages/PartnerDataRoomPage')));
 const CarbonCreditPage = React.lazy(trackLazyLoad('CarbonCreditPage', () => import('./pages/CarbonCreditPage')));
 const ComingSoonPage = React.lazy(trackLazyLoad('ComingSoonPage', () => import('./pages/ComingSoonPage')));
 const LegalPage = React.lazy(trackLazyLoad('LegalPage', () => import('./pages/LegalPage')));
@@ -845,7 +846,10 @@ const App: React.FC = () => {
         pageComponent = <ProjectsPage setPage={setCurrentPage} />;
         break;
       case Page.InnovationHub:
-        pageComponent = <InnovationHubPage />;
+        pageComponent = <InnovationHubPage setPage={setCurrentPage} />;
+        break;
+      case Page.PartnerDataRoom:
+        pageComponent = <PartnerDataRoomPage />;
         break;
       case Page.IPCenter:
       case Page.IntellectualProperty:
