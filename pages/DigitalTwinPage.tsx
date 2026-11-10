@@ -3,6 +3,7 @@ import { useLanguage } from '../LanguageContext';
 import PageHeader from '../components/PageHeader';
 import ShaderCanvas from '../components/ShaderCanvas';
 import type { ShaderMode, ColormapMode, FluidType } from '../components/ShaderCanvas';
+import { GMELPowerIsland3D } from '../components/three/GMELPowerIsland3D';
 import { GoogleGenAI } from '@google/genai';
 import { motion } from 'motion/react';
 
@@ -78,6 +79,7 @@ export const DigitalTwinPage: React.FC = () => {
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [fps, setFps] = useState<number>(60);
   const [activePreset, setActivePreset] = useState<string>('qeshm');
+  const [viewDimension, setViewDimension] = useState<'3D' | '2D_FEA'>('3D');
 
   // AI Copilot state
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
@@ -328,80 +330,124 @@ Keep it structured, mathematically grounded, and professional. Respond in ${lang
         {/* Main Simulation Viewport & Controls Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left / Center Column: WebGL Shader Canvas & Telemetry HUD (8 Cols) */}
+          {/* Left / Center Column: WebGL Shader Canvas & Telemetry HUD (8 Cols) */}
           <div className="lg:col-span-8 space-y-6">
-            {/* Mode Switcher Tabs */}
-            <div className="flex border-b border-slate-200 dark:border-slate-800 gap-2 overflow-x-auto pb-2">
-              <button
-                onClick={() => setMode('subsurface')}
-                className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap transition-colors ${
-                  mode === 'subsurface'
-                    ? 'bg-primary text-white dark:bg-secondary dark:text-slate-950 shadow-md'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
-                }`}
-              >
-                🌋 {t('ShaderModeSubsurface')}
-              </button>
-              <button
-                onClick={() => setMode('planetary')}
-                className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap transition-colors ${
-                  mode === 'planetary'
-                    ? 'bg-primary text-white dark:bg-secondary dark:text-slate-950 shadow-md'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
-                }`}
-              >
-                🌐 {t('ShaderModePlanetary')}
-              </button>
-              <button
-                onClick={() => setMode('molecular')}
-                className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap transition-colors ${
-                  mode === 'molecular'
-                    ? 'bg-primary text-white dark:bg-secondary dark:text-slate-950 shadow-md'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
-                }`}
-              >
-                🔬 {t('ShaderModeMolecular')}
-              </button>
-            </div>
-
-            {/* GPU Shader Viewport */}
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black border border-slate-800">
-              <ShaderCanvas
-                mode={mode}
-                depth={depth}
-                massFlowRate={massFlowRate}
-                thermalGradient={thermalGradient}
-                fluidType={fluidType}
-                colormap={colormap}
-                isPaused={isPaused}
-                onFpsUpdate={setFps}
-                onCanvasReady={(c) => (canvasElementRef.current = c)}
-              />
-
-              {/* Viewport Overlay Badge */}
-              <div className="absolute top-4 left-4 rtl:left-auto rtl:right-4 pointer-events-none bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700 text-xs font-mono text-slate-200 shadow-lg flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>GLSL Core: {mode.toUpperCase()}</span>
-                <span className="text-slate-400">|</span>
-                <span className="text-accent-yellow">{fluidType.toUpperCase()}</span>
+            
+            {/* Viewport Dimension Switcher (3D Three.js Spatial vs 2D FEA Shader) */}
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 border border-slate-800 p-2 rounded-xl">
+              <div className="flex items-center gap-1.5 p-1 bg-slate-950 rounded-lg border border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setViewDimension('3D')}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-md transition-colors ${
+                    viewDimension === '3D'
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  <span>💎 {language === 'FA' ? 'دوقلوی سه‌بعدی PBR (Three.js)' : '3D Spatial Twin (Three.js)'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewDimension('2D_FEA')}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-md transition-colors ${
+                    viewDimension === '2D_FEA'
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  <span>🔬 {language === 'FA' ? 'تحلیل المان محدود دو بعدی' : '2D FEA Thermal Shader'}</span>
+                </button>
               </div>
 
-              {/* Quick Colormap Switcher Overlay */}
-              <div className="absolute bottom-4 right-4 rtl:right-auto rtl:left-4 bg-slate-900/85 backdrop-blur-md p-1.5 rounded-xl border border-slate-700 shadow-xl flex gap-1">
-                {(['thermal', 'velocity', 'stress', 'flux'] as ColormapMode[]).map((cMode) => (
+              <div className="text-xs font-mono text-cyan-400 font-semibold px-2">
+                {viewDimension === '3D' ? 'THREE.JS 60 FPS' : 'GLSL CORE'}
+              </div>
+            </div>
+
+            {viewDimension === '3D' ? (
+              /* Three.js 3D PBR Spatial Viewport */
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black border border-slate-800">
+                <GMELPowerIsland3D className="w-full h-[600px]" />
+              </div>
+            ) : (
+              /* 2D FEA GPU Shader Viewport */
+              <>
+                {/* Mode Switcher Tabs */}
+                <div className="flex border-b border-slate-200 dark:border-slate-800 gap-2 overflow-x-auto pb-2">
                   <button
-                    key={cMode}
-                    onClick={() => setColormap(cMode)}
-                    className={`px-2.5 py-1 text-xs rounded-lg font-semibold uppercase tracking-wider transition-all ${
-                      colormap === cMode
-                        ? 'bg-secondary text-slate-950 shadow-md'
-                        : 'text-slate-300 hover:bg-slate-800'
+                    onClick={() => setMode('subsurface')}
+                    className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap transition-colors ${
+                      mode === 'subsurface'
+                        ? 'bg-primary text-white dark:bg-secondary dark:text-slate-950 shadow-md'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
                     }`}
                   >
-                    {cMode}
+                    🌋 {t('ShaderModeSubsurface')}
                   </button>
-                ))}
-              </div>
-            </div>
+                  <button
+                    onClick={() => setMode('planetary')}
+                    className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap transition-colors ${
+                      mode === 'planetary'
+                        ? 'bg-primary text-white dark:bg-secondary dark:text-slate-950 shadow-md'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    🌐 {t('ShaderModePlanetary')}
+                  </button>
+                  <button
+                    onClick={() => setMode('molecular')}
+                    className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap transition-colors ${
+                      mode === 'molecular'
+                        ? 'bg-primary text-white dark:bg-secondary dark:text-slate-950 shadow-md'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    🔬 {t('ShaderModeMolecular')}
+                  </button>
+                </div>
+
+                {/* GPU Shader Viewport */}
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black border border-slate-800">
+                  <ShaderCanvas
+                    mode={mode}
+                    depth={depth}
+                    massFlowRate={massFlowRate}
+                    thermalGradient={thermalGradient}
+                    fluidType={fluidType}
+                    colormap={colormap}
+                    isPaused={isPaused}
+                    onFpsUpdate={setFps}
+                    onCanvasReady={(c) => (canvasElementRef.current = c)}
+                  />
+
+                  {/* Viewport Overlay Badge */}
+                  <div className="absolute top-4 left-4 rtl:left-auto rtl:right-4 pointer-events-none bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700 text-xs font-mono text-slate-200 shadow-lg flex items-center gap-2">
+                    <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span>GLSL Core: {mode.toUpperCase()}</span>
+                    <span className="text-slate-400">|</span>
+                    <span className="text-accent-yellow">{fluidType.toUpperCase()}</span>
+                  </div>
+
+                  {/* Quick Colormap Switcher Overlay */}
+                  <div className="absolute bottom-4 right-4 rtl:right-auto rtl:left-4 bg-slate-900/85 backdrop-blur-md p-1.5 rounded-xl border border-slate-700 shadow-xl flex gap-1">
+                    {(['thermal', 'velocity', 'stress', 'flux'] as ColormapMode[]).map((cMode) => (
+                      <button
+                        key={cMode}
+                        onClick={() => setColormap(cMode)}
+                        className={`px-2.5 py-1 text-xs rounded-lg font-semibold uppercase tracking-wider transition-all ${
+                          colormap === cMode
+                            ? 'bg-secondary text-slate-950 shadow-md'
+                            : 'text-slate-300 hover:bg-slate-800'
+                        }`}
+                      >
+                        {cMode}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
 
             {/* Live Thermodynamic Telemetry HUD */}
             <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">

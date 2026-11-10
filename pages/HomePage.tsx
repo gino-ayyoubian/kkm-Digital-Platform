@@ -11,6 +11,7 @@ import {
 import ProjectHighlightsCarousel from '../components/ProjectHighlightsCarousel';
 import { CinematicIPStoryVisualizer } from '../components/CinematicIPStoryVisualizer';
 import { AcademicPublicationsSection } from '../components/AcademicPublicationsSection';
+import { GMELPowerIsland3D } from '../components/three/GMELPowerIsland3D';
 
 interface HomePageProps {
   setPage: (page: Page) => void;
@@ -486,6 +487,25 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
             </p>
           </div>
           
+          {/* Interactive 3D Digital Twin Viewport (Procedural Three.js Engine) */}
+          <div className="mb-14">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <div>
+                <span className="text-xs font-mono font-bold text-cyan-400 tracking-wider uppercase block mb-1">
+                  {isFa ? 'شبیه‌سازی بی‌درنگ دوقلوی دیجیتال' : 'Real-Time 3D Digital Twin Simulation'}
+                </span>
+                <h4 className="text-xl sm:text-2xl font-bold text-white font-display">
+                  {isFa ? 'مدل سه‌بعدی نیروگاه و مدار بسته زیرسطحی GMEL' : 'GMEL Power Island & Subsurface Loop 3D Twin'}
+                </h4>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
+                <span className="inline-block w-2 h-2 rounded-full bg-cyan-400" />
+                <span>60 FPS WebGL PBR Engine</span>
+              </div>
+            </div>
+            <GMELPowerIsland3D className="w-full h-[580px] sm:h-[640px]" />
+          </div>
+
           {/* GMEL Module Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
             {[

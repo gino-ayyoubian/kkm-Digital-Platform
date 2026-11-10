@@ -103,31 +103,62 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
     });
   }, [overflowNavLinks, currentPage]);
 
+  // 3D Holographic Parallax Tilt State (Cyber-Industrial spatial header)
+  const [tilt, setTilt] = React.useState({ x: 0, y: 0, px: 50 });
+  const handleHeaderMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    const tiltX = (y - 0.5) * -3.5;
+    const tiltY = (x - 0.5) * 3.5;
+    setTilt({ x: tiltX, y: tiltY, px: Math.round(x * 100) });
+  };
+  const handleHeaderMouseLeave = () => {
+    setTilt({ x: 0, y: 0, px: 50 });
+  };
+
   return (
     <>
       <motion.header
         ref={headerRef}
+        onMouseMove={handleHeaderMouseMove}
+        onMouseLeave={handleHeaderMouseLeave}
         animate={{
           y: 0,
+          rotateX: tilt.x,
+          rotateY: tilt.y,
           backgroundColor: theme === 'dark'
-            ? (activeScrolled ? 'rgba(15, 23, 42, 0.96)' : 'rgba(15, 23, 42, 0.88)')
+            ? (activeScrolled ? 'rgba(2, 11, 24, 0.94)' : 'rgba(2, 11, 24, 0.84)')
             : (activeScrolled ? 'rgba(255, 255, 255, 0.96)' : 'rgba(255, 255, 255, 0.88)'),
           boxShadow: activeScrolled
             ? (theme === 'dark'
-                ? '0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3)'
+                ? '0 12px 30px -5px rgba(0, 0, 0, 0.7), 0 0 20px -2px rgba(0, 240, 255, 0.15)'
                 : '0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04)')
             : '0 0px 0px 0px rgba(0, 0, 0, 0)',
           borderBottomColor: theme === 'dark'
-            ? (activeScrolled ? 'rgba(51, 65, 85, 0.8)' : 'rgba(51, 65, 85, 0.4)')
+            ? (activeScrolled ? 'rgba(0, 240, 255, 0.35)' : 'rgba(0, 240, 255, 0.18)')
             : (activeScrolled ? 'rgba(226, 232, 240, 0.9)' : 'rgba(241, 245, 249, 0.6)'),
         }}
         transition={{
-          duration: 0.25,
+          duration: 0.2,
           ease: [0.16, 1, 0.3, 1],
         }}
-        className="sticky top-0 z-50 w-full backdrop-blur-md border-b relative"
+        style={{
+          perspective: 1200,
+          transformStyle: 'preserve-3d',
+        }}
+        className="sticky top-0 z-50 w-full backdrop-blur-xl border-b relative"
         role="banner"
       >
+        {/* Holographic Refractive Top Flare (responds to cursor coords) */}
+        <div 
+          className="absolute top-0 inset-x-0 h-[1.5px] pointer-events-none transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(420px circle at ${tilt.px}% 0%, rgba(0, 240, 255, 0.75), rgba(255, 193, 7, 0.45) 45%, transparent 80%)`,
+            opacity: activeScrolled ? 0.95 : 0.65,
+          }}
+        />
+
         {/* Subtle Fluid Motion Animation Stream */}
         <HeaderFluidAnimation opacity={activeScrolled ? 0.35 : 0.6} />
 
@@ -390,6 +421,23 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage, onSearch }) => {
               >
                 <Bot className="w-4 h-4" />
                 <span className="hidden xl:inline font-mono">AI Advisor</span>
+              </button>
+
+              {/* Strategic Partner Data Room (Tier-2 NDA) Quick Access */}
+              <button
+                id="header-dataroom-btn"
+                type="button"
+                onClick={() => setPage(Page.PartnerDataRoom)}
+                className={`p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-400 hidden xl:inline-flex items-center gap-1.5 text-xs font-bold border ${
+                  currentPage === Page.PartnerDataRoom
+                    ? 'bg-cyan-950/80 text-cyan-300 border-cyan-400 shadow-sm shadow-cyan-950/40'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 hover:bg-cyan-500/10 border-slate-200 dark:border-slate-800'
+                }`}
+                aria-label={t(Page.PartnerDataRoom)}
+                title={isFa ? 'اتاق داده امن شرکا و سرمایه‌گذاران (Tier 2)' : 'Strategic Partner Data Room (Tier 2 NDA)'}
+              >
+                <Lock className="w-3.5 h-3.5 text-cyan-500 dark:text-cyan-400" />
+                <span className="hidden xl:inline">{isFa ? 'اتاق داده شرکا' : 'Data Room'}</span>
               </button>
 
               {/* Internal / Employee Portal Quick Access */}

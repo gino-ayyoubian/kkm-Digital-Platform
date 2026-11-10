@@ -8,6 +8,7 @@ import { db } from '../firebase';
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 
 import GlobalCTA from '../components/GlobalCTA';
+import { GMELPowerIsland3D } from '../components/three/GMELPowerIsland3D';
 interface DigitalTwinHubPageProps {
   setPage: (page: Page) => void;
 }
@@ -176,6 +177,30 @@ const DigitalTwinHubPage: React.FC<DigitalTwinHubPageProps> = ({ setPage }) => {
               </AreaChart>
             </ResponsiveContainer>
           </div>
+        </motion.div>
+
+        {/* Flagship Interactive 3D Digital Twin Viewport */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.28 }}
+          className="space-y-4"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span className="text-xs font-mono font-bold text-cyan-500 dark:text-cyan-400 tracking-wider uppercase block">
+                Spatial 3D Digital Twin Core
+              </span>
+              <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-white">
+                GMEL Subsurface & Surface Power Island (Three.js 60FPS)
+              </h2>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
+              <span className="w-2 h-2 rounded-full bg-cyan-400" />
+              <span>Full Rotational Orbit & Exploded View Controls</span>
+            </div>
+          </div>
+          <GMELPowerIsland3D className="w-full h-[620px]" />
         </motion.div>
 
         {/* Ecosystem Sub-Twins Grid */}
